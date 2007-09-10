@@ -1,0 +1,62 @@
+Installing Conzilla consists of a couple of steps, follow them and
+there will be no problems.
+
+1) If you doesn't have a Java Runtime Environment (JRE) you need to 
+   download one.
+   (Observe that on unix systems usually a java installation already exist, 
+    contact your systemadministrator or just someone able to answear your 
+    questions.)
+   To download go to http://java.sun.com/ and choose some version higher 
+   than 1.2.2. (It's enough with a JRE, a JDK is bigger and for developers.)
+   The bundle is approximately *** MB in size, so brace yourself if you are
+   on a slow connection.
+   Follow the installation instructions for the JRE.
+
+   Note: remember the install-location (JAVAHOME) in your filesystem, 
+         it may come in handy later on.
+
+2) Download the file Conzilla.jar from the same place you got this 
+   document. Put it somewhere suitable in your filesystem.
+   
+3) Adjust the file which launches conzilla, here I assume it is in 
+   the same directory as Conzilla.jar.
+   Schematically it looks like this:
+
+   java  -classpath Conzilla.jar se.kth.cid.conzilla.app.ConzillaApp $1
+
+   (On unix systems you have a row on top saying
+    #! /bin/sh
+    this just defines wich environment Conzilla is run in.)
+
+   If this doesn't work try to execute the command 
+   java 
+   in some shell, (like bash on unix, msdos on windows)
+   If this terminates with somenthing like 
+   java: command not found:
+   you have to give the path to the java-runnable.
+   Now it's time to remember where you installed your java environment.
+   So instead of the plain 'java' in the row above you put
+   'path-to-java-environment/bin/java'
+
+   So lets give two examples of the most common platforms:
+   ******************windows example********************
+   *******************unix example**********************
+   #!/bin/bash
+
+   /usr/local/jdk1.2.2/bin/java  -classpath Conzilla.jar \
+                    se.kth.cid.conzilla.app.ConzillaApp $1
+
+4) Run the launch file from 3).
+   (On unix systems you may have to change permissions on the
+    file so it can be executed, i.e.
+    chmod +x conzilla
+    and then try again.)
+   
+   Hopefully you will now see a window saying:
+   'Conzilla does not seem to be installed on your account.'
+   And some more information, accept by pressing 'Yes, install'
+   Now a Install-log will show you what happens.
+   Just press the 'Start!' button to start.
+
+5) Have fun, and read the document GettingStarted or the
+   tutorial if you don't know your way around.

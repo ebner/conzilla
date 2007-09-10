@@ -1,0 +1,12 @@
+
+conzilla.browse.popup.background.color = 0xfff2eff2
+conzilla.browse.popup.background.activecolor = 0xffe4e4ff
+
+conzilla.browse.popup.border.color = 0xff000000
+conzilla.browse.popup.border.activecolor = 0xff000000
+
+conzilla.browse.popup.text.color = 0xff000000
+conzilla.browse.popup.text.activecolor = 0xff000000
+
+conzilla.browse.mouseover.color = 0xff9999ff
+conzilla.browse.lastneuron.color = 0xff00ff00

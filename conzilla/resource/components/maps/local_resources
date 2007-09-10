@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component VERSION="1.0">
+  <MetaData>
+    <record>
+      <general>
+        <title>
+          <langstring lang="en">Local resources.
+(Here you can access and 
+create your own material.)</langstring>
+        </title>
+      </general>
+      <technical>
+        <location type="URI">urn:path:/org/conzilla/builtin/maps/local_resources</location>
+      </technical>
+      <relation>
+        <kind>
+          <langstring>context</langstring>
+        </kind>
+        <resource>
+          <extension>
+            <location>default</location>
+          </extension>
+        </resource>
+      </relation>
+    </record>
+  </MetaData>
+  <Neuron TYPEURI="urn:path:/org/conzilla/builtin/types/UML/ClassD/concept"/>
+</Component>

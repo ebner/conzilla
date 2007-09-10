@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+
+<!-- Example:
+   -   Please note the trailing "/" in every BASEURI,
+   -   as well as the possibility to use BASEURIs relative to the
+   -   location of this file.
+   -
+   -  <Resolver NAME="My Resolver" VERSION="1.0">
+   -    <Services>
+   -      <Path NAME="/se/kth/cid"
+   -            BASEURI="http://cid.nada.kth.se/il/conzilla/components/"
+   -            TYPE="text/xml"/>
+   -      <Path NAME="/test"
+   -            BASEURI="../component/"
+   -            TYPE="text/xml"/>
+   -    </Services>
+   -  </Resolver>
+   -
+   -->
+
+<Resolver NAME="CID Resolver" VERSION="1.0">
+  <Services>
+
+<!-- Conzilla net-based help and tutorial -->
+
+    <Path NAME="/org/conzilla"
+          BASEURI="http://kmr.nada.kth.se/manifold/org_conzilla/"
+          TYPE="text/xml"/>
+
+<!-- All CID projects live here -->
+
+    <Path NAME="/se/kth/cid"
+          BASEURI="http://kmr.nada.kth.se/manifold/cidprojects/"
+          TYPE="text/xml"/>
+
+<!-- External organizations being modeled by us -->
+
+
+    <Path NAME="/se/sih"
+          BASEURI="http://kmr.nada.kth.se/manifold/externalprojects/sih/"
+          TYPE="text/xml"/>
+
+    <Path NAME="/nu/fmls/sprakaloss"
+          BASEURI="http://kmr.nada.kth.se/manifold/externalprojects/sprakaloss/"
+          TYPE="text/xml"/>
+
+    <Path NAME="/se/tpb"
+          BASEURI="http://kmr.nada.kth.se/manifold/externalprojects/tpb/"
+          TYPE="text/xml"/>
+
+    <Path NAME="/se/skolverket"
+          BASEURI="http://kmr.nada.kth.se/manifold/externalprojects/skolverket/"
+          TYPE="text/xml"/>
+
+    <Path NAME="/se/webgiro"
+          BASEURI="http://kmr.nada.kth.se/manifold/externalprojects/WebGiro/"
+          TYPE="text/xml"/>
+<!--
+    <Path NAME="/se/ur"
+          BASEURI="http://kmr.nada.kth.se/manifold/externalprojects/ur/"
+          TYPE="text/xml"/>
+-->
+    <Path NAME="/se/stem"
+          BASEURI="http://kmr.nada.kth.se/manifold/externalprojects/stem/"
+          TYPE="text/xml"/>
+
+<!-- Compatibility -->
+<!-- First for the old browsers, old URNs -->
+    <Path NAME="/conzilla/resources"
+          BASEURI="http://kmr.nada.kth.se/manifold/temporary_resource_maps/"
+          TYPE="text/xml"/>
+
+    <Path NAME="/conzilla/net/help"
+          BASEURI="urn:path:/org/conzilla/help/"
+          TYPE="text/xml"/>
+
+<!-- Then for the old browser, new URNs -->
+
+    <Path NAME="/org/conzilla/builtin"
+          BASEURI="urn:path:/conzilla/"
+          TYPE="text/xml"/>
+
+    <Path NAME="/org/conzilla/builtin/types/UML/ClassD"
+          BASEURI="urn:path:/conzilla/types/defaultUML/"
+          TYPE="text/xml"/>
+
+    <Path NAME="/org/conzilla/builtin/types/UML"
+          BASEURI="urn:path:/conzilla/types/defaultUML/"
+          TYPE="text/xml"/>
+
+  </Services>
+</Resolver>
+
+
+
+
+

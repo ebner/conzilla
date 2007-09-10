@@ -1,0 +1,7 @@
+conzilla.map.foreground.color = 0xff000000
+conzilla.map.background.color = 0xffe6ffe6
+conzilla.map.text.color = 0xff000000
+
+conzilla.map.neuron.background.color = 0xffffffff
+conzilla.map.neuron.error.color = 0xffff0000
+

@@ -1,0 +1,386 @@
+#LyX 1.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 218
+\textclass article
+\language english
+\inputencoding latin1
+\fontscheme default
+\graphics default
+\paperfontsize default
+\spacing single 
+\papersize Default
+\paperpackage a4
+\use_geometry 0
+\use_amsmath 0
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\quotes_times 2
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+
+\layout Section
+
+Next generation conceptmaps
+\layout Standard
+
+In conzilla conceptmaps have been graphical presentations of non visual
+ graphs of information.
+ The non visual graph strongly resembles the semantic web and our intention
+ is to move in that direction.
+ I.e.
+ we will soon start use RDF as our base format where some basic scheemas
+ will provide the type information.
+ Hence we need a way to visualize RDF graphs.
+ Automatic layout may be interesting from some perspectives but semautomatic
+ or strictly human layout will continue to be important.
+ Hence the future of conceptmaps will be to provide grouping and placement
+ information as well as mapping types to graphical styles.
+ The question that arises is how theese conceptmaps should be represented.
+ Starting with stating some demands may help us choose:
+\layout Description
+
+Grouping certain parts should remain stuck together when imported or moved,
+ relative positioning is clearly wanted.
+\layout Description
+
+Stylesheeting should be possible, i.e.
+ color information and such should be depend on type and maybe even expressed
+ in RDF.
+ Stylesheeting information should be possible to override by having a local
+ stylesheet with higher priority.
+\layout Description
+
+Interactivity should be possible to define deviations from standard behaviour,
+ such as controlling popups or spreading of mark.
+\layout Description
+
+Extensionability a conceptmap should be able to have a revision history
+ and different extensions may coexist without ever being merged.
+\layout Description
+
+Annotationability extensions in the form of personal annotations, i.e.
+ metadata about layout.
+\layout Subsection
+
+The role of SVG
+\layout Standard
+
+Expressing conceptmaps in SVG directly doesn't fullfill the extensionalbility
+ and annotationability demands without using powerful techniques such as
+ XLink and XSLT.
+ However using it to describe how certain types should be rendered need
+ not be hindered by the demands above, even better it's a close match since
+ SVG is constructed to support reuse.
+ (I.e.
+ a relation of the type 
+\emph on 
+generalization
+\emph default 
+ are described by a SVG document describing the arrow, line type and thickness.)
+ Interactivity is achieved via scripting that are connected to each type.
+ Grouping is done within SVG documents as well as applying stylesheets.
+ However if SVG is to be used as styling only, grouping and applying stylesheets
+ should probably be done at another level.
+ 
+\layout Subsection
+
+Use of javascripts (ECMA scripts)
+\layout Standard
+
+Interactivity is best defined in a procedural manner, however conditions
+ and datastructures can be hard to access procedurally.
+ (I.e.
+ queries against RDF graphs need to follow complex and dynamic schemas such
+ as Dublin Core.) As javascripts work closely together with DOM level 2 there
+ is an event model which can be used for triggering popups and such, unfortunate
+ly there is no keyevents until DOM level 3.
+ 
+\layout Subsection
+
+Using RDF as conceptmaps
+\layout Standard
+
+Extensionability and annotationability follows directly from the nature
+ of RDF.
+ As interactivity where solved on the level of types (See SVG section above)
+ what remains is to create a schema supporting grouping and styling.
+ It's preferrable to choose a design covering the 3D case as well.
+ As grouping in 2D is closely related to the concept of scene graphs in
+ 3D there seem to be a natural choice of structure, let each grouping defines
+ it's children and their transformations.
+ See Appendix 
+\begin_inset LatexCommand \ref{schema}
+
+\end_inset 
+
+.
+\layout Section
+
+Presenting conceptmaps
+\layout Standard
+
+Specific browser applications (e.g.
+ Conzilla) will continue to be the most powerful way of viewing/browsing
+ conceptmaps.
+ To allow alternative views there is the question of which formats to use/export
+ to and methods of embedding.
+\layout Subsection
+
+Export formats
+\layout Standard
+
+Exporting to other formats has the advantages of allowing a wider range
+ of embeddings and the drawback of loosing flexibility.
+ Hence exporting a webb of conceptmaps is hardly desirable since updates
+ won't take effect immediately if at all.
+ But this is hardly a problem if you consider 'on the fly' export, which
+ is easily conceived in a server-client scenario.
+ Possible image formats will include JPEG and PNG, both of rather poor quality
+ compared with vector graphics alternatives such as SVG and PostScript.
+ 
+\layout Subsection
+
+Embedding possibilities
+\layout Standard
+
+The combination of RDF documents containing structured information, conceptmaps
+ expressed in RDF and graphical rendering files in SVG isn't immediately
+ possible to embedd into e.g.
+ a regular webpages.
+ There is several possible approaches to this:
+\layout Enumerate
+
+Export as images to formats mentioned above, can easily be embeded into
+ webpages as well as into other documents.
+\layout Enumerate
+
+Static SVG can be embeded with help of plugins into browsers and other applicati
+ons, this is just as any other image format only more complex to render.
+\layout Enumerate
+
+Dynamic SVG, i.e.
+ adding scripts to controll some behaviour such as popups and mark, embedding
+ is as for static SVG.
+ As scripts only have access to the DOM all information needed has to be
+ encoded into the document.
+ 
+\layout Enumerate
+
+Dynamic SVG with a java connection via liveconnect allows scripts to access
+ information outside the DOM and do more complicated reasoning.
+ Access to an enhanced RDF api with reasoning and query capabilities allows
+ a lot more of intelligence in the presentation.
+\layout Enumerate
+
+Use sharp implementations such as Conzilla as a plugin or applet.
+ This presupposes a slimmer Conzilla (or something similiar) with a good
+ api, e.g.
+ editing features are stripped.
+\layout Subsection
+
+Extending a viewer to become a browser
+\layout Standard
+
+With a browser we mean a viewer of conceptmaps with the possibility to browse,
+ where browsing consists of at least three activities.
+ 
+\emph on 
+Surfing
+\emph default 
+ from one map to another, 
+\emph on 
+viewing
+\emph default 
+ content associated with parts of the map and finally to 
+\emph on 
+look at metadata
+\emph default 
+ for different parts of the map (parts of a map is anything that has an
+ identity).
+ Additionally the user has a preffered language and other 
+\emph on 
+state information
+\emph default 
+.
+ With this definition the techniques 1 and 2 above won't qualify in a browser
+ as they don't allow interactivity.
+ Technique 5 above won't need any further discussion as there already exists
+ a full fledged browser (Conzilla).
+ Lets investigate the other alternatives from another perspective:
+\layout Subsubsection
+
+Client-server solution
+\layout Standard
+
+Alternative 3 above is well suited for this approach.
+ RDF in XML format as an SVG foreign object would give access to the information
+ via the DOM inteface.
+ But this would need a regular RDF parser in javascript as the XML serialization
+ isn't unique, so to simplify things we suggest a simpler RDF format.
+ Still information can be contained in a nontrivial manner, e.g.
+ some statements may have transitive semantic.
+ Luckily, there is a javascript prolog engine with a RDF wrapper (also javascrip
+t) that takes a simplified RDF syntax as input.
+ (Still in experiment phase, developed by Dan Bricley)
+\layout Description
+
+Server: Server side javascript have access to databases and more.
+ This will enable you to build up all information in a DOM (contining simplified
+ RDF) that is easy to work with from a script perspective.
+ By efficience reasons not all available information is always prefferable
+ to deliver in one DOM at once (worst case is a huge portion of the semantic
+ web).
+ Hence some sort of hooks should be provided to enable reload when more
+ information is needed.
+\layout Description
+
+Client: The state information has to be reflected into the document by the
+ containing application or statically by the server side (on change a reload
+ takes place).
+ Javascripts will be triggered, parse data, make some simple inferences
+ and react acordingly.
+\layout Standard
+
+If this approach with reasoning engine in javascript on clientside is to
+ demanding there is other alternatives where more extensive communication
+ with the server replaces complex scripts.
+\layout Subsubsection
+
+Stand alone browser
+\layout Standard
+
+Neccessary for a stand alone browser is possibilities for SVG rendering,
+ scripting, RDF parsing, inference and some reasonable connection to a webbrowse
+r allowing controll over the content view.
+ Hence two alternatives appear, either reuse an existing (flexible enough)
+ application (such as a webbrowser) or a sharp application written from
+ scratch (reuse of existing libraries is ofcource encouraged).
+\layout Description
+
+Reuse\SpecialChar ~
+application Mozilla is a a natural choice even if other applications
+ such as Apaches SVG browser Batik could be possible.
+ In mozilla support for SVG already exists in form of plugins, native support
+ will probably soon appear.
+ Inference engine in form of a wrapping of SWI-prolog via XPCom.
+ RDF parser is a part of mozilla distribution already.
+ Support for javascript is excellent via Rhino.
+\layout Description
+
+Rewrite\SpecialChar ~
+application existing libraries of interest include SirPac(RDF-parser),
+ Rhino(javascript) and JPL(prolog).
+ Connections to good webbrowsers is done via operating systems specific
+ channels maybe wrapped via Java Webstart or similiar or by integrating
+ mozilla.
+\layout Section
+\start_of_appendix 
+Standards of interest
+\layout Subsection
+
+SVG
+\layout Standard
+
+SVG is 2D graphics described in XML.
+ It allows all of the techniques that comes with XML such as scripting and
+ access to the document via DOM2 interfaces.
+ The format allows reuse of components internally and via XLink from other
+ XML documents.
+ The strucutre is mainly a hierarchy of groupings similiar to the concept
+ of a scene graph in 3D where at each level transformations can be applied.
+ Additional information about the document can be put within the 
+\emph on 
+metadata
+\emph default 
+ tag (e.g.
+ RDF can be put here) information about individual groupings are put within
+ another tag called 
+\emph on 
+desc
+\emph default 
+, a 
+\emph on 
+title
+\emph default 
+ can also be provided.
+ 
+\layout Subsubsection
+
+Renderers implemented in java
+\layout Description
+
+BATIK is a static implementation that have script support but the changes
+ in the DOM take no effect in the view.
+ Nice feature: there is a SVGGraphics2D object that serilizes directly into
+ 
+\emph on 
+SVG
+\emph default 
+ instead of painting to a canvas.
+ © Open source, Apache Software License 1.1.
+ (???? 1.1)
+\layout Description
+
+SVG\SpecialChar ~
+Toolkit is a smaller implementation with less predefined interfaces for
+ extensions.
+ It works with scripting, some features aren't implemented yet though.
+ © Open source, CSIRO License.
+ (based on Apache Software License 1.1.)
+\layout Subsection
+
+VRML
+\layout Subsection
+
+Javascript
+\layout Standard
+
+Comes in two flavours, client and server side.
+ The client side is intended to work strictly against a DOM in a restricted
+ environment such as a browser.
+ The server side has more capabilities such as working against a database
+ or filesystem.
+ 
+\layout Subsubsection
+
+Javascript engine in java
+\layout Description
+
+Rhino is developed within the mozilla project.
+\layout Subsection
+
+RDF
+\layout Standard
+
+Is a distributed graph a la web.
+ You refer to resources with URIs and adds metadata in the form of typed
+ properties.
+ The type of a property is also a resource and therefore also something
+ refferable (via a URI) and therefore possible to talk about via other typed
+ properties.
+ This system is powerfull enough to define itself in a fundemental selfreferrenc
+ial loop.
+ Schemas are built within the system and can be extended and reused as everythin
+g are resources that can be reffered to externally.
+ A basic schema called RDFS are defined for convenience and ease of use.
+\layout Section
+
+
+\begin_inset LatexCommand \label{schema}
+
+\end_inset 
+
+RDF Schema for Conceptmaps
+\layout Standard
+
+
+\begin_inset Include \verbatiminput{schema.rdf}
+
+\end_inset 
+
+
+\the_end
