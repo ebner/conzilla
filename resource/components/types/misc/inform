@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component>
+  <MetaData>
+    <record/>
+  </MetaData>
+  <NeuronType>
+      <DataTags>
+	<DataTag NAME="data"/>
+    </DataTags>
+    <BoxType TYPE="invisible"/>
+    <LineType TYPE="continuous"/>
+  </NeuronType>
+</Component>

@@ -1,0 +1,26 @@
+#!/bin/sh
+
+if [ "$#" -lt 2 ]; then
+  echo Usage: replace regexp replacement '[file]'
+  exit
+fi
+
+re="$1"
+repl="$2"
+file="$3"
+
+echo Command is \'"sed -e s,"$re","$repl",g"\' 1>&2
+
+if [ -n "$file" ]; then
+  shift; shift; files="$*"
+  for file in $files; do
+    tmp=/tmp/`basename $file`.tmp
+    sed -e s,"$re","$repl",g $file > $tmp
+    if [ "$?" = "0" ]; then
+      mv $tmp $file
+    fi
+  done
+else
+  sed -e s,"$re","$repl",g
+fi
+

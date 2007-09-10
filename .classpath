@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="se/kth/cid/edutella/|se/kth/cid/protege/|se/kth/cid/server/|se/kth/cid/test/" kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/jnlp.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/icu4j.jar"/>
+	<classpathentry kind="lib" path="lib/jakarta-oro-2.0.5.jar"/>
+	<classpathentry kind="lib" path="lib/jena.jar"/>
+	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="lib/edutella.jar"/>
+	<classpathentry kind="lib" path="lib/antlr.jar"/>
+	<classpathentry kind="lib" path="lib/SHAME-formlets.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/batik-awt-util.jar"/>
+	<classpathentry kind="lib" path="lib/batik-dom.jar"/>
+	<classpathentry kind="lib" path="lib/batik-svggen.jar"/>
+	<classpathentry kind="lib" path="lib/batik-util.jar"/>
+	<classpathentry kind="lib" path="lib/batik-xml.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec.jar"/>
+	<classpathentry kind="lib" path="lib/commons-httpclient.jar"/>
+	<classpathentry kind="lib" path="lib/commons-httpclient-contrib.jar"/>
+	<classpathentry kind="lib" path="lib/log4j.jar"/>
+	<classpathentry kind="lib" path="lib/commons-net.jar"/>
+	<classpathentry kind="lib" path="lib/jakarta-slide-webdavlib.jar"/>
+	<classpathentry kind="lib" path="lib/concurrent.jar"/>
+	<classpathentry kind="lib" path="lib/commons-transaction.jar"/>
+	<classpathentry kind="lib" path="lib/jxta.jar"/>
+	<classpathentry kind="lib" path="lib/scamdrutten.jar"/>
+	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="lib/swing-layout-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/collaborilla.jar"/>
+	<classpathentry kind="lib" path="lib/SHAME.jar"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>

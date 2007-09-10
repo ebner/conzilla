@@ -1,0 +1,7 @@
+conzilla.map.foreground.color = 0xff000000
+conzilla.map.background.color = 0xfff2f2b6
+conzilla.map.text.color = 0xff000000
+
+conzilla.map.concept.background.color = 0xffffffff
+conzilla.map.concept.error.color = 0xffff0000
+

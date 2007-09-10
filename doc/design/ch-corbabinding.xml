@@ -1,0 +1,129 @@
+  <!-- $Id$ -->
+
+  <chapter id="ch-corbabinding">
+    <title>The CORBA binding</title>
+    
+    
+    <section>
+      <title>&s1;</title>
+      <para>
+	The CORBA binding is the first candidate for an extension of
+	Conzilla's capabilities to other data formats. With CORBA we
+	would never need to download the component. Instead we would
+	execute the component's methods directly on the component
+	where it is located.
+      </para>
+
+      <para>
+	It will highlight the most fundamental problems of designing
+	such an <quote>active</quote> binding, and therefore
+	constitutes an important challenge for Conzilla in the
+	direction of internal company use, as an alternative or
+	complement to a MOF model. As nothing of this is yet
+	implemented, this discussion is still a bit hypothetical, even
+	though a first implementation actually would not be too
+	difficult.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s2;</title>
+      <para>
+	A CORBA binding will probably have to adhere to the following
+	guidelines:
+
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      Each object should be active (connected to the data
+	      source), but the connections between components should not
+	      become CORBA object references, but instead remain simple
+	      identity references, i.e., the components should be
+	      individually distributed. This is because other components
+	      actually might be in the XML format.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      Changes in an attribute should be immediately
+	      distributed to all others using the same component. Thus there
+	      is no saving step involved. The component may deny
+	      any editing if the user is not authorized.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      The API should be immediately usable in an
+	      application, without adding extra layers.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s3;</title>
+      <para>
+	There will exist four main CORBA interfaces, namely
+	<classname>Component</classname>, the base class of
+	<classname>Neuron</classname>,
+	<classname>NeuronType</classname>, and
+	<classname>ConceptMap</classname>. These include an interface
+	to the meta data record. These are mostly already defined, as
+	interfaces in the Java class library, and will be converted
+	to CORBA IDLs in the future
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s4;</title>
+      <para>
+	The primary design influences for a CORBA solution has been
+	<classname>CORBA::RelationShips</classname> and the MOF, both
+	discussed in <xref linkend="ch-databasestructure-dd"/> . The
+	most important difference in design is the decision not to use
+	active connections between objects, which is an absolute
+	demand to allow other data formats.
+      </para>
+
+      <para>
+	This decision is problematic, as the advantages of CORBA are
+	not fully exploited. We imagine at least two solutions:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      One could imagine a sort of semi-direct connection, that
+	      allows direct connection if possible, but do not force it.
+	      This is, however, difficult to implement. The whole problem
+	      can be summarized as a problem of associating local data to a
+	      CORBA object without using, e.g., a hash table (which,
+	      on the other hand, definitively solves the problem, and
+	      which is also the solution implemented).
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      Perhaps we 
+	      will need to make the decision not to mix the different data
+	      formats at all. Only the future can tell if this rather
+	      radical solution will be necessary.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+    </section>
+  </chapter>
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  

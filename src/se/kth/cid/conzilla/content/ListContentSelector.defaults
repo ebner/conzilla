@@ -1,0 +1,12 @@
+conzilla.content.leafaspect.color = 0xff000000
+conzilla.content.popup.text.color = 0xff000000
+conzilla.content.popup.text.activecolor = 0xff000000
+conzilla.content.popup.border.color = 0xff000000
+conzilla.content.popup.border.activecolor = 0xff000000
+conzilla.content.background.color=0xffc3e6a1
+conzilla.content.frombox.color=0xff336600
+conzilla.content.popup.background.activecolor=0xffaccc8f
+conzilla.content.popup.background.color=0xff97b37d
+conzilla.content.selection.background.color=0xff336600
+conzilla.content.selection.text.color=0xffdae6cf
+conzilla.content.text.color=0xff336600

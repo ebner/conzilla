@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component>
+  <MetaData>
+    <record>
+      <general>
+        <title>
+          <langstring lang="en-US">Templates</langstring>
+        </title>
+        <language>en-US</language>
+      </general>
+    </record>
+
+  </MetaData>
+  <Neuron TYPEURI="urn:path:/org/conzilla/builtin/types/library/generic/templates">
+    <Axon ID="UML" TYPE="sublibrary" ENDURI="urn:path:/org/conzilla/builtin/templates/UML/UML"/>
+    <Axon ID="arguments" TYPE="sublibrary" ENDURI="urn:path:/org/conzilla/builtin/templates/argument/argument"/>
+    <Axon ID="misc" TYPE="sublibrary" ENDURI="urn:path:/org/conzilla/builtin/templates/misc/misc"/>
+    <Axon ID="ecimf" TYPE="sublibrary" ENDURI="urn:path:/org/conzilla/builtin/templates/ECIMF/ECIMF"/>
+  </Neuron>
+</Component>

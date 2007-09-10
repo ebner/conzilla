@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component VERSION="1.0">
+  <MetaData>
+    <record>
+      <general>
+        <title>
+          <langstring lang="en-US">Resources map</langstring>
+        </title>
+        <description>
+          <langstring lang="en">For exhaustive information about editing 
+se help documentation in the &apos;help&apos; menu.
+
+Press &apos;space&apos; for next text, &apos;alt-space&apos; to expand.
+&apos;Esc&apos; to abort.</langstring>
+        </description>
+        <description>
+          <langstring>How to handle your workarea?
+Suggestion; add projects in this map.
+Procedure:</langstring>
+        </description>
+        <description>
+          <langstring lang="en">1. Create a &apos;concept&apos; (*) in this map
+    representing your new project.
+    (I.e. fill in a good name, a short
+    description and other information
+    in it&apos;s metadata.)
+(*) In edit-mode right click on an empty
+    spot and choose in the &apos;create&apos; submenu
+    UML-&gt;Class Diagram-&gt;Concept</langstring>
+        </description>
+        <description>
+          <langstring lang="en">2. Create a map with &apos;new map&apos;.
+    (Located in the &apos;file&apos; menu.)</langstring>
+        </description>
+        <description>
+          <langstring lang="en">3. Set the new map as the new
+    neurons detailedmap.
+    (I.e. 
+    a: right click in the new maps background  
+        and copy it to the clipboard.
+    b: right click on the new neuron and
+        choose &apos;edit detailedmap&apos;.
+        Select paste in the dialog.</langstring>
+        </description>
+        <description>
+          <langstring lang="en">4. Now you can work with your new project
+    in the brand new map.
+    Don&apos;t forget to save, (You will be reminded.)</langstring>
+        </description>
+      </general>
+      <technical>
+        <format>
+          <langstring>application/x-conceptmap</langstring>
+        </format>
+        <location type="URI">urn:path:/org/conzilla/local/Resources_map</location>
+      </technical>
+    </record>
+  </MetaData>
+  <ConceptMap>
+    <Dimension WIDTH="517" HEIGHT="450"/>
+    <NeuronStyle NEURONURI="Message" ID="Message">
+      <BoxStyle VISIBLE="true">
+        <Dimension WIDTH="270" HEIGHT="84"/>
+        <Position X="12" Y="12"/>
+      </BoxStyle>
+    </NeuronStyle>
+  </ConceptMap>
+</Component>
