@@ -1,7 +1,0 @@
-@base <http://kmr.nada.kth.se/shame/bookmarks/query-subject>.
-@prefix qel: <http://www.edutella.org/qel#>.
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
-@prefix cv: <http://kmr.nada.kth.se/rdf/bookmark#>.
-
-?(X,T)- qel:nodeType(X, qel:Resource),qel:s(X,rdf:type,rdf:Seq),qel:s(X,rdf:type,cv:BookmarkFolder),
-	qel:s(X,rdf:type,T),qel:nodeType(T,qel:Resource).

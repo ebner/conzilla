@@ -1,5 +1,0 @@
-@base <http://kmr.nada.kth.se/shame/RDF/query-object>.
-@prefix qel: <http://www.edutella.org/qel#>.
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
-
-?(X,S)- qel:nodeType(X, qel:Resource),qel:s(X,rdf:subject,S),qel:nodeType(S,qel:Resource).

@@ -1,8 +1,0 @@
-@base <http://kmr.nada.kth.se/shame/graphics/query-referencedresource>.
-@prefix qel: <http://www.edutella.org/qel#>.
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
-@prefix graphic: <http://kmr.nada.kth.se/rdf/graphic#>.
-@prefix dc: <http://purl.org/dc/elements/1.1/>.
-
-?(X,R,T)- qel:nodeType(X, qel:Resource), qel:s(X,graphic:displayResource, R), 
-	qel:nodeType(R,qel:NonAnonymousResource), qel:s(R, dc:title, T).

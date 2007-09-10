@@ -1,7 +1,0 @@
-#! /bin/sh
-
-./replace, http://www.conzilla.org/rdf http://conzilla.org/model $*
-./replace, http://kmr.nada.kth.se/rdf http://conzilla.org/model $*
-./replace, http://conzilla.org/model/project http://conzilla.org/model/session $*
-./replace, http://conzilla.org/model/session#Project http://conzilla.org/model/session#Session $*
-./replace, :Project :Session $*

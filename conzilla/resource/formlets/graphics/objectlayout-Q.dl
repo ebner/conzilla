@@ -1,8 +1,0 @@
-@base <http://kmr.nada.kth.se/shame/graphics/query-objectlayout>.
-@prefix qel: <http://www.edutella.org/qel#>.
-@prefix graphic: <http://kmr.nada.kth.se/rdf/graphic#>.
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
-@prefix dc: <http://purl.org/dc/elements/1.1/>.
-
-?(X,O,OR,ORT)- qel:nodeType(X, qel:Resource), qel:s(X,graphic:objectLayout, O), qel:nodeType(O,qel:Resource),
-	qel:s(O,graphic:displayResource, OR), qel:nodeType(OR, qel:Resource), qel:s(OR, dc:title, ORT).

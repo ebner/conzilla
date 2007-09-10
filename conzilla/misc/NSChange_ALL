@@ -1,7 +1,0 @@
-#! /bin/bash
-
-BASE=~/.conzilla2
-
-./NSChange $BASE/local/*.rdf
-./NSChange $BASE/local/*/*.rdf
-./NSOntChange $BASE/ont/*.rdf

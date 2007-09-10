@@ -1,5 +1,0 @@
-#! /bin/sh
-
-./replace, http://www.conzilla.org/rdf http://conzilla.org/model $*
-./replace, http://kmr.nada.kth.se/rdf http://conzilla.org/model $*
-
