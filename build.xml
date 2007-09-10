@@ -40,18 +40,14 @@
   <property name="examples_directory"      location="${examples_string}"/>
   <property name="webstart_directory"	   location="${webstart_string}"/>
   <property name="dependency_jars_jena" value="
+  	arq.jar,
     commons-logging.jar,
+  	iri.jar
     icu4j.jar,
     jena.jar,
     xercesImpl.jar,
-  	arq.jar,
-  	iri.jar
     "/>
   <property name="dependency_jars_miscellaneous" value="
-	log4j.jar,
-	edutella.jar,
-	SHAME.jar,
-	SHAME-formlets.jar,
 	collaborilla.jar,
   	batik-awt-util.jar,
 	batik-dom.jar,
@@ -64,8 +60,12 @@
 	commons-logging.jar,
 	commons-net.jar,
 	commons-transaction.jar,
+	edutella.jar,
   	jakarta-slide-webdavlib.jar,
 	jdom-1.0.jar,
+	log4j.jar,
+	SHAME.jar,
+	SHAME-formlets.jar,
 	swing-layout.jar
     "/>
   <property name="dependency_jars" value="
