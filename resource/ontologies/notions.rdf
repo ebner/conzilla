@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE rdf:RDF [
+         <!ENTITY rdf      'http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+         <!ENTITY rdfs     'http://www.w3.org/2000/01/rdf-schema#'>
+         <!ENTITY dc       'http://purl.org/dc/elements/1.1/'>
+         <!ENTITY dcterms  'http://purl.org/dc/terms/'>
+         <!ENTITY dctype   'http://purl.org/dc/dcmitype/'>
+         <!ENTITY lom      'http://ltsc.ieee.org/2002/09/lom-base#'>
+         <!ENTITY lom-ann  'http://ltsc.ieee.org/2002/09/lom-annotation#'>
+         <!ENTITY lom-tech 'http://ltsc.ieee.org/2002/09/lom-technical#'>
+         <!ENTITY lom-edu  'http://ltsc.ieee.org/2002/09/lom-educational#'>
+         <!ENTITY vCard    'http://www.w3.org/2001/vcard-rdf/3.0#'>
+         <!ENTITY ur       'http://www.ur.se/rdf/alfa#'>
+         <!ENTITY edu      'http://www.edutella.org/edutella#'>
+         <!ENTITY var      'http://kmr.nada.kth.se/scam/vocabulary/variables#'>
+         <!ENTITY shame    'http://kmr.nada.kth.se/scam/vocabulary_v1#'>
+         <!ENTITY form     'http://kmr.nada.kth.se/rdf/form#'>
+         <!ENTITY notions  'http://kmr.nada.kth.se/rdf/notions#'>
+         <!ENTITY conf     'http://kmr.nada.kth.se/rdf/configurationQuery#'>
+]>
+
+<rdf:RDF
+   xmlns:rdf="&rdf;"
+   xmlns:rdfs="&rdfs;"
+   xmlns:ur="&ur;"
+   xmlns:dc="&dc;"
+   xmlns:dcterms="&dcterms;"
+   xmlns:dctype="&dctype;"
+   xmlns:lom='&lom;'
+   xmlns:lom-ann='&lom-ann;'
+   xmlns:lom-tech='&lom-tech;'
+   xmlns:lom-edu='&lom-edu;'
+   xmlns:vCard='&vCard;'
+   xmlns:edu='&edu;'
+   xmlns:var='&var;'
+   xmlns:shame='&shame;'
+   xmlns:form='&form;'
+   xmlns:notions='&notions;'
+   xmlns:conf='&conf;'
+>
+
+  <rdfs:Class rdf:about="&notions;Notion">
+    <rdfs:label>Notion</rdfs:label>
+  </rdfs:Class>
+
+  <rdf:Description rdf:about="&notions;Content">
+    <rdfs:label>Content</rdfs:label>
+    <rdfs:comment>TODO</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="&notions;Notion"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="&notions;RetrievableContent">
+    <rdfs:label>Retrievable Content</rdfs:label>
+    <rdfs:subClassOf rdf:resource="&notions;Content"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="&notions;Concept">
+    <rdfs:label>Concept</rdfs:label>
+    <rdfs:subClassOf rdf:resource="&notions;Notion"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="&notions;Context">
+    <rdfs:label>Context</rdfs:label>
+    <rdfs:subClassOf rdf:resource="&notions;Notion"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="&notions;ContentInContext">
+    <rdfs:label>ContentRelation</rdfs:label>
+    <rdfs:subClassOf rdf:resource="&notions;Content"/>
+  </rdf:Description>
+
+  <rdf:Property rdf:about="&notions;contains">
+    <rdfs:label>contains</rdfs:label>
+    <rdfs:domain rdf:resource="&notions;Notion"/>
+    <rdfs:range rdf:resource="&notions;Content"/>
+  </rdf:Property>
+
+  <rdf:Property rdf:about="&notions;includes">
+    <rdfs:label>includes</rdfs:label>
+    <rdfs:domain rdf:resource="&notions;Context"/>
+    <rdfs:range rdf:resource="&notions;ContentInContext"/>
+  </rdf:Property>
+
+</rdf:RDF>
+

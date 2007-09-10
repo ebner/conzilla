@@ -1,0 +1,239 @@
+  <!-- $Id$ -->
+
+  <chapter id="ch-structure"> 
+    <title>Structure</title>
+    
+    
+    <section>
+      <title>&s1;</title>
+      <para>
+	This article is not simply a large piece of text; it is an
+	active article intended to demonstrate the very system it
+	tries to describe. This chapter describes the structure and
+	usage of the article itself, i.e., how it is written and how it
+	it intended to be used.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s2;</title>
+      <para>
+	The usage of this article is not limited to printed format. It
+	is intended to be used in several different environments:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      As a printed reference.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      As an online reference in HTML, well integrated and
+	      linked into the other parts of the <ulink
+		url="http://www.nada.kth.se/cid/il/conzilla">Conzilla
+		Web pages</ulink>.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      As content for a collection of Conzilla maps
+	      describing the functionality of the Conzilla browser. This
+	      content should actually interact with the Conzilla browser, as
+	      the article will contain concept maps to describe its
+	      interconnections.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+      
+      <para>
+	This combination, in fact, results in a revolutionary new way
+	of writing documentation which places high demands on the
+	surrounding technology. This same text must not only be able
+	to exist and be updateable in three different environments
+	simultaneously, but it must also be so well organized that
+	the <quote>componentification</quote> necessary for use in the
+	Conzilla environment becomes possible.
+      </para>
+
+      <para>
+	But why is all this complexity worth the while? The real
+	advantages comes when the article can be placed in a proper
+	context. In our case, this article plugs right into the
+	concept maps describing the project in general, the partners,
+	etc. It also gives us the possibility of actually linking
+	directly from the relevant descriptions into the API reference
+	or the philosophical motivation, thereby making the complete
+	context of the article immediately accessible. This is the
+	revolutionary aspect of this document.
+      </para>
+
+      <para>
+	Additionally, experimenting with this kind of usage of a
+	document is an irreplacible source of experience for the
+	Conzilla project.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s3;</title>
+      <para>
+	The document format is XML with the <glossterm
+	linkend="docbook">DocBook</glossterm> XML DTD. It is possible
+	to generate plain text, HTML, TeX (and therefore DVI, PS, PDF
+	etc.) and other output formats, as well as directly use
+	SGML/XML tools like <command>sgrep</command> to extract parts
+	of the document.  The document can be used even though it is
+	not completed, which allows early web access to and
+	experimentation with the parts already completed.
+      </para>
+      
+      <para>
+	The article consists of structured text and concept maps. The
+	text has been structured in chapters, where each large
+	concept, and possibly also important associations between
+	concepts, has its own chapter. The single sections in each
+	chapter serve as content for the concept described, e.g., this
+	section describing the architecture of this article serves as
+	content for the concept representing this article, under the
+	aspect of <quote>architecture</quote> (...read
+	slowly). Smaller concepts, not described in a chapter of their
+	own, may have content that consists of a smaller part of a
+	section describing another concept. For example, this
+	paragraph may be the content of the concept <quote>structured
+	text</quote> under the aspect of <quote>architecture</quote>.
+	The aspects in which we have chosen to separate the content
+	are:
+	
+	<variablelist>
+	  <varlistentry>
+	    <term>&s1;</term>
+	    <listitem>
+	      <para>
+		Describes what is contained within the chapter: the
+		limits with respect to other chapters and an
+		introduction to the components contained therein.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  
+	  <varlistentry>
+	    <term>&s2;</term>
+	    <listitem>
+	      <para>
+		Describes how the design is intended to be used, i.e.,
+		the possible uses and wanted functionality which have
+		influenced the design.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  
+	  <varlistentry>
+	    <term>&s3;</term>
+	    <listitem>
+	      <para>
+		Describes the internals of the present design, i.e.,
+		how we manage to produce the wanted functionality.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  
+	  <varlistentry>
+	    <term>&s4;</term>
+	    <listitem>
+	      <para>
+		Discusses the usage of the current design. Presents the
+		motivations for the design and discusses previous designs
+		and why they were abandoned, as well as alternative designs
+		that have been considered. Points to problems in the
+		present design and design goals for the future.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </para>
+      
+      <para>
+	The concept maps are different things in different output
+	formats. In printed form, they are simply pictures, while
+	online, they will be used to interact with Conzilla.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s4;</title> 
+      <para>
+	The only reasonable choice as document format that adheres
+	sufficiently to the principles of polyvalence and structure is
+	XML (or SGML, of course). The choice of DocBook as DTD is based
+	on its status as a growing and well-proven standard for
+	technical documentation.
+      </para>
+      
+      <para>
+	As this is the first reference work prepared to be used
+	directly in a Conzilla environment, it is interesting to note
+	the experience it has given, as we hope that the article may
+	form a model for how to write reference documentation with the
+	help of Conzilla. For a technical document like this, that
+	tries to be very systematic in its descriptions, it is impossible
+	to even start considering what to write before having decided
+	under which aspects to describe the concepts, as these
+	represent the classification of information. Therefore, it is
+	very much worth it to spend time analyzing the wanted
+	aspects. This is in turn impossible until you have an idea of
+	which concepts you want to include. So the process of writing
+	becomes:
+	
+	<orderedlist>
+	  <listitem>
+	    <para>
+	      Draw all the concept maps (or nearly all) that you
+	      want to include. Decide which concept are worthy their own
+	      chapters. This becomes the scope and the structure of the
+	      article.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      Consider the aspects you want to describe. This
+	      reflects the depth and target audience for the article.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      Decide the order of chapters and possible appendices.
+	      This is important for the logical structure of the article. 
+	      Without the right linear order, it becomes unbearable to
+	      read.
+	    </para>
+	  </listitem>
+	</orderedlist>
+
+	Please note that this <quote>bondage &amp;
+	discipline</quote><footnote><para>Attributed to Eric
+	S. Raymond</para></footnote> way of writing is applicable
+	primarily to reference documentation. Other types of
+	documentation, such as reports etc. need another, freer style
+	of writing. This does of course not stop them from being
+	introduced in a Conzilla environment as well. It just lessens
+	the level of structure.
+      </para>
+      
+    </section>
+  </chapter>
+   
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  

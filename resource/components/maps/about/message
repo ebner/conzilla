@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component VERSION="1.0">
+  <MetaData>
+    <record>
+      <general>
+        <title>
+          <langstring lang="en">Conzilla version CONZILLA_VERSION
+
+Developed by Centre for user oriented IT-design (CID)
+at Royal Institute for Technology (KTH), Sweden.
+
+
+This product is copyrighted under the GNU&apos;s
+General Public Licence (GPL).
+
+Conzilla is a first example of an conceptbrowser.
+For more information look at:
+
+http://cid.nada.kth.se/il/conzilla</langstring>
+          <langstring lang="sv">Conzilla version CONZILLA_VERSION
+
+Utvecklad av
+Centrum för användarorienterad IT Design (CID)
+vid Kungliga Tekniska Högskolan
+
+Detta program är upphovsrättsskyddat 
+i enlighet med GNU&apos;s General Public Licence (GPL).
+
+Conzilla är ett första exempel på en 
+begreppsbrowser, för mer information se:
+
+http://cid.nada.kth.se/il/conzilla</langstring>
+        </title>
+        <description>
+          <langstring lang="en">This is version
+CONZILLA_VERSION (CONZILLA_FULL_VERSION_INFO)
+of Conzilla.</langstring>
+          <langstring lang="sv">Detta är version
+CONZILLA_VERSION (CONZILLA_FULL_VERSION_INFO)
+av Conzilla.</langstring>
+        </description>
+      </general>
+      <technical>
+        <location type="URI">urn:path:/org/conzilla/builtin/maps/about/message</location>
+      </technical>
+      <relation>
+        <kind>
+          <langstring>context</langstring>
+        </kind>
+        <resource>
+          <extension>
+            <location>About</location>
+          </extension>
+        </resource>
+      </relation>
+    </record>
+  </MetaData>
+  <Neuron TYPEURI="urn:path:/org/conzilla/builtin/types/misc/inform"/>
+</Component>

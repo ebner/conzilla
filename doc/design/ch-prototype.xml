@@ -1,0 +1,175 @@
+  <!-- $Id$ -->
+
+  <chapter id="ch-prototype">
+    <title>The Conzilla Prototype</title>
+    
+    
+    <section>
+      <title>&s1;</title>
+      <para>
+	The Conzilla browser is the first prototype implementation of
+	a conceptual brower, and therefore forms the testbed for all
+	our ideas concerning concept browsing. Thus, what is described
+	here should not be understood as implementation specifications
+	for future browsers, but rather as proof of concept (no pun
+	intended) and as a source for inspiration. But still, nobody
+	would be happier than us if the prototype turned out to be
+	practically usable.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s2;</title>
+      <para>
+	The Conzilla browser has been designed with several thoughts
+	in mind:
+
+        <itemizedlist>
+	  <listitem>
+	    <para>
+	      The choice of programming environment must be done
+	      with care. This is discussed in <xref
+		linkend="ch-environment"/>.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      It should be based on a library dealing only with the
+	      representation of the components and the different data
+	      formats, to allow the reuse of this code in different
+	      situations. This is discussed in <xref
+		linkend="ch-classlib"/>.
+	    </para>
+	  </listitem>
+          
+	  <listitem>
+	    <para>
+	      It should adhere to exiting standards to the largest amount
+	      possible. By following standards we ensure
+	      compatibility now and in the future, but we also
+	      increase the amount of existing implementations
+	      immediately usable.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      Trying not to tie the browser to a certain platform is a
+	      necessary design principle to ensure that the design of the
+	      database structure does not itself become platform
+	      dependent, something which could obviously not be accepted.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      A good separation between the different components will
+	      be necessary, to simplify replacing them with new
+	      implementations, something that
+	      <emphasis>will</emphasis> happen.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s3;</title>
+      <para>
+	The choice of programming environment is described in <xref
+	  linkend="ch-environment"/>,
+	while the base library is described in <xref
+	  linkend="ch-classlib"/>. The different
+	parts of the browser are:
+
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      The browser itself, containing the map management and
+	      browsing functions. It is described in <xref
+		linkend="ch-browser"/>.
+	    </para>
+	  </listitem>
+	
+	  <listitem>
+	    <para>
+	      The editor, used to construct neurons and maps
+	      graphically. It is described in <xref
+		linkend="ch-editor"/>.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      The library, used to maintain collections of neurons
+	      for purposes such as history, bookmarks etc. It is
+	      described in <xref linkend="ch-library"/>.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      The content sorting and viewing mechanisms. They are
+	      described in <xref linkend="ch-contentdisp"/>.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+      
+      <para>
+	Each of the above are separate and, to the greatest extent
+	possible, independent entities.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s4;</title>
+      <para>
+	The browser is an ever changing construct, and necessarily so.
+	Changes in specifications, user design wishes, and
+	implementation design has forced several rewrites of
+	fundamental components. This way, it has evolved into a highly
+	modular structure to allow these changes to take place without
+	needing to redesign other parts.
+      </para>
+
+      <para>
+	This structure is mostly inspired by technical needs. There
+	has been too few user studies, something that should be
+	initiated as soon as possible as it could profoundly affect
+	the design of certain parts.
+      </para>
+      
+      <para>
+	Future additions include adding a help desk system, as
+	described in <citation>cid52</citation>. Hopefully, this
+	can be done without affecting the current code.
+      </para>
+
+      <para>
+	The name <quote>Conzilla</quote> has been inspired by the
+	<ulink url="http://www.mozilla.org/">Mozilla</ulink> browser,
+	with the twist that it browses the context and content of
+	concepts.  The interpretation <quote>CONZeptual
+	ILLuminAtor</quote> has been suggested, and a relation with
+	<quote>consilience</quote> as used by Edward O. Wilson in
+	<citation>wilson</citation> is also proposed. Wilson uses the
+	words of the 19th century philosopher, William Whewell, who
+	defines consilience as <quote>a <quote>jumping
+	together</quote> of knowledge by the linking of facts and
+	fact-based theory across disciplines to create a common
+	groundwork of explanation.</quote>
+      </para>
+    </section>
+  </chapter>
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  

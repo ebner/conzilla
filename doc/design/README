@@ -1,0 +1,104 @@
+
+
+How to generate the docs
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+This file describes what is needed to correctly generate the Conzilla
+DocBook docs. This is still much too complicated, but the widening adoption
+of DocBook should make this easier in the not too distant future.
+
+
+----- Needed installation -------
+
+* The SP toolkit (with nsgmls) for XML validation.
+* Jade and JadeTeX.
+* The DocBook 4.0 XML DTD.
+* Norman Walsh's Modular DocBook stylesheets.
+* A file with the SGML declaration for XML. Usually contained in the jade
+  distribution.
+
+
+
+----- Needed configuration -------
+
+* Environment variable SGML_CATALOG_FILES pointing to at least the
+  Modular Stylesheets and docbook DTD respective catalogs. An example:
+
+  SGML_CATALOG_FILES=/usr/local/share/sgml/modular_stylesheets4.0/catalog:/usr/local/share/sgml/docbookXML4.0/docbookx.cat
+
+* A file 'catalog' in this directory to point to the SGML declaration for XML.
+  Example: 
+
+  SGMLDECL /usr/lib/sgml/xml.dcl
+
+  This is needed by jade as the stylesheets are SGML but the document XML...
+  Do *not* use SGMLTools (or the 'lite' version). They will not use this file,
+  and jade will thus fail.
+
+
+
+
+
+----- Make targets -------
+
+* ps      -- creates conzilla-design.ps in out/
+* onehtml -- creates conzilla-design.html in out/
+* html    -- creates a lot of files in out/conzilla-design/
+
+
+
+
+
+----- XEmacs configuration -------
+
+* Try the following with a recent version of PSGML:
+
+  ;; XML
+  (setq auto-mode-alist (append auto-mode-alist '(("\\.xml$" . xml-mode))))
+  
+  ;; SGML
+  (add-hook 'sgml-mode-hook '(lambda () (auto-fill-mode)
+  	  (font-lock-mode)
+  	  (require 'cc-mode)
+  	  (define-key sgml-mode-map '(return) 'reindent-then-newline-and-indent)
+  	  (define-key sgml-mode-map '(backspace) 'c-electric-backspace)
+  	  (define-key sgml-mode-map '(delete) 'c-electric-delete)))
+  
+  (custom-set-variables
+   '(sgml-indent-data t t)
+   '(sgml-set-face t)
+   '(sgml-insert-missing-element-comment nil)
+   '(sgml-insert-end-tag-on-new-line nil)
+   '(sgml-auto-activate-dtd nil))
+
+* Save the loaded DTD in docbookx.ced (Hint: The "DTD" menu).
+
+
+
+
+
+----- Problems -------
+
+I have changed the following in the stylesheet files:
+
+* Comment -> Remark to support DocBooc 4.0. Files: dbblock.dsl and
+  dbfootn.dsl
+
+* "Chapter %n" to "Chapter %n, %t" in dbl1en.dsl 
+
+Everything else has been customized in the stylesheets used by the Makefile.
+
+
+----- SGMLTools lite -------
+
+Does not (yet) work. But:
+
+By: cdegroot ( Cees de Groot ) 
+RE: DocBook XML won't work [ reply ]   
+2000-Oct-28 18:54 
+
+Leave the catalog file with the XML DTD, and symlink to it 
+from /etc/sgml/catalog.d. After you've ran gensgmlenv and 
+reloaded /etc/sgml/sgml.env, you'll be able to process DocBk documents.
+
+Good luck!

@@ -1,0 +1,31 @@
+<rdf:RDF
+    xmlns:j.0="http://kmr.nada.kth.se/rdf/form#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <j.0:Form>
+    <rdf:li>
+      <j.0:GroupFormItem>
+        <rdf:li>
+          <j.0:TextFormItem>
+            <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-location#L"/>
+            <dc:title>
+              <rdf:Alt>
+                <rdf:li xml:lang="en">Location</rdf:li>
+              </rdf:Alt>
+            </dc:title>
+            <j.0:preferredMultiplicity>1</j.0:preferredMultiplicity>
+            <j.0:maxMultiplicity>1</j.0:maxMultiplicity>
+            <dc:description>
+              <rdf:Alt>
+                <rdf:li xml:lang="en">The location is a pair, i.e. "200,250" where the 200 is the x and 250 is the y coordinate in a regular coordintate system measuring pixels.</rdf:li>
+              </rdf:Alt>
+            </dc:description>
+            <j.0:minMultiplicity>1</j.0:minMultiplicity>
+          </j.0:TextFormItem>
+        </rdf:li>
+        <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-location#X"/>
+      </j.0:GroupFormItem>
+    </rdf:li>
+    <j.0:query rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-location#query"/>
+  </j.0:Form>
+</rdf:RDF>

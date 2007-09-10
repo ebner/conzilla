@@ -1,0 +1,8 @@
+@base <http://kmr.nada.kth.se/shame/notions/query-contentType>.
+@prefix qel: <http://www.edutella.org/qel#>.
+@prefix notions: <http://kmr.nada.kth.se/rdf/notions#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+
+?(X,T)- qel:nodeType(X, qel:Resource), qel:s(X, rdf:type, T), qel:nodeType(T, qel:NonAnonymousResource), 
+	qel:s(T, rdfs:subClassOf, notions:Content).

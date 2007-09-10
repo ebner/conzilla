@@ -1,0 +1,133 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+                         "docbookx.dtd" [
+<!ENTITY s1 "Scope">
+<!ENTITY s2 "Functional requirements">
+<!ENTITY s3 "Architecture">
+<!ENTITY s4 "Design Discussion">
+<!ENTITY ch-preface               SYSTEM "ch-preface.xml">
+<!ENTITY ch-databasestructure     SYSTEM "ch-databasestructure.xml">
+<!ENTITY ch-identity              SYSTEM "ch-identity.xml">
+<!ENTITY ch-neurons        	  SYSTEM "ch-neurons.xml">
+<!ENTITY ch-content       	  SYSTEM "ch-content.xml">
+<!ENTITY ch-conceptmaps    	  SYSTEM "ch-conceptmaps.xml">
+<!ENTITY ch-filters        	  SYSTEM "ch-filters.xml">
+<!ENTITY ch-database      	  SYSTEM "ch-database.xml">
+<!ENTITY ch-bindings       	  SYSTEM "ch-bindings.xml">
+<!ENTITY ch-xmlbinding            SYSTEM "ch-xmlbinding.xml">
+<!ENTITY ch-corbabinding          SYSTEM "ch-corbabinding.xml">
+<!ENTITY ch-prototype     	  SYSTEM "ch-prototype.xml">
+<!ENTITY ch-environment   	  SYSTEM "ch-environment.xml">
+<!ENTITY ch-classlib      	  SYSTEM "ch-classlib.xml">
+<!ENTITY ch-browser       	  SYSTEM "ch-browser.xml">
+<!ENTITY ch-editor        	  SYSTEM "ch-editor.xml">
+<!ENTITY ch-library       	  SYSTEM "ch-library.xml">
+<!ENTITY ch-contentdisp   	  SYSTEM "ch-contentdisp.xml">
+<!ENTITY ch-externalcoop  	  SYSTEM "ch-externalcoop.xml">
+<!-- <!ENTITY ch-helpdesk    	  SYSTEM "ch-helpdesk.xml"> -->
+<!ENTITY ch-structure             SYSTEM "ch-structure.xml">
+<!ENTITY ch-presentation 	  SYSTEM "ch-presentation.xml">
+<!ENTITY ch-dtds 	          SYSTEM "ch-dtds.xml">
+<!ENTITY ch-glossary      	  SYSTEM "ch-glossary.xml">
+<!ENTITY ch-bibliography      	  SYSTEM "ch-bibliography.xml">
+]>
+<book id="conzilla-design">
+
+
+  <bookinfo>
+
+    <title>The Conzilla Design</title>
+    <subtitle>The definitive reference</subtitle>
+
+    <author>
+      <firstname>Mikael</firstname>
+      <surname>Nilsson</surname>
+    </author>
+    <orgname>Center for user oriented IT design</orgname>
+
+    <releaseinfo>$Id$</releaseinfo>
+    <edition>Beta 2</edition>
+
+    <address><email>mikael.nilsson@bigfoot.com</email></address>
+
+    <copyright>
+      <year>2000</year>
+      <holder>CID</holder>
+    </copyright>
+
+    <keywordset>
+      <keyword>conzilla</keyword>
+      <keyword>conceptual browsing</keyword>
+    </keywordset>
+
+  </bookinfo>
+
+  &ch-preface;
+  
+  
+  <part id="databasedesign">
+    <title>The database design</title>
+    
+    &ch-databasestructure;
+    &ch-identity;
+    &ch-neurons;
+    &ch-content;
+    &ch-conceptmaps;
+    &ch-filters;
+    
+  </part>
+
+
+
+
+  <part id="datarepresentations">
+    <title>Data representations</title>
+    
+    &ch-bindings;
+    &ch-xmlbinding;
+    &ch-corbabinding;
+    
+  </part>
+
+
+
+
+  <part id="implementation">
+    <title>The Implementation</title>
+    
+    &ch-prototype;
+    &ch-environment;  
+    &ch-classlib;     
+    &ch-browser;
+    &ch-editor;
+    &ch-library;
+    &ch-contentdisp;  
+    &ch-externalcoop;
+<!--    &ch-helpdesk; -->
+    
+  </part>
+
+  <part id="article">
+    <title>Technical design of the article</title>
+    &ch-structure;
+    
+    &ch-presentation;
+
+  </part>
+
+  &ch-dtds;
+  
+  &ch-glossary;
+
+  &ch-bibliography;
+ 
+    
+
+  
+</book>
+
+<!-- Keep this comment at the end of the file
+Local variables:
+sgml-default-dtd-file:"docbookx.ced"
+End:
+-->

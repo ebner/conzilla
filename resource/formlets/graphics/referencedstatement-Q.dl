@@ -1,0 +1,12 @@
+@base <http://kmr.nada.kth.se/shame/graphics/query-referencedstatement>.
+@prefix qel: <http://www.edutella.org/qel#>.
+@prefix graphic: <http://kmr.nada.kth.se/rdf/graphic#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix dc: <http://purl.org/dc/elements/1.1/>.
+
+
+?(X, RS, S, ST, P, O, OT, T)- qel:nodeType(X, qel:Resource), qel:s(X,graphic:displayResource, RS), qel:nodeType(RS,qel:Resource),
+	qel:s(RS,rdf:subject, S), qel:nodeType(S,qel:Resource), qel:s(S,dc:title, ST),
+	qel:s(RS,rdf:predicate, P), qel:nodeType(P,qel:Resource),
+	qel:s(RS,rdf:object, O), qel:nodeType(O,qel:Resource), qel:s(O,dc:title, OT),
+	qel:s(RS, dc:title, T).

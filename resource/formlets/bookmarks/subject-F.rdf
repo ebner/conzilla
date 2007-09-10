@@ -1,0 +1,27 @@
+<rdf:RDF
+    xmlns:j.0="http://kmr.nada.kth.se/rdf/form#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <j.0:Form>
+    <rdf:li>
+      <j.0:GroupFormItem>
+        <rdf:li>
+          <j.0:TextFormItem>
+            <j.0:minMultiplicity>2</j.0:minMultiplicity>
+            <j.0:maxMultiplicity>2</j.0:maxMultiplicity>
+            <dc:title>
+              <rdf:Alt>
+                <rdf:li xml:lang="en">Type</rdf:li>
+              </rdf:Alt>
+            </dc:title>
+            <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/bookmarks/query-subject#T"/>
+            <j.0:preferredMultiplicity>2</j.0:preferredMultiplicity>
+            <rdf:type rdf:resource="http://kmr.nada.kth.se/rdf/form#NonEditable"/>
+          </j.0:TextFormItem>
+        </rdf:li>
+        <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/bookmarks/query-subject#X"/>
+      </j.0:GroupFormItem>
+    </rdf:li>
+    <j.0:query rdf:resource="http://kmr.nada.kth.se/shame/bookmarks/query-subject#query"/>
+  </j.0:Form>
+</rdf:RDF>

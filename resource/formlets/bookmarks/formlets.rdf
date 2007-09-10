@@ -1,0 +1,145 @@
+<rdf:RDF
+    xmlns:j.0="http://kmr.nada.kth.se/rdf/form#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/bookmarks/formlet#BookmarkFolder">
+    <j.0:extensionFormlets>
+      <rdf:Seq>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/SDC/formlet#title"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/SDC/formlet#description"/>
+        <rdf:li>
+          <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/bookmarks/formlet#subject">
+            <j.0:formModel>subject-F.rdf</j.0:formModel>
+            <j.0:queryModel>subject-Q.dl</j.0:queryModel>
+            <dc:title>
+              <rdf:Alt>
+                <rdf:li xml:lang="en">BookMarkFolder Requirement</rdf:li>
+              </rdf:Alt>
+            </dc:title>
+          </j.0:Formlet>
+        </rdf:li>
+      </rdf:Seq>
+    </j.0:extensionFormlets>
+    <j.0:baseFormlet rdf:resource="http://kmr.nada.kth.se/shame/formlet#base"/>
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li xml:lang="en">Bookmark Folder</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+  </j.0:Formlet>
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/bookmarks/formlet#conceptalonebmrequirement">
+    <j.0:queryModel>conceptalonebmrequirement-Q.dl</j.0:queryModel>
+    <j.0:formModel>conceptalonebmrequirement-F.rdf</j.0:formModel>
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li>ConceptAlone bookmark requirement</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+  </j.0:Formlet>
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/bookmarks/formlet#concept">
+    <j.0:queryModel>concept-Q.dl</j.0:queryModel>
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li>Concept as object of object property</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+    <j.0:formModel>concept-F.rdf</j.0:formModel>
+  </j.0:Formlet>
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/bookmarks/formlet#ContextMapBookmark">
+    <j.0:baseFormlet rdf:resource="http://kmr.nada.kth.se/shame/formlet#base"/>
+    <j.0:extensionFormlets>
+      <rdf:Seq>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/SDC/formlet#title"/>
+        <rdf:li>
+          <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/bookmarks/formlet#object">
+            <j.0:queryModel>object-Q.dl</j.0:queryModel>
+            <j.0:formModel>object-F.rdf</j.0:formModel>
+            <dc:title>
+              <rdf:Alt>
+                <rdf:li xml:lang="en">Contextmap</rdf:li>
+              </rdf:Alt>
+            </dc:title>
+          </j.0:Formlet>
+        </rdf:li>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/SDC/formlet#description"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/annotea/formlet#hasTopic"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/annoteaformlet#created"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/SDC/formlet#date"/>
+        <rdf:li>
+          <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/bookmarks/formlet#contextmapbookmarkrequirement">
+            <dc:title>
+              <rdf:Alt>
+                <rdf:li>ContextMap bookmark requirement</rdf:li>
+              </rdf:Alt>
+            </dc:title>
+            <j.0:formModel>contextmapbookmarkrequirement-F.rdf</j.0:formModel>
+            <j.0:queryModel>contextmapbookmarkrequirement-Q.dl</j.0:queryModel>
+          </j.0:Formlet>
+        </rdf:li>
+      </rdf:Seq>
+    </j.0:extensionFormlets>
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li xml:lang="en">Map bookmark</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+  </j.0:Formlet>
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/bookmarks/formlet#conceptalonebookmark">
+    <j.0:extensionFormlets>
+      <rdf:Seq>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/SDC/formlet#title"/>
+        <rdf:li>
+          <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/bookmarks/formlet#conceptalone">
+            <dc:title>
+              <rdf:Alt>
+                <rdf:li>ConceptAlone</rdf:li>
+              </rdf:Alt>
+            </dc:title>
+            <j.0:queryModel>conceptalone-Q.dl</j.0:queryModel>
+            <j.0:formModel>conceptalone-F.rdf</j.0:formModel>
+          </j.0:Formlet>
+        </rdf:li>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/SDC/formlet#description"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/annotea/formlet#hasTopic"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/annoteaformlet#created"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/SDC/formlet#date"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/bookmarks/formlet#conceptalonebmrequirement"/>
+      </rdf:Seq>
+    </j.0:extensionFormlets>
+    <j.0:baseFormlet rdf:resource="http://kmr.nada.kth.se/shame/formlet#base"/>
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li>Concept Alone Bookmark</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+  </j.0:Formlet>
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/bookmarks/formlet#coceptincontextrequirement">
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li>Concept In Context requirement</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+    <j.0:formModel>coceptincontextrequirement-F.rdf</j.0:formModel>
+    <j.0:queryModel>coceptincontextrequirement-Q.dl</j.0:queryModel>
+  </j.0:Formlet>
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/bookmarks/formlet#conceptincontextbookmark">
+    <j.0:baseFormlet rdf:resource="http://kmr.nada.kth.se/shame/formlet#base"/>
+    <j.0:extensionFormlets>
+      <rdf:Seq>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/SDC/formlet#title"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/bookmarks/formlet#concept"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/bookmarks/formlet#object"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/SDC/formlet#description"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/annotea/formlet#hasTopic"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/annoteaformlet#created"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/SDC/formlet#date"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/bookmarks/formlet#coceptincontextrequirement"/>
+      </rdf:Seq>
+    </j.0:extensionFormlets>
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li>Concept in Context Bookmark</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+  </j.0:Formlet>
+</rdf:RDF>
