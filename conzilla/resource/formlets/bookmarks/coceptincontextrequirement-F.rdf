@@ -1,0 +1,41 @@
+<rdf:RDF
+    xmlns:j.0="http://kmr.nada.kth.se/rdf/form#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <j.0:Form>
+    <rdf:li>
+      <j.0:GroupFormItem>
+        <rdf:li>
+          <j.0:NonEditable>
+            <j.0:minMultiplicity>2</j.0:minMultiplicity>
+            <j.0:preferredMultiplicity>2</j.0:preferredMultiplicity>
+            <dc:title>
+              <rdf:Alt>
+                <rdf:li xml:lang="en">Type</rdf:li>
+              </rdf:Alt>
+            </dc:title>
+            <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/bookmarks/query-coceptincontextrequirement#T"/>
+            <j.0:maxMultiplicity>2</j.0:maxMultiplicity>
+            <rdf:type rdf:resource="http://kmr.nada.kth.se/rdf/form#TextFormItem"/>
+          </j.0:NonEditable>
+        </rdf:li>
+        <rdf:li>
+          <j.0:NonEditable>
+            <dc:title>
+              <rdf:Alt>
+                <rdf:li xml:lang="en">Reif predicate</rdf:li>
+              </rdf:Alt>
+            </dc:title>
+            <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/bookmarks/query-coceptincontextrequirement#V"/>
+            <j.0:maxMultiplicity>1</j.0:maxMultiplicity>
+            <j.0:preferredMultiplicity>1</j.0:preferredMultiplicity>
+            <j.0:minMultiplicity>1</j.0:minMultiplicity>
+            <rdf:type rdf:resource="http://kmr.nada.kth.se/rdf/form#TextFormItem"/>
+          </j.0:NonEditable>
+        </rdf:li>
+        <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/bookmarks/query-coceptincontextrequirement#X"/>
+      </j.0:GroupFormItem>
+    </rdf:li>
+    <j.0:query rdf:resource="http://kmr.nada.kth.se/shame/bookmarks/query-coceptincontextrequirement#query"/>
+  </j.0:Form>
+</rdf:RDF>

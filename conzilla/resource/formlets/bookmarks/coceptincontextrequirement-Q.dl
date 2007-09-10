@@ -1,0 +1,11 @@
+@base <http://kmr.nada.kth.se/shame/bookmarks/query-coceptincontextrequirement>.
+@prefix qel: <http://www.edutella.org/qel#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix cv: <http://kmr.nada.kth.se/rdf/bookmark#>.
+@prefix cl: <http://kmr.nada.kth.se/rdf/graphic#>.
+@prefix no: <http://kmr.nada.kth.se/rdf/notions#>.
+
+?(X,T,V)- qel:nodeType(X, qel:Resource),qel:s(X,rdf:type,rdf:Statement),qel:s(X,rdf:type,cv:ConceptInContextBookmark),
+	qel:s(X,rdf:type,T),qel:nodeType(T,qel:Resource),
+	qel:s(X,rdf:predicate,no:includes),
+	qel:s(X,rdf:predicate,V),qel:nodeType(V,qel:Resource).

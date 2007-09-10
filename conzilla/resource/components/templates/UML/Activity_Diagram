@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component VERSION="1.0">
+  <MetaData>
+    <record>
+      <general>
+        <title>
+          <langstring lang="sv">Activity Diagram</langstring>
+        </title>
+      </general>
+      <technical>
+        <location type="URI">urn:path:/org/conzilla/builtin/templates/UML/Activity_Diagram</location>
+      </technical>
+    </record>
+  </MetaData>
+  <Neuron TYPEURI="urn:path:/org/conzilla/builtin/types/library/generic/templates">
+    <Axon ID="item" TYPE="item" ENDURI="ActivityD/Initial_State"/>
+    <Axon ID="item8" TYPE="item" ENDURI="ActivityD/Object_Input_Flow"/>
+    <Axon ID="item9" TYPE="item" ENDURI="ActivityD/Object_Output_Flow"/>
+    <Axon ID="item7" TYPE="item" ENDURI="ActivityD/Concurrent_Join"/>
+    <Axon ID="item6" TYPE="item" ENDURI="ActivityD/Concurrent_Fork"/>
+    <Axon ID="item5" TYPE="item" ENDURI="ActivityD/Branch"/>
+    <Axon ID="item4" TYPE="item" ENDURI="ActivityD/Guard_Condition"/>
+    <Axon ID="item3" TYPE="item" ENDURI="ActivityD/Action_State"/>
+    <Axon ID="item2" TYPE="item" ENDURI="ActivityD/Activity_State"/>
+    <Axon ID="item1" TYPE="item" ENDURI="ActivityD/Final_State"/>
+  </Neuron>
+</Component>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component>
+  <MetaData>
+    <record>
+      <general>
+        <title>
+          <langstring lang="en-US">Argument</langstring>
+        </title>
+        <language>en-US</language>
+      </general>
+    </record>
+  </MetaData>
+
+<Neuron TYPEURI="urn:path:/org/conzilla/builtin/types/argument/argument">
+</Neuron>
+</Component>

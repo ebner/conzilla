@@ -1,0 +1,171 @@
+<rdf:RDF
+    xmlns:j.0="http://kmr.nada.kth.se/rdf/form#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/graphics/formlet#statementlayout">
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li>StatementLayout</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+    <j.0:formModel>statementlayout-F.rdf</j.0:formModel>
+    <j.0:queryModel>statementlayout-Q.dl</j.0:queryModel>
+  </j.0:Formlet>
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/graphics/formlet#subjectlayout">
+    <j.0:queryModel>subjectlayout-Q.dl</j.0:queryModel>
+    <j.0:formModel>subjectlayout-F.rdf</j.0:formModel>
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li xml:lang="en">Subject layout</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+  </j.0:Formlet>
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/graphics/formlet#referencedresource">
+    <j.0:queryModel>referencedresource-Q.dl</j.0:queryModel>
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li xml:lang="en">Referenced resource</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+    <j.0:formModel>referencedresource-F.rdf</j.0:formModel>
+  </j.0:Formlet>
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/graphics/formlet#referencedstatement">
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li xml:lang="en">Referenced statement</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+    <j.0:queryModel>referencedstatement-Q.dl</j.0:queryModel>
+    <j.0:formModel>referencedstatement-F.rdf</j.0:formModel>
+  </j.0:Formlet>
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/graphics/formlet#statementlayoutprofile">
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li>Statement layout profile</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+    <j.0:extensionFormlets>
+      <rdf:Seq>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/graphics/formlet#referencedstatement"/>
+        <rdf:li>
+          <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/graphics/formlet#location">
+            <j.0:formModel>location-F.rdf</j.0:formModel>
+            <j.0:queryModel>location-Q.dl</j.0:queryModel>
+            <dc:title>
+              <rdf:Alt>
+                <rdf:li xml:lang="en">location</rdf:li>
+              </rdf:Alt>
+            </dc:title>
+          </j.0:Formlet>
+        </rdf:li>
+        <rdf:li>
+          <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/graphics/formlet#dimension">
+            <dc:title>
+              <rdf:Alt>
+                <rdf:li xml:lang="en">dimension</rdf:li>
+              </rdf:Alt>
+            </dc:title>
+            <j.0:formModel>dimension-F.rdf</j.0:formModel>
+            <j.0:queryModel>dimension-Q.dl</j.0:queryModel>
+          </j.0:Formlet>
+        </rdf:li>
+        <rdf:li>
+          <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/graphics/formlet#statementline">
+            <j.0:formModel>statementline-F.rdf</j.0:formModel>
+            <dc:title>
+              <rdf:Alt>
+                <rdf:li xml:lang="en">statementLine</rdf:li>
+              </rdf:Alt>
+            </dc:title>
+            <j.0:queryModel>statementline-Q.dl</j.0:queryModel>
+          </j.0:Formlet>
+        </rdf:li>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/graphics/formlet#subjectlayout"/>
+        <rdf:li>
+          <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/graphics/formlet#objectlayout">
+            <j.0:queryModel>objectlayout-Q.dl</j.0:queryModel>
+            <dc:title>
+              <rdf:Alt>
+                <rdf:li xml:lang="en">Object layout</rdf:li>
+              </rdf:Alt>
+            </dc:title>
+            <j.0:formModel>objectlayout-F.rdf</j.0:formModel>
+          </j.0:Formlet>
+        </rdf:li>
+      </rdf:Seq>
+    </j.0:extensionFormlets>
+    <j.0:baseFormlet rdf:resource="http://kmr.nada.kth.se/shame/formlet#base"/>
+  </j.0:Formlet>
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/graphics/formlet#conceptlayoutprofile">
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li xml:lang="en">ConceptLayout profile</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+    <j.0:extensionFormlets>
+      <rdf:Seq>
+        <rdf:li>
+          <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/graphics/formlet#conceptlayout">
+            <dc:title>
+              <rdf:Alt>
+                <rdf:li xml:lang="en">ConceptLayout</rdf:li>
+              </rdf:Alt>
+            </dc:title>
+            <j.0:queryModel>conceptlayout-Q.dl</j.0:queryModel>
+            <j.0:formModel>conceptlayout-F.rdf</j.0:formModel>
+          </j.0:Formlet>
+        </rdf:li>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/graphics/formlet#referencedresource"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/graphics/formlet#dimension"/>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/graphics/formlet#location"/>
+      </rdf:Seq>
+    </j.0:extensionFormlets>
+    <j.0:baseFormlet rdf:resource="http://kmr.nada.kth.se/shame/formlet#base"/>
+  </j.0:Formlet>
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/graphics/formlet#contextmapprofile">
+    <j.0:extensionFormlets>
+      <rdf:Seq>
+        <rdf:li>
+          <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/graphics/formlet#contextmap">
+            <dc:title>
+              <rdf:Alt>
+                <rdf:li xml:lang="en">ContextMap</rdf:li>
+              </rdf:Alt>
+            </dc:title>
+            <j.0:formModel>contextmap-F.rdf</j.0:formModel>
+            <j.0:queryModel>contextmap-Q.dl</j.0:queryModel>
+          </j.0:Formlet>
+        </rdf:li>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/graphics/formlet#dimension"/>
+      </rdf:Seq>
+    </j.0:extensionFormlets>
+    <j.0:baseFormlet rdf:resource="http://kmr.nada.kth.se/shame/formlet#base"/>
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li>ContextMap profile</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+  </j.0:Formlet>
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/graphics/formlet#nodelayout">
+    <j.0:formModel>nodelayout-F.rdf</j.0:formModel>
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li xml:lang="en">NodeLayout</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+    <j.0:queryModel>nodelayout-Q.dl</j.0:queryModel>
+  </j.0:Formlet>
+  <j.0:Formlet rdf:about="http://kmr.nada.kth.se/shame/graphics/formlet#nodelayoutprofile">
+    <j.0:baseFormlet rdf:resource="http://kmr.nada.kth.se/shame/formlet#base"/>
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li xml:lang="en">NodeLayout profile</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+    <j.0:extensionFormlets>
+      <rdf:Seq>
+        <rdf:li rdf:resource="http://kmr.nada.kth.se/shame/graphics/formlet#nodelayout"/>
+      </rdf:Seq>
+    </j.0:extensionFormlets>
+  </j.0:Formlet>
+</rdf:RDF>

@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE rdf:RDF [
+         <!ENTITY rdf      'http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+         <!ENTITY rdfs     'http://www.w3.org/2000/01/rdf-schema#'>
+         <!ENTITY dc       'http://purl.org/dc/elements/1.1/'>
+         <!ENTITY dcterms  'http://purl.org/dc/terms/'>
+         <!ENTITY dctype   'http://purl.org/dc/dcmitype/'>
+         <!ENTITY lom      'http://ltsc.ieee.org/2002/09/lom-base#'>
+         <!ENTITY lom-ann  'http://ltsc.ieee.org/2002/09/lom-annotation#'>
+         <!ENTITY lom-tech 'http://ltsc.ieee.org/2002/09/lom-technical#'>
+         <!ENTITY lom-edu  'http://ltsc.ieee.org/2002/09/lom-educational#'>
+         <!ENTITY vCard    'http://www.w3.org/2001/vcard-rdf/3.0#'>
+         <!ENTITY ur       'http://www.ur.se/rdf/alfa#'>
+         <!ENTITY qel      'http://www.edutella.org/qel#'>
+         <!ENTITY var      'http://kmr.nada.kth.se/scam/vocabulary/variables#'>
+         <!ENTITY shame    'http://kmr.nada.kth.se/scam/vocabulary_v1#'>
+	 <!ENTITY shame2   'http://conzilla.org/model/form#'>
+	 <!ENTITY builtin  'http://www.conzilla.org/builtin/types/'>
+	 <!ENTITY cp       'http://www.imsproject.org/xsd/ims_cp_rootv1p1#'>
+	 <!ENTITY ulm      'http://conzilla.org/model/ulm#'>
+	 <!ENTITY dm       'http://conzilla.org/model/dm#'>
+]>
+<rdf:RDF
+  xmlns:rdf="&rdf;"
+  xmlns:cp='&cp;'
+  xmlns:dc='&dc;'
+  xmlns:shame="&shame;"
+  xmlns:ulm="&ulm;"
+  xmlns:dm="&dm;"
+  xmlns:qel="&qel;"
+  xmlns:dctype="&dctype;"
+ >
+  <rdf:Description rdf:about='http://www.conzilla.org/local/library-root'>
+    <rdf:type rdf:resource='&cp;Item'/>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <rdf:li rdf:resource='&builtin;ULM'/>
+    <rdf:li rdf:resource='&builtin;DialogMapping'/>
+    <rdf:li rdf:resource='&builtin;RDF'/>
+    <rdf:li rdf:resource='&builtin;RDFS'/>
+    <rdf:li rdf:resource='&builtin;DCMITypes'/>
+    <rdf:li rdf:resource='&builtin;clipboardBox'/>
+    <rdf:li rdf:resource='&builtin;clipboardArrow'/>
+  </rdf:Description>
+  <rdf:Description rdf:about='&builtin;DialogMapping'>
+    <dc:title xml:lang="en">Dialogue Mapping</dc:title>
+    <dc:description xml:lang="en">Dialogue Mapping according to Conklin</dc:description>
+    <rdf:type rdf:resource='&cp;Item'/>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <rdf:li rdf:resource='&builtin;Issue'/>
+    <rdf:li rdf:resource='&builtin;Argument'/>
+    <rdf:li rdf:resource='&builtin;Position'/>
+    <rdf:li rdf:resource='&builtin;Decision'/>
+    <rdf:li rdf:resource='&builtin;Pro'/>
+    <rdf:li rdf:resource='&builtin;Con'/>
+    <rdf:li rdf:resource='&builtin;Affects'/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about='&builtin;ULM'>
+    <dc:title xml:lang="en">ULM</dc:title>
+    <dc:description xml:lang="en">Unified Language Modeling</dc:description>
+    <rdf:type rdf:resource='&cp;Item'/>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <rdf:li rdf:resource='&builtin;ClassDiagram'/>
+    <rdf:li rdf:resource='&builtin;UseCaseDiagram'/>
+    <rdf:li rdf:resource='&builtin;ActivityDiagram'/>
+    <rdf:li rdf:resource='&builtin;ProcessDiagram'/>
+    <rdf:li rdf:resource='&builtin;Misc'/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about='&builtin;UseCaseDiagram'>
+    <dc:title xml:lang="en">UseCase Diagram</dc:title>
+    <rdf:type rdf:resource='&cp;Item'/>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <rdf:li rdf:resource='&builtin;SystemBoundary'/>
+    <rdf:li rdf:resource='&builtin;Actor'/>
+    <rdf:li rdf:resource='&builtin;UseCase'/>
+    <rdf:li rdf:resource='&builtin;association'/>
+    <rdf:li rdf:resource='&builtin;includes'/>
+    <rdf:li rdf:resource='&builtin;excludes'/>
+    <rdf:li rdf:resource='&builtin;Note'/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about='&builtin;ClassDiagram'>
+    <dc:title xml:lang="en">Class Diagram</dc:title>
+    <rdf:type rdf:resource='&cp;Item'/>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <rdf:li rdf:resource='&builtin;Concept'/>
+    <rdf:li rdf:resource='&builtin;kindOf'/>
+    <rdf:li rdf:resource='&builtin;has'/>
+    <rdf:li rdf:resource='&builtin;isA'/>
+    <rdf:li rdf:resource='&builtin;association'/>
+    <rdf:li rdf:resource='&builtin;directed-association'/>
+    <rdf:li rdf:resource='&builtin;Note'/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about='&builtin;ActivityDiagram'>
+    <dc:title xml:lang="en">Activity Diagram</dc:title>
+    <rdf:type rdf:resource='&cp;Item'/>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <rdf:li rdf:resource='&builtin;Start'/>
+    <rdf:li rdf:resource='&builtin;Activity'/>
+    <rdf:li rdf:resource='&builtin;transition'/>
+    <rdf:li rdf:resource='&builtin;Choice'/>
+    <rdf:li rdf:resource='&builtin;Fork'/>
+    <rdf:li rdf:resource='&builtin;AndJoin'/>
+    <rdf:li rdf:resource='&builtin;OrJoin'/>
+    <rdf:li rdf:resource='&builtin;Object'/>
+    <rdf:li rdf:resource='&builtin;objectFlow'/>
+    <rdf:li rdf:resource='&builtin;End'/>
+    <rdf:li rdf:resource='&builtin;Note'/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about='&builtin;ProcessDiagram'>
+    <dc:title xml:lang="en">Process Diagram</dc:title>
+    <rdf:type rdf:resource='&cp;Item'/>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <rdf:li rdf:resource='&builtin;Process'/>
+    <rdf:li rdf:resource='&builtin;Process-left'/>
+    <rdf:li rdf:resource='&builtin;InformationObject'/>
+    <rdf:li rdf:resource='&builtin;Choice'/>
+    <rdf:li rdf:resource='&builtin;ioFlow'/>
+    <rdf:li rdf:resource='&builtin;TimeLine'/>
+    <rdf:li rdf:resource='&builtin;LeadingConnector'/>
+    <rdf:li rdf:resource='&builtin;ParticipatingConnector'/>
+    <rdf:li rdf:resource='&builtin;Note'/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about='&builtin;Misc'>
+    <dc:title xml:lang="en">Miscellaneous</dc:title>
+    <rdf:type rdf:resource='&cp;Item'/>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <rdf:li rdf:resource='&builtin;Note'/>
+    <rdf:li rdf:resource='&builtin;InconspicuousNote'/>
+  </rdf:Description>
+
+
+  <rdf:Description rdf:about='&builtin;RDF'>
+    <rdf:type rdf:resource='&cp;Item'/>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <rdf:li rdf:resource='&builtin;RDF/Resource'/>
+    <rdf:li rdf:resource='&builtin;RDF/Property'/>
+    <rdf:li rdf:resource='&builtin;RDF/type'/>
+    <rdf:li rdf:resource='&builtin;RDF/Statement'/>
+    <rdf:li rdf:resource='&builtin;RDF/subject'/>
+    <rdf:li rdf:resource='&builtin;RDF/predicate'/>
+    <rdf:li rdf:resource='&builtin;RDF/object'/>
+    <rdf:li rdf:resource='&builtin;RDF/Bag'/>
+    <rdf:li rdf:resource='&builtin;RDF/Alt'/>
+    <rdf:li rdf:resource='&builtin;RDF/Seq'/>
+    <rdf:li rdf:resource='&builtin;RDF/member'/>
+    <rdf:li rdf:resource='&builtin;RDF/_1'/>
+    <rdf:li rdf:resource='&builtin;RDF/_2'/>
+    <rdf:li rdf:resource='&builtin;RDF/_3'/>
+    <rdf:li rdf:resource='&builtin;RDF/_4'/>
+    <rdf:li rdf:resource='&builtin;RDF/_5'/>
+    <rdf:li rdf:resource='&builtin;RDF/_6'/>
+    <rdf:li rdf:resource='&builtin;RDF/_7'/>
+    <rdf:li rdf:resource='&builtin;RDF/_8'/>
+    <rdf:li rdf:resource='&builtin;RDF/_9'/>
+    <rdf:li rdf:resource='&builtin;RDF/_10'/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about='&builtin;RDFS'>
+    <rdf:type rdf:resource='&cp;Item'/>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <rdf:li rdf:resource='&builtin;RDFS/Class'/>
+    <rdf:li rdf:resource='&builtin;RDFS/subClassOf'/>
+    <rdf:li rdf:resource='&builtin;RDFS/subPropertyOf'/>
+    <rdf:li rdf:resource='&builtin;RDFS/range'/>
+    <rdf:li rdf:resource='&builtin;RDFS/domain'/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about='&builtin;DCMITypes'>
+    <rdf:type rdf:resource='&cp;Item'/>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <rdf:li rdf:resource='&builtin;DCMIT/Collection'/>
+    <rdf:li rdf:resource='&builtin;DCMIT/Dataset'/>
+    <rdf:li rdf:resource='&builtin;DCMIT/Event'/>
+    <rdf:li rdf:resource='&builtin;DCMIT/Image'/>
+    <rdf:li rdf:resource='&builtin;DCMIT/StillImage'/>
+    <rdf:li rdf:resource='&builtin;DCMIT/MovingImage'/>
+    <rdf:li rdf:resource='&builtin;DCMIT/InteractiveResource'/>
+    <rdf:li rdf:resource='&builtin;DCMIT/PhysicalObject'/>
+    <rdf:li rdf:resource='&builtin;DCMIT/Service'/>
+    <rdf:li rdf:resource='&builtin;DCMIT/Software'/>
+    <rdf:li rdf:resource='&builtin;DCMIT/Sound'/>
+    <rdf:li rdf:resource='&builtin;DCMIT/Text'/>
+  </rdf:Description>
+
+<!-- Items -->
+
+
+
+<!-- ULM Class Diagram -->
+  <cp:Item rdf:about='&builtin;Concept'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;Concept'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;kindOf'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;kindOf'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;has'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;has'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;isA'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;isA'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;association'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;association'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;directed-association'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;directed-association'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;occurence'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;occurence'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;Note'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;Note'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;InconspicuousNote'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;InconspicuousNote'/>
+  </cp:Item>
+
+
+<!-- ULM Activity Diagram -->
+
+  <cp:Item rdf:about='&builtin;Start'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;Start'/>
+  </cp:Item>
+
+
+  <cp:Item rdf:about='&builtin;End'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;End'/>
+  </cp:Item>
+
+
+  <cp:Item rdf:about='&builtin;Activity'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;Activity'/>
+  </cp:Item>
+
+
+  <cp:Item rdf:about='&builtin;transition'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;transition'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;Choice'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;Choice'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;Fork'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;Fork'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;AndJoin'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;AndJoin'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;OrJoin'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;OrJoin'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;Object'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;Object'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;objectFlow'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;objectFlow'/>
+  </cp:Item>
+
+<!-- ULM Process Diagram -->
+
+  <cp:Item rdf:about='&builtin;Process'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;Process'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;Process-left'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;Process-left'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;InformationObject'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;InformationObject'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;ioFlow'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;ioFlow'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;ParticipatingConnector'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;ParticipatingConnector'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;LeadingConnector'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;LeadingConnector'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;TimeLine'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;TimeLine'/>
+  </cp:Item>
+
+
+<!-- ULM UseCase Diagram -->
+
+  <cp:Item rdf:about='&builtin;Actor'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;Actor'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;UseCase'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;UseCase'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;SystemBoundary'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;SystemBoundary'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;includes'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;includes'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;excludes'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&ulm;excludes'/>
+  </cp:Item>
+
+
+<!-- Dialogue Mapping -->
+
+  <cp:Item rdf:about='&builtin;Issue'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dm;Issue'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;Argument'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dm;Argument'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;Position'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dm;Position'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;Decision'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dm;Decision'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;Pro'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dm;Pro'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;Con'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dm;Con'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;Affects'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dm;Affects'/>
+  </cp:Item>
+
+<!-- RDF -->
+  <cp:Item rdf:about='&builtin;RDF/Resource'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;Resource'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/Literal'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;Literal'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/Property'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;Property'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/type'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;type'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/Bag'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;Bag'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/Alt'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;Alt'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/Seq'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;Seq'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/member'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;member'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/_1'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;_1'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/_2'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;_2'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/_3'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;_3'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/_4'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;_4'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/_5'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;_5'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/_6'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;_6'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/_7'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;_7'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/_8'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;_8'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/_9'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;_9'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/_10'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;_10'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/Statement'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;Statement'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/subject'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;subject'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/predicate'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;predicate'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDF/object'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdf;object'/>
+  </cp:Item>
+
+<!-- RDF -->
+  <cp:Item rdf:about='&builtin;RDFS/Class'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdfs;Class'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDFS/subClassOf'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdfs;subClassOf'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDFS/subPropertyOf'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdfs;subPropertyOf'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDFS/range'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdfs;range'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;RDFS/domain'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&rdfs;domain'/>
+  </cp:Item>
+
+<!-- DCMITypes -->
+
+  <cp:Item rdf:about='&builtin;DCMIT/Collection'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dctype;Collection'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;DCMIT/Dataset'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dctype;Dataset'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;DCMIT/Event'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dctype;Event'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;DCMIT/Image'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dctype;Image'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;DCMIT/StillImage'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dctype;StillImage'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;DCMIT/MovingImage'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dctype;MovingImage'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;DCMIT/InteractiveResource'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dctype;InteractiveResource'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;DCMIT/PhysicalObject'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dctype;PhysicalObject'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;DCMIT/Service'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dctype;Service'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;DCMIT/Software'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dctype;Software'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;DCMIT/Sound'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dctype;Sound'/>
+  </cp:Item>
+
+  <cp:Item rdf:about='&builtin;DCMIT/Text'>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&dctype;Text'/>
+  </cp:Item>
+
+<!-- Clipboard -->
+  <rdf:Description rdf:about='&builtin;clipboardBox'>
+    <rdf:type rdf:resource='&cp;Item'/>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <cp:content rdf:resource='&builtin;clipboardBox'/>
+  </rdf:Description>
+  <rdf:Description rdf:about='&builtin;clipboardArrow'>
+    <rdf:type rdf:resource='&cp;Item'/>
+    <rdf:type rdf:resource='&rdf;Seq'/>
+    <rdf:type rdf:resource='&rdf;Property'/>
+    <cp:content rdf:resource='&builtin;clipboardArrow'/>
+  </rdf:Description>
+
+</rdf:RDF>
+

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component>
+  <MetaData>
+    <record/>
+  </MetaData>
+  <NeuronType>
+    <DataTags/>
+    <BoxType TYPE="rectangle"/>
+    <LineType TYPE="dashed" THICKNESS="1"/>
+    <AxonType NAME="role">
+      <DataTags/>
+      <HeadType TYPE="none" FILLED="true"/>
+      <LineType TYPE="continuous"/>
+    </AxonType>
+  </NeuronType>
+</Component>
