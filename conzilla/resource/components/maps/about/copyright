@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component VERSION="1.0">
+  <MetaData>
+    <record>
+      <general>
+        <title>
+          <langstring lang="en">This product is copyrighted under the GNU's
+General Public Licence (GPL).</langstring>
+          <langstring lang="sv">Detta program är upphovsrättsskyddat 
+i enlighet med GNU's General Public Licence (GPL).</langstring>
+        </title>
+      </general>
+      <technical>
+        <location type="URI">urn:path:/org/conzilla/builtin/maps/about/copyright</location>
+      </technical>
+      <relation>
+        <kind>
+          <langstring>context</langstring>
+        </kind>
+        <resource>
+          <extension>
+            <location>About</location>
+          </extension>
+        </resource>
+      </relation>
+    </record>
+  </MetaData>
+  <Neuron TYPEURI="urn:path:/org/conzilla/builtin/types/misc/inform"/>
+</Component>

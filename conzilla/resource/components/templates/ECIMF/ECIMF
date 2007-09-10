@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component VERSION="1.0">
+  <MetaData>
+    <record>
+      <general>
+        <title>
+          <langstring lang="en">ECIMF</langstring>
+        </title>
+        <language>en-US</language>
+      </general>
+    </record>
+  </MetaData>
+  <Neuron TYPEURI="urn:path:/org/conzilla/builtin/types/library/generic/templates">
+    <Axon ID="comp" TYPE="sublibrary" ENDURI="compare/compare"/>
+  </Neuron>
+</Component>

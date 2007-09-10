@@ -1,0 +1,333 @@
+<!-- $Id$ -->
+<project name="Conzilla" default="typical" basedir=".">
+
+  <description>
+    Ant build file for the Conzilla project
+    Author: Henrik Eriksson
+    Author: Matthias Palmer
+    Author: Hannes Ebner
+    Version: $Revision$, $Date$
+    NOTE: You need Ant version 1.6 or later to run this build file.
+  </description>
+  
+  <!-- <property name="build.compiler"     value="jikes"/> -->
+  <property name="build.compiler"          value="javac1.4"/>
+	
+  <property name="signature_keystore"	   value="misc/conzilla.keystore"/>
+  <property name="signature_alias"		   value="cidkey"/>
+  <property name="signature_password"	   value="oddklk"/>
+	
+  <property name="source_string"           value="src"/>
+  <property name="build_string"            value="classes"/>
+  <property name="distribution_string"     value="dist"/>
+  <property name="library_string"          value="lib"/>
+  <property name="documentation_string"    value="doc"/>
+  <property name="javadoc_string"          value="javadoc"/>
+  <property name="resource_string"         value="resource"/>
+  <property name="include_string"          value="include"/>
+  <property name="script_string"           value="bin"/>
+  <property name="examples_string"         value="examples"/>
+  <property name="webstart_string"		   value="webstart"/>
+  <property name="source_directory"        location="${source_string}"/>
+  <property name="build_directory"         location="${build_string}"/>
+  <property name="distribution_directory"  location="${distribution_string}"/>
+  <property name="library_directory"       location="${library_string}"/>
+  <property name="documentation_directory" location="${documentation_string}"/>
+  <property name="javadoc_directory"       location="${javadoc_string}"/>
+  <property name="resource_directory"      location="${resource_string}"/>
+  <property name="include_directory"       location="${include_string}"/>
+  <property name="script_directory"        location="${script_string}"/>
+  <property name="examples_directory"      location="${examples_string}"/>
+  <property name="webstart_directory"	   location="${webstart_string}"/>
+  <property name="dependency_jars_jena" value="
+    antlr.jar,
+    commons-logging.jar,
+    concurrent.jar,
+    icu4j.jar,
+    jakarta-oro-2.0.5.jar,
+    jena.jar,
+    xercesImpl.jar
+    "/>
+  <property name="dependency_jars_edutella" value="
+    antlr.jar,
+    concurrent.jar,
+    edutella.jar,
+    jxta.jar,
+    "/>
+  <property name="dependency_jars_miscellaneous" value="
+	log4j.jar,
+	edutella.jar,
+	SHAME.jar,
+	SHAME-formlets.jar,
+	collaborilla.jar,
+  	batik-awt-util.jar,
+	batik-dom.jar,
+	batik-svggen.jar,
+  	batik-util.jar,
+  	batik-xml.jar,
+  	commons-codec.jar,
+  	commons-httpclient.jar,
+	commons-httpclient-contrib.jar,
+	commons-logging.jar,
+	commons-net.jar,
+	commons-transaction.jar,
+  	jakarta-slide-webdavlib.jar,
+	jdom-1.0.jar,
+	swing-layout-1.0.1.jar,
+    "/>
+  <property name="dependency_jars" value="
+    ${dependency_jars_jena},
+    ${dependency_jars_miscellaneous},
+    "/>
+
+  <path id="project_classpath">
+    <pathelement path="classes"/>
+    <fileset dir="${library_directory}" includes="**/*.jar"/>
+    <dirset dir="${library_directory}" includes="**"/>
+  </path>
+
+  <import file="build_local.xml" optional="true"/>
+
+  <target name="all" depends="jars, zip, javadoc"/>
+  <target name="typical" depends="jar, zip, javadoc"/>
+
+  <target name="initialization">
+    <tstamp/>
+    <mkdir dir="${build_directory}"/>
+    <mkdir dir="${library_directory}"/>
+    <mkdir dir="${distribution_directory}"/>
+    <mkdir dir="${script_directory}"/>
+  	<mkdir dir="${webstart_directory}"/>
+  </target>
+
+  <target name="cleanup"
+    description="Removes all built classes and javadoc.">
+    <delete dir="${build_directory}"/>
+    <delete dir="${javadoc_directory}"/>
+  	<delete dir="${webstart_directory}"/>
+  </target>
+  
+  <target name="conditional_cleanup" unless="compile_without_cleanup">
+    <antcall target="cleanup"/>
+  </target>
+  
+  <target name="compilation" depends="conditional_cleanup, initialization"
+    description="Compile source files.">
+    <condition property="debug_value" value="true">
+      <isset property="debug"/>
+    </condition>
+    <condition property="debug_value" value="false">
+      <not><isset property="debug"/></not>
+    </condition>
+    <javac
+      srcdir="${source_directory}"
+      destdir="${build_directory}"
+      classpathref="project_classpath"
+      deprecation="true"
+      debug="${debug_value}"
+      excludes="
+      **/TmpFormatHandler.java
+      **/protege/*
+      **/edutella/*
+      **/edutella/extra/*
+      **/layout/generic/*
+      **/test/*
+      **/server/**
+      "
+      >
+      <!-- depend="true" --> <!-- only for jikes -->
+    </javac>
+  </target>
+  
+  <target name="resources"
+    description="Copy resource-, property-, and defaults files to the build directory.">
+    <copy todir="${build_directory}">
+      <fileset dir="${source_directory}">
+        <include name="**/*.properties"/>
+        <include name="**/*.defaults"/>
+      </fileset>
+      <fileset dir="${resource_directory}">
+        <include name="graphics/**"/>
+        <include name="components/**"/>
+        <include name="install/**"/>
+        <include name="formlets/**"/>
+        <include name="ontologies/**"/>
+        <exclude name="**/CVS/**"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="javadoc"
+    description="Javadoc creation.">
+    <javadoc
+      sourcepath="${source_directory}"
+      destdir="${javadoc_directory}"
+      classpathref="project_classpath"
+      packagenames="se.*"
+      excludepackagenames="se.kth.cid.server**,se.kth.cid.mobile**,se.kth.cid.test**,**.query.impl.vocabulary"
+      breakiterator="yes"
+      use="true">
+    </javadoc>
+  </target>
+
+  <target name="jars" depends="jar, jar_dependencies_included"/>
+
+  <target name="jar" depends="compilation, resources"
+    description="Generate a jar (without dependancy jar files).">
+    <jar destfile="${distribution_directory}/${ant.project.name}.jar">
+      <fileset dir="${build_directory}"/>
+      <manifest>
+        <attribute name="Built-By" value="${user.name}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="jar_dependencies_included" depends="compilation, resources"
+    description="Generate a Conzilla jar that includes all dependent jar files.">
+    <mkdir dir="${distribution_directory}"/>
+    <property name="distname" value="all"/>
+    <property name="tempdir" location="tempdir-${DSTAMP}"/>
+    <mkdir dir="${tempdir}"/>
+    <unjar dest="${tempdir}">
+      <fileset dir="${library_directory}" includes="${dependency_jars}"/>
+    </unjar>
+    <jar destfile="${distribution_directory}/${ant.project.name}-${distname}.jar">
+      <fileset dir="${build_directory}"/>
+      <fileset dir="${tempdir}"/>
+      <manifest>
+        <attribute name="Built-By" value="${user.name}"/>
+      </manifest>
+    </jar>
+    <delete dir="${tempdir}"/>
+  </target>
+
+  <target name="sign_jar_all_dependencies_included"
+     description="signs the jar with all dependencies included">
+    <signjar jar="${distribution_directory}/${ant.project.name}-all.jar"
+    	keystore="${signature_keystore}"
+    	alias="${signature_alias}"
+    	storepass="${signature_password}"/>
+  </target>
+
+  <target name="sign_jar"
+     description="signs the jar">
+    <signjar jar="${distribution_directory}/${ant.project.name}.jar"
+    	keystore="${signature_keystore}"
+    	alias="${signature_alias}"
+    	storepass="${signature_password}"/>
+  </target>
+	
+  <target name="webstart" depends="jar">
+    <copy tofile="${webstart_directory}/conzilla.jar" file="${distribution_directory}/${ant.project.name}.jar"/>
+	<copy tofile="${webstart_directory}/logo.png" file="misc/jws-logo.png"/>
+  	<copy todir="${webstart_directory}" file="misc/conzilla.jnlp"/>
+  	<copy todir="${webstart_directory}/lib">
+      <fileset dir="${library_directory}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </copy>
+	<signjar keystore="${signature_keystore}"
+  			alias="${signature_alias}"
+			storepass="${signature_password}">
+		<fileset dir="${webstart_directory}" includes="**/*.jar"/>
+	</signjar>
+  </target>
+
+  <target name="zip" depends="cleanup, compilation, resources, jar, scripts, javadoc"
+    description="Generate a total distribution zip file of Conzilla.jar, dependency jars, resources, and run scripts for all applications.">
+    <zip destfile="${distribution_directory}/${ant.project.name}.zip">
+      <zipfileset dir="${distribution_directory}" prefix="${distribution_string}" includes="${ant.project.name}.jar"/>
+      <zipfileset dir="${library_directory}" prefix="${library_string}" includes="${dependency_jars}"/>
+      <zipfileset dir="${resource_directory}" prefix="${resource_string}"/>
+      <zipfileset dir="${documentation_directory}" prefix="${documentation_string}"/>
+      <zipfileset dir="${javadoc_directory}" prefix="${javadoc_string}"/>
+      <zipfileset dir="." includes="README,Copyright,INSTALL,ReleaseNotes,gpl.txt"/>
+      <zipfileset dir="${script_directory}" prefix="${script_string}" excludes="*.sh, *.command"/>
+      <zipfileset dir="${script_directory}" prefix="${script_string}" includes="*.sh, *.command" filemode="755"/>
+    </zip>
+  </target>
+
+  <target name="scripts"
+    description="Generate run scripts for all applications and examples.">
+    <antcall target="script_factory">
+      <param name="scriptname" value="run_conzilla"/>
+      <param name="classname" value="se.kth.cid.conzilla.app.ConzillaApp"/>
+    </antcall>
+  </target>
+  
+  <target name="script_factory"
+    description="Generate a run script with the given scriptname, directory, and arguments for linux, MacOSX, and MSWindows.">
+    <property name="arguments"   value="-Xmx256m"/>
+    <property name="directory"   location="${script_directory}"/>
+    <property name="shellscript" location="${directory}/${scriptname}.sh"/>
+    <property name="macscript"   location="${directory}/${scriptname}.command"/>
+    <property name="batscript"   location="${directory}/${scriptname}.bat"/>
+
+    <!-- Linux shell script -->
+    <concat destfile="${shellscript}" append="false">
+      #!/bin/sh
+      cd ..
+      exec java<filterchain><tokenfilter><trim/><ignoreblank/></tokenfilter></filterchain></concat>
+    <antcall target="add_classpath">
+      <param name="destination_file" value="${shellscript}"/>
+    </antcall>
+    <concat destfile="${shellscript}" append="true"> ${classname} ${arguments} $$@</concat>
+    <chmod file="${shellscript}" perm="755"/>
+
+    <!-- MacOSX shell script -->
+    <concat destfile="${macscript}" append="false">
+      #!/bin/sh
+      cd ..
+      exec java<filterchain><tokenfilter><trim/><ignoreblank/></tokenfilter></filterchain></concat>
+    <antcall target="add_classpath">
+      <param name="destination_file" value="${macscript}"/>
+    </antcall>
+    <concat destfile="${macscript}" append="true"> ${classname} ${arguments} $$@</concat>
+    <chmod file="${macscript}" perm="755"/>
+
+    <!-- Windows bat script -->
+    <concat destfile="${batscript}" append="false">
+      cd ..
+      java<filterchain><tokenfilter><trim/><ignoreblank/></tokenfilter></filterchain></concat>
+    <antcall target="add_classpath">
+      <param name="destination_file" value="${batscript}"/>
+      <param name="pathsep" value=";"/>
+      <param name="dirsep" value="\\\\"/>
+    </antcall>
+    <concat destfile="${batscript}" append="true"> ${classname} ${arguments}</concat>
+  </target>
+  
+  <target name="add_classpath"
+    description="Add necessary jar files the classpath of run script.">
+    <property name="pathsep" value=":"/>
+    <property name="dirsep" value="/"/>
+    <concat destfile="${destination_file}" append="true"
+      > -cp ${distribution_string}/${ant.project.name}.jar${pathsep}</concat>
+    <concat destfile="${destination_file}" append="true"
+      >${distribution_string}/${ant.project.name}-formlets.jar${pathsep}</concat>
+    <concat destfile="${destination_file}" append="true">
+      ${library_string}/${dependency_jars}
+      <filterchain>
+        <tokenfilter>
+          <filetokenizer/>
+          <replaceregex pattern="[ \t\r\n]*" replace="" flags="g"/>
+          <replaceregex pattern="," replace="${pathsep}${library_string}/" flags="g"/>
+        </tokenfilter>
+      </filterchain>
+    </concat>
+    <property name="tempfile" location="tempdir-${DSTAMP}.tmp"/>
+    <concat destfile="${tempfile}" append="false">
+      <fileset file="${destination_file}"/>
+    </concat>
+    <concat destfile="${destination_file}" append="false">
+      <fileset file="${tempfile}"/>
+      <filterchain>
+        <tokenfilter>
+          <filetokenizer/>
+          <replaceregex pattern="/" replace="${dirsep}" flags="g"/>
+        </tokenfilter>
+      </filterchain>
+    </concat>
+    <delete file="${tempfile}"/>
+  </target>
+</project>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component>
+  <MetaData>
+    <record/>
+  </MetaData>
+  <Neuron TYPEURI="urn:path:/org/conzilla/builtin/types/library/generic/root">
+    <Axon ID="templates" TYPE="sublibrary" ENDURI="../templates/templates"/>
+    <Axon ID="bookmarks" TYPE="sublibrary" ENDURI="../bookmarks/bookmarks"/>
+  </Neuron>
+</Component>

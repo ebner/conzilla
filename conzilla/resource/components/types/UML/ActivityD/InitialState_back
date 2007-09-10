@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component>
+  <MetaData>
+    <record/>
+  </MetaData>
+  <NeuronType>
+    <DataTags/>
+    <BoxType TYPE="circle"/ FILLED="true">
+    <LineType TYPE="continuous"/>
+    <AxonType NAME="transition">
+      <DataTags/>
+      <HeadType TYPE="varrow" FILLED="false" WIDTH="4" LENGTH="6"/>
+      <LineType TYPE="continuous"/>
+    </AxonType>
+  </NeuronType>
+</Component>
