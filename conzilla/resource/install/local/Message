@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component VERSION="1.0">
+  <MetaData>
+    <record>
+      <general>
+        <title>
+          <langstring lang="en">This map is editable for you.
+Choose &apos;edit&apos; in the file menu to 
+change to &apos;edit mode&apos;. 
+
+For exhaustive information about editing 
+se help documentation in the &apos;help&apos; menu.</langstring>
+        </title>
+        <description>
+          <langstring lang="en">The text you&apos;ve pointed to is a neuron.</langstring>
+        </description>
+        <description>
+          <langstring lang="en">This popup text is called a description and
+is contained in the neurons metadata.</langstring>
+        </description>
+        <description>
+          <langstring lang="en">All things in maps are neurons or parts of neurons.</langstring>
+        </description>
+        <description>
+          <langstring lang="en">Not all neurons look the same.
+A neuron&apos;s look depends on it&apos;s neurontype.</langstring>
+        </description>
+        <description>
+          <langstring lang="en">When you create a neuron you choose which 
+neurontype it should have.
+</langstring>
+        </description>
+        <description>
+          <langstring lang="en">To create a neuron:</langstring>
+        </description>
+        <description>
+          <langstring lang="en">1) Be sure that the map is in edit mode.</langstring>
+        </description>
+        <description>
+          <langstring lang="en">2) Right click in a free spot to get up the edit menu.</langstring>
+        </description>
+        <description>
+          <langstring lang="en">3) Choose a neurontype in the &apos;create&apos; submenu.
+(e.g. create-&gt;UML-&gt;Class diagram-&gt;Concept)</langstring>
+        </description>
+        <description>
+          <langstring lang="en">4) Fill in the form.
+    (E.g. typing a name for the neuron and pressing 
+     &apos;return&apos; 4 times would do the job.)</langstring>
+        </description>
+        <description>
+          <langstring lang="en">5) Now the neuron has appeared in the map,
+    you can move it around by drag and drop.</langstring>
+        </description>
+        <description>
+          <langstring lang="en">6) If you want to change the name, add descriptions 
+    or some other metadata:
+    a) Invoke the menu by right clicking the neuron.
+    b) Choose &apos;edit neuron&apos; in the menu. 
+    c) Edit whatever you want and don&apos;t forget to press
+    the set button for the changes to take effect.</langstring>
+        </description>
+        <description>
+          <langstring lang="en">7) If you don&apos;t save all changes will be lost, the 
+    set button only preserves changes during a session.</langstring>
+        </description>
+      </general>
+      <technical>
+        <location type="URI">urn:path:/org/conzilla/local/Message</location>
+      </technical>
+      <relation>
+        <kind>
+          <langstring>context</langstring>
+        </kind>
+        <resource>
+          <extension>
+            <location>Resources_map</location>
+          </extension>
+        </resource>
+      </relation>
+    </record>
+  </MetaData>
+  <Neuron TYPEURI="urn:path:/org/conzilla/builtin/types/misc/inform"/>
+</Component>

@@ -1,0 +1,32 @@
+-- $Id$ --
+
+--
+   This is an SGML catalog file for the Conzilla DTDs.
+--
+
+
+
+DOCTYPE Resolver           "Resolver.dtd"
+
+DOCTYPE Component          "Component.dtd"
+DOCTYPE	Neuron             "Neuron.dtd"
+DOCTYPE	NeuronType         "NeuronType.dtd"
+DOCTYPE	ConceptMap         "ConceptMap.dtd"
+
+
+SYSTEM "Resolver.dtd"           "Resolver.dtd"
+
+SYSTEM "Component.dtd"          "Component.dtd"
+SYSTEM "Neuron.dtd"             "Neuron.dtd"
+SYSTEM "NeuronType.dtd"         "NeuronType.dtd"
+SYSTEM "ConceptMap.dtd"         "ConceptMap.dtd"
+SYSTEM "IMS_METADATAv1p1.dtd"   "IMS_METADATAv1p1.dtd"
+
+
+PUBLIC "-//CID//DTD Resolver 1.0//EN"           "Resolver.dtd"
+
+PUBLIC "-//CID//DTD Component 1.0//EN"          "Component.dtd"
+PUBLIC "-//CID//DTD Neuron 1.0//EN"             "Neuron.dtd"
+PUBLIC "-//CID//DTD NeuronType 1.0//EN"         "NeuronType.dtd"
+PUBLIC "-//CID//DTD ConceptMap 1.0//EN"         "ConceptMap.dtd"
+

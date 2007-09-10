@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!-- $Id$ --> 
+<jnlp
+     spec="0.2"
+     codebase="file:/home/mini/conzilla/classes/"
+<!-- href="conzilla.jnlp" -->>
+  <information> 
+    <title>Conzilla</title> 
+    <vendor>Centre for user-oriented IT-design</vendor> 
+    <homepage href="http://www.nada.kth.se/cid"/> 
+    <description>A conceptual browser</description> 
+<!--    <icon href="images/swingset2.jpg"/> -->
+    <offline-allowed/> 
+  </information> 
+  <security> 
+      <all-permissions/> 
+  </security> 
+  <resources> 
+    <j2se version="1.2"/> 
+    <jar href="ConzillaS.jar"/> 
+<!--    <jar href="lib/aelfred.jar"/> --> 
+  </resources> 
+  <application-desc main-class="se.kth.cid.conzilla.app.ConzillaJnlpApp"/>
+</jnlp> 

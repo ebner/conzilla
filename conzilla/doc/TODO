@@ -1,0 +1,140 @@
+-*- outline -*-
+$Id$
+
+
+*---------------------TODO----------------------------
+
+** Identity
+*** Förbättra parsning: query.
+
+
+** XML
+*** Quotning i input/output.
+*** Inga extra element
+*** Ignorera värden == default.
+
+
+
+** Conzilla
+*** Templates -- skapa karta och tools därtill.
+*** Bookmarks --   -"-
+
+
+
+
+
+*----------------Suggested features------------------
+
+** Component
+*** lock
+    Möjliggöra lock-unlock av komponenter för att underlätta editering.
+*** Wrapper till Neuron/NeuronType för lättare åtkomst/validering?
+
+** NeuronType
+*** Arv?
+*** AllowedPlayerType?
+
+
+** ConceptMap
+*** Draw
+   Yes/No.
+*** Background?
+   SCALED/TILED/SINGLE, POSITION
+*** ZoomoutMap (solved by context?)
+*** Visibility:
+**** ska det vara helt synligt eller gråskalor?
+**** i varje roll och eller neuron?
+**** hur sprids?
+*** Layers
+
+** Conzilla
+*** Göra browsern lätt tillgänglig från JavaScript.
+
+
+** Associationer:
+*** Klumpas ihop visuellt i conceptmap.
+   Vad händer om olika data?? rollnamn???
+ 
+
+** XML
+*** DTD --> Schema? RDF??!?
+
+** JDK 1.3
+*** CORBA
+**** IDLer?
+   Kräver idl2java kompilator (SUN...)!
+**** Collections
+    Måste fundera på om Collection-interfacet är vettigt på dessa.
+    Jmf ::CORBA::RelationShips.
+
+** Optimering
+*** Edit
+**** Förslag ändra eventlyssnarna när drag så att ingen omväg 
+via displayern görs. Bieffekt, ingen koll om handle över annat objekt.
+
+
+
+
+
+* -------------------------DONE--------------------------
+
+
+** Identity
+*** Implementera om cid: med riktiga pather.
+*** Inför relativa URIer.
+*** Separera Lookup/Handling(=load/save)/Cache.
+*** Uppskärpning av specifikationen.
+*** Förbättra parsning: relativa URIer (../)
+*** Generering av relativa URIer.
+*** Lookup även för content.
+
+** Neuron
+*** Role->Axon
+*** Axon data tags (=multiplicity etc.)
+*** Bort med setURI
+
+** Concept Map
+*** ID för att möjliggöra samma neuron flera gånger.
+*** Försena nedladdning av neuroner.
+*** Interfacifiera!!!
+*** Bort med setNeuronURI
+
+** Java
+*** Installering-stöd
+*** Security revision
+*** Signera .jar-filer
+*** Java Webstart
+*** jnlp-APIt i ContentDisplayern, for tex showURL().
+
+** XML
+*** Standalone DTDer.
+*** Noggranna kollar i XMLloaders!
+
+** Filter -- porta till 1.0
+
+** Meta data
+*** IMS-stöd.						
+
+** Content
+*** URI, Type -> MetaData				
+
+** MapSet
+*** Ta bort MapSet					
+*** inför context					
+
+** Conzilla
+*** Röj upp i Controllern med Tools och allt.		
+*** Fixa till History.					
+*** Röj en aning i MapDisplayer etc. Tydligare ansvar.	
+*** Fixa till Kartstorleken och layout			
+*** IMSMetadataeditor					
+*** Fixa felmeddelanden i MapObject.			
+*** Snyggare felmeddelanden.				
+*** Preview av begreppskartor (Bosse).			
+*** Färg reserverat för interaktivitet.			
+*** ResolveTable-editor.
+*** Java 2D.
+*** Clipboard -- modifiera så att det funkar.
+*** Title för neuroner
+*** urnresolver-editor
+*** Printing
