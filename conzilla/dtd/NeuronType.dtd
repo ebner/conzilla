@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Id$ -->
+
+<!--
+  DOCTYPE "NeuronType"
+  PUBLIC  "-//CID//DTD NeuronType 1.0//EN"
+  SYSTEM  "NeuronType.dtd"
+-->
+
+<!--
+  This file is part of the Conzilla browser, designed for
+  the Garden of Knowledge project.
+  Copyright (C) 1999  CID (http://www.nada.kth.se/cid)
+  
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+
+
+<!-- NeuronType -->
+
+<!ELEMENT NeuronType		(MetaData,
+                                 DataTags,
+               			 BoxStyle,
+           			 RoleType*)>
+
+<!-- END NeuronType -->
+
+
+
+<!ENTITY % MetaData PUBLIC "-//CID//DTD MetaData 1.0//EN" "MetaData.dtd">
+%MetaData;
+
+
+
+<!-- DataTags -->
+
+<!ELEMENT DataTags		(DataTag*)>
+
+<!ELEMENT DataTag		 EMPTY>
+<!ATTLIST DataTag
+	NAME			 CDATA			#REQUIRED>
+
+
+<!-- END DataTags -->
+
+
+
+<!-- BoxStyle -->
+
+<!ELEMENT BoxStyle		(Box,
+				 Line)>
+<!ELEMENT Box			 EMPTY>
+<!ATTLIST Box
+	TYPE			 CDATA			"rectangle"
+	COLOR			 CDATA			"0">
+
+<!ELEMENT Line			 EMPTY>
+<!ATTLIST Line
+	TYPE			 CDATA			"continuous"
+	THICKNESS		(0|1|2|3|4|5
+				|6|7|8|9|10)		"1"
+	COLOR			 CDATA			"0">
+
+
+<!-- END BoxStyle -->
+
+
+
+<!-- RoleType -->
+
+<!ELEMENT RoleType		(Multiplicity,
+				 RoleStyle)>
+<!ATTLIST RoleType
+	NAME			 CDATA			#REQUIRED>
+
+<!ELEMENT Multiplicity		 EMPTY>
+<!ATTLIST Multiplicity
+	LOWEST			 CDATA			"0"
+	HIGHEST			 CDATA			"infinity">
+
+<!ELEMENT RoleStyle		(Head,
+				 Line)>
+
+<!ELEMENT Head			 EMPTY>
+<!ATTLIST Head
+	TYPE			 CDATA			"none"
+	FILLED			(true|false)            "true"
+        SIZE                     CDATA                  "0">
+
+
+<!-- END RoleType -->
+

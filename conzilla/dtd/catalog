@@ -1,0 +1,18 @@
+-- $Id$ --
+
+--
+   This is an SGML catalog file for the Conzilla DTDs.
+--
+
+
+
+
+SYSTEM "Neuron.dtd"             "Neuron.dtd"
+SYSTEM "NeuronType.dtd"         "NeuronType.dtd"
+SYSTEM "MetaData.dtd"           "MetaData.dtd"
+SYSTEM "ConceptMap.dtd"         "ConceptMap.dtd"
+
+PUBLIC "-//CID//DTD Neuron 1.0//EN"             "Neuron.dtd"
+PUBLIC "-//CID//DTD NeuronType 1.0//EN"         "NeuronType.dtd"
+PUBLIC "-//CID//DTD MetaData 1.0//EN"           "MetaData.dtd"
+PUBLIC "-//CID//DTD ConceptMap 1.0//EN"         "ConceptMap.dtd"

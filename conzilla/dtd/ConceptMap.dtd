@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Id$ -->
+
+<!--
+  DOCTYPE "ConceptMap"
+  PUBLIC  "-//CID//DTD ConceptMap 1.0//EN"
+  SYSTEM  "ConceptMap.dtd"
+-->
+
+<!--
+  This file is part of the Conzilla browser, designed for
+  the Garden of Knowledge project.
+  Copyright (C) 1999  CID (http://www.nada.kth.se/cid)
+  
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+
+
+<!-- ConceptMap -->
+
+<!ELEMENT ConceptMap		(MetaData,
+                                 Background,
+           			 BoundingBox,
+				 MapSet?,
+				 NeuronStyle*)>
+
+<!-- END ConceptMap -->
+
+
+
+<!ENTITY % MetaData PUBLIC "-//CID//DTD MetaData 1.0//EN" "MetaData.dtd">
+%MetaData;
+
+
+
+<!-- Background -->
+
+<!ELEMENT Background		 EMPTY>
+<!ATTLIST Background
+	COLOR			 CDATA			"0">
+
+<!-- END Background -->
+
+
+
+<!-- BoundingBox -->
+
+<!ELEMENT BoundingBox		 EMPTY>
+<!ATTLIST BoundingBox
+	WIDTH			 CDATA			#REQUIRED
+	HEIGHT			 CDATA			#REQUIRED>
+
+<!-- END BoundingBox -->
+
+
+
+<!-- MapSet -->
+
+<!ELEMENT MapSet		 EMPTY>
+<!ATTLIST MapSet
+	MAPSETURI		 CDATA			#REQUIRED>
+
+<!-- END MapSet -->
+
+
+
+<!-- NeuronStyle -->
+
+<!ELEMENT NeuronStyle		(Visibility,
+				 DetailedMap?,
+				 Box,
+				 RoleStyle*)>
+<!ATTLIST NeuronStyle
+	NEURONURI		 CDATA			#REQUIRED>
+
+
+
+<!ELEMENT Visibility		 EMPTY>
+<!ATTLIST Visibility
+	STRENGTH		 CDATA			#REQUIRED>
+
+
+<!ELEMENT DetailedMap		 EMPTY>
+<!ATTLIST DetailedMap
+	MAPURI			 CDATA			#REQUIRED>
+
+
+<!ELEMENT Box			(BoundingBox,
+				 Position,
+				 Title,
+				 DataTags?,
+                                 Line?)>
+
+<!ELEMENT Position       	 EMPTY>
+<!ATTLIST Position
+	X			 CDATA			#REQUIRED
+	Y			 CDATA			#REQUIRED>
+
+
+<!ELEMENT Title			(#PCDATA)>
+
+
+<!ELEMENT DataTags		(DataTag*)>
+
+<!ELEMENT DataTag		 EMPTY>
+<!ATTLIST DataTag
+	NAME			 CDATA			#REQUIRED>
+
+
+<!ELEMENT RoleStyle		(Line)>
+<!ATTLIST RoleStyle
+	TYPE			 CDATA			#REQUIRED
+	NEURONURI		 CDATA			#REQUIRED>
+
+	
+<!ELEMENT Line			(Position*)>
+
+
+<!-- END NeuronStyle -->
+
