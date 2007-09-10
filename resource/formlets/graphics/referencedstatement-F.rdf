@@ -1,0 +1,127 @@
+<rdf:RDF
+    xmlns:j.0="http://kmr.nada.kth.se/rdf/form#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <j.0:Form>
+    <rdf:li>
+      <j.0:GroupFormItem>
+        <rdf:li>
+          <j.0:GroupFormItem>
+            <rdf:li>
+              <j.0:TextFormItem>
+                <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-referencedstatement#RS"/>
+                <rdf:type rdf:resource="http://kmr.nada.kth.se/rdf/form#NonEditable"/>
+                <dc:title>
+                  <rdf:Alt>
+                    <rdf:li xml:lang="en">Reification URI</rdf:li>
+                  </rdf:Alt>
+                </dc:title>
+              </j.0:TextFormItem>
+            </rdf:li>
+            <rdf:li>
+              <j.0:TextFormItem>
+                <dc:title>
+                  <rdf:Alt>
+                    <rdf:li xml:lang="en">Title</rdf:li>
+                  </rdf:Alt>
+                </dc:title>
+                <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-referencedstatement#T"/>
+                <rdf:type rdf:resource="http://kmr.nada.kth.se/rdf/form#NonEditable"/>
+              </j.0:TextFormItem>
+            </rdf:li>
+            <rdf:li>
+              <j.0:GroupFormItem>
+                <rdf:li>
+                  <j.0:NonEditable>
+                    <dc:title>
+                      <rdf:Alt>
+                        <rdf:li>Title</rdf:li>
+                      </rdf:Alt>
+                    </dc:title>
+                    <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-referencedstatement#ST"/>
+                    <rdf:type rdf:resource="http://kmr.nada.kth.se/rdf/form#TextFormItem"/>
+                  </j.0:NonEditable>
+                </rdf:li>
+                <dc:title>
+                  <rdf:Alt>
+                    <rdf:li>Subject</rdf:li>
+                  </rdf:Alt>
+                </dc:title>
+                <j.0:maxMultiplicity>1</j.0:maxMultiplicity>
+                <j.0:preferredMultiplicity>1</j.0:preferredMultiplicity>
+                <j.0:minMultiplicity>1</j.0:minMultiplicity>
+                <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-referencedstatement#S"/>
+              </j.0:GroupFormItem>
+            </rdf:li>
+            <rdf:li>
+              <j.0:TextFormItem>
+                <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-referencedstatement#P"/>
+                <rdf:type rdf:resource="http://kmr.nada.kth.se/rdf/form#NonEditable"/>
+                <dc:title>
+                  <rdf:Alt>
+                    <rdf:li xml:lang="en">Predicate</rdf:li>
+                  </rdf:Alt>
+                </dc:title>
+              </j.0:TextFormItem>
+            </rdf:li>
+            <rdf:li>
+              <j.0:GroupFormItem>
+                <rdf:li>
+                  <j.0:NonEditable>
+                    <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-referencedstatement#OT"/>
+                    <rdf:type rdf:resource="http://kmr.nada.kth.se/rdf/form#TextFormItem"/>
+                    <dc:title>
+                      <rdf:Alt>
+                        <rdf:li>Title</rdf:li>
+                      </rdf:Alt>
+                    </dc:title>
+                  </j.0:NonEditable>
+                </rdf:li>
+                <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-referencedstatement#O"/>
+                <dc:title>
+                  <rdf:Alt>
+                    <rdf:li>Object</rdf:li>
+                  </rdf:Alt>
+                </dc:title>
+                <j.0:maxMultiplicity>1</j.0:maxMultiplicity>
+                <j.0:preferredMultiplicity>1</j.0:preferredMultiplicity>
+                <j.0:minMultiplicity>1</j.0:minMultiplicity>
+              </j.0:GroupFormItem>
+            </rdf:li>
+            <dc:description>
+              <rdf:Alt>
+                <rdf:li>Points to a reification.</rdf:li>
+              </rdf:Alt>
+            </dc:description>
+            <dc:title>
+              <rdf:Alt>
+                <rdf:li>Referenced statement</rdf:li>
+              </rdf:Alt>
+            </dc:title>
+            <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-referencedstatement#RS"/>
+          </j.0:GroupFormItem>
+        </rdf:li>
+        <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-referencedstatement#X"/>
+      </j.0:GroupFormItem>
+    </rdf:li>
+    <j.0:query rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-referencedstatement#query"/>
+  </j.0:Form>
+  <j.0:TextFormItem>
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li xml:lang="en">Object</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+    <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-referencedstatement#O"/>
+    <rdf:type rdf:resource="http://kmr.nada.kth.se/rdf/form#NonEditable"/>
+  </j.0:TextFormItem>
+  <j.0:TextFormItem>
+    <dc:title>
+      <rdf:Alt>
+        <rdf:li xml:lang="en">Subject</rdf:li>
+      </rdf:Alt>
+    </dc:title>
+    <rdf:type rdf:resource="http://kmr.nada.kth.se/rdf/form#NonEditable"/>
+    <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-referencedstatement#S"/>
+  </j.0:TextFormItem>
+</rdf:RDF>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component>
+  <MetaData>
+    <record>
+      <classification>
+        <purpose>
+          <langstring>NeuronType</langstring>
+        </purpose>
+        <taxonpath>
+          <source>Conzilla</source>
+          <taxon>
+            <entry>
+              <langstring>Filter</langstring>
+            </entry>
+          </taxon>
+        </taxonpath>
+      </classification>
+    </record>
+  </MetaData>
+  <NeuronType>
+    <DataTags>
+	<DataTag NAME="general_keywords"/>
+    </DataTags>
+    <BoxType TYPE="roundrectangle"/>
+    <LineType TYPE="continuous"/>
+    <AxonType NAME="refine">
+      <DataTags/>
+      <HeadType TYPE="ellipse" FILLED="true" WIDTH="3" LENGTH="3"/>
+      <LineType TYPE="continuous"/>
+    </AxonType>
+    <AxonType NAME="subfilter">
+      <DataTags/>
+      <HeadType TYPE="varrow" FILLED="true" WIDTH="4" LENGTH="6"/>
+      <LineType TYPE="continuous"/>
+    </AxonType>
+  </NeuronType>
+</Component>
+
+
+
+

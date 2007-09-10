@@ -1,0 +1,12 @@
+<rdf:RDF
+    xmlns:j.0="http://kmr.nada.kth.se/rdf/form#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <j.0:Form>
+    <rdf:li>
+      <j.0:GroupFormItem>
+        <j.0:variable rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-conceptlayout#X"/>
+      </j.0:GroupFormItem>
+    </rdf:li>
+    <j.0:query rdf:resource="http://kmr.nada.kth.se/shame/graphics/query-conceptlayout#query"/>
+  </j.0:Form>
+</rdf:RDF>

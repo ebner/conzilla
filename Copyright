@@ -1,0 +1,14 @@
+Conzilla is Copyrighted (C) 1999-2006  CID (http://cid.nada.kth.se/) 
+under the terms of GPL, see the file gpl.txt for details.
+
+(The KMR-group which is the developer and coordinator of Conzilla 
+was previously a part of CID.)
+
+We choose to use GPL for several reasons:
+1) We want to hinder branching of the code base, making sure that all 
+   contributions are given back to us for possible inclusion.
+2) Conzilla is the result of research and since we belive that all research 
+   results as well as the ongoing process of research should be inspectable 
+   and verifyable (Open Research) we choose an open source license.
+3) Since our funding is mainly from public institutions we belive that 
+   everyone should have the right to make use of the results.

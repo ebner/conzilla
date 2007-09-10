@@ -1,0 +1,61 @@
+Requirements
+------------
+To run Conzilla you need to have at least java 1.4 installed.
+If you run Conzilla in a browser it is sufficient with a java-plugin
+(that supports java 1.4 obviously).
+
+
+Installing from the distribution
+--------------------------------
+Unzip and go into the bin catalogue. There you find scripts that 
+launches Conzilla, .bat on windows, .sh on Linux and other unixes 
+including Mac OSX (*).
+
+
+Compiling and running
+---------------------
+To compile from the CVS tree execute:
+ant jar
+ant scripts
+
+Then go into the bin catalouge and execute the appropriate
+run_conzilla script (.bat or .sh on Windows 
+and various Unix flavours / MacOSX (*) respectively).
+
+
+Compiling the distribution zip
+------------------------------
+Just run 'ant' and you will get the Conzilla.zip in the dist
+directory. This zip will be self-contained and can be unpackaged
+anywhere and then run with the scripts in bin.
+
+
+Applet Conzilla
+---------------
+Run the following commands:
+'ant jar'
+'ant jar_all_dependencies_included'
+
+Then, to sign the dist/Conzilla-all.jar you need a key. There is a
+target in that you can modify with the appropriate keystorefile, alias
+and storepass. Then run it with:
+'ant sign_jar_all_dependencies_included'
+
+The following applet code can be modified and pasted into a html-page:
+<applet code="se.kth.cid.conzilla.app.ConzillaApplet"
+        archive="path_to_jar_file/Conzilla-all.jar" 
+	width="750"
+	height="800" 
+	name="conzilla">
+  <param name="PROPERTYFILE" value="path_to_property_file/conzilla.properties">
+  <param name="STARTMAP" value="fill_in_URI_of_map_to_launch">
+  <param name="TARGETWINDOW" value="contentframe">
+  <param name="CONTAINER" value="fill_in_URI_of_container_where_map_is_defined">
+</applet>
+
+
+(*) We have encountered a problem with running Conzilla from a
+sh-scripts in Mac OSX 10.x. The locale does not seem to be set
+correctly, hence add the following flag to the java command:
+-Dfile.encoding=8859_1 
+or whatever encoding you prefer/have on your system.

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component VERSION="1.0">
+  <MetaData>
+    <record>
+      <general>
+        <title>
+          <langstring lang="en">Conzilla is a first example of an conceptbrowser.
+For more information look at:
+
+http://cid.nada.kth.se/il/conzilla</langstring>
+          <langstring lang="sv">Conzilla är ett första exempel på en 
+begreppsbrowser, för mer information se:
+
+http://cid.nada.kth.se/il/conzilla</langstring>
+        </title>
+      </general>
+      <technical>
+        <location type="URI">urn:path:/org/conzilla/builtin/maps/about/resources</location>
+      </technical>
+      <relation>
+        <kind>
+          <langstring>context</langstring>
+        </kind>
+        <resource>
+          <extension>
+            <location>About</location>
+          </extension>
+        </resource>
+      </relation>
+    </record>
+  </MetaData>
+  <Neuron TYPEURI="urn:path:/org/conzilla/builtin/types/misc/inform"/>
+</Component>

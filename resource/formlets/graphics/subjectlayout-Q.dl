@@ -1,0 +1,8 @@
+@base <http://kmr.nada.kth.se/shame/graphics/query-subjectlayout>.
+@prefix qel: <http://www.edutella.org/qel#>.
+@prefix graphic: <http://kmr.nada.kth.se/rdf/graphic#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix dc: <http://purl.org/dc/elements/1.1/>.
+
+?(X,S)- qel:nodeType(X, qel:Resource), qel:s(X,graphic:subjectLayout,S), qel:nodeType(S,qel:Resource),
+	qel:s(S,graphic:displayResource,SR), qel:nodeType(SR,qel:Resource), qel:s(SR,dc:title,SRT).

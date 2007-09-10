@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component>
+  <MetaData>
+    <record>
+      <general>
+        <title>
+          <langstring lang="en-US">Object Output Flow</langstring>
+        </title>
+      </general>
+    </record>
+  </MetaData>
+<Neuron TYPEURI="urn:path:/org/conzilla/builtin/types/UML/ActivityD/Object_Output_Flow">
+</Neuron>
+</Component>
