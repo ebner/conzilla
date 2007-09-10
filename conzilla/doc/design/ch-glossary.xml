@@ -1,0 +1,575 @@
+  <!-- $Id$ -->
+
+  <glossary id="ch-glossary">
+    <title>Glossary of terms</title>
+    
+    <glossentry id="api">
+      <glossterm>Application Programming Interface</glossterm>
+      <acronym>API</acronym>
+      <glossdef>
+	<para>
+	  A set of classes and functions for performing a certain task,
+	  while hiding the underlying details.
+	</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry id="awt">
+      <glossterm>Abstract Windowing Toolkit</glossterm>
+      <acronym>AWT</acronym>
+      <glossdef>
+	<para>
+	  Java <glossterm linkend="gui">GUI</glossterm> components
+	  implemented using platform-specific code,
+	  providing functionality common to all platforms. 
+	</para>
+	<glossseealso otherterm="swing"></glossseealso>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="cid">
+      <glossterm>Centre for user-oriented IT design</glossterm>
+      <acronym>CID</acronym>
+      <glossdef>
+	<para>
+	  An inter-disciplinary competence centre at <glossterm
+	    linkend="kth">KTH</glossterm>. Activities
+	  include a three-part collaboration between IT-industry, user
+	  organizations and university researchers. See <ulink
+	    url="http://www.nada.kth.se/cid/">http://www.nada.kth.se/cid/</ulink>.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="cab">
+      <glossterm>Cabinet Format</glossterm>
+      <acronym>CAB</acronym>
+      <glossdef>
+	<para>
+	  A compressed file format developed by Microsoft and used in
+	  many of their applications. Microsoft Internet
+	  Explorer, for example, can use CAB to download
+	  large Java applets from the Internet.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="corba">
+      <glossterm>Common Object Request Broker Architecture</glossterm>
+      <acronym>CORBA</acronym>
+      <glossdef>
+	<para>
+	  An open distributed object computing infrastructure being
+	  standardized by the <glossterm
+	    linkend="omg">OMG</glossterm>.
+	  CORBA automates many common network
+	  programming tasks such as object registration, location and
+	  activation etc. See <ulink
+	    url="http://www.omg.org">http://www.omg.org</ulink> 
+	</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry id="dcom">
+      <glossterm>Distributed Component Object Model</glossterm>
+      <acronym>DCOM</acronym>
+      <glossdef>
+	<para>
+	  Microsoft's extension of their Component Object Model (COM)
+	  to support objects distributed across a network. DCOM has
+	  been submitted to the <ulink
+	  url="http://www.ietf.org/">IETF</ulink> as a draft
+	  standard. Since 1996, it has been part of Windows NT and is
+	  also available for Windows 95.
+	</para>
+      </glossdef>
+    </glossentry>
+
+    
+    <glossentry id="docbook">
+      <glossterm>DocBook</glossterm>
+      <glossdef>
+	<para>
+	  DocBook is a very popular set of tags for describing books,
+	  articles, and other prose documents, particularly technical
+	  documentation. DocBook is defined using the native
+	  <glossterm linkend="dtd">DTD</glossterm> syntax of
+	  <glossterm linkend="sgml">SGML</glossterm> and <glossterm
+	    linkend="xml">XML</glossterm>. Like <glossterm
+	    linkend="html">HTML</glossterm>, DocBook is an
+	  example of a markup language defined in SGML/XML.
+	</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry id="dom">
+      <glossterm>Document Object Model</glossterm>
+      <acronym>DOM</acronym>
+      <glossdef>
+	<para>
+	  From the DOM spec <citation>domlevel1</citation>:
+
+	  <blockquote>
+	    <para>
+	      a platform- and language-neutral interface that allows
+	      programs and scripts to
+	      dynamically access and update the content, structure and style
+	      of documents
+	    </para>
+	  </blockquote>
+	</para>
+
+	<para>
+	  Also,
+	  
+	  <blockquote>
+	    <para>
+	      the goal of the DOM specification is 
+	      to define a programmatic interface for
+	      <glossterm linkend="xml">XML</glossterm> and
+	      <glossterm linkend="html">HTML</glossterm>
+	    </para>
+	  </blockquote>
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="dtd">
+      <glossterm>Document Type Definition</glossterm>
+      <acronym>DTD</acronym>
+      <glossdef>
+	<para>
+	  A text file that defines the allowed elements of a markup
+	  language such as <glossterm linkend="html">HTML</glossterm>
+	  or <glossterm linkend="sgml">SGML</glossterm>-
+	  and <glossterm linkend="xml">XML</glossterm>-based markup languages.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="ftp">
+      <glossterm>File Transfer Protocol</glossterm>
+      <acronym>FTP</acronym>
+      <glossdef>
+	<para>
+	  A common method of transferring one or more files from
+	  one computer to another.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="gui">
+      <glossterm>Graphical User Interface</glossterm>
+      <acronym>GUI</acronym>
+      <glossdef>
+	<para>
+	  The interface to an application that the user sees, and which
+	  uses graphical elements such as buttons and menus for
+	  interaction.
+	</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry id="html">
+      <glossterm>Hypertext Markup Language</glossterm>
+      <acronym>HTML</acronym>
+      <glossdef>
+	<para>
+	  A language used to describe WWW pages so that font size and
+	  color, hypertext links, nice backgrounds, graphics, and
+	  positioning can be specified and maintained.
+	</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry id="http">
+      <glossterm>HyperText Markup Language</glossterm>
+      <acronym>HTTP</acronym>
+      <glossdef>
+	<para>
+	  The underlying system whereby Web documents are transferred
+	  over the Internet.
+	</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry id="idl">
+      <glossterm>Interface Definition Language</glossterm>
+      <acronym>IDL</acronym>
+      <glossdef>
+	<para>
+	  A language defined by the <glossterm
+	  linkend="omg">OMG</glossterm> used to define <glossterm
+	  linkend="corba">CORBA</glossterm> interfaces.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="ims">
+      <glossterm>Instructional Management Systems</glossterm>
+      <acronym>IMS</acronym>
+      <glossdef>
+	<para>
+	  A global coalition of academic, commercial and government
+	  organizations, working together to define the Internet
+	  architecture for learning. IMS abbreviates Instructional
+	  Management Systems, which they have noted raises more
+	  questions than answers. So they prefer to be called just IMS.
+	  For more information,
+	  See <ulink
+	    url="http://www.imsproject.org/">http://www.imsproject.org/</ulink>
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="jar">
+      <glossterm>Java Archive</glossterm>
+      <acronym>JAR</acronym>
+      <glossdef>
+	<para>
+	  A compressed bundle of Java classes, similar to ZIP files. It
+	  is used to distribute Java applications and their related
+	  files.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="jfc">
+      <glossterm>Java Foundation Classes</glossterm>
+      <acronym>JFC</acronym>
+      <glossdef>
+	<para>
+	  A standard package of extensions to the base Java
+	  libraries. The most significant part is called <glossterm
+	  linkend="swing">Swing</glossterm>.
+	</para>
+      </glossdef>
+    </glossentry>
+    
+    <glossentry id="kth">
+      <glossterm>Kungliga Tekniska Högskolan</glossterm>
+      <acronym>KTH</acronym>
+      <glossdef>
+	<para>
+	  Kungliga Tekniska Högskolan, i.e., The Royal Institute of
+	  Technology, located in Stockholm, Sweden.
+	</para>
+      </glossdef>
+    </glossentry>
+    
+    <glossentry id="ldap">
+      <glossterm>Lightweight Directory Access Protocol</glossterm>
+      <acronym>LDAP</acronym>
+      <glossdef>
+	<para>
+	  A protocol for accessing on-line directory services. LDAP
+	  defines a relatively simple protocol for updating and
+	  searching directories running over TCP/IP. See <ulink
+	    url="http://www.ietf.org/rfc/rfc1777.txt">RFC 1777</ulink>.
+	</para>
+      </glossdef>
+    </glossentry>
+    
+    <glossentry id="mof">
+      <glossterm>Meta Object Facility</glossterm>
+      <acronym>MOF</acronym>
+      <glossdef>
+	<para>
+	  As described in the MOF Spec <citation>mofspec</citation>:
+	  <blockquote>
+	    <para>
+	      The main purpose of the <glossterm
+		linkend="omg">OMG</glossterm> MOF is to provide a set
+	      of 
+	      <glossterm linkend="corba">CORBA</glossterm> interfaces
+	      that can be used to define and manipulate 
+	      a set of interoperable metamodels. The MOF is a key
+	      building block in the construction of <glossterm
+		linkend="corba">CORBA</glossterm>-based
+	      distributed development environments.
+	    </para>
+	  </blockquote>
+	</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry id="odbc">
+      <glossterm>Open DataBase Connectivity</glossterm>
+      <acronym>ODBC</acronym>
+      <glossdef>
+	<para>
+	  A standard for accessing different database systems.  An
+	  application can submit statements to ODBC using the ODBC
+	  flavor of SQL. ODBC then translates these to whatever flavor
+	  the database understands.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="oji">
+      <glossterm>Open JVM Integration</glossterm>
+      <acronym>OJI</acronym>
+      <glossdef>
+	<para>
+	  An <glossterm linkend="api">API</glossterm> that allows a
+	  Web browser to use any Java Virtual
+	  Machine installed on the local harddisk instead of a built-in
+	  Virtual Machine.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="omg">
+      <glossterm>Object Management Group</glossterm>
+      <acronym>OMG</acronym>
+      <glossdef>
+	<para>
+	  As described on the OMG home page (<ulink
+	    url="http://www.omg.org">http://www.omg.org</ulink>), an
+	  organization that was formed
+	  
+	  <blockquote>
+	    <para>
+	      to create a component-based software marketplace by
+	      hastening the introduction of standardized object software.
+	      The organization's charter includes the establishment of
+	      industry guidelines and detailed object management
+	      specifications to provide a common framework for
+	      application development.
+	    </para>
+	  </blockquote>
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="omt">
+      <glossterm>Object Modeling Technique</glossterm>
+      <acronym>OMT</acronym>
+      <glossdef>
+	<para>The predecessor of <glossterm
+	    linkend="uml">UML</glossterm>.
+	</para> 
+      </glossdef>
+    </glossentry>
+
+    <glossentry id="pathurn">
+      <glossterm>Path URN</glossterm>
+      <glossdef>
+	<para>
+	  A <glossterm linkend="urn">URN</glossterm> scheme that
+	  defines a uniformly hierarchical name space. This URN scheme
+	  supports dynamic relocation and replication of
+	  resources. DNS technology is used to resolve a path into
+	  sets of equivalent <glossterm
+	  linkend="url">URL</glossterm>s, and then one URL is resolved
+	  into the named resource. See <citation>pathurnspec</citation>.
+	</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry id="rmi">
+      <glossterm>Remote Method Invocation</glossterm>
+      <acronym>RMI</acronym>
+      <glossdef>
+	<para>
+	  Part of the Java programming language library which enables a
+	  Java program running on one computer to access the objects and
+	  methods of another Java program running on a different
+	  computer.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="sgml">
+      <glossterm>Standard Generalized Markup Language</glossterm>
+      <acronym>SGML</acronym>
+      <glossdef>
+	<para>
+	  A standard for describing markup languages. Used to define
+	  both <glossterm linkend="xml">XML</glossterm> and <glossterm
+	    linkend="html">HTML</glossterm>.
+	</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry id="swing">
+      <glossterm>Swing</glossterm>
+      <glossdef>
+	<para>
+	  A set of Java <glossterm linkend="gui">GUI</glossterm>
+	  components extending the original <glossterm
+	  linkend="awt">AWT</glossterm>. Part of <glossterm
+	  linkend="jfc">JFC</glossterm>.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="uml">
+      <glossterm>Unified Modeling Language</glossterm>
+      <acronym>UML</acronym>
+      <glossdef>
+	<para>
+	  A language for specifying, visualizing, constructing, and
+	  documenting the artifacts of software systems, as well as for
+	  business modeling and other non-software systems. It has been
+	  developed by the <glossterm
+	    linkend="omg">OMG</glossterm>. See
+	  <citation>umlref</citation> and the <ulink
+	    url="http://www.omg.org/uml/">UML home page</ulink>.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="uri">
+      <glossterm>Uniform Resource Identifier</glossterm>
+      <acronym>URI</acronym>
+      <glossdef>
+	<para>
+	  As described in <citation>rfcuri</citation>, a URI is
+	  <quote>a compact string of characters for identifying an
+	  abstract or physical resource</quote>.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="url">
+      <glossterm>Uniform Resource Locator</glossterm>
+      <acronym>URL</acronym>
+      <glossdef>
+	<para>
+	  As described in <citation>rfcuri</citation>, the term URL
+	  refers to
+
+	  <blockquote>
+	    <para>
+	      the subset of <glossterm linkend="uri">URI</glossterm>
+	      that identify resources via a representation of
+	      their primary access mechanism (e.g., their network
+	      <quote>location</quote>), rather than identifying the
+	      resource by name or 
+	      by some other attribute(s) of that resource.
+	    </para>
+	  </blockquote>
+	</para>
+      </glossdef>
+    </glossentry>
+    
+    <glossentry id="urn">
+      <glossterm>Uniform Resource Naming</glossterm>
+      <acronym>URN</acronym>
+      <glossdef>
+	<para>
+	  A <glossterm linkend="uri">URI</glossterm> scheme which is
+	  under development by the <ulink
+	  url="http://www.ietf.org/">IETF</ulink>, which should
+	  provide for the resolution using Internet protocols of names
+	  which have a greater persistence than that currently
+	  associated with Internet host names or organisations (as
+	  used in <glossterm linkend="url">URL</glossterm>s). Uniform
+	  Resource Names will be URI schemes that improve on URLs in
+	  reliability over time, including authenticity, replication,
+	  and high availability. See <ulink
+	  url="http://www.w3.org/pub/WWW/Addressing/Addressing.html">http://www.w3.org/pub/WWW/Addressing/Addressing.html</ulink>
+	</para>
+	<glossseealso otherterm="pathurn"/>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="uxf">
+      <glossterm>UML Exchange Format</glossterm>
+      <acronym>UXF</acronym>
+      <glossdef>
+	<para>
+	  A set of <glossterm linkend="xml">XML</glossterm> <glossterm
+	    linkend="dtd">DTD</glossterm>s that describe <glossterm
+	    linkend="uml">UML</glossterm> diagrams. See
+	  <citation>uxfspec</citation>.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="w3c">
+      <glossterm>The World Wide Web Consortium</glossterm>
+      <acronym>W3C</acronym>
+      <glossdef>
+	<para>
+	  As described on the W3C home page (<ulink
+	    url="http://www.w3.org">http://www.w3.org</ulink>), the W3C
+	  was founded to <quote>lead the World Wide Web to its full potential
+	  by developing common protocols that promote its evolution and
+	  ensure its interoperability.</quote>
+	</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry id="wap">
+      <glossterm>Wireless Application Protocol</glossterm>
+      <acronym>WAP</acronym>
+      <glossdef>
+	<remark>To be written.</remark>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="xmi">
+      <glossterm>XML Metadata Interchange</glossterm>
+      <acronym>XMI</acronym>
+      <glossdef>
+	<para>
+	  A serialization of a <glossterm
+	    linkend="uml">UML</glossterm> metamodel described using
+	  the <glossterm linkend="mof">MOF</glossterm>.
+	  The serialization is done using <glossterm
+	    linkend="xml">XML</glossterm>. See <citation>xmispec</citation>.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="xml">
+      <glossterm>Extensible Markup Language</glossterm>
+      <acronym>XML</acronym>
+      <glossdef>
+	<para>
+	  A metalanguage defined by <glossterm
+	    linkend="w3c">W3C</glossterm>, used to define specialized 
+	  markup languages (like <glossterm
+	    linkend="html">HTML</glossterm>) that can be used to
+	  transmit data 
+	  in a portable way. See <citation>xmlspec</citation>.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <glossentry id="xsl">
+      <glossterm>Extensible Style Language</glossterm>
+      <acronym>XSL</acronym>
+      <glossdef>
+	<para>
+	  Language defined by the <glossterm
+	    linkend="w3c">W3C</glossterm> used to transform <glossterm
+	    linkend="xml">XML</glossterm> documents
+	  into <glossterm linkend="html">HTML</glossterm> or some
+	  other presentation format, for display in, 
+	  i.e., a Web browser.
+	</para>
+      </glossdef>
+    </glossentry>
+ 
+    <!--
+    
+  <glossentry id="">
+  <glossterm></glossterm>
+  <acronym></acronym>
+  <glossdef>
+  <para></para>
+  </glossdef>
+  </glossentry>
+    --> 
+    
+  </glossary>
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  

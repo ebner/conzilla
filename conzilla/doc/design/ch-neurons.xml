@@ -1,0 +1,581 @@
+  <!-- $Id$ -->
+  
+  <chapter id="ch-neurons">
+    <title>Neurons and Neuron Types</title>
+    
+    
+    <section>
+      <title>&s1;</title>
+      <para>
+	The neuron and neuron type objects define what we mean by a
+	concept and a relation, and how we have chosen to describe
+	them, and is therefore the part of the Conzilla design that
+	makes it a concept browser.  Neurons and neuron types
+	constitute the logical network of concepts and relations, not
+	tied to a certain visual presentation.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s2;</title>
+      <para>
+	The question of how to represent concepts and their relations is
+	a difficult one, and much of the design work has therefore
+	gone into figuring out what, exactly, we want to use them for.
+	In the end, these are the important design goals we have
+	considered:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      Existing concepts and associations must be
+	      incorporable in any concept maps, i.e., must be independent of
+	      any specific concept map. New associations must be able to
+	      connect concepts located anywhere, i.e., it must not be
+	      necessary to change the associated concepts. This is to allow
+	      reuse of components on a global basis.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      The concepts and associations must be typed. For
+	      associations, the motivation is clear: To be able to search
+	      for concepts having a certain relation to a given concept, the
+	      types of the associations must be known. For concepts, it is
+	      not that clear. In fact, the motivation is that one may want
+	      to have other types of objects represented in the system, such
+	      as events or states (to be able to draw activity diagrams), and
+	      these objects are not strictly concepts.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      Associations must be able to associate any number of
+	      concepts. This is motivated by the existence in UML of
+	      n-ary associations and in other relational systems such
+	      as <classname>CORBA::RelationShips</classname> of
+	      similar constructs. In reality, this reflects the need
+	      to represent relations such as a book loan, which has
+	      three parties: the loaner, the library and the book.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      Association should preferably be able to relate
+	      associations to oneanother. It is not at all uncommon to
+	      encounter an association that is very much related to
+	      another one, and this must be expressible.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+    </section>
+    
+    
+    <section id="ch-neurons-3">
+      <title>&s3;</title>
+      <para>
+	The design consists of two types of components: neurons and
+	neuron types. To understand the terms used here, let us define
+	a few terms that are often used when discussing associations
+	(The terminology is taken from
+	<classname>CORBA::Relationships</classname>, as described in
+	<citation>corbarelationships</citation>):
+	
+	<glosslist>
+	  <glossentry>
+	    <glossterm>role</glossterm>
+	    <glossdef>
+	      <para>
+		is an end of the association. We say that a concept
+		<quote>plays a role</quote> in the association. Each
+		role is of a certain <glossterm>role type</glossterm>,
+		and an association may
+		be able to hold roles of several different role types.
+	      </para>
+	    </glossdef>
+	  </glossentry>
+	  
+	  <glossentry>
+	    <glossterm>degree or arity</glossterm>
+	    <glossdef>
+	      <para>
+		is the number of different role types that a role in an
+		association can be of. In the case of a generalization
+		there are only two role types: the general and the
+		specific.  We can imagine more complicated cases. Take
+		a book loan as an example. There are three role types
+		involved: the <type>person</type> loaning the book,
+		the <type>library</type> and a number of
+		<type>book</type>s. So this association has degree
+		three.
+	      </para>
+	    </glossdef>
+	  </glossentry>
+	  
+	  <glossentry>
+	    <glossterm>multiplicity</glossterm>
+	    <glossdef>
+	      <para>
+		of a role type is the number of concepts that play
+		roles of that role type in an association. In the book
+		loan example, one person can loan two books at the
+		same time from a library. So the multiplicity of the
+		<type>book</type> role type in this book loan is
+		two. The <emphasis>allowed</emphasis> multiplicity of
+		the book role type may, however, be much larger, and
+		maybe even unlimited.
+	      </para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+      </para>
+      
+      <section>
+	<title>Neuron</title>
+	<para>
+	  Neurons represent both associations and concepts, as well as
+	  other types of objects needed in other types of diagrams, such
+	  as events or states. A neuron has the following attributes:
+	  
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+		A type, in the form of a reference to (i.e., the
+		identifier of) a neuron type.
+	      </para>
+	    </listitem>
+	    
+	    <listitem>
+	      <para>
+		A number of meta-data tag-value pairs (as all
+		database components have).
+	      </para>
+	    </listitem>
+	    
+	    <listitem>
+	      <para>
+		A number of <quote>data</quote> tag-value pairs. Data
+		allows concepts and associations to actually contain
+		information that are inherent to their type. For
+		example, a neuron of the type <literal>historical event</literal> may be equipped with an historical
+		date.  This is what makes the database we are
+		designing actually contain data.
+	      </para>
+	    </listitem>
+	    
+	    <listitem>
+	      <para>
+		A number of <quote>axons</quote>, where each axons
+		points to another neuron via its identifier. This
+		corresponds to roles for associations, and so each
+		axon has a type and a multiplicity (as an interval
+		between zero and infinity), reflecting the number of
+		objects that the other side represents. For example,
+		neurons that represent aggregations have axons of the
+		types <literal>part</literal> and
+		<literal>aggregate</literal> representing the two ends
+		in this association. If one axon of the type
+		<literal>aggregate</literal> points to the concept
+		<literal>bicycle</literal>, and another of the type
+		<literal>part</literal> points to the concept
+		<literal>wheel</literal>, the former will have
+		multiplicity one, while the latter will have the
+		multiplicity interval one to four (perhaps),
+		describing the fact that bicycles have one, two,
+		three, or four wheels. Note that axons are still
+		called <quote>roles</quote> in the current
+		implementation, even if this is expected to change.
+	      </para>
+	    </listitem>
+	    
+	    <listitem>
+	      <para>
+		An enumeration of neurons that may have axons
+		pointing to this neuron. This is a hint list only, i.e.,
+		neither obligating nor exhaustive.
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+	</para>
+
+	<para id="ch-neurons-3-filter">
+	  Further, a neuron may contain the following meta-data tags
+	  in addition to standard resource tags:
+	  <variablelist>
+	    <varlistentry>
+	      <term>Filter</term>
+	      <listitem>
+		<para>
+		  Gives the identifier of a <link
+		  linkend="ch-filters">filter</link> to be used to sort
+		  the content of this neuron.
+		</para>
+	      </listitem>
+	    </varlistentry>
+	  </variablelist>
+	</para>
+      </section>
+      
+      
+      <section>
+	<title>Neuron types</title>
+	<para>
+	  Neuron types defines the allowed values of the different
+	  attributes of a neuron, and therefore is what distinguishes
+	  concepts from associations and other sorts of neurons. A
+	  neuron type also contains hints as to how objects of the type
+	  are to be presented visually. The generic attributes are:
+	  
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+		A number of meta-data tag-value pairs (as all
+		database components have).
+	      </para>
+	    </listitem>
+	    
+	    <listitem>
+	      <para>
+		An enumeration of the allowed data tags.
+	      </para>
+	    </listitem>
+	    
+	    <listitem>
+	      <para>
+		An enumeration of the allowed axon types, each with
+		their own allowed multiplicity (as an interval between zero
+		and infinity).
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+	</para>
+	
+	<para>
+	  A neuron is not allowed to use other data tags or axons types
+	  than these declared in its type. This is partially enforced in
+	  the current implementation; not, however, on the database
+	  level, but only when creating or modifying neurons.
+	</para>
+	
+	<para>
+	  The visual attributes are grounded on the assumption that the
+	  presentation of a neuron consists of a cell body and the
+	  axons. A concept will not have any axons, and is therefore
+	  represented only by the body, while associations in general
+	  have no visible body, but may very well have if they are
+	  important objects in themselves. The attributes in the current
+	  implementation are:
+	  
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+		Attributes for the axons: a thickness between 1 and 10
+		as well as a line type, such as
+		<literal>continuous</literal>,
+		<literal>broken</literal>, etc., as well as attributes
+		describing how the end of the axons, the head, should
+		look. There is a head type, e.g.,
+		<literal>arrow</literal>, <literal>diamond</literal>,
+		as well as a size parameter between 1 and
+		10. It is also possible to specify if the head should
+		be filled or not.
+	      </para>
+	    </listitem>
+	    
+	    <listitem>
+	      <para>
+		Attributes for the body: a box type, which is a string
+		describing the shape of the body, such as
+		<literal>rectangle</literal>,
+		<literal>ellipse</literal>, etc. There is also the
+		possibility of connecting the body with the axons with
+		the help of a line, which has the same
+		attributes as the axon lines above.
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+	</para>
+	
+	<para>
+	  The application is free to interpret these characteristics in
+	  the way it finds suitable for the presentation medium.
+	</para>
+      </section>
+    </section>
+    
+    
+    <section>
+      <title>&s4;</title>
+
+      <para>
+	The motivation behind the terminology <quote>neuron</quote> is
+	the following: As what we have designed is a generalization of both
+	concepts and associations, and indeed may be used to represent
+	even other things, neither of these names would be
+	appropriate. A neuron, on the other hand, is an entity which
+	connects other neurons with each other using axons<footnote>
+	  <para>
+	    and dendrites, of course. But all analogies have their problems...
+	  </para>
+	</footnote>, and thus serves both as link and as the subject
+	of links. Our neurons connect to form a globally
+	interconnected <quote>neural network</quote>, which we
+	visualize using computer tomography sections, that we call
+	concept-maps (which, however, may not be entirely in line with
+	the metaphor).
+      </para>
+      
+      <para>
+	This is a very abstract picture, but this is what makes it
+	possible to describe the different types of relations we want
+	to describe. It is, we believe, an interesting new way of
+	representing graphs that, in effect, comes down to assigning
+	an owner to each edge in the graph among the two nodes it is
+	connecting.
+      </para>
+
+      <para>
+	Note that when we say <quote>neuron</quote>, we mean any
+	object represented by a neuron, while the word
+	<quote>concept</quote> is only used to talk about neurons that
+	represent concepts or similar objects.
+      </para>
+      
+      <para>
+	It has been a long way before we have reached the current
+	design. Our first attempt at creating the structure, carefully
+	described in <citation>cid53</citation> lead to failure on
+	several points:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      We were fixated on the ideas of concept and
+	      association, and therefore failed too see how we were to
+	      expand the system to include other types of object to be able
+	      to draw, for example, activity diagrams. This also led to an
+	      underestimation of the importance of
+	      associations. Remember what <author>
+		<firstname>Henri</firstname>
+		<surname>Poincaré</surname></author> said:
+	      
+	      <blockquote>
+		<para>
+		  The aim of science is not things themselves - as the
+		  dogmatists in their simplicity imagine - but the
+		  relations between things. Outside those relations there
+		  is no reality knowable.
+		</para>
+	      </blockquote>
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      Associations were not separate components, but were
+	      instead each included in a concept, leading to severe problems
+	      and complexity when wanting to associate external
+	      concepts.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      Associations were only allowed to be of degree
+	      exactly two, which was motivated by the fact that the most
+	      common associations were of degree two, as well as by the fact
+	      that the MOF actually had the same restriction (which we now
+	      consider a severe defect in the MOF). In fact, higher degree
+	      association can be simulated by introducing a new concept
+	      acting as middle point. However, the current solution results
+	      in a much cleaner and more natural system.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      Associations had no type, resulting in problems when
+	      attaching common appearances to the same sort of associations,
+	      as well as problems of standardization when wanting to
+	      introduce new sorts of associations.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+      
+      <para>
+	All of these problems were clear to us even before we had
+	finished the implementation of the first Conzilla prototype,
+	and the solution described here was already on the drawing
+	board. By contrast, we strongly believe in the current system
+	design. The system has proved itself to work very
+	well in unexpected circumstances.
+      </para>
+      
+      <para>
+	The elimination of the fundamental difference between a
+	concept and an association actually has philosophical
+	consequences that are important. It succeeds in elevating
+	associations to the same status as have concepts. But it also
+	has technical consequences, in the sense that everything you
+	can do with a concept, you can automatically do with an
+	association. For example, when implementing the assigning of
+	content to concepts to aid in explaining them, this becomes
+	an automatic feature of associations as well, which is not
+	insignificant! This allows, namely, the explanation of
+	associations by the same means, which results in exactly the
+	emphasis on the relations between things that we were
+	searching.
+      </para>
+      
+      <para>
+	It is expected that map designers in different areas construct
+	their own neuron types for use in their own situations, but it
+	is also expected that there will be a considerable amount of
+	work dedicated to the standardization of types, as this is
+	what allows large-scale searching. Regrettably, we have not
+	ourselves done much work in this direction, and it is clear to
+	us that before this design is set in stone, we will have to
+	try to encode knowledge from several disciplines in the system
+	so as to be sure that it is actually possible and that the
+	system is flexible enough to cover all relevant needs.
+      </para>
+      
+      <para>
+	When considering which axon types a new neuron type should
+	have, the idea is that axons connect neurons with the neurons
+	that are essential for its existence. As an example, a
+	generalization does not exist before you have something to
+	generalize and something to specialize, which is why it has
+	degree two, while a concept exists by itself and therefore has
+	degree zero (See further <xref linkend="ch-content"/>,
+	however). The same reasoning holds for data as well: it
+	represents information without which the neuron does not
+	exist. The difference is that the information given by a data
+	tag is not represented by another neuron (meta-data, on the
+	other hand, is not information internal to the neuron, but
+	external information).
+      </para>
+      
+      <para>
+	We plan to allow data tags in each axon as well. This is
+	debatable, but actually simplifies many design tasks. The
+	reason to want data tags in axons is to avoid having to
+	construct an extra layer of neurons between the neuron and the
+	neurons it links to. For example, you may consider
+	representing a sequence of events by letting them be attached
+	to an <literal>event-sequence</literal> neuron. Then you
+	realize that being connected by axons from this neuron
+	prohibits you from marking the events with the time when they
+	happened, and so you may consider adding the time information
+	to the axons (as it is impossible to add it to the events
+	themselves; they take part in several different
+	sequences). The alternative would be lifting the relation to
+	neuron status, by defining a
+	<literal>event-occurrence</literal> neuron type, connected to
+	the event with an axon and with the time it occurred as
+	data. Then the event-sequence neuron may connect to this
+	neuron instead. It is not at all clear which solution is the
+	right one for this case, as this in fact depends on if you
+	will need to do one of the following things with the
+	<literal>event-occurrence</literal>:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      Allow it to have meta-data.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>      
+	      Link to it from another neuron, or in any way use it
+	      separately.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>      
+	      Link it to content explaining it.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+	Indeed, if you need to do one of the above, the
+	<literal>event-occurrence</literal> clearly needs to be a
+	neuron on its own. It is clear that not every relation can be
+	a neuron, as this would lead to infinite recursion. The above
+	points summarize the limit when a relation can be represented
+	by an axon. Thus, the example shows the importance of
+	considering carefully which neuron types you need.
+      </para>
+      
+      <para>
+	The remaining problems in the design, in need of discussion,
+	include:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>	  
+	      A more serious standardization of the visual
+	      attributes, as well as usage experiments to examine the
+	      relevance of the different attributes.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      A discussion of the role of the neuron type. Should
+	      you be able to inherit types? Which types are standard, and
+	      what identifiers should they have? Is the type an attribute of
+	      the neuron, or should it not in fact be part of the meta-data?
+	      Should the restrictions in the type be enforced by the system
+	      in some way?
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para> 
+	      A discussion of the role of multiplicity. Is the
+	      concept well defined and useful, and is the design the right?
+	      Perhaps it should be incorporated in the future data tags of
+	      the axons?
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      Where should meta-data be located? Is it really
+	      necessary to download it together with the neuron?
+	      Perhaps a separate <quote>meta-data</quote> component is
+	      the solution.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      How are you supposed to find all the axons that point
+	      to a given neuron? Part of a solution is given by the hint
+	      list contained in each neuron. But if you add a link to a
+	      neuron that you cannot modify, this does not help much. It
+	      becomes obvious that in the future, a standardized catalogue
+	      function will be necessary.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+    </section>
+  </chapter>
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  
+  
+  

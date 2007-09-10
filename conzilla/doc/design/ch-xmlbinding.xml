@@ -1,0 +1,236 @@
+  <!-- $Id$ -->
+
+  <chapter id="ch-xmlbinding">
+    <title>The XML binding</title>
+    
+    
+    <section>
+      <title>&s1;</title>
+      <para>
+	The <glossterm linkend="xml">Extensible Markup Language
+	(XML)</glossterm> binding is the only representation fully
+	implemented in the Conzilla system and certainly the one most
+	widely useful. The implementation does, however, lead the way
+	towards implementing other formats, as many of the interesting
+	problems must be solved already for the XML binding.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s2;</title>
+      <para>
+	The XML binding is intended to be used in a wide variety of
+	environments. The format should be a totally disconnected
+	format, in the sense that after having delivered the
+	component, the server will no be longer involved. The analogy
+	with a web server with passive pages is obvious, and the
+	reason for this constraint is that it allows a world of users
+	simultaneously using the components. Even if the component
+	changes, the user will not notice before a reload.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s3;</title>
+      <para>
+	The DTDs are given in <xref linkend="ch-dtds"/>. Note that they do
+	not allow any free-text markup.
+      </para>
+
+      <para>
+	The access mechanisms allowed for this format are the standard
+	HTTP and local harddisk accesses represented by the
+	<literal>http:</literal> and <literal>file:</literal> URL
+	protocols. Note that for component identities directly using
+	one of these protocols, the XML binding will automatically be
+	chosen, while other formats in theory could use these
+	protocols after having been through a lookup.
+      </para>
+
+      <para>
+	Updating a component using the XML binding can only be done by
+	replacing it entirely via, for example, a file save command or
+	a HTTP <literal>PUT</literal> command. If no saving
+	destination is given or access to this destination is denied,
+	the component may not be edited.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s4;</title>
+      <para>
+	Luckily, translating the definition of the different
+	components into XML is a relatively straightforward operation.
+	In fact, the component design has been made directly in XML.
+	XML was part of the very early design decisions, and therefore
+	has much influenced the design. The reasons for choosing XML
+	as the most fundamental data format are several:
+
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      <quote>XML shall be straightforwardly useful over the
+	      Internet</quote>
+	      (<citation>xmlspec</citation>). Actually, XML fits
+	      perfectly into the scheme of using URIs and the existing
+	      URL protocols, being related to HTML as it is. A CORBA
+	      solution, for example, leads to problems with CORBAs
+	      heavy-weight profile. By distributing objects packed in
+	      XML documents, we allow lighter operation of the whole
+	      system.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      XML also is immediately useful as a data storage
+	      format, immediately distributable using any web server. This
+	      is not a small point, as getting involved in the business of
+	      using a database could be unnecessary overhead for small
+	      content providers and for our prototyping.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      <quote>It shall be easy to write programs which process
+	      XML documents</quote>
+	      (<citation>xmlspec</citation>). And there are indeed a
+	      multitude of parsers for XML for any important
+	      programming language.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      <quote>XML documents should be human-legible and
+	      reasonably clear</quote>
+	      (<citation>xmlspec</citation>). This has much helped us,
+	      as nothing is needed to be able to analyze an XML
+	      document.
+	    </para>
+	  </listitem>
+          
+	  <listitem>
+	    <para>
+	      <quote>XML documents shall be easy to create</quote>
+	      (<citation>xmlspec</citation>). This point is incredibly
+	      important. You can create XML documents using nothing
+	      but a text editor, which was, by necessity, the case
+	      before we had constructed a complete editor. But it is
+	      also easy to create XML documents from inside a program,
+	      which has helped us in the prototyping.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+
+      <para>     
+	This list could easily be continued. Of course, there are
+	problems, such as the following:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      The updating procedure when you are not located on
+	      the same file system as the XML files turns out to be
+	      complicated, suffering from the same difficulties as updating
+	      HTML pages. But this is an expected side-effect of the
+	      extremely simple distribution. The components in XML format
+	      are not primarily meant to be edited from a distance, but
+	      rather to distribute ready-made components.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      XML is not the most compact format imaginable. However, we do not
+	      expect the components to constitute the largest part of the
+	      data used, but rather the content in the form of images,
+	      videos, etc. Also, this non-terseness in representation is the
+	      basis of many of the advantages of the XML binding, so it will
+	      be conditionlessly accepted. And it is still relatively
+	      lightweight, in comparison with, for example, CORBA.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      The canonical programmatic interface to XML, a DOM,
+	      Document Object Model, is a very heavyweight representation
+	      not suitable in all situations. We have solved this problem in
+	      the class library.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+      
+      <para>
+	The <glossterm linkend="xmi">XML Metadata Interchange
+	(XMI)</glossterm> format is designed as a serialization of a
+	UML metamodel described using the <glossterm
+	linkend="mof">MOF</glossterm>. This serialization is done
+	using XML. Why isn't this a suitable XML binding of our
+	objects? The reason is that it shares many of the problems
+	with the MOF, more precisely:
+
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      Object oriented analysis and design fixation in the modelling.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      Distributability problems. An XMI document describes
+	      all classes and associations contained in one closed model,
+	      typically one whole Repository. This is orthogonal to the
+	      modular design we want, and indeed, the goal of XMI as
+	      described in <citation>xmispec</citation> is to ease
+	      
+	      <blockquote>
+		<para>
+		  the problem of tool interoperability by providing a
+		  flexible and easily parsed information interchange
+		  format. In principle, a tool needs only to be able save
+		  and load the data it uses in XMI format in order to
+		  inter-operate with other XMI capable tools.
+		</para>
+	      </blockquote>
+	    </para>
+	    <para>
+	      That is, XMI is not designed as a way to decentralize
+	      information but as a way to transfer complete models, a
+	      concept that in a sense does not exist in our system.
+	    </para>
+	  </listitem>
+   
+	  <listitem>
+	    <para>
+	      Prototypability. The XMI Specification is truly a
+	      large one, and would distract us from more important
+	      tasks.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>       
+      <para>
+	So we have decided not to use XMI. This is also the right
+	place to mention <glossterm linkend="uxf">UML Exchange Format
+	(UXF)</glossterm> described in <citation>uxfspec</citation>
+	that is a more lightweight XML description of UML diagrams
+	which has inspired us in many ways.
+      </para>
+    </section>
+  </chapter>
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  

@@ -1,0 +1,226 @@
+  <!-- $Id$ -->
+
+  <chapter id="ch-conceptmaps">
+    <title>Concept maps</title>
+    
+    
+    <section>
+      <title>&s1;</title>
+      <para>
+	A concept map is a presentation of a part of the abstract
+	world of interconnected neurons. A concept map is designed to
+	emphasize certain associations between certain concepts, and
+	this way provide a limited view of how the neurons relate to
+	each other, without adding any actual information to the
+	contextual network that the neurons constitute. There are many
+	sorts of views possible, but the one described here is the one
+	implemented - the standard two-dimensional UML-like view.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s2;</title>
+      <para>
+	A concept map contains the information necessary to present
+	part of the neuronal context. Such a view results in the
+	following goals for a concept map:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      It includes a number of neurons and certain of their
+	      axons.
+	    </para>
+	  </listitem>
+	
+	  <listitem>
+	    <para>
+	      It defines positions for the visual elements that the
+	      neurons consists of.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      It allows the presentation of data in the map.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+	
+	This is supposed to be done in a way that resembles UML as
+	much as possible.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s3;</title>
+      <para>
+	A concept map is always represented in the world of neurons by
+	a content description, which gives the map's URI as location
+	(naturally) and the type
+	<literal>application/x-conceptmap</literal> as MIME type. A
+	concept map contains the following:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      A bounding box for the whole map, which defines the
+	      coordinate system in which the rest of the coordinates are
+	      given.
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      A <link linkend="ch-filters">filter</link> to use as
+	      default sorting of the content of neurons. A filter
+	      given in a neuron (see <link
+		linkend="ch-neurons-3-filter">Neurons</link>) will override
+	      this.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      A list of neurons, referred to by their identity. For
+	      each neuron, a bounding box is given for the body, as
+	      well as a number of points constituting the line
+	      connecting the body with the axons. A title is given to
+	      each neuron, as well as a list of data tags that are to
+	      be displayed together with their values. Each neuron may
+	      also have a so called detailed map, which is the map
+	      where you land if you surf this neuron. The map is given
+	      (as always) by the URI of its content description.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      Each axon of the neuron that one wants in the map is
+	      identified by axon type and identity of the connected neuron.
+	      Each given axon is given a list of points, where the last is
+	      the tip of the axon head. It is supposed that all axons start
+	      at the same point, although this is not enforced.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para id="mapset">
+	      Each map is part of a map set. This map set is
+	      represented by a neuron having content, where all the concept
+	      maps that are content of this neuron constitute the map set.
+	      The identity of this neuron is given in the map.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+    </section>
+    
+    
+    <section id="ch-conceptmaps-dd">
+      <title>&s4;</title>
+      <para>
+	In fact, given the structure of neurons already defined,
+	defining simple concept maps is not very complicated; most
+	elements are a must.
+      </para>
+      
+      <para>
+	That given, there are problems to discuss. One could ask why
+	the detailed map is given here and not in the neruon itself.
+	There are two reasons for this. First, this would constitute a
+	breakage to the separation between the neuronal network and
+	the presentation level (which may be replaced by other types
+	of maps). The second reason is that which map one wants to
+	link to actually is very dependent of which map one is
+	regarding. Still, this should not stop us from considering
+	placing a preferred detailed map in the meta-data of a neuron,
+	as a sort of <quote>primary context</quote>.
+      </para>
+
+      <para>
+	Another idea is to separate between <quote>content</quote> and
+	<quote>context</quote> in neurons. That is, maps that contain
+	the neuron is placed in the <quote>context</quote> role type
+	instead of in the <quote>content</quote> role type of the
+	neuron. Surfing would then mean choosing a maps from this
+	list. Possibly, the <quote>context</quote> maps should be
+	placed in meta-data, as they cannot possibly be seen as
+	necessary for the existence of the neuron.
+      </para>
+
+      <para>
+	The role of the map set also has to be explained. It is a
+	solution to the problem that there often exists several maps
+	that describes the context of a certain concept, but these are
+	not reachable from each other, while the detailed maps always
+	are. The map set is supposed to be number of closely related
+	maps between which you can easily switch. However, it is not
+	at all clear that this is the right solution to the problem,
+	as this idea has not been satisfyingly analyzed and tested. An
+	alternative solution would be to let you quickly switch to the
+	maps that are content of the neurons in the map. Or better, if
+	the <quote>context</quote> idea described above is
+	implemented, simply replace the mechanism with that
+	system. Note that this would make it impossible to add such
+	maps if you are using neurons that you cannot modify.
+      </para>
+
+      <para>
+	The reason to always refer to a map by its content description
+	is to make it easier to assign it as content (by always having
+	access to the content description). Also, as a concept map is
+	found in several places, it is preferred to have one single
+	sort of identification. With this design, it is only the
+	content description that knows the identity of the actual map
+	component. One wonders if this actually unnecessitates using
+	the lookup mechanisms for concept maps.
+      </para>
+
+      <para>
+	Note that the given design assumes that an axon type and a
+	neuron identity uniquely identifies a single axon.
+	The consequence is that a neuron may not have two
+	axons of the same type pointing to the same neuron. It is not
+	yet known if this restriction imposes problems. It is,
+	however, known that trying to find a way around the
+	restriction would cause problems, as this way of identifying
+	axons by type and target is very natural, but these problems
+	are not insurmountable. If the need arises, this is an area
+	where the design may expand. Note that the same neuron still
+	may be the target of axons of different types.
+      </para>
+
+      <para>
+	Another problem is that it is impossible to use the same
+	neuron twice in the same map. Cases are kown where this would
+	be preferable, for example beacuse of lack of room in the
+	concept map. It is not at all clear if this is a fundamental
+	and necessary restriction or a simple implementation artefact.
+      </para>
+
+      <para>
+	It has been discussed that one should allow concept maps to
+	contain neurons. This would mean that one would not need to
+	give very simple neurons definitive identities, as long as
+	they are only used inside the map, and that one could
+	distribute certain maps in an XML file, completely self-contained.
+      </para>
+
+      <para>
+	The neuron could, in this case, be referred to with the help
+	of a <quote>fragment identifier</quote>, which are introduced
+	with the character <literal>#</literal> (see  
+	<citation>rfcuri</citation>).
+      </para>
+    </section>
+  </chapter>
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  

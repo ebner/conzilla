@@ -1,0 +1,287 @@
+  <!-- $Id$ -->
+
+  <appendix id="ch-dtds">
+    <title>XML DTDs</title>
+
+    <section>
+      <title>The MetaData DTD</title>
+      <programlisting format="linespecific">
+
+  &lt;?xml version="1.0" encoding="ISO-8859-1" ?>
+
+  &lt;!-- MetaData -->
+  
+  &lt;!ELEMENT MetaData           (Tag*)>
+  &lt;!ELEMENT Tag                (#PCDATA)>
+  &lt;!ATTLIST Tag
+       NAME                     CDATA                  #REQUIRED>
+  
+  &lt;!-- END MetaData -->
+        
+      </programlisting>
+    </section>
+
+    <section>
+      <title>The Neuron DTD</title>
+
+      <programlisting format="linespecific">
+
+  &lt;?xml version="1.0" encoding="ISO-8859-1" ?>
+
+  &lt;!-- Neuron -->
+  
+  &lt;!ELEMENT Neuron             (MetaData,
+                                Data?,
+                                Role*,
+                                PlaysRoleIn*)>
+  &lt;!ATTLIST Neuron
+       TYPEURI                  CDATA                  #REQUIRED>
+ 
+  &lt;!-- END Neuron -->
+  
+  
+  
+  &lt;!ENTITY % MetaData PUBLIC "-//CID//DTD MetaData 1.0//EN" "MetaData.dtd">
+  %MetaData;
+  
+  
+  
+  &lt;!-- Data -->
+  
+  &lt;!ELEMENT Data               (Tag*)>
+  
+  &lt;!-- END Data -->
+  
+  
+  
+  &lt;!-- Role -->
+  
+  &lt;!ELEMENT Role               (Multiplicity)>
+  &lt;!ATTLIST Role
+       NEURONURI                CDATA                  #REQUIRED
+       TYPE                     CDATA                  #REQUIRED>
+  
+  &lt;!ELEMENT Multiplicity        EMPTY>
+  &lt;!ATTLIST Multiplicity
+       LOWEST                   CDATA                  "0"
+       HIGHEST                  CDATA                  "infinity">
+  
+  &lt;!-- END Role -->
+  
+  
+  
+  &lt;!-- PlaysRoleIn -->
+  
+  &lt;!ELEMENT PlaysRoleIn         EMPTY>
+  &lt;!ATTLIST PlaysRoleIn
+       NEURONURI                CDATA                  #REQUIRED>
+  
+  &lt;!-- END PlaysRoleIn -->
+         
+        
+      </programlisting>
+    </section>
+    
+    <section>
+      <title>The NeuronType DTD</title>
+
+      <programlisting format="linespecific">
+
+  &lt;?xml version="1.0" encoding="ISO-8859-1" ?>
+
+  &lt;!-- NeuronType -->
+  
+  &lt;!ELEMENT NeuronType         (MetaData,
+                                DataTags,
+                                BoxStyle,
+                                RoleType*)>
+  
+  &lt;!-- END NeuronType -->
+  
+  
+  
+  &lt;!ENTITY % MetaData PUBLIC "-//CID//DTD MetaData 1.0//EN" "MetaData.dtd">
+  %MetaData;
+  
+  
+  
+  &lt;!-- DataTags -->
+  
+  &lt;!ELEMENT DataTags           (DataTag*)>
+  
+  &lt;!ELEMENT DataTag             EMPTY>
+  &lt;!ATTLIST DataTag
+       NAME                     CDATA                  #REQUIRED>
+  
+  
+  &lt;!-- END DataTags -->
+  
+  
+  
+  &lt;!-- BoxStyle -->
+  
+  &lt;!ELEMENT BoxStyle           (Box,
+                                Line)>
+  &lt;!ELEMENT Box                 EMPTY>
+  &lt;!ATTLIST Box
+       TYPE                     CDATA                  "rectangle"
+       COLOR                    CDATA                  "0">
+  
+  &lt;!ELEMENT Line                EMPTY>
+  &lt;!ATTLIST Line
+       TYPE                     CDATA                  "continuous"
+       THICKNESS               (0|1|2|3|4|5
+                               |6|7|8|9|10)            "1"
+       COLOR                    CDATA                  "0">
+  
+  
+  &lt;!-- END BoxStyle -->
+  
+  
+  
+  &lt;!-- RoleType -->
+  
+  &lt;!ELEMENT RoleType           (Multiplicity,
+                                RoleStyle)>
+  &lt;!ATTLIST RoleType
+       NAME                     CDATA                  #REQUIRED>
+  
+  &lt;!ELEMENT Multiplicity        EMPTY>
+  &lt;!ATTLIST Multiplicity
+       LOWEST                   CDATA                  "0"
+       HIGHEST                  CDATA                  "infinity">
+  
+  &lt;!ELEMENT RoleStyle          (Head,
+                                Line)>
+  
+  &lt;!ELEMENT Head                EMPTY>
+  &lt;!ATTLIST Head
+       TYPE                     CDATA                  "none"
+       FILLED                  (true|false)            "true"
+       SIZE                     CDATA                  "0">
+  
+  
+  &lt;!-- END RoleType -->
+
+      </programlisting>
+    </section>
+
+    <section>
+      <title>The ConceptMap DTD</title>
+
+      <programlisting format="linespecific">
+
+  &lt;?xml version="1.0" encoding="ISO-8859-1" ?>
+
+  &lt;!-- ConceptMap -->
+  
+  &lt;!ELEMENT ConceptMap         (MetaData,
+                                Background,
+                                BoundingBox,
+                                MapSet?,
+                                NeuronStyle*)>
+  
+  &lt;!-- END ConceptMap -->
+  
+  
+  
+  &lt;!ENTITY % MetaData PUBLIC "-//CID//DTD MetaData 1.0//EN" "MetaData.dtd">
+  %MetaData;
+  
+  
+  
+  &lt;!-- Background -->
+  
+  &lt;!ELEMENT Background          EMPTY>
+  &lt;!ATTLIST Background
+       COLOR                    CDATA                  "0">
+  
+  &lt;!-- END Background -->
+  
+  
+  
+  &lt;!-- BoundingBox -->
+  
+  &lt;!ELEMENT BoundingBox         EMPTY>
+  &lt;!ATTLIST BoundingBox
+       WIDTH                    CDATA                  #REQUIRED
+       HEIGHT                   CDATA                  #REQUIRED>
+  
+  &lt;!-- END BoundingBox -->
+  
+  
+  
+  &lt;!-- MapSet -->
+  
+  &lt;!ELEMENT MapSet              EMPTY>
+  &lt;!ATTLIST MapSet
+       MAPSETURI                CDATA                  #REQUIRED>
+  
+  &lt;!-- END MapSet -->
+  
+  
+  
+  &lt;!-- NeuronStyle -->
+  
+  &lt;!ELEMENT NeuronStyle        (Visibility,
+                                DetailedMap?,
+                                Box,
+                                RoleStyle*)>
+  &lt;!ATTLIST NeuronStyle
+       NEURONURI                CDATA                  #REQUIRED>
+  
+  
+  
+  &lt;!ELEMENT Visibility          EMPTY>
+  &lt;!ATTLIST Visibility
+       STRENGTH                 CDATA                  #REQUIRED>
+  
+  
+  &lt;!ELEMENT DetailedMap         EMPTY>
+  &lt;!ATTLIST DetailedMap
+       MAPURI                   CDATA                  #REQUIRED>
+  
+  
+  &lt;!ELEMENT Box                (BoundingBox,
+                                Position,
+                                Title,
+                                DataTags?,
+                                Line?)>
+  
+  &lt;!ELEMENT Position            EMPTY>
+  &lt;!ATTLIST Position
+       X                        CDATA                  #REQUIRED
+       Y                        CDATA                  #REQUIRED>
+  
+  
+  &lt;!ELEMENT Title              (#PCDATA)>
+  
+  
+  &lt;!ELEMENT DataTags           (DataTag*)>
+  
+  &lt;!ELEMENT DataTag             EMPTY>
+  &lt;!ATTLIST DataTag
+       NAME                     CDATA                  #REQUIRED>
+  
+  
+  &lt;!ELEMENT RoleStyle          (Line)>
+  &lt;!ATTLIST RoleStyle
+       TYPE                     CDATA                  #REQUIRED
+       NEURONURI                CDATA                  #REQUIRED>
+  
+          
+  &lt;!ELEMENT Line               (Position*)>
+  
+  
+  &lt;!-- END NeuronStyle -->
+
+      </programlisting>
+    </section>
+  </appendix>
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  

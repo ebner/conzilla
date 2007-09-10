@@ -1,0 +1,144 @@
+  <!-- $Id$ -->
+
+  <chapter id="ch-editor">
+    <title>The Editor</title>
+    
+    
+    <section>
+      <title>&s1;</title>
+      <para>
+	The editor is a fundamental part of the prototype, as it
+	(ideally) hides from the user all the technical details of
+	constructing neurons and maps. But the editor functions are
+	useful for more than that; it can also be used to increase the
+	level of interactivity of concept maps.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s2;</title>
+      <para>
+	The editor should fulfil the following goals:
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      It should be independent of the browser in the sense
+	      that the browser should work without it.
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      It should be independent of the data format the edited
+	      component happens to use.
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      It should allow the editing of all fields in editable
+	      neurons and conceptmaps, and possibly neuron types. This
+	      editing should be graphical or aided by graphical hints
+	      if possible.
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      It should be responsible for the saving of changes.
+	    </para>
+	  </listitem>
+
+	</itemizedlist>
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s3;</title>
+      <para>
+	The editor is implemented directly in the browser system, so
+	that you are able to edit a map in the very same window you
+	use for browsing it.
+      </para>
+
+      <para>
+	The editor is implemented using tools that attach mouse and
+	key listeners to the map graphics elements. In turn, when
+	editing, the editor modifies the actual concept map and neuron
+	objects, and the map display will be automatically updated
+	using property change listeners.
+      </para>
+
+      <para>
+	The editor consists of three main parts:
+
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      The map editor, which does all the graphical editing of
+	      conceptmaps.
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      The neuron editor, which does all the editing of
+	      neurons.
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      A metadata editor, which edits metadata for neurons and
+	      for concept maps. 
+	    </para>
+	  </listitem>
+
+	</itemizedlist>
+      </para>
+
+    </section>
+    
+    
+    <section>
+      <title>&s4;</title>
+      <para>
+	The intense use of listener mechanism has made it possible to
+	make the edit functionality one tool amongst others. As the
+	editor is heavily dependent on user interaction, and therefore
+	user interface design, it is expected that it will develop
+	considerably in the way it works with the edited
+	elements. Thus, the current method of implementation ensures
+	minimal impact on other parts of the code, notably the
+	browser.
+      </para>
+
+      <para>
+	The separation of editing functionality is necessary because
+	being able to edit a neuron directly in the concept map would most
+	probably be confusing, as one actually edits different
+	objects.
+      </para> 
+
+      <para>
+	It is noted that we have no method of creating and editing
+	neuron types. This should be added.
+      </para>
+
+      <para>
+	Also note that the functionality in the editor for moving and
+	otherwise manipulating concept maps could be used to increase
+	the interactivity of concept maps in the sense described in
+	<xref linkend="ch-browser-dd"/>.
+      </para>
+    </section>
+  </chapter>
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  

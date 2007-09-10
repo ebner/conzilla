@@ -1,0 +1,51 @@
+/* $Id$ */
+/*
+  This file is part of the Conzilla browser, designed for
+  the Garden of Knowledge project.
+  Copyright (C) 1999  CID (http://www.nada.kth.se/cid)
+  
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
+
+package se.kth.cid.conzilla.edit;
+import se.kth.cid.neuron.*;
+import se.kth.cid.util.*;
+import se.kth.cid.component.*;
+
+
+/** A simple interface for what a dialog concerning a Neuron should provide.
+ *
+ *  @see NeuronDialog
+ */
+public interface NeuronDialog 
+{
+  static int DIALOG_MASK_NONE=0;
+  static int DIALOG_MASK_DATA=1;
+  static int DIALOG_MAKS_METADATA=2;
+  static int DIALOG_MAKS_ROLE=4;
+  static int DIALOG_MAKS_ROLETO=8;
+  static int DIALOG_MAKS_NEURONURI=16;
+
+  void setNeuron(Neuron neuron);
+  String extractBaseUri(URI uri);
+  void hintBaseUri(String buri);
+  void hintMetaData(String tag, String value);
+  void hintData(String tag, String value);
+  
+  Neuron getNeuron();
+  URI    getNeuronURI();
+  NeuronDialog copy();
+}

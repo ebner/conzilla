@@ -1,0 +1,489 @@
+  <!-- $Id$ -->
+
+  <chapter id="ch-classlib">
+    <title>The Class Library</title>
+    
+    
+    <section>
+      <title>&s1;</title>
+      <para>
+	The class library is a set of Java classes that together form
+	an API for dealing with components and the different data
+	formats. It represents the most stable and reusable part of
+	the implementation, as well as the border line between the database
+	design implementation and our particular concept browser.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s2;</title>
+      <para>The class library is designed after the following goals:
+
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      It should contain
+	      
+	      <itemizedlist>
+		<listitem>
+		  <para>
+		    the component and identity handling routines,
+		  </para>
+		</listitem>
+
+		<listitem>
+		  <para>
+		    the data format specific routines,
+		  </para>
+		</listitem>
+		
+		<listitem>
+		  <para>
+		    the neuron, neuron type, and concept map
+		    representations,
+		  </para>
+		</listitem>
+            
+		<listitem>
+		  <para>
+		    the content description handling routines, and
+		  </para>
+		</listitem>
+
+		<listitem>
+		  <para>
+		    the filter implementation.
+		  </para>
+		</listitem>
+	      </itemizedlist>
+	    </para>
+	  </listitem>
+	  <listitem>
+	    <para>
+	      It should be immediately usable and practical in the
+	      implementation of a concept browser.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      The API should be usable in other contexts than the
+	      browser, such as a search engine or other software using the
+	      system. In particular, the library should not depend on any
+	      GUI or interactive code.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      The API should abstract the different data formats,
+	      and thus must not be dependent on the XML or the CORBA
+	      binding. Internally, there should of cource be support for the
+	      abstraction of each format, as well as the possiblity to add
+	      new formats without affecting the external interface.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      The neuron and neuron type representation should
+	      represent a Java binding of the specification, and preferably
+	      in such a way that the defined interfaces are easily
+	      translatable into CORBA IDL definitions. In practice, this
+	      means among other things that the interface must use only
+	      basic data types or CORBA types, but not Java-specific types.
+	      This way, the Java and CORBA bindings are made simultaneously,
+	      much aiding a CORBA implemetation at a later stage.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      The library should also be implemented in a way that
+	      separates the representation of the completely non-visual
+	      global conceptual environment from the visual parts concerned
+	      with concept maps, on order to enable the addition of other
+	      types of concept maps.
+	    </para>
+	  </listitem>
+       </itemizedlist>
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s3;</title>
+      <para>
+	The library consists of several main packages.
+      </para>
+
+      <section>
+	<title>XML</title>
+	
+	<para>
+	  This package contains the functionality to deal with
+	  simple XML documents in a simple way. Features:
+
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+		A document object model which can handle XML
+		documents with the following restrictions:
+       
+		<itemizedlist>
+		  <listitem>
+		    <para>
+		      No free text markup is allowed.
+		    </para>
+		  </listitem>
+            
+		  <listitem>
+		    <para>
+		      If several different types of elements are allowed as
+		      sub-elements for a given element, they may be
+		      mixed, but the 
+		      mixing is not recognized. Only the order of
+		      sub-elements 
+		      within each sub-element type is recognized. When
+		      saving, they are not mixed at all.
+		    </para>
+		  </listitem>
+		</itemizedlist>
+	      </para>
+	    </listitem>
+            
+	    <listitem>
+	      <para>
+		A parsing mechanism using the <ulink
+		url="http://www.microstar.com/aelfred.html">Ælfred</ulink>
+		XML parser.
+	      </para>
+	    </listitem>
+       
+	    <listitem>
+	      <para>
+		An exporting mechanism.
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+	</para>
+      </section>
+
+
+      <section>
+	<title>Component</title>
+	<para>
+	  This package contains the generic component handling routines.
+
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+		Meta data representation, including a Java interface
+		and a listener mechanism along the same lines as for
+		the <link linkend="ch-classlib-arch-neuron">Neuron and
+		ConceptMap</link> packages.
+	      </para>
+	    </listitem>
+       
+	    <listitem>
+	      <para>
+		Lookup functionality and handling of identifiers. The
+		implementation separates the following categories of
+		functionality:
+       
+		<itemizedlist>
+		  <listitem>
+		    <para>
+		      The lookup engine, mapping a URI to a URI and a
+		      data format. For <literal>http:</literal> and
+		      <literal>file:</literal> URIs, this is the
+		      identity mapping, adding XML (as
+		      <literal>text/xml</literal>) as format. For
+		      <literal>cid:</literal> URIs, this is
+		      implemented using a table, mapping path names
+		      to base URIs and giving the data format that is
+		      used by that path, as described in <xref
+			linkend="ch-identity"/>
+		    </para>
+		  </listitem>  
+
+		  <listitem>
+		    <para>
+		      The lookup routines may be also be used to find
+		      a URI to which you can save the component. This
+		      can, but does not have to be, the same URI as
+		      used when downloading the component. The current
+		      table implementation actually uses two tables,
+		      one for saving and one for loading. The tables
+		      themselves must be given by the application (and
+		      are currently loaded upon startup of the
+		      browser).
+		    </para>
+		  </listitem>
+		  
+		  <listitem>
+		    <para>
+		      The handler for each data format. This handler knows
+		      how to use the URI given by the lookup
+		      routines. Depending on 
+		      whether you are loading or saving the component, it uses
+		      different subsystems.
+		    </para>
+		  </listitem>
+
+		  <listitem>
+		    <para>
+		      The actual handler for a certain URI
+		      protocol. The XML handler (the only one yet
+		      existing) passes the URI to the XML parsing
+		      subsystem for both <literal>file:</literal> and
+		      <literal>http:</literal> URIs. When saving, only
+		      <literal>file</literal> is yet sopported, but
+		      HTTP <literal>PUT</literal> requests would be
+		      simple to implement, and even FTP saves should
+		      be interesting.
+		    </para>
+		  </listitem>
+		</itemizedlist>
+	      </para>
+	    </listitem>
+            
+	    <listitem>
+	      <para>
+		Packing and unpacking routines for the XML binding.
+		This package uses the XML package to parse the downloaded data
+		into the simple document model defined there, which is then
+		traversed and the component Java objects created. Inversely,
+		when saving, such a document model is constructed and then
+		written to the URI used to save to. The DTDs for the XML
+		bindings are compiled in, to be efficiently used by the XML
+		parser.
+	      </para>
+	    </listitem>
+	    
+	    <listitem>
+	      <para>
+		A cache subsystem. The implementation is currently
+		pretty simplistic, but the architecture is in place.
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+	</para>
+      </section>
+
+      
+      <section id="ch-classlib-arch-neuron">
+	<title>Neuron and ConceptMap</title>
+	<para>
+	  These packages contain the implementation of the neuron and
+	  neuron type components, and the concept map component,
+	  respectively. They consist of two main parts:
+
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+		The Java interfaces for the components, inteded to be
+		used when supporting other formats, and for constructing the
+		CORBA IDL.
+	      </para>
+	    </listitem>
+	    
+	    <listitem>
+	      <para>
+		The Java implementation of the interface, used for
+		downloaded components (in contrast to remotely used
+		components), be it in XML or other formats, or even newly
+		constructed components that have not yet been saved.
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+	</para>
+	
+	<para>
+	  The most important characteristics of the design are:
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+		Meta-data is represented by a separate object, which
+		is of the same type for all components.
+	      </para>
+	    </listitem>
+       
+	    <listitem>
+	      <para>
+		Each attribute is associated with a listener
+		mechanism. That is, whenever the attribute changes, all
+		registered listeners are notified.
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+	</para>
+	
+	<para>
+	  The Neuron package is completely independent of the ConceptMap
+	  package.
+	</para>
+      </section>
+
+      <section>
+	<title>Content</title>
+	<para>
+	  This package contains a small wrapper around neurons of type
+	  content description.
+	</para>
+      </section>
+      <section>
+	<title>Filter</title>
+	<para>
+	  <remark>What is there to say about the filter
+	  implementation??</remark>
+	  
+	</para>
+      </section>
+    </section>
+    
+    
+    <section>
+      <title>&s4;</title>
+      <section>
+	<title>XML</title>
+	<para>
+	  The reasons for implementing a more simplified document object
+	  model when there are several fully compliant DOM XML parsers
+	  available are several:
+
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+		The DOM parsers are in general very heavyweight, which
+		we found unattractive for use in an applet. By
+		contrast, the <ulink
+		url="http://www.microstar.com/aelfred.html">Ælfred</ulink>
+		parser is extremely lightweight in spite of being a
+		conforming XML parser.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		The resulting object model is very complicated and
+		heavyweight. The DOM is intended to be able to describe any
+		type of XML document containing arbitrary markup. Again, our
+		decision to enable the use of our browser in a web environment
+		has led to demands of simplicity. In fact, as our XML DTDs are
+		used as data structures rather than documents, the needed
+		object model can be made much simpler without loosing any
+		necessary functionality. The use of this simpler object model
+		makes the code using the model much simpler as well.
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+	</para>
+	
+	<para>
+	  Thus, we decided to use a simple parser and design a simple
+	  object model that fits our realively uncomplicated DTDs, but
+	  would not fit for example an HTML DTD. The decision still
+	  seems to have been the right one. One problem that we have not
+	  dealt with satisfyingly is the fact that the parser will need
+	  the DTD to parse the DTD each time a component is downloaded.
+	  By compiling in the DTD text into the library, we have
+	  eliminated the downloading time, but the parsing remains.
+	  There are two solutions:
+
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+		Use an XML parser that can use precompiled DTDs.
+	      </para>
+	    </listitem>
+	    
+	    <listitem>
+	      <para>
+		Avoid the usage of the DTD completely. This is
+		possible by avoiding completely the use of default values in
+		the DTD, and declaring the XML documents
+		"standalone". This is probably the way to go in the future.
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+	</para>
+      </section>
+
+
+      <section>
+	<title>Component</title>
+	<para>
+	  The component package design is extremely modular, which is
+	  currently not at all needed. However, designing the package in
+	  this modular way has made clear the responsabilities of the
+	  different parts of the design, which in turn has influenced
+	  the design of the data format and component identity
+	  specifications. The structure will help when adding lookup
+	  functionality and other data formats.
+	</para>
+      </section>
+
+      
+      <section>
+	<title>Neuron and ConceptMap</title>
+	<para>
+	  The need for a listener mechanism is motivated by two cases of
+	  use:
+
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+		When the same neuron is used several times in the
+		same browser (in different maps), and is edited in one of
+		them, it is immediately updated in the other.
+	      </para>
+	    </listitem>    
+
+	    <listitem>
+	      <para>
+		Even when several users access the same CORBA object,
+		they will all be notified when someone modifies the
+		object.
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+	</para>
+	
+	<para>
+	  The risk of not using a mechanism like this is to create
+	  inconsistencies when editing, something that is most
+	  problematic when using CORBA.
+	</para>
+	
+	<para>
+	  The need for full independence of the neuron level and the
+	  concept map 
+	  level is motivated by the possibility to use the neuron level
+	  in other types of concept maps, but also by the fact that this
+	  library may be used when constructing server-side search
+	  engines and similar tools.
+	</para>
+      </section>
+
+      
+      <section>
+	<title>Content and Filter</title>
+	<para>
+	  These parts of the library are not strictly part of the
+	  fundamental API, but still seem general enough to belong here.
+	  It is interesting to note that these constructs are
+	  implemented solely with the help of the neuron API, using the
+	  neuron structure as a data structure.
+	</para>
+      </section>
+    </section>
+  </chapter>
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  

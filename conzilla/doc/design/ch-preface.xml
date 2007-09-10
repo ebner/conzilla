@@ -1,0 +1,173 @@
+  <!-- $Id$ -->
+
+  <preface>
+    <title>Preface</title>
+
+    <section>
+      <title>Conzilla</title>
+
+      <para>
+	Conzilla<footnote>
+	  <para>This section was adapted from
+	    <citation>cid52</citation>.
+	  </para>
+	</footnote>
+	is the first incarnation of the concept browser idea
+	as developed by the Garden of Knowledge project at <glossterm
+	  linkend="cid">Centre for User Oriented IT-design,
+	  CID</glossterm>.
+      </para>
+
+      <para>
+	CID is an interdisciplinary research group and
+	academy-industry collaboration centre, which is located at the
+	department of Numerical Analysis and Computing Science (NADA)
+	at <glossterm linkend="kth">KTH</glossterm>, Stockholm. At
+	CID, there is a unique blend of knowledge from fields such as
+	pedagogy, computer science, mathematics, art and design as
+	well as cognitive and behavioral science. CID is engaged in a
+	multitude of projects that aim to develop Information and
+	Communication Technology based tools of various kinds.
+      </para>
+
+      <para>
+	Today, the activities at CID are divided into three major
+	areas of research and development called respectively Smart
+	Things and Environments, Digital Worlds and Interactive
+	Learning Environments. The initial project within the latter
+	field was the Garden of Knowledge (GoK) project, which was
+	initiated by Ambjörn Naeve in 1996.
+      </para>
+
+      <para>
+	The Garden of Knowledge is the name of a multi-mediated
+	learning-tool project which aims to develop IT-supported
+	methods to create an interdisciplinary understanding of the
+	perceptual and conceptual world, and to dvelop an educational
+	framework for the creation of interactive and individualized
+	forms of learning experiences.
+      </para>
+      
+      <para>
+	Conzilla is the first prototype of the idea of a
+	<quote>concept browser</quote>, which is currently under
+	continuous development at CID. In short, a concept browser
+	tries to present the context of, i.e., the conceptual
+	relationships between, a set of concepts in the form of
+	surfable <quote>concept maps</quote>, and to allow the surfer
+	to, separately, engage in content describing these
+	concepts. The details and the merits of this idea are
+	thoroughly described in <citation>cid52</citation>, and there
+	is no room here to repeat all that is described there.
+      </para>
+    </section>
+    
+    <section>
+      <title>This article</title>
+
+      <para>
+	This article is the definitive reference to the design of the
+	Conzilla browser for anyone interested in the functionality of
+	the system. The content of this article has three main goals:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      To give a description of the technical functionality
+	      and architecture of the Conzilla browser, as detailed
+	      as possible without entering into implementation
+	      details, philosophical discussions or user interface
+	      issues. This includes defining all important
+	      interfaces and standards as well as describing the
+	      level of fulfillance of the design goals. The purpose
+	      is to make it possible even for outsiders to
+	      understand the design and this way be able to
+	      contribute to the design discussion and development
+	      without being programmers.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      To give important examples and explanations of uses
+	      that have influenced and motivated the design.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      To give a picture of the design development. This
+	      involves presenting previous designs and why they were
+	      abandoned, as well as alternative designs that have been
+	      considered. As well, the goal is to describe the known
+	      problems of the present design and ideas for future
+	      designs that were in our minds while building the
+	      product. This way, it is much easier to understand the
+	      present design and very incomplete design ideas that
+	      have influenced it. It is also an important starting
+	      point for discussions of future design goals.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+	
+	Thus, it is intended to be non-technical in the sense of not
+	being a programming reference, and non-philosophical in the
+	sense of not trying to motivate in other ways than technical
+	and functional. Still, it is extremely useful as a starting
+	point for any programmer interested in the project, and
+	indispensable for anyone interested in how we manage to
+	fulfill the design goals and what sort of beast Conzilla
+	really is. It is, however, not a user manual; in fact, most
+	users will be very happy not to know the details presented
+	here.
+      </para>
+
+      <para>
+	Please note that this article is not just a passive piece of
+	text. It takes an active part of the Conzilla project as an
+	example of the usage of the system. The technical design and
+	functionality is described in <link
+	  linkend="article">Part IV, <emphasis>Technical
+	    design of the article.</emphasis></link>.
+      </para>
+    </section>
+
+    <section>
+      <title>Acknowledgements</title>
+      <para>
+	I would like to thank the project initiator, Ambjörn Naeve,
+	for the support he has given me during the writing of this
+	article, and for making it possible at all. His high
+	philosophical demands has driven not only the process of
+	contructing this work, but also the whole design it describes.
+      </para>
+      
+      <para>
+	An important part has of course been played by Matthias
+	Palmér, the co-designer of most of what is described here, and
+	main designer of some. His comments have been worth gold.
+      </para>
+      
+      <para>
+	I also want to thank CID and the people involved in the Garden
+	of Knowledge project there: Bosse Westerlund, Hans Melkersson
+	and all the others, who work intesely to give the project the
+	cross-disciplinary form it is intended to have.
+      </para>
+      
+      <para>
+	Lastly, I want to thank Linus Torvalds for giving us Linux, and
+	the whole Linux community and the GNU project for letting me use a
+	superior SGML/XML authoring environment.
+      </para>
+    </section>
+  </preface>
+
+
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  

@@ -1,0 +1,269 @@
+  <!-- $Id$ -->
+
+  <chapter id="ch-content">
+    <title>Content</title>
+    
+    
+    <section>
+      <title>&s1;</title>
+      <para>
+	If neurons deal with the contextual organization of
+	information, it is the content that contains the information
+	that we organize. While concepts deal with the inner, mental
+	world, content represents the link to the outer world of text,
+	images and sound; the world of media and communication. The
+	activation of content is one of the most important motivations
+	for the creation of context at all.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s2;</title>
+      <para>
+	Content consists of explanations, examples and definitions of
+	concepts used in learning environments, representing different
+	aspects of the concept in question. It may also consist of
+	physical or digital resources that have a representation in
+	the system for lexical purposes. So the definition of content
+	consists of two parts:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      Designing a representation of a piece of content in
+	      the system. This must include meta-data on the content, such
+	      as type information, and the location of digital content or
+	      the identification of physical content. The idea is that you
+	      should be able to search for and choose content without having
+	      seen the content itself, only this description.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      Associating such a content description with a concept
+	      or other type of neuron.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+      
+      <para>
+	The ideas for the usage of content and aspects are carefully
+	described in <citation>cid52</citation>, and will therefore
+	not be repeated here.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s3;</title>
+      <para>
+	The representation in the system of a piece of content is made
+	completely inside the existing system by defining a neuron
+	type <literal>content-description</literal> and letting each
+	piece of content be represented by a neuron of this type. This
+	type has the following attributes:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      degree zero, i.e., no axons. This reflects the fact
+	      that this really is an atomic object in the system (even
+	      though perhaps not outside).
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      two data tags: <literal>URI</literal>, the value of
+	      which is the location of the content, and
+	      <literal>MIMEType</literal>, giving a MIME type for the
+	      object.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+      
+      <para>
+	This way we know where and what the content is. All other
+	information as to what the content is about, for whom it is
+	suitable etc. must be specified in the meta-data, with
+	standardized tags.
+      </para>
+      
+      <para>
+	These neurons can then be linked to by other neurons just as
+	usual, thereby fully incorporating the content into the
+	system.
+      </para>
+      
+      <para>
+	To allow the content neurons to be treated as the content of a
+	specific concept, we use the axon type
+	<literal>content</literal> of concepts, relations etc., to
+	point to content description neurons. The content descriptions
+	found at the other end of such an axon are interpreted as the
+	content of that neuron.
+      </para>
+    </section>
+    
+    
+    <section id="ch-content-4">
+      <title>&s4;</title>
+      <para>
+	The choice of MIME as a representation of type
+	information for content follows very similar lines to the
+	choice of URI as identifier format:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      The existing MIME types immediately usable:
+	      <literal>text/plain</literal>,
+	      <literal>image/jpeg</literal> etc., as well as the
+	      probability of useful future standard types. MIME types
+	      have been proved useful and functional, not only in mail
+	      attachments, but notably also in the HTTP protocol, and
+	      seem to be the de facto standard for digital types.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      The existing standardized encoding in ASCII text,
+	      making it universally usable, as well as the support in
+	      different programming environments that support HTTP. A not
+	      small part of this point is that users are actually a bit used
+	      to this type of identifiers.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      The hierarchical structure of the types is
+	      interesting, but not as important as for URIs.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      The possibility of defining your own types. In fact, it
+	      would not pose any problem to define types for physical
+	      resources as well. As an example: combined with a URI
+	      protocol designed for this purpose, one could define the
+	      type <literal>physical/postal-address</literal> with the
+	      URI pointing to a postal address.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+
+	<remark>Add something about Dublin Core resource types.</remark>
+      </para>
+      
+      <para>
+	It is not difficult to argue that both the type and the
+	location actually belongs in
+	meta-data. This will be considered.
+      </para>
+      
+      <para>
+	It may seem as a violation of the design principles for axons
+	to let the content be an axon in many different types of
+	neurons, as the content may not seem <quote>essential for its
+	existence</quote>. This line of argumentation clearly has its points,
+	and it is admitted that the implemented solution may not be
+	the cleanest one; one could for example want another neuron
+	linking a neuron to its content, to make both the neuron and
+	the content independent of the link between them (this is why
+	generalizations, for example, are separate neurons). This
+	would allow you to add content to neurons you cannot modify, a
+	not uninteresting feature.
+      </para>
+      
+      <para>
+	On the other hand, there are two points speaking for our
+	solution. The first is purely philosophical; consider that
+	concepts actually are <quote>representations of a group of
+	phenomena</quote> (see <citation>cid17</citation>), where the
+	collection of content actually tries to describe the
+	phenomena; it may after all seem that this content is
+	essential for the existence of the concept, as the concept is
+	a representation of what these pieces of content have in
+	common.
+      </para>
+      
+      <para>
+	The second point is that the idea of content is so central to
+	the browser that one would almost want to create a completely
+	separate structure much resembling the axon idea, solely in
+	order to
+	simplify the introduction of content. To reuse the existing
+	functionality then seems like the better way to go. Ideas in
+	this area would, however, be much appreciated.
+      </para>
+      
+      <para>
+	It is interesting to note that
+	<literal>content-description</literal> is one of the single
+	neuron types that are completely self-contained from this
+	point of view, as such a neuron itself does not contain any
+	content. As a remark it might be interesting to allow
+	<quote>content collections</quote> to facilitate multiple
+	narration techniques, but that is another story.
+      </para>
+      
+      <para>
+	The content description was originally a component on its own,
+	as the system at that time was not general enough to allow it
+	to be represented by the other components of the time. This
+	had the sad consequence that the content was not really
+	represented in the system as something possible to link to in
+	any other way than as content. The current system introduces
+	content as a full-worthy neuron which makes it possible to
+	actually describe relations between content as concept maps as
+	well as, as described above, to represent the relation of
+	being content of a concept without having to introduce any new
+	structures into the system. This has had further consequences
+	in connection with <link linkend="ch-filters">Filters</link>.
+      </para>
+
+      <para>
+	One problem with content arises when you try to link into a
+	complex piece of content, such as this article. Currently, you
+	will need to create one separate content description for each
+	section you want to link to, which quickly becomes somewhat
+	cumbersome, and in some way seems necessary. Instead, one could
+	imagine putting extra information into the content role in the
+	neurons having a piece of this articla as content. This way,
+	this article would be represented by a single content
+	description, and a link to this section could be a content
+	axon with data
+	<literal>urimodifier="ch-content-4.html"</literal><footnote>
+	<para>The file name of this section</para></footnote>, which
+	would be a URI relative to the URI given in the content
+	description. Note that this URI would (probably) necessarily
+	be relative, but that it also may contain fragment
+	identifiers. Other types of content-displayer-specific
+	modifying are perfectly imaginable, such as command-line
+	arguments for an application etc.
+      </para>
+
+      <para>
+	Note, however, that any type of meta-data modifying would be
+	impossible (and unwanted). Thus, using such a system for this
+	article would still not be a good idea, as each section needs
+	separate meta-data markup to enable filtering. This could all be a
+	server-side problem of generating content descriptions on the
+	fly from their identifiers.
+      </para>
+    </section>
+  </chapter>
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  

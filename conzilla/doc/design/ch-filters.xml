@@ -1,0 +1,358 @@
+  <!-- $Id$ -->
+
+  <chapter id="ch-filters">
+    <title>Filters</title>
+    
+    
+    <section>
+      <title>&s1;</title>
+      <para>
+	As described in <citation>cid52</citation>, the different
+	pieces of content of a neuron need to be sorted and filtered
+	to make it possible to find the content fitting your
+	wishes. These filters are fundamental to the realizing of
+	content viewing, as content without order can be totally
+	unmanageable. Defining filters includes defining what is meant
+	by the term "aspect" and how it is going to be used.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s2;</title>
+      <para>
+	Filters should adhere to the following principles:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      They should work without the aid of concept maps, as
+	      they are useful in situations dealing only with the database
+	      structure, as well as in combinations with other sorts of
+	      concept maps.<REMARK>MP: 'other sorts of concept presentations' 
+              is more general.</REMARK>
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>	
+	      Their definition should not depend on any data
+	      format.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      They should ultimately be able to produce several
+	      different aspect filtering systems: <REMARK>MP: i.e. 
+              using filters for sorting.</REMARK>
+	      
+	      <itemizedlist>
+		<listitem>
+		  <para>
+		    One- or higher dimensional <REMARK>MP: systems</REMARK> 
+                    (list- or matrix-based
+		    aspect filtering), where the content is sorted
+		    into a matrix 
+		    of aspects. One axis could contain definition,
+		    location, use, 
+		    history, etc., while the other contains the school
+		    level of the content.
+		  </para>
+		</listitem>
+       
+		<listitem>
+		  <para>
+		    Combinations with other type of filtering,
+		    corresponding to user profiles etc. that eliminates
+		    uninteresting content.
+		  </para>
+		</listitem>
+	      </itemizedlist>
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s3;</title>
+      
+      <section>
+	<title>Theoretical model</title>
+
+	<para>
+	  The filter implementation that we have used is based on a
+	  theoretical model that is independent of the aspect idea.
+	</para>
+	
+	<para>
+	  In this model, a <quote>filter</quote> consists of a number
+	  of <quote>filter nodes</quote> connected in a
+	  hierarchy. Each node takes a number of
+	  <quote>packets</quote> as input and gives as output only
+	  those packets which were accepted by that node. We call this
+	  <quote>passing</quote> the node. The packets
+	  themselves are in no way affected by the filter.
+	</para>
+
+	<para>
+	  A node is usually not a complete filter even if this can be
+	  the case. Instead, a node can point to additional nodes
+	  which the packets must pass. Let us call these nodes which
+	  are pointed to by a node <literal>A</literal> for "direct
+	  refinements" of <literal>A</literal>, as they refine the
+	  filtration. If a filter node <literal>B</literal> is
+	  reachable from <literal>A</literal> through several steps of
+	  direct refinements, we call <literal>B</literal> an
+	  <quote>indirect refinement</quote> of
+	  <literal>A</literal>. If <literal>B</literal> is a direct
+	  refinement or an indirect refinement of
+	  <literal>A</literal>, we call <literal>B</literal> simply a
+	  <quote>refinement</quote> of <literal>A</literal>.
+	</para>
+
+	<para>
+	  Hence, a filter consists of a top filter node with an
+	  hierachy of refinements. A packet is said to
+	  <quote>pass</quote> a filter <literal>F</literal> if it
+	  passes the top filter node, <literal>A</literal>, and also
+	  passes one of the filters represented by the direct
+	  refinements of <literal>A</literal>.
+	</para>
+
+	<para>
+	  Another way of expressing this is to say that a filter is a
+	  tree of filter nodes<REMARK>MP: Not quite true, our structure is allowed 
+          to branch (by refinements) like a tree but also to grow back again by
+          letting to different branches have the same refinement(s). 
+          I do not know if this structure has a name, the closest thing would 
+          probably be DAG or be named 'possibly intraconnected tree'.</REMARK>, 
+          and that a packet passes the
+	  filter if it manages to pass all nodes <REMARK>MP: in a path</REMARK> 
+          from the root to a leaf.
+	</para>
+
+	<para>
+	  The recursive definition of filter poses serious problems,
+	  and there is need for a limitation on filters to avoid
+	  them. The problem is that the definition does not force a
+	  tree strucure, but rather allows a general graph strucure. A
+	  typical problem arises when two filter nodes are refinements
+	  of each other, in which case there is an obvious risk for
+	  infinite loops. Filters without loops are called
+	  <quote>sound</quote> filters. Ensuring that a filter is
+	  sound is, unfortunately, a very demanding task, so most
+	  implementations will probably just limit the recursion depth
+	  or similarly limit the filters.
+	</para>
+
+
+	<para>
+	  The filtering done in a node can be as domain-specific as
+	  possible. One general type of filtering that is always
+	  possible, is to let one node filter the packets with the
+	  help of a <quote>sub-filter</quote>. In this case, passing
+	  the node (say <literal>A</literal>) would be equivalent to
+	  passing the whole sub-filter<footnote>
+	    <para>
+	      This is equivalent to connecting all leaf nodes in the
+	      sub-filter with all direct refinements of
+	      <literal>A</literal> (and thus represents a significant
+	      simplification). <REMARK>MP: Without this feature you 
+              can't reuse a filter in two different environments without
+              merging the environments together due to the leafs 
+              refinements.</REMARK>
+
+	    </para>
+	  </footnote>.
+	</para>
+
+	<para>
+	  Please note that a filter also can be used to sort
+	  packets. All that is needed is to attach a separate output
+	  box to each leaf of the filter. This is what will be used
+	  when implementing aspect sorting, as described in <xref
+	    linkend="ch-contentdisp"/>.
+          <REMARK>MP: Good point, but it feels a bit messy, you mention
+          sorting in the 'functional requirements' without distinguishing it 
+          from filtering, i.e. you talk about aspect filtering wich is a 
+          form of sorting. </REMARK>
+	</para>
+      </section>
+
+      <section>
+	<title>Neuron Binding</title>
+
+	<para>
+	  We now turn to representing filters with the aid of
+	  neurons. A specific aspect has been defined as a specific
+	  value of a specific meta-data tag, and different types of
+	  aspect dimensions therefore corresponds to different
+	  meta-data tags.
+
+          <REMARK>MP: About my own remark (the following). I reacted spontaneously
+          and wrote this little defence of 'the aspect idea the Matthias way'.
+          Do you mean that there is something called an aspect defined wich is
+          something different than aspect-filtering? And this is aspect is 
+          a metadata tags value, why call it an aspect then? I think it's unneccesary
+          to make a point about a difference between aspects and aspect filtering.
+          If we do, there should be a philosophicall difference, not an 
+          implementation difference.</REMARK>
+
+          <REMARK>MP: NO NO NO! No definition of aspects has been done as I
+          know, only the old ghosts of previous implementations. 
+          The aspect filtering due to one tag is about implementing 
+          something easy for testing purposes. An aspect should be filtered
+          out due to several things like MetaData tag-value pairs(plural!!), 
+          the URI name and possibly the value of the DATA-tags.
+          The actual Aspect is something rather complex wich could
+          and in the future probably should use regular expressions working
+          on all reachable information. The possibility of a rising standard
+          for aspects by the value of a simple metadatatag would at most
+          simplify the aspect filtering system. It won't capture the
+          idea of building your own aspects where content (typically not 
+          your own) you collected is
+          pesented acording to your own classification system 
+          (your own aspects).</REMARK>
+
+          Thus, aspect filters act on meta-data in
+	  general. The current implementation presupposes that the
+	  packages are content description neurons, with meta data in
+	  the form of tags with a value. Nothing stops us from
+	  generalizing this to neurons in general and more complicated
+	  meta-data structures.
+	</para>
+
+	<para>
+	  Filter nodes are implemented as filter neurons. A filter is thus
+	  represented by its top level filter neurons. <REMARK>MP: Neurons? 
+          you mean neuron.</REMARK> 
+          A filter neuron contains:
+
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+		A role type <literal>subfilter</literal> which points
+		to a filter neuron to use as sub-filter.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		Data tags of the form
+		<literal>AcceptMetaDataTagValuePair</literal> etc.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		A role type <literal>refine</literal> that points to
+		the direct refinements.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		A role type <literal>content</literal> to point to
+		presentations in the form of concept maps <REMARK>MP: etc.
+                </REMARK> See below.
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+	</para>
+
+	<para>
+	  Hence, the filter nodes filter in two ways simultaneously:
+	  with meta-data tags<REMARK>MP: No, 'with data tags'</REMARK> and with sub-filters. The sub-filter
+	  idea is not yet implemented.
+	</para>
+      </section>
+      
+    </section>
+    
+    
+    <section>
+      <title>&s4;</title>
+      <para>
+	The original idea behind the representation of aspects was to
+	have a data tag in the content description neuron named
+	"Aspect", that named by which aspect the content described a
+	concept. However, this design seemed unattractive when
+	considering the multidimensional aspect filters that we wanted
+	to realize. The realization that many of those other dimensions
+	(such as school level) probably would be represented in the
+	meta-data, led us to make the decision to put the "Aspect" tag
+	amongst meta-data as well. This way aspect filtering becomes
+	meta-data filtering, which in turn actually allows any aspect
+	filtering system to work as a general neuron filtering and
+	searching system, thanks to the fact that content descriptions
+	are neurons like any others.
+      </para>
+      
+      <para>
+	This gives yet another reason to put the MIME type of
+	content descriptions in the meta-data, and perhaps even the
+	location. On the other hand, perhaps it is of interest to
+	allow filtering based in data tags as well?
+      </para>
+      
+      
+      <para>
+        <REMARK>MP: Change the first sentence to: 
+        'The hierarchy represented by the filter nodes is
+        essentially a directed acyclic graph.'</REMARK>
+        
+	The hierarchy represented by the filter nodes is most easily
+	visualized using a directed acyclic graph. This graph could
+	ofter resemble a tree-structure, but not always, as the
+	branches of the tree are allowed to grow together (even for
+	sound filters). For very simple filters with a single level
+	of refinements, a list presentation is reasonable. With two
+	levels and the same level-two refinements in all level-one
+	refinements, a matrix presentation is the most obvious.
+      </para>
+      
+      <para>
+	In general, a menu with recursive sub-menus can examine any
+	sound filter <quote>locally</quote>, meaning that you
+	cannot be sure to get a complete overview of the filter in
+	this way.
+      </para>
+      
+      <para>
+	More fitted to get an overview would be to present the filter in
+	a diagram, in such a way that each filter node is
+	represented by a box, connected to the rest of the filter
+	nodes using arrows.  
+        <REMARK>MP: Change the last sentence to: 
+        'In addition each filter node is connected to it's sub-filters, 
+         if any. Theese sub-filters can be (not neccessary) incorporated
+         into the diagram and connected to the filter node by a dfferent 
+         type of arrow. Alternatively, Each filter node can be connected 
+         in some way (e.g. a link) to new diagram showing thease subfilters.'
+         </REMARK>   
+        In this way, each filter is a diagram
+	showing an acyclic directed graph, where each filter node in
+	addition is connected to its sub-filter, if any.
+      </para>
+      
+      <para>
+	It should be obvious that filter neurons are perfectly
+	adjusted to be presented in concept maps. Each such diagram
+	could be arranged in different ways, naturally: as a star,
+	tree etc. This concept map would probably be added as content for
+	the filter. Note that some refinements to the top filter
+	neuron will have their own maps if they are seen as top
+	level filter neurons for their branch.
+      </para>
+    </section>
+  </chapter>
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  

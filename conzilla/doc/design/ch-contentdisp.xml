@@ -1,0 +1,121 @@
+  <!-- $Id$ -->
+
+  <chapter id="ch-contentdisp">
+    <title>The Content Displayer</title>
+    
+    
+    <section>
+      <title>&s1;</title>
+      <para>
+	The content displayer completes the browser with a method of
+	accessing content, which, after all, is one of the two
+	fundamental browsing steps. It contains the methods for viewing
+	and interacting with content, as well as the application
+	of filters on content.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s2;</title>
+      <para>
+	The content displayer has the following responsabilities, all
+	described in detail in <citation>cid52</citation>:
+
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      Use the specified filters to sort content for a neuron
+	      into aspects, and present the result of this sorting to
+	      the user.
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      Present content according to the user choice. 
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      If the content is another concept map, allow the
+	      <quote>contextification</quote> of this map, meaning
+	      that the map is <quote>sucked in</quote> into the
+	      browser to allow it to be browsed (and edited, of course).
+	    </para>
+	  </listitem>
+	  
+	</itemizedlist>
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s3;</title>
+      <remark>Have to add about the filter implementation here.</remark>
+
+      <para>
+	The content displaying is multiplexed with respect to MIME
+	type. The MIME type
+	<literal>application/x-conceptmap</literal> is displayed using
+	a simple map displaying window without any tools (and is thus
+	completely uninteractive). It can still be contextified using
+	a tool in the originating map. Other MIME types are handled by
+	a web browser. There are two possibilites:
+
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      Conzilla runs as an applet in a web browser. Then a
+	      frame named <literal>content</literal> is used to
+	      display the content.
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      Conzilla runs as an independent application. Then
+	      Conzilla tries to use a running browser to display
+	      content.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s4;</title>
+      <para>
+	The content displaying is an area where there are many future
+	possibilities when it comes to increased interaction with
+	content. They are discussed in <xref
+	linkend="ch-externalcoop"/>.
+      </para>
+
+      <para>
+	It is worth noting that we have only implemented support for
+	Netscape Communicator as external content displayer. Adding
+	further support is, however, trivial. 
+      </para>
+
+      <para>
+	The URI given in the content description, and which is used to
+	locate content, may be of any general form. When viewing a
+	concept map as content, the displaying is handled by Conzilla
+	itself, and thus the complete machinery of
+	<literal>cid:</literal> lookup is used. Unfortunately, this is
+	not used for other types of content. Instead, it is up to the
+	web browser used to interpret the URI. This could cause problems in the
+	future. See further <xref linkend="ch-externalcoop"/>.
+      </para>
+    </section>
+  </chapter>
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  

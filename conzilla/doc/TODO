@@ -1,0 +1,78 @@
+-*- outline -*-
+
+* API
+** lock
+   Möjliggöra lock-unlock av komponenter för att underlätta editering.
+** Wrapper till Neuron/NeuronType för lättare åtkomst/validering.
+
+* NeuronType
+** Arv?
+** AllowedPlayerType?
+
+* Småbuggar
+** SizedEnumeration
+   ska ta null-input!
+** AspectSet
+   ska kunna filtrera begreppens aspekttyper, inte så nu.
+   Om begrepp har fler aspekter än vad som finns i AspectSet, vad händer?
+** TabSet
+   med samma MAPID kommer att mergas....
+** NeuronStyle
+   addRoleStyle kommer att lägga till oavsett..
+** Tools 
+***   ToggleButtons fula.
+** Back- och forward cleanas inte riktigt. Fixa detach() i ToolFactory...
+** setValue i Metadata hade bugg... Finns det pa fler stallen??
+
+* Controller
+** ToolBarManager
+    knappar -> ComboBox
+** MetaDataInfo...
+** Sortera fram bara content som är kartor.
+
+* ConceptMap
+** Draw
+   Yes/No.
+** Background
+   SCALED/TILED/SINGLE, POSITION
+** Preview av begreppskartor (Bosse).
+** ZoomoutMap
+** Visibility:
+*** ska det vara helt synligt eller gråskalor?
+*** i varje roll och eller neuron?
+*** hur sprids?
+** Appobject
+  i Conceptmap, Neuronstyle och RoleStyle. Ska de updateras 
+  automatisk inifrån. Eller ska applikationen ha reda på att nu är det dags 
+  för refresh.
+** Lägga in contentdescription automagiskt?
+
+* Browsern
+** Göra browsern lätt tillgänglig från JavaScript.
+
+
+* Associationer:
+** Klumpas ihop visuellt i conceptmap.
+   Vad händer om olika multiplicity?? rollnamn???
+ 
+
+* XML
+** DTD --> Schema?
+** XmlLoader
+   ge tillgång till DTD-identifier etc.
+
+
+* JDK 1.2
+** Emumeration --> Collection ?!
+   Tex kan ComponentCache använda WeakHashMap eller så.
+** CORBA
+*** IDLer?
+   Kräver idl2java kompilator (SUN...)!
+*** Collections
+    Måste fundera på om Collection-interfacet är vettigt på dessa.
+    Jmf ::CORBA::RelationShips.
+
+* Optimering
+** Edit
+*** Förslag ändra eventlyssnarna när drag så att ingen omväg 
+via displayern görs. Bieffekt, ingen koll om handle över annat objekt.

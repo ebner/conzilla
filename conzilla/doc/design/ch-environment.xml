@@ -1,0 +1,333 @@
+  <!-- $Id$ -->
+
+  <chapter id="ch-environment">
+    <title>Programming environment</title>
+    
+    
+    <section>
+      <title>&s1;</title>
+      <para>
+	Deciding which tools to use in order to implement the browser
+	is a problem that affects many parts of the design. The
+	decisions to make include which programming language to use,
+	which programming libraries to use, and which other external
+	software to depend on. Once these choices are made, we have
+	severely limited the directions in which the browser may
+	develop without a rewrite.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s2;</title>
+      <para>
+	The principal design goal when it comes to the choice of
+	programming environment has been: a maximum of functionality
+	with a minimum of effort. Here, functionality means different
+	things:
+
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      Availability of useful libraries and functionality.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      Portability to different platforms.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      Availability for ordinary users.
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      Possibility of implementing content activation for a
+	      maximum of content formats.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+	
+	but not primarily performance, notably, which will be a later
+	problem<footnote>
+	  <para>Donald Knuth: <quote>Premature
+	      optimization is the root of all evil.</quote>
+	  </para>
+	</footnote>. Low effort means:
+
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      Prototypability, i.e., the ability to quickly try out
+	      ideas. This demands a low level of implementation overhead and
+	      nonfundamental details, and focuses the design on the
+	      structure rather that on the implementation.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      Extensibility and flexibility, to be able to maintain
+	      a certain structure in the code in spite of large
+	      rewrites.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+
+      <para>
+	One must, however, have in mind that the choice of environment
+	must not influence the design in a way that would cause
+	troubles that day when we decide to change the environment.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s3;</title>
+      <para>
+	The Conzilla browser is being implemented in Java, based on a
+	Java class library to deal with all basic database
+	functionality. The application will work either standalone or
+	as an applet in a web browser. In either case, it can use a
+	web browser to provide content activation for a large number
+	of data types: hypertext, pictures, sound, video etc. (in the
+	applet case, the same web browser). It uses Java 1.2 with the
+	<glossterm linkend="jfc">JFC</glossterm> <glossterm
+	  linkend="swing">Swing</glossterm> toolkit for all GUI code.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s4;</title>
+      <para>
+	Since content is allowed to be in many different forms it
+	would be a lot of work to implement a content displayer on our
+	own. The most general content displayer, for content in
+	standard formats, is surely the Web browser. In addition, much
+	of the available computerized learning material is already
+	accessible via the Web, and it would simplify the development
+	of content immensely if it can be developed directly for the
+	Web. So we decided at an early stage in the design process
+	that using a Web browser as content displayer solves the
+	problems of displaying content in the most general way.
+      </para>
+
+      <para>
+	It is interesting to note that the current generation of
+	browsers (Netscape Communicator version
+	6 and Microsoft Internet Explorer
+	version 5) does support XML directly as a way of representing
+	arbitrary information. This could be used to retrieve and
+	parse the components and then just let the application access
+	the information. It is questionable if it ever will be
+	possible or even preferable to let a web-browser take over the
+	application's job completely. This could in theory be done by
+	a complicated <glossterm linkend="xsl">Extensible Style
+	Language (XSL)</glossterm> document. We have not thoroughly
+	investigated whether this will be possible to do or not.
+      </para>
+
+      <para>
+	The problem of getting an application to work on different
+	platforms cooperating with different browsers without
+	rewriting the code is clearly solved by the Java programming
+	language. This way, the application can actually be run both
+	inside the browser, started from a website, or as a stand-
+	alone application, remote-controlling a browser to display the
+	content. Running as an applet undeniably increases the
+	availability to users, as there is nothing to download and
+	install.
+      </para>
+
+      <para>
+	Java is a very useful prototyping language for several
+	reasons:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      It is strictly object oriented.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      Its memory management is simple for most simple
+	      cases.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      There is an abundance of useful libraries, all
+	      automatically portable. Not least, the GUI libraries are
+	      cross-platform, which saves an enormous amount of
+	      work.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+
+      <para>
+	The choice of GUI library deserves a short discussion. In the
+	Java environment there are two real possiblities: either you
+	use the standard AWT-package, or you use the more recently
+	developed JFC Swing package. We have choosen to work with the
+	JFC Swing package, as it is, in comparison to AWT, better
+	designed and more extensible and flexible. It also solves the
+	problem of keeping the design platform independent, as
+	graphical components (buttons etc.) are drawn by the package,
+	not delivered by the operating system, as is the case with
+	AWT.
+      </para>
+
+      <para>
+	Java is also very well adjusted for usage together with XML,
+	and there are several good parsers for XML written in Java.
+	The reason for this is amongst other things the good Internet
+	connectivity features, and the good international character
+	set support of Java.
+      </para>
+
+      <para>
+	In short, the Java environment fitted the design goals very
+	well. There are, of course, problems.
+      </para>
+
+      <para>
+	Firstly, as our application can run as an applet inside the
+	browser, it is subject to applet security restrictions. These
+	involve (taken from <citetitle><ulink
+	url="http://java.sun.com/sfaq/">Frequently Asked Questions -
+	Java Security</ulink></citetitle>):
+
+	<blockquote>
+	  <para>
+	    In general, applets loaded over the net are prevented from
+	    reading and writing files on the client file system, and
+	    from making network connections except to the originating
+	    host. In addition, applets loaded over the net are
+	    prevented from starting  other programs on the client.
+	  </para>
+	</blockquote>
+      </para>
+
+      <para>
+	This means that our browser is not allowed to fetch components
+	from anywhere on the Internet, only from the host where the
+	applet is located. In addition, an editor used inside the
+	browser would not be able to store the XML documents on the
+	local harddisk. These restriction are not acceptable for
+	anything else than a simplistic demonstration. There are
+	several imaginable solutions to this problem:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      Implement a proxy on the host where the applet is
+	      located, that can fetch components that the applet asks for.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      Let the user run the applet from the local harddisk.
+	      Applets loaded this way are usually seen as trusted, and have
+	      no security restrictions.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+
+      <para>
+	None of these solutions are really satisfactory. The first
+	will decrease speed and place a possibly heavy load on the
+	server, while the second will mean a lot of hazzle for the
+	user. We wanted to avoid that, and let the applet do the work
+	all by itself.
+      </para>
+
+      <para>
+	The two browsers we have studied both have their own solutions
+	to this problem. Both depend on the idea of digitally
+	"signing" applets, and letting the user grant the applet
+	privileges based on this signature.
+      </para>
+
+      <para>
+	Microsoft Internet Explorer uses a solution where the applet
+	must be stored in a <glossterm linkend="cab">CAB</glossterm>
+	archive and signed. This solution is unstandard and tied to
+	the Windows platform, and has therefore been avoided for the
+	prototyping stage.
+      </para>
+
+      <para>
+	Netscape Communicator uses a solution where the applet is
+	stored in a <glossterm linkend="jar">JAR</glossterm> file and
+	signed. The applet may then ask the user to grant it
+	additional privileges. This is the solution we have used, as
+	it tries to be cross-platform and
+	standards-adhering. Fortunately, it would possible to use this
+	solution in parallel to a Microsoft solution, as the impact on
+	the code is minimal. This will possibly be done in the future,
+	but for the moment, the security support only works with
+	Netscape Communicator.
+      </para>
+
+      <para>
+	Hopefully, as browsers start to support Java 1.2, they will
+	also start to support the Java 1.2 security model, which is also
+	based on the idea of signing. Then we will have a less
+	platform-dependent solution. At the time of designing the
+	security handling code in Conzilla, we were using Java 1.1,
+	and so this was not a possible path. When writing this
+	document, Java 1.2 support is arriving, so it may be time to
+	reinvestigate the issue.
+      </para>
+
+      <para>
+	The second problem is that the decision to use Swing to
+	construct the GUI sadly limits us to newer versions of
+	Netscape Communicator (exact version depending on the platform, but
+	4.5 should work) that include version 1.1.5 or later of the
+	Java Development Kit.
+      </para>
+
+      <para>
+	So, our solution is not as platform independent as it might
+	initially seem. We have hopes that future browsers will
+	support the <glossterm linkend="oji">Open JVM Integration
+	(OJI)</glossterm> API, which allows the Java virtual machine
+	to be separated from the browser. Then it will probably be
+	much easier for everyone to get hold of a compatible Java
+	implementation.
+      </para>
+
+      <para>
+	There has been some discussion of simplifying the work for
+	course designers and teachers by making the whole Java
+	implementation JavaBeans compatible. This would mean that it
+	would be possible to reuse the different Java objects in new
+	environments such as a highly sophisticated Knowledge Patch
+	construction environment, which our editor probably will never
+	be and was not intended to be. But, as this seems to be
+	relatively far into the future, the details of such a project
+	are still vague at this point.
+      </para>
+    </section>
+  </chapter>
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  

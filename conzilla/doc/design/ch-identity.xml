@@ -1,0 +1,342 @@
+  <!-- $Id$ -->
+
+  <chapter id="ch-identity">
+    <title>Component Identity</title>
+    
+    
+    <section>
+      <title>&s1;</title>
+      <para>
+	The definition of the identifier of the components defines
+	much of the capabilities of the database structure. It not
+	only acts as a unique label for the components, locally and
+	globally, but also may affect the way the component is located
+	and used. In fact, the definition of the identifier in part
+	defines the infrastructure of the system, even before the
+	actual components are defined.
+      </para>
+    </section>
+    
+    
+    <section id="ch-identity-2">
+      <title>&s2;</title>
+      <para>
+	The scenario that has inspired the design of the identifier is
+	one where the Conzilla user is using components from several
+	places simultaneously. Realistic locations include: local
+	harddisc, a database on the company LAN, and different sources
+	on the Internet. One could imagine that the company database
+	actually exports several components for use over the Internet,
+	by different users using different browsers. This is already
+	enough to describe several important characteristics of the
+	identifiers:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      One component must have only one identity, i.e., if
+	      there are several methods of accessing the component, the
+	      identifier cannot depend on the method used. Consider a
+	      component located on the company database, that can be
+	      accessed both from inside the LAN and over the Internet. It is
+	      probable that you could want to access the database directly
+	      when inside the LAN, but use a web server for outside access.
+	      Still, other components referring to the component must use
+	      the same identity, as they do not know if they will be used
+	      inside or outside the LAN.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      The format of the identifier must be useful in several
+	      different environments, which means that it cannot
+	      depend on, e.g., the programming language.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      As the example above shows, some sort of lookup
+	      mechanism may be necessary for certain components. We really
+	      do not want to build this mechanism into the specification, so
+	      we instead want the identifier to allow future expansions in
+	      this direction.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s3;</title>
+      <para>
+	The identity is a <glossterm linkend="uri">Uniform Resource Identifier
+	(URI)</glossterm>. The protocols currently supported are:
+	
+	<variablelist>
+	  <varlistentry>
+	    <term><literal>http:</literal></term>
+	    <listitem>
+	      <para>
+		The object is downloaded in XML format over <glossterm
+		  linkend="http">HTTP</glossterm>. The
+		identifier format is well known.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  
+	  <varlistentry>
+	    <term><literal>file:</literal></term>
+	    <listitem>
+	      <para>
+		The object is located in the local filesystem
+		in XML format. The identifier format is well known.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  
+	  <varlistentry>
+	    <term><literal>cid:</literal></term>
+	    <listitem>
+	      <para>
+		This stands for <quote>component identifier</quote>
+		and has the structure
+		<literal>cid:path/component</literal>, where
+		<literal>path</literal> is an abstract path to the
+		component, and <literal>component</literal> the name
+		of the component<footnote>
+		  <para>
+		    This way, the system indeed becomes a Knowledge
+		    <emphasis>Path</emphasis>work.
+		  </para>
+		</footnote>.
+	      </para>
+
+	      <para>
+		The URI is translated using a lookup mechanism into a
+		URL in one of the forms <literal>http:</literal> or
+		<literal>file:</literal> given above. This lookup maps
+		paths into base URLs, whereto the component name is
+		appended.  The path may match partially, and several
+		paths of different lengths may therefore match. In
+		this case, the longest (most specific) match will be
+		used. The non-mathing part is appended to the base URL
+		before the component name. The lookup also gives the
+		data format components under the given base URL uses,
+		which it describes with a MIME type, and a suffix to
+		append to the component name.
+	      </para>
+
+	      <para>
+		Thus, if you have a lookup that maps the path
+		<literal>math/geometry</literal> to
+		<literal>http://www.nada.kth.se/cid/geomcomponents</literal>,
+		which uses the XML format (and MIME type
+		<literal>text/xml</literal>) and suffix
+		<literal>.xml</literal>, the URI
+		<literal>cid:math/geometry/euclidean/circle</literal>
+		will become
+		<literal>http://www.nada.kth.se/cid/geomcomponents/euclidean/circle.xml</literal>
+		which can be immediately downloaded.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </para>
+      
+      <para>
+	These identifiers can be used from anywhere to refer to a
+	certain component, with the only reservations being that
+	certain URIs are relative to your current position (typically,
+	<literal>file:</literal> URIs), and are therefore intrinsically
+	local.
+      </para>
+
+      <para>
+	The lookup mechanism is currently a table with all known path
+	names. This table is loaded upon startup of the browser.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s4;</title>
+      <para>
+	The choice of URI as the identifier was made very early in the
+	design process, and has never really been questioned. It is
+	based on the following characteristics of URIs:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      The existing <glossterm linkend="url">URL</glossterm>
+	      protocols immediately usable: http, ftp, file etc., as
+	      well as the probability of useful future
+	      protocols. Especially in mind are the specifications for
+	      identifying single files inside JAR archives with a URI,
+	      which makes it simpler to download whole archives of
+	      components at once, as well as definitions for
+	      identification over IOCP (used in CORBA) with the help
+	      of URIs. URIs, and not least URLs, has been proved
+	      useful and functional.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      The existing standardized encoding in ASCII text,
+	      making it universally usable, as well as the universal support
+	      in different programming environments. A not small part of
+	      this point is that users actually are used to this type of
+	      identifiers. Note that the encoding of special characters in
+	      ASCII is not yet implemented.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      The hierarchical structure of the standard URI
+	      protocols. This is what makes the idea of a <quote>base
+	      URI</quote> work; it is a simple matter of appending one
+	      string to another.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      The possibility of defining your own protocols. In fact,
+	      URIs have exactly the flexibility wanted: it allows
+	      everything from completely abstract identifiers (such as
+	      <glossterm linkend="urn">URN</glossterm>s) to
+	      identifiers such as URLs which specify both location of
+	      the object and the protocol of access.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+      
+      <para>
+	We see no real need for support for the <glossterm
+	linkend="ftp">FTP</glossterm> protocol, as this is mostly
+	intended for large file transfer, which is not our
+	case.
+      </para>
+      
+      <para>
+	The <literal>cid:</literal> protocol is an experiment in
+	constructing a protocol which allows specifying the location
+	of an object without having to specify the method of access,
+	i.e., data format and physical location. Such a protocol is
+	absolutely necessary as seen in the discussion in <xref
+	linkend="ch-identity-2"/>. The protocol as currently specified
+	results in several problems, however:
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      The table lookup mechanism must be replaced, as the
+	      idea of everyone having a complete table of paths is absurd.
+	      The idea is to replace the table mechanism with, e.g.,
+	      an <glossterm linkend="ldap">LDAP</glossterm>
+	      lookup. Such a lookup would take a path and return a
+	      base URI and the data format to use, just as the table does
+	      today. It is even imaginable that such a lookup could return a
+	      list of the different data formats supported by the path and
+	      corresponding base URIs, which would allow
+	      you to choose your favorite one, based on for example the
+	      domain of the server (if local, use direct access to database
+	      etc.). This lookup represents a considerable overhead if it
+	      has to be done for each component downloaded (cf. DNS when
+	      browsing the web), which is why we do not want to map
+	      the whole id, only paths, as this allows us to cache
+	      the path lookups.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      The idea to represent the method of access (after
+	      lookup) with a URI is problematic, as not all methods of
+	      access have URI representations, yet. This is probably not
+	      much of a problem, though, as we believe that most other
+	      identity systems are expressible using URIs.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      A more concrete problem: the <literal>cid:</literal>
+	      protocol name is actually already taken. It is used to
+	      identify MIME attachments in HTML-enriched mail (a
+	      classical example of bad research on our part). It could
+	      be an idea to change the name to something unused while
+	      there is time.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      There has been discussion on standardizing the
+	      directory archive names where components are stored to
+	      simplify the organization of components. Opinions differ on
+	      this issue: this would certainly make it easier to, given the
+	      identity of a neuron, for example conclude the neuron type,
+	      but would on the other hand transfer metadata information
+	      (such as type) into the identifier, where it clearly does not
+	      belong.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      An interesting idea is to prohibit the use of anything
+	      other than the cid: protocol, and simulating for example
+	      the address
+	      <literal>http://www.nada.kth.se/cid/mathematics.xml</literal>
+	      with the identifier
+	      <literal>cid:http/www.nada.kth.se/cid/mathematics</literal>,
+	      and having an entry in the lookup table that maps the
+	      path <literal>http</literal> to the base URI
+	      <literal>http://</literal>, using the XML format. This
+	      would undeniably simplify the system, while perhaps
+	      making it a bit less intuitive. It would also force all
+	      XML format components to have an address ending in
+	      <literal>.xml</literal>, while maintaining the
+	      restriction that all components using http are using the
+	      XML binding.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+      
+      <para>
+	In short, we believe that we are on the right track with the
+	<literal>cid:</literal> idea, even if there are decisions left
+	to take. There has gone a lot of thinking into the design, and
+	we are relatively satisfied.
+      </para>
+
+      <para>
+	In fact, the design that we have landed in resembles immensly
+	the <glossterm linkend="pathurn">Path URN</glossterm>
+	protocol, described in <citation>pathurnspec</citation>. It is
+	very much possible that we will change to this type of
+	identifier in the furure.
+      </para>
+
+      <para>
+	We will probably implement support for another functionality of
+	URIs: <emphasis>relative URIs</emphasis>, which are described in
+	<citation>rfcuri</citation>.
+      </para>
+    </section>
+  </chapter>
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  
