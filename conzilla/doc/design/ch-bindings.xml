@@ -1,0 +1,122 @@
+  <!-- $Id$ -->
+
+  <chapter id="ch-bindings">
+    <title>Defining bindings</title>
+    
+    
+    <section>
+      <title>&s1;</title>
+      <para>
+	There are different representations of the database components
+	that use different data formats. Such a representation is
+	called <emphasis>binding</emphasis>, and form the connection
+	between the virtual database containing neurons and concept
+	maps on the one hand, and the concept browser on the other
+	hand. The two bindings for which support is planned are XML
+	and CORBA, of which only XML is fully implemented. On the
+	other hand, nothing should prevent the use of, e.g.,
+	<glossterm linkend="rmi">RMI</glossterm>, <glossterm
+	linkend="dcom"></glossterm>, <glossterm
+	linkend="odbc">ODBC</glossterm> etc.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s2;</title>
+      <para>
+	The very idea of having different bindings is based on the
+	fact that they allow different optimizations. Working over the
+	Internet, over a LAN, or directly against a database each
+	places very different demands on the communication protocol.
+	For example, one could imagine a browser written for mobile
+	phones that uses <glossterm linkend="wap">WAP</glossterm>, or
+	another browser running in contact with your company database
+	using database routines directly.  With the data format
+	independent specification in place, we are free to translate
+	it into different formats. What is defined here is the
+	canonical bindings using several formats, but by no means
+	the only one possible. Also, one browser can support several
+	of these bindings simultaneously, which is also true of the
+	databases. So, our goals for each binding are the
+	following:
+
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      The binding should be as natural and clean as
+	      possible. It should not try to solve problems that the format
+	      is not well adjusted to solve. For example, the CORBA binding
+	      will have performance problems when used over the Internet,
+	      and should not try to solve these. Therefore, each binding
+	      should have a well-defined domain of optimal use.
+	    </para>
+	  </listitem>
+       
+	  <listitem>
+	    <para>
+	      On the other hand, the binding should try to
+	      use the particularities of the technology used
+	      to allow optimizations within the domain of optimal use.
+	    </para>
+	  </listitem>
+	  
+	  <listitem>
+	    <para>
+	      As each binding defines a communication protocol, the
+	      design is expected to add, to the component
+	      representation, a layer that defines the capabilities
+	      with respect to editing and storing of changes.
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      A binding should also define the possible means of
+	      locating the component, so that given the binding and a
+	      URI locating the component, it is clear how to access it.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s3;</title>
+      <para>
+	The architecture of the two bindings is described in
+	<xref linkend="ch-xmlbinding"/> and <xref
+	  linkend="ch-corbabinding"/>.
+      </para>
+    </section>
+    
+    
+    <section>
+      <title>&s4;</title>
+      <para>
+	The ideas behind the different data representations has been
+	implemented only for XML, even though CORBA has been on our
+	minds when designing the system. It is clear to us that more
+	experimentation is necessary in order to declare the system a
+	success.
+      </para>
+      
+      <para>
+	That the XML binding is the most interesting and versatile
+	format has been clear from the beginning of the project, but
+	it has also been clear that this format will have problems in
+	highly interactive situations, where a more direct contact
+	with the data source will be necessary. This is the reason to
+	allow several different bindings to coexist, even though this
+	makes the system design a bit more complicated.
+      </para>
+    </section>
+  </chapter>
+  
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  sgml-default-dtd-file:"docbookx.ced"
+  End:
+  -->
+  

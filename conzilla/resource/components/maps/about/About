@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component VERSION="1.0">
+  <MetaData>
+    <record>
+      <general>
+        <title>
+          <langstring lang="en">About</langstring>
+        </title>
+      </general>
+      <technical>
+        <format>
+          <langstring>application/x-conceptmap</langstring>
+        </format>
+        <location type="URI">urn:path:/org/conzilla/builtin/maps/about/About</location>
+      </technical>
+    </record>
+  </MetaData>
+  <ConceptMap>
+    <Dimension WIDTH="421" HEIGHT="336"/>
+    <NeuronStyle NEURONURI="layout_underline" ID="layout_underline">
+      <BoxStyle VISIBLE="true">
+        <Dimension WIDTH="354" HEIGHT="8"/>
+        <Position X="42" Y="300"/>
+      </BoxStyle>
+    </NeuronStyle>
+    <NeuronStyle NEURONURI="message" ID="message">
+      <BoxStyle VISIBLE="true">
+        <Dimension WIDTH="342" HEIGHT="290"/>
+        <Position X="50" Y="13"/>
+      </BoxStyle>
+    </NeuronStyle>
+    <NeuronStyle NEURONURI="layout_underline" ID="layout_underline1">
+      <BoxStyle VISIBLE="true">
+        <Dimension WIDTH="355" HEIGHT="8"/>
+        <Position X="42" Y="12"/>
+      </BoxStyle>
+    </NeuronStyle>
+  </ConceptMap>
+</Component>

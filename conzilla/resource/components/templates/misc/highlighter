@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Component VERSION="1.0">
+  <MetaData>
+    <record>
+      <general>
+        <title>
+          <langstring lang="en-US">Highlighter</langstring>
+        </title>
+        <language>en-US</language>
+      </general>
+    </record>
+  </MetaData>
+  <Neuron TYPEURI="urn:path:/org/conzilla/builtin/types/transform/transitivesimilarityconcept"/>
+</Component>

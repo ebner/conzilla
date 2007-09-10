@@ -1,0 +1,16 @@
+conzilla.browse.popup.border.color = 0xff000000
+conzilla.browse.popup.border.activecolor = 0xff000000
+
+conzilla.browse.popup.text.color = 0xff000000
+conzilla.browse.popup.text.activecolor = 0xff000000
+
+conzilla.browse.mouseover.color = 0xff9999ff
+conzilla.browse.lastconcept.color = 0xff00ff00
+
+conzilla.browse.browsable.color=0xff001866
+conzilla.browse.browsviewable.color=0xff664d00
+conzilla.browse.lastconcept.color=0xffa72d2d
+conzilla.browse.mouseover.color=0xffad2323
+conzilla.browse.popup.background.activecolor=0xffe4e6ac
+conzilla.browse.popup.background.color=0xffcccc99
+conzilla.browse.viewable.color=0xff336600

@@ -1,0 +1,6 @@
+@base <http://kmr.nada.kth.se/shame/graphics/query-contextmap>.
+@prefix qel: <http://www.edutella.org/qel#>.
+@prefix graphic: <http://kmr.nada.kth.se/rdf/graphic#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+
+?(X, D)- qel:nodeType(X, qel:Resource), qel:s(X,rdf:type,graphic:ContextMap).

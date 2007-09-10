@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+	 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+  
+  <rdfs:Class rdf:ID="GO"> 
+    <rdfs:comment> 
+      An Graphical Object.
+    </rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/TR/
+		     1999/PR-rdf-schema-19990303#Resource"/> 
+  </rdfs:Class> 
+  
+  
+  <rdfs:Property ID="hasparent">
+    <rdfs:domain rdf:resource="#GO"/>
+    <rdfs:range rdf:resource="#GO"/>
+  </rdfs:Property>
+
+  <rdfs:Property ID="hastransform">
+    <rdfs:domain rdf:resource="#GO"/>
+    <rdfs:range rdf:resource="#Transform"/>
+  </rdfs:Property>
+
+  <rdfs:Property ID="hasrepresentation">
+    <rdfs:domain rdf:resource="#GO"/>
+    <rdfs:range rdf:resource="#Transform"/>
+  </rdfs:Property>
+  
+  <rdfs:Class rdf:ID="Transform"> 
+    <rdfs:comment> 
+      A transform.
+    </rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/TR/
+		     1999/PR-rdf-schema-19990303#Resource"/> 
+  </rdfs:Class>
+  
+  <rdfs:Property ID="hasposition">
+    <rdfs:domain rdf:resource="#Transform"/>
+    <rdfs:range rdf:resource="http://www.w3.org/TR/
+		     1999/PR-rdf-schema-19990303#Resource"/>
+  </rdfs:Property>
+  
+  <rdfs:Property ID="hasrotation">
+    <rdfs:domain rdf:resource="#Transform"/>
+    <rdfs:range rdf:resource="http://www.w3.org/TR/
+		     1999/PR-rdf-schema-19990303#Resource"/>
+  </rdfs:Property>
+
+  <rdfs:Property ID="hasscale">
+    <rdfs:domain rdf:resource="#Transform"/>
+    <rdfs:range rdf:resource="http://www.w3.org/TR/
+		     1999/PR-rdf-schema-19990303#Resource"/>
+  </rdfs:Property>
+
+  <rdfs:Property ID="hasmatrix">
+    <rdfs:domain rdf:resource="#Transform"/>
+    <rdfs:range rdf:resource="http://www.w3.org/TR/
+		     1999/PR-rdf-schema-19990303#Resource"/>
+  </rdfs:Property>
+  
+  
+</rdf:RDF>
