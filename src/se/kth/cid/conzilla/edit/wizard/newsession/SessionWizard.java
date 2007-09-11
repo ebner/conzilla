@@ -43,14 +43,10 @@ public class SessionWizard extends Wizard {
 
         Session session = sessionManager.createAndAddSession(null);
         session.setTitle((String) data.get(SpecifySessionName.SESSION_NAME));
-        session.setBaseURIForConcepts((String) data
-                .get(SpecifyNameSpace.INFO_NAMESPACE));
-        session.setBaseURIForLayouts((String) data
-                .get(SpecifyNameSpace.PRES_NAMESPACE));
-        session.setContainerURIForConcepts((String) data
-                .get(SpecifyContainer.INFO_CONTAINER_URI));
-        session.setContainerURIForLayouts((String) data
-                .get(SpecifyContainer.PRES_CONTAINER_URI));
+        session.setBaseURIForConcepts((String) data.get(SpecifyNameSpace.INFO_NAMESPACE));
+        session.setBaseURIForLayouts((String) data.get(SpecifyNameSpace.PRES_NAMESPACE));
+        session.setContainerURIForConcepts((String) data.get(SpecifyContainer.INFO_CONTAINER_URI));
+        session.setContainerURIForLayouts((String) data.get(SpecifyContainer.PRES_CONTAINER_URI));
 
         return session;
     }
