@@ -130,8 +130,8 @@ public class Wizard extends JDialog implements PropertyChangeListener{
         buttonBox.setOpaque(true);
 
         vertical.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        wizardComponentTextPanel.setBorder(BorderFactory.createEtchedBorder());
-        wizardComponentPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5)); //BorderFactory.createEtchedBorder()
+        wizardComponentTextPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        wizardComponentPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         //buttonBox.setBorder(BorderFactory.createEtchedBorder());
        
         vertical.add(wizardComponentTextPanel);
@@ -149,7 +149,7 @@ public class Wizard extends JDialog implements PropertyChangeListener{
         wizardComponentTextPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, d.height));
         changeToWizard(0).enter();
         Dimension prefSize = buttonBox.getPreferredSize();
-        buttonBox.setPreferredSize(new Dimension(450, prefSize.height));
+        buttonBox.setPreferredSize(new Dimension(prefSize.width, prefSize.height));
         pack();
         setLocationRelativeTo(ConzillaKit.getDefaultKit().getConzilla().getViewManager().getWindow());
     }
