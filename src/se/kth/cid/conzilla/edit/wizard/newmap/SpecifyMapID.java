@@ -41,8 +41,7 @@ public class SpecifyMapID extends WizardComponentAdapter {
     
     public SpecifyMapID(ContainerManager containerManager) {
         super("<html>Give the map a globally unique identifier.<br>" +
-                "(Choose a localname for yourself or<br>" +
-                "accept the uniquely generated.)</html>", "Some help");
+                "Choose a custom ID or accept the uniquely generated one.</html>", "Some help");
         this.containerManager = containerManager;
     }
     
@@ -59,7 +58,7 @@ public class SpecifyMapID extends WizardComponentAdapter {
         
         gc.fill = GridBagConstraints.NONE;
         gc.gridwidth = GridBagConstraints.RELATIVE;
-        panel.add(new JLabel("Map id:"), gc);
+        panel.add(new JLabel("Map ID: "), gc);
         
         gc.gridwidth = GridBagConstraints.REMAINDER;
         gc.fill = GridBagConstraints.HORIZONTAL;
@@ -69,7 +68,7 @@ public class SpecifyMapID extends WizardComponentAdapter {
         gc.fill = GridBagConstraints.NONE;
         gc.gridwidth = GridBagConstraints.RELATIVE;
         gc.weightx = 0.0;
-        panel.add(new JLabel("Map URI:"), gc);
+        panel.add(new JLabel("Map URI: "), gc);
                 
         gc.gridwidth = GridBagConstraints.REMAINDER;
         gc.fill = GridBagConstraints.HORIZONTAL;
@@ -108,10 +107,13 @@ public class SpecifyMapID extends WizardComponentAdapter {
     protected void generate() {
         Session session = (Session) passedAlong.get(ChooseSession.CHOOSEN_SESSION);
         namespace = session.getBaseURIForLayouts();
-        String base =  namespace + "CM";
+        if (!namespace.endsWith("/")) {
+        	namespace += "/";
+        }
+        String base =  namespace + "map";
         String uri = containerManager.createUniqueURI(base);
         mapURI.setText(uri);
-        mapId.setText("CM"+uri.substring(base.length()));
+        mapId.setText("map" + uri.substring(base.length()));
         setReady(true);
     }
     

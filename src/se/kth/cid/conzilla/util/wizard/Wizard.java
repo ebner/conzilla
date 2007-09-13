@@ -7,7 +7,6 @@
 package se.kth.cid.conzilla.util.wizard;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -28,7 +27,6 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import se.kth.cid.conzilla.app.ConzillaKit;
@@ -54,7 +52,7 @@ public class Wizard extends JDialog implements PropertyChangeListener{
         public WrapperAction(String name, Action action) {
             super(name);
             this.action = action;
-        }        
+        }
     }
     
     private boolean finishedSuccessfully;
@@ -176,22 +174,23 @@ public class Wizard extends JDialog implements PropertyChangeListener{
         final WizardComponent wc = (WizardComponent) wizardComponents.get(position);
         buttonBox.removeAll();
         
-        JLabel nr = new JLabel(""+(position+1)+"/"+wizardComponents.size());
-        nr.setBackground(Color.green);
+        //JLabel nr = new JLabel(""+(position+1)+"/"+wizardComponents.size());
+        JLabel nr = new JLabel("Step " + (position+1) + " of " + wizardComponents.size());
+        //nr.setBackground(Color.green);
         nr.setOpaque(true);
         nr.setBorder(BorderFactory.createEmptyBorder(2,4,2,4));
         buttonBox.add(nr);
         buttonBox.add(Box.createHorizontalStrut(10));
         
-        final String helpText = wc.getHelpText();
-        JButton helpButton = new JButton(new AbstractAction("Help") {
-            public void actionPerformed(ActionEvent ae) {
-                JOptionPane.showMessageDialog(Wizard.this, helpText);
-            }
-        });
-        helpButton.setMnemonic(KeyEvent.VK_H);
-        helpButton.setEnabled(helpText != null);
-        buttonBox.add(helpButton);
+//        final String helpText = wc.getHelpText();
+//        JButton helpButton = new JButton(new AbstractAction("Help") {
+//            public void actionPerformed(ActionEvent ae) {
+//                JOptionPane.showMessageDialog(Wizard.this, helpText);
+//            }
+//        });
+//        helpButton.setMnemonic(KeyEvent.VK_H);
+//        helpButton.setEnabled(helpText != null);
+//        buttonBox.add(helpButton);
 
         buttonBox.add(Box.createHorizontalGlue());
         

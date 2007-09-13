@@ -8,6 +8,8 @@ package se.kth.cid.conzilla.app;
 
 import java.awt.Window;
 
+import javax.swing.SwingUtilities;
+
 import se.kth.cid.collaboration.CollaborillaConfiguration;
 import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.content.ApplicationContentDisplayer;
@@ -54,11 +56,15 @@ public class ConzillaApp extends ConzillaAppEnv {
 
 		app.start();
 		
-		ViewManager vm = ConzillaKit.getDefaultKit().getConzilla().getViewManager();
-		Window window = vm.getWindow();
+		final ViewManager vm = ConzillaKit.getDefaultKit().getConzilla().getViewManager();
+		final Window window = vm.getWindow();
 		if ((window != null) && !window.isShowing()) {
-			window.setVisible(true);
-			vm.revalidate();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					window.setVisible(true);
+					vm.revalidate();
+				}
+			});
 		}
 		
 		boolean askForConfiguration = true;
