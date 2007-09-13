@@ -118,6 +118,8 @@ public class PublishMapDialog extends JFrame {
 	
 	private boolean saveMode;
 	
+	private boolean originalPublication = false;
+	
     /**
 	 * @param mm
 	 *            EditMapManager.
@@ -132,6 +134,11 @@ public class PublishMapDialog extends JFrame {
     	this.controller = cont;
     	this.contextMap = cont.getConceptMap();
     	this.session = contextMap.getComponentManager().getEditingSesssion();
+    	
+    	if (contextMap.getLoadContainer().equals(session.getContainerURIForLayouts())) {
+    		originalPublication = true;
+    	}
+    	
     	this.saveMode = saveMode;
     	this.containerManager = ConzillaKit.getDefaultKit().getResourceStore().getContainerManager();
     	this.collabSupport = new CollaborillaSupport(ConfigurationManager.getConfiguration());
@@ -165,17 +172,17 @@ public class PublishMapDialog extends JFrame {
     	mapMetaPanel = new MetaDataPanel("Editing the context map information", EditPanel.context_form, this.getBackground(), null);
     	mapModel = ModelFactory.createDefaultModel();
     	
-    	String infoFromServer = collabReader.getMetaData(URI.create(uri));
+//    	String infoFromServer = collabReader.getMetaData(URI.create(uri));
     	
-        if (infoFromServer != null) {
-            StringReader sr = new StringReader(infoFromServer);
-            mapModel.read(sr, uri);
-            mapResource = mapModel.getResource(uri);
-        } else {
-        	mapResource = mapModel.createResource(uri);
-        	Model mapLoadModel = (Model) containerManager.getContainer(contextMap.getLoadContainer());
-        	RDFUtil.getModel(mapLoadModel, mapModel, mapResource, 0);
-        }
+//        if (infoFromServer != null) {
+//            StringReader sr = new StringReader(infoFromServer);
+//            mapModel.read(sr, uri);
+//            mapResource = mapModel.getResource(uri);
+//        } else {
+    	mapResource = mapModel.createResource(uri);
+    	Model mapLoadModel = (Model) containerManager.getContainer(contextMap.getLoadContainer());
+    	RDFUtil.getModel(mapLoadModel, mapModel, mapResource, 0);
+//        }
         
         EditContainer mapContainer = new Container(mapModel, URI.create(uri));
         mapMetaPanel.edit(mapContainer, mapResource);
@@ -263,9 +270,9 @@ public class PublishMapDialog extends JFrame {
                 .add(mapScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
             );
         
-        if (!saveMode) {
-        	publishingPane.addTab("Context Map", mapPanel);
-        }
+//        if (!saveMode) {
+//        	publishingPane.addTab("Context Map", mapPanel);
+//        }
 
         org.jdesktop.layout.GroupLayout informationPanelLayout = new org.jdesktop.layout.GroupLayout(contributionPanel);
         contributionScrollPane.setViewportView(contributionMetaPanel);
@@ -279,16 +286,20 @@ public class PublishMapDialog extends JFrame {
                 .add(org.jdesktop.layout.GroupLayout.TRAILING, contributionScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
             );
 
-       	publishingPane.addTab("Contribution Information", contributionPanel);
+        if (originalPublication) {
+        	publishingPane.addTab("Session Information", contributionPanel);
+        } else {
+        	publishingPane.addTab("Contribution Information", contributionPanel);
+        }
         
        	String containerTooltip = "<html><b>Information Container:</b> " + session.getContainerURIForConcepts() + "<br>"
        		+ "<b>Presentation Container:</b> " + session.getContainerURIForLayouts() + "</html>";
-        if (saveMode) {
+//        if (saveMode) {
         	publishingPane.setToolTipTextAt(0, containerTooltip);
-        } else {
-        	publishingPane.setToolTipTextAt(0, "<html><b>Context-Map:</b> " + contextMap.getURI() + "</html>");
-            publishingPane.setToolTipTextAt(1, containerTooltip);
-        }
+//        } else {
+//        	publishingPane.setToolTipTextAt(0, "<html><b>Context-Map:</b> " + contextMap.getURI() + "</html>");
+//            publishingPane.setToolTipTextAt(1, containerTooltip);
+//        }
 
         destRadioGroup.add(previousDestRadioButton);
         LocationInformation prevInfo = collabConfig.getPreviouslyUsedDestination();
