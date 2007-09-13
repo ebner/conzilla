@@ -174,8 +174,9 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		Session session = (Session) node.getUserObject();
 		List maps = getMaps(session, false);
-		List contributions = getContributions(session, false);
-		if (maps == null && contributions == null) {
+//		List contributions = getContributions(session, false);
+//		if (maps == null && contributions == null) {
+		if (maps == null) {
 			setCursor(Cursor.getDefaultCursor());
 			return false;
 		}
@@ -186,12 +187,12 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 				children.add(newNode);
 			}
 		}
-		if (contributions != null) {
-			for (Iterator it = contributions.iterator(); it.hasNext(); ) {
-				SessionNode newNode = new SessionNode(it.next(), SessionNode.TYPE_CONTRIBUTION);
-				children.add(newNode);
-			}
-		}
+//		if (contributions != null) {
+//			for (Iterator it = contributions.iterator(); it.hasNext(); ) {
+//				SessionNode newNode = new SessionNode(it.next(), SessionNode.TYPE_CONTRIBUTION);
+//				children.add(newNode);
+//			}
+//		}
 		
 		Collections.sort(children, new Comparator() {
 			public int compare(Object o1, Object o2) {
@@ -343,29 +344,29 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 		return result;
     }
     
-    private List getContributions(Session session, boolean sort) {
-    	List maps = getMaps(session, false);
-    	List managed = new ArrayList(session.getManaged());
-    	if (maps == null) {
-    		return managed;
-    	}
-    	List mapURIs = new ArrayList();
-    	for (Iterator it = maps.iterator(); it.hasNext(); ) {
-    		ContextMap map = (ContextMap) it.next();
-    		mapURIs.add(map.getURI());
-    	}
-    	managed.removeAll(mapURIs);
-		if (sort) {
-			Collections.sort(managed, new Comparator() {
-				public int compare(Object o1, Object o2) {
-					String map1 = new SessionNode(o1, SessionNode.TYPE_CONTRIBUTION).toString();
-					String map2 = new SessionNode(o2, SessionNode.TYPE_CONTRIBUTION).toString();
-					return map1.compareToIgnoreCase(map2);
-				}
-			});
-		}
-    	return managed;
-    }
+//    private List getContributions(Session session, boolean sort) {
+//    	List maps = getMaps(session, false);
+//    	List managed = new ArrayList(session.getManaged());
+//    	if (maps == null) {
+//    		return managed;
+//    	}
+//    	List mapURIs = new ArrayList();
+//    	for (Iterator it = maps.iterator(); it.hasNext(); ) {
+//    		ContextMap map = (ContextMap) it.next();
+//    		mapURIs.add(map.getURI());
+//    	}
+//    	managed.removeAll(mapURIs);
+//		if (sort) {
+//			Collections.sort(managed, new Comparator() {
+//				public int compare(Object o1, Object o2) {
+//					String map1 = new SessionNode(o1, SessionNode.TYPE_CONTRIBUTION).toString();
+//					String map2 = new SessionNode(o2, SessionNode.TYPE_CONTRIBUTION).toString();
+//					return map1.compareToIgnoreCase(map2);
+//				}
+//			});
+//		}
+//    	return managed;
+//    }
     
     /**
 	 * Opens a context-map.
