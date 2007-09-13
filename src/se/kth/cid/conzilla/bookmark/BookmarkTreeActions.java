@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.net.URI;
 
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
@@ -24,7 +25,6 @@ import javax.swing.tree.TreePath;
 
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.controller.MapController;
-import se.kth.cid.conzilla.util.ErrorMessage;
 
 /**
  * Provides a KeyListener for keyboard shortcuts, popup menu creation, and
@@ -288,7 +288,7 @@ public class BookmarkTreeActions extends MouseAdapter implements KeyListener {
 		    			ConzillaKit.getDefaultKit().getConzilla().openMapInOldView(uri, controller.getView());
 		    		} catch (Exception e) {
 		    			e.printStackTrace();
-		    			ErrorMessage.showError("Unable to open map", "Conzilla was not able to open the context-map.", e, null);
+		    			JOptionPane.showMessageDialog(null, e.getMessage(), "Could not load context-map", JOptionPane.ERROR_MESSAGE);
 		    		}
 				}
     		});
@@ -304,7 +304,8 @@ public class BookmarkTreeActions extends MouseAdapter implements KeyListener {
 		    			URI uri = new URI(uriString);
 		    			ConzillaKit.getDefaultKit().getConzilla().openMapInNewView(uri, controller);
 		    		} catch (Exception e) {
-		    			ErrorMessage.showError("Unable to open map", "Conzilla was not able to open the context-map.", e, null);
+		    			e.printStackTrace();
+		    			JOptionPane.showMessageDialog(null, e.getMessage(), "Could not load context-map", JOptionPane.ERROR_MESSAGE);
 		    		}
 				}
     		});

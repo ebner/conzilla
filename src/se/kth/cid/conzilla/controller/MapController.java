@@ -261,7 +261,9 @@ public class MapController implements PropertyChangeListener, EditListener {
 			}
 		} catch (ComponentException e) {
 			firePropertyChange(MAP_LOADING_FAILED, null, e);
-			throw new ControllerException("Could not load map " + mapURI + ":\n " + e.getMessage());
+			throw new ControllerException("Unable to load map <" + mapURI + ">.\n" + e.getMessage() +
+					"\n\nMake sure you entered a correct URI, that the collaboration settings are\n" +
+					"configured properly, and that your Internet connection is working.");
 		}
 		
 		// We have to change to browse mode, otherwise we end

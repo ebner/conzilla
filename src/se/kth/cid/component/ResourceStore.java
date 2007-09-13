@@ -228,7 +228,7 @@ public class ResourceStore {
         
         throw new ComponentException(
             new ComponentException("Failed loading of '" + uri + "', neither locally available, " +
-            		"remotely available directly (as for ftp or http) nor resolvable via collaborilla"));
+            		"remotely available directly (as for ftp or http) nor resolvable via Collaborilla."));
     }
     
     /** Tests if a component with this URI can be created.

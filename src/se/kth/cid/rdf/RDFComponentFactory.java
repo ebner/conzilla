@@ -166,7 +166,7 @@ public class RDFComponentFactory extends MemTreeTagManager implements ComponentF
 			c.update(new RDFComponentManager(this, uri, null, false));
 			return c;
 		}
-		throw new ComponentException("tried to load a Concept with aN identifier which is already in use by a ContextMap. The URI was: "+uri);
+		throw new ComponentException("Tried to load a concept with an identifier which is already in use by a context-map. The URI was: "+uri);
 	}
 	
 	public ContextMap loadContextMap(URI uri, boolean collaborative) throws ComponentException {		
@@ -176,7 +176,7 @@ public class RDFComponentFactory extends MemTreeTagManager implements ComponentF
 			cMap.update(new RDFComponentManager(this, uri, null, collaborative));
 			return cMap;
 		}
-		throw new ComponentException("Did not find the ContextMap <"+uri+">\nin any of the loaded containers.");			
+		throw new ComponentException("Could not find the context-map in any of the loaded containers.");			
 	}
 	// Functions from former RDFFormatHandler.
 

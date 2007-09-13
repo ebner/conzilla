@@ -109,7 +109,7 @@ public class DefaultView implements View, PropertyChangeListener {
 									JOptionPane.showMessageDialog(null, "URI is not absolute, you need to specify a scheme e.g. \"http://\" or \"urn:path://\".", "Could not load context-map", JOptionPane.ERROR_MESSAGE);							
 								}
 							} catch (ControllerException e1) {
-								JOptionPane.showMessageDialog(null, "Unable to load context-map.\nPlease make sure the URI exists.", "Could not load context-map", JOptionPane.ERROR_MESSAGE);
+								JOptionPane.showMessageDialog(null, e1.getMessage(), "Could not load context-map", JOptionPane.ERROR_MESSAGE);
 							}
 						}
 					});
