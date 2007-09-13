@@ -353,9 +353,10 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
         public void refreshEditGroupLayout() {
         	LayerLayout egl = ls.getConceptMap().getLayerManager().getEditGroupLayout();
         	if (LayerControl.this.editEnabled && ls == egl) {
-        		label.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 5, Color.green));
+        		//label.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 5, Color.green));
+        		label.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
         	} else {
-        		label.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));        		
+        		label.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
         	}
         }
         
@@ -383,7 +384,6 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
 
                     lc.lock = true;
                     if (e.getStateChange() == ItemEvent.SELECTED) {
-                    	
                         controller.getConceptMap().getLayerManager().setLayerVisible(ls.getURI(), true);
                         controller.getView().getMapScrollPane().getDisplayer().resizeMap();
                         lc.controller.getView().getMapScrollPane().getDisplayer().repaint();

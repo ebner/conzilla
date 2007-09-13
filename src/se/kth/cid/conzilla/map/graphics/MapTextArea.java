@@ -122,25 +122,25 @@ public class MapTextArea extends JTextArea {
 
         if (editable) {
             saveColor = getForeground();
-            doSetColor(Color.magenta);
+            doSetColor(Color.gray);
         } else
             doSetColor(saveColor);
 
         Enumeration en = mouseMotionListeners.elements();
         while (en.hasMoreElements())
-            if (editable)
-                super.addMouseMotionListener((MouseMotionListener) en
-                        .nextElement());
-            else
-                super.removeMouseMotionListener((MouseMotionListener) en
-                        .nextElement());
+            if (editable) {
+                super.addMouseMotionListener((MouseMotionListener) en.nextElement());
+            } else {
+                super.removeMouseMotionListener((MouseMotionListener) en.nextElement());
+            }
 
         en = mouseListeners.elements();
         while (en.hasMoreElements())
-            if (editable)
+            if (editable) {
                 super.addMouseListener((MouseListener) en.nextElement());
-            else
+            } else {
                 super.removeMouseListener((MouseListener) en.nextElement());
+            }
 
         repaint();
     }
@@ -184,4 +184,5 @@ public class MapTextArea extends JTextArea {
         this.scale = scale;
         setFont(origFont.deriveFont((float) (origFont.getSize2D() * scale)));
     }
+
 }

@@ -236,13 +236,12 @@ public abstract class DrawerMapObject extends MapObjectImpl {
     public void detachImpl() {
         if (concept != null) {
             concept.removeEditListener(this);
-            ConfigurationManager.getConfiguration().removePropertyChangeListener(ColorTheme.COLORTHEME, colorListener);
-        } else {
-        	ConfigurationManager.getConfiguration().removePropertyChangeListener(ColorTheme.COLORTHEME, colorListener);
         }
+        ConfigurationManager.getConfiguration().removePropertyChangeListener(ColorTheme.COLORTHEME, colorListener);
 
         drawLayout.removeEditListener(this);
         boxDrawer = null;
         titleDrawer = null;
     }
+
 }
