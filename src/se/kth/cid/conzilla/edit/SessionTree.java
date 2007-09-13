@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
@@ -44,6 +45,7 @@ import se.kth.cid.conzilla.controller.ControllerException;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.properties.Images;
 import se.kth.cid.conzilla.session.Session;
+import se.kth.cid.conzilla.session.SessionImpl;
 import se.kth.cid.conzilla.session.SessionManager;
 import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.layout.ContextMap;
@@ -155,7 +157,8 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 		SessionNode root = (SessionNode) getModel().getRoot();
 		List sessions = getSessionList(true);
 		for (Iterator it = sessions.iterator(); it.hasNext(); ) {
-			root.add(new SessionNode(it.next(), SessionNode.TYPE_SESSION));
+			SessionNode node = new SessionNode(it.next(), SessionNode.TYPE_SESSION);
+			root.add(node);
 		}
 		((DefaultTreeModel) getModel()).reload();
 	}
@@ -244,33 +247,38 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 		if (node.isLoadable()) {
 			uri = node.getURI();
 		}
-		final String uriFinal = uri;
+				
+		JPopupMenu menu = new JPopupMenu();
 		
-		JMenuItem itemOpen = new JMenuItem("Open");
-		if (uriFinal != null) {
+		if (uri != null) {
+			final String uriFinal = uri;
+			
+			JMenuItem itemOpen = new JMenuItem("Open");
 			itemOpen.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					openMap(uriFinal, false);
 				}
 			});
-		} else {
-			itemOpen.setEnabled(false);
-		}
-		
-		JMenuItem itemOpenTab = new JMenuItem("Open in new view");
-		if (uriFinal != null) {
+			menu.add(itemOpen);
+			
+			JMenuItem itemOpenTab = new JMenuItem("Open in new view");
 			itemOpenTab.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					openMap(uriFinal, true);
 				}
 			});
-		} else {
-			itemOpenTab.setEnabled(false);
+			menu.add(itemOpenTab);
 		}
 		
-		JPopupMenu menu = new JPopupMenu();
-		menu.add(itemOpen);
-		menu.add(itemOpenTab);
+		if (node.getType() == SessionNode.TYPE_SESSION) {
+			JMenuItem itemRename = new JMenuItem("Rename");
+			itemRename.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					renameSession(node);
+				}
+			});
+			menu.add(itemRename);
+		}
 		
 		return menu;
 	}
@@ -388,6 +396,14 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
     	}
     }
     
+    private void renameSession(final SessionNode node) {  
+    	SessionImpl session = (SessionImpl) node.getUserObject();
+    	String result = JOptionPane.showInputDialog(SessionTree.this, "Please enter a name for this session", session.getTitle());
+    	if (result != null) {
+    		session.setTitle(result);
+    	}
+    }
+    
     /* Listeners */
     
 	/**
@@ -435,6 +451,10 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			if (node.isLoadable()) {
 				openMap(node.getURI(), false);
+			}
+		} else if (e.getKeyCode() == KeyEvent.VK_F2) {
+			if (node.getType() == SessionNode.TYPE_SESSION) {
+				renameSession(node);
 			}
 		}
 	}
