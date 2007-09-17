@@ -20,6 +20,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
@@ -61,6 +63,15 @@ public class Export implements Extra {
         }
         public String getDescription() {
             return "Portable Network Graphics (*.png)";
+        }
+	}
+	
+	private class BMPFileFilter extends FileFilter {
+        public boolean accept(File f) {
+        	return f.getName().toLowerCase().endsWith(".bmp") || f.isDirectory();
+        }
+        public String getDescription() {
+            return "Bitmap (*.bmp)";
         }
 	}
 	
@@ -118,21 +129,38 @@ public class Export implements Extra {
     		menu.addTool(t, 345);
     	}
     }
+    
+    private boolean supportsFormat(String extension) {
+    	List<String> formats = Arrays.asList(ImageIO.getWriterFormatNames());
+    	if (formats.contains(extension.toLowerCase())) {
+    		return true;
+    	}
+    	return false;
+    }
 
     public void export(MapScrollPane sp) {
     	try {
 			JFileChooser fc = new JFileChooser();
             
-			PNGFileFilter pngFilter = new PNGFileFilter();
-			JPGFileFilter jpgFilter = new JPGFileFilter();
-			SVGFileFilter svgFilter = new SVGFileFilter();
-			JSONFileFilter jsonFilter = new JSONFileFilter();
+			if (supportsFormat("bmp")) {
+				fc.addChoosableFileFilter(new BMPFileFilter());
+			}
 			
-            fc.addChoosableFileFilter(pngFilter);
-	        fc.addChoosableFileFilter(svgFilter);
-	        fc.addChoosableFileFilter(jpgFilter);
-	        fc.addChoosableFileFilter(jsonFilter);
-	        fc.setFileFilter(pngFilter);
+			if (supportsFormat("jpg")) {
+				fc.addChoosableFileFilter(new JPGFileFilter());
+			}
+			
+			JSONFileFilter jsonFilter = new JSONFileFilter();
+			fc.addChoosableFileFilter(jsonFilter);
+						
+			SVGFileFilter svgFilter = new SVGFileFilter();
+			fc.addChoosableFileFilter(svgFilter);
+			
+			if (supportsFormat("png")) {
+				PNGFileFilter pngFilter = new PNGFileFilter();
+				fc.addChoosableFileFilter(pngFilter);
+				fc.setFileFilter(pngFilter);
+			}
 	        
 	        fc.setAcceptAllFileFilterUsed(false);
 	        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -165,6 +193,13 @@ public class Export implements Extra {
 					if (canWriteFile(file)) {
 						exportToBitmap(file, comp, "jpg");
 					}
+				} else if (selectedFilter instanceof BMPFileFilter) {
+					if (!fileString.endsWith(".bmp")) {
+						file = new File(fileString + ".bmp");
+					}
+					if (canWriteFile(file)) {
+						exportToBitmap(file, comp, "bmp");
+					}
 				} else if (selectedFilter instanceof JSONFileFilter) {
 					if (!fileString.endsWith(".json")) {
 						file = new File(fileString + ".json");
@@ -194,28 +229,29 @@ public class Export implements Extra {
     
     private void exportToSVG(File file, Component component) throws FileNotFoundException {
     	FileOutputStream out = new FileOutputStream(file);
+    	BufferedWriter bf = new BufferedWriter(new OutputStreamWriter(out));
     	
     	// Get a DOMImplementation
         DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-
         // Create an instance of org.w3c.dom.Document
         Document document = domImpl.createDocument(null, "svg", null);
-
         // Create an instance of the SVG Generator
         SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
+        
         RepaintManager rm = RepaintManager.currentManager(component);
         rm.setDoubleBufferingEnabled(false);
         component.paint(svgGenerator);
         rm.setDoubleBufferingEnabled(true);
         boolean useCSS = true; // we want to use CSS style attribute
+        
         try {
-			svgGenerator.stream(new BufferedWriter(new OutputStreamWriter(out)), useCSS);
+			svgGenerator.stream(bf, useCSS);
 		} catch (SVGGraphics2DIOException e) {
 			e.printStackTrace();
 			showError(e.getMessage());
 		} finally {
 			try {
-				out.close();
+				bf.close();
 			} catch (IOException ignored) {
 			}
 		}
@@ -236,6 +272,7 @@ public class Export implements Extra {
 		} catch (IOException e) {
 			e.printStackTrace();
 			showError(e.getMessage());
+		} finally {
 			try {
 				out.close();
 			} catch (IOException ignored) {
@@ -249,9 +286,14 @@ public class Export implements Extra {
     	MapStoreManager sman = spane.getDisplayer().getStoreManager();
     	try {
         	bf.write(new se.kth.cid.json.Export(sman.getConceptMap(), sman.getConcepts()).toString());
-        	bf.flush();
-    		out.close();
-    	} catch (IOException ignored) {
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    		showError(e.getMessage());
+		} finally {
+			try {
+    			bf.close();
+    		} catch (IOException ignored) {
+    		}
 		}
     }
 
