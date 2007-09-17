@@ -36,8 +36,11 @@ import org.apache.batik.svggen.SVGGraphics2DIOException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
+import se.kth.cid.config.Config;
+import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.app.Extra;
+import se.kth.cid.conzilla.config.Settings;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapScrollPane;
 import se.kth.cid.conzilla.map.MapStoreManager;
@@ -138,9 +141,26 @@ public class Export implements Extra {
     	return false;
     }
 
+    private String getLocation() {
+    	Config config = ConfigurationManager.getConfiguration();
+    	String location = config.getString(Settings.CONZILLA_EXPORT_PATH);
+    	if (location != null) {
+    		File file = new File(location);
+    		if (!file.exists() || !file.isDirectory()) {
+    			location = null;
+    		}
+    	}
+    	return location;
+    }
+
+    private void storeLocation(String path) {
+    	Config config = ConfigurationManager.getConfiguration();
+    	config.setProperty(Settings.CONZILLA_EXPORT_PATH, path);
+    }
+
     public void export(MapScrollPane sp) {
     	try {
-			JFileChooser fc = new JFileChooser();
+			JFileChooser fc = new JFileChooser(getLocation());
             
 			if (supportsFormat("bmp")) {
 				fc.addChoosableFileFilter(new BMPFileFilter());
@@ -207,6 +227,11 @@ public class Export implements Extra {
 					if (canWriteFile(file)) {
 						exportToJSON(file, sp);
 					}
+				}
+				
+				String parentFolder = file.getParent();
+				if (parentFolder != null) {
+					storeLocation(parentFolder);
 				}
 			}
 		} catch (FileNotFoundException e) {
