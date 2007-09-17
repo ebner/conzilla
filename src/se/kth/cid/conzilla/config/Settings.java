@@ -26,6 +26,8 @@ public class Settings {
 	
 	public static final String CONZILLA_EXTRAS = "conzilla.extra.list";
 	
+	public static final String CONZILLA_EXPORT_PATH = "conzilla.export.path";
+	
 	public static final String CONZILLA_FONT_SIZE = "conzilla.font.size";
 
 	public static final String CONZILLA_FORMATS = "conzilla.format.list";
