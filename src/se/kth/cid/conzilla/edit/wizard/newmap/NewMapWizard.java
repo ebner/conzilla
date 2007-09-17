@@ -20,6 +20,7 @@ import se.kth.cid.conzilla.session.Session;
 import se.kth.cid.conzilla.session.SessionManager;
 import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.conzilla.util.wizard.Wizard;
+import se.kth.cid.conzilla.util.wizard.WizardComponent;
 import se.kth.cid.identity.MalformedURIException;
 import se.kth.cid.layout.ContextMap;
 
@@ -37,7 +38,7 @@ public class NewMapWizard extends Wizard {
 	public NewMapWizard(MapManagerFactory mmf, ContainerManager containerManager, SessionManager sessionManager) {
 		this.mmf = mmf;
 		this.sessionManager = sessionManager;
-		ArrayList list = new ArrayList();
+		ArrayList<WizardComponent> list = new ArrayList<WizardComponent>();
 		list.add(new ChooseSession(sessionManager));
 		list.add(new SpecifyMapID(containerManager));
 		initWizardComponents(list);

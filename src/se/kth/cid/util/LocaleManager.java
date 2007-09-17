@@ -24,16 +24,14 @@ public class LocaleManager {
 
     public static final String LOCALES_PROPERTY = "locales";
 
-    static class LocaleComparator implements Comparator {
-        public int compare(Object o1, Object o2) {
-            Locale l1 = (Locale) o1;
-            Locale l2 = (Locale) o2;
+    static class LocaleComparator implements Comparator<Locale> {
+        public int compare(Locale l1, Locale l2) {
             return l1.getDisplayName().toLowerCase().compareTo(
                     l2.getDisplayName().toLowerCase());
         }
     }
 
-    Vector workingSet;
+    Vector<Locale> workingSet;
 
     Locale[] availableLocales;
 
@@ -46,7 +44,7 @@ public class LocaleManager {
     static LocaleManager manager;
 
     LocaleManager() {
-        workingSet = new Vector();
+        workingSet = new Vector<Locale>();
         comparator = new LocaleComparator();
         pcs = new PropertyChangeSupport(this);
     }
@@ -126,7 +124,7 @@ public class LocaleManager {
     }
 
     public void updateShame() {
-        ArrayList list = new ArrayList();
+        ArrayList<LanguageImpl> list = new ArrayList<LanguageImpl>();
         for (Iterator langs = workingSet.iterator(); langs.hasNext();) {
             Locale l = (Locale) langs.next();
             list.add(new LanguageImpl(l.getLanguage(), l.getCountry(), l.getDisplayLanguage(), l.getDisplayLanguage()));

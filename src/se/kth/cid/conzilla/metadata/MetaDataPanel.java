@@ -45,7 +45,7 @@ public class MetaDataPanel extends SinglePanelFormContainer {
 
     private static final long serialVersionUID = 1L;
 	
-    static List languages = new LinkedList();
+    static List<LanguageImpl> languages = new LinkedList<LanguageImpl>();
     static {
         languages.add(new LanguageImpl("sv", "Swedish", "The Swedish language"));
         languages.add(new LanguageImpl("en", "English", "The English language"));

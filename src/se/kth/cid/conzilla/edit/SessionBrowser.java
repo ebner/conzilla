@@ -159,7 +159,7 @@ public class SessionBrowser extends JDialog {
 	 *         within the dialog.
 	 */
     public Set getSelectedContextMaps() {
-    	Set maps = new HashSet();
+    	Set<ContextMap> maps = new HashSet<ContextMap>();
     	Object[] selectedObjects = mapList.getSelectedValues();
     	if (selectedObjects != null) {
     		for (int i = 0; i < selectedObjects.length; i++) {
@@ -297,9 +297,8 @@ public class SessionBrowser extends JDialog {
 	 * list of sessions.
 	 */
     private void initSessionList() {
-    	List sessions = getSessionList();
+    	List<Session> sessions = getSessionList();
     	if (sessions.size() == 0) {
-    		sessions.add(new String("(No sessions found)"));
     		sessionComboBox.setEnabled(false);
     	}
     	ComboBoxModel model = new DefaultComboBoxModel(sessions.toArray());
@@ -309,11 +308,14 @@ public class SessionBrowser extends JDialog {
     /**
 	 * @return Returns a sorted list of available sessions.
 	 */
-	private List getSessionList() {
-		List sortedSessions = new ArrayList(sessionManager.getSessions());
-		Collections.sort(sortedSessions, new Comparator() {
-			public int compare(Object o1, Object o2) {
-				return ((Session) o1).getTitle().compareToIgnoreCase(((Session) o2).getTitle());
+	private List<Session> getSessionList() {
+		List<Session> sortedSessions = new ArrayList<Session>(sessionManager.getSessions());
+		Collections.sort(sortedSessions, new Comparator<Session>() {
+			public int compare(Session s1, Session s2) {
+				if (s1 == null) {
+					return 0;
+				}
+				return s1.getTitle().compareToIgnoreCase(s2.getTitle());
 			}
 		});
 		return sortedSessions;
@@ -345,7 +347,7 @@ public class SessionBrowser extends JDialog {
 	 * @return Returns a sorted list of context-maps within a session.
 	 */
     private List getMapsOfSession(Session session) {
-    	List result = new ArrayList();
+    	List<ContextMapWrapper> result = new ArrayList<ContextMapWrapper>();
 		String uri = session.getContainerURIForLayouts();
 		Container container = null;
 		ResourceStore store = ConzillaKit.getDefaultKit().getResourceStore();
@@ -366,8 +368,8 @@ public class SessionBrowser extends JDialog {
 			}
 			result.add(new ContextMapWrapper(map));
 		}
-		Collections.sort(result, new Comparator() {
-			public int compare(Object o1, Object o2) {
+		Collections.sort(result, new Comparator<ContextMapWrapper>() {
+			public int compare(ContextMapWrapper o1, ContextMapWrapper o2) {
 				String map1 = ((ContextMapWrapper) o1).toString();
 				String map2 = ((ContextMapWrapper) o2).toString();
 				return map1.compareToIgnoreCase(map2);

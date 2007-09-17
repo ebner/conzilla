@@ -203,8 +203,8 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 			}
 			
 			//Find containers of concepts included in this map.
-			Set optional = findContainersForIncludedConcepts(false);
-			Set required = findContainersForIncludedConcepts(true);
+			Set<URI> optional = findContainersForIncludedConcepts(false);
+			Set<URI> required = findContainersForIncludedConcepts(true);
 			optional.removeAll(required);
 			//Add all containers that are load containers of included concepts as required.
 			for (Iterator iter = required.iterator(); iter.hasNext();) {
@@ -308,7 +308,7 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 		collabClient.setMetaData(infoRDFInfo);
 		try {
 			//collabClient.addLocation(buildRemoteURL(locationInfo.getPublicAccessLocation(), infoContURI));
-			Set infoLocation = new HashSet();
+			Set<String> infoLocation = new HashSet<String>();
 			infoLocation.add(buildRemoteURL(locationInfo.getPublicAccessLocation(), infoContURI));
 			collabClient.setLocations(infoLocation);
 		} catch (CollaborillaException e) {
@@ -368,7 +368,7 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 		}
 		try {
 			//collabClient.addLocation(buildRemoteURL(locationInfo.getPublicAccessLocation(), presContURI));
-			Set presLocation = new HashSet();
+			Set<String> presLocation = new HashSet<String>();
 			presLocation.add(buildRemoteURL(locationInfo.getPublicAccessLocation(), presContURI));
 			collabClient.setLocations(presLocation);
 		} catch (CollaborillaException e) {
@@ -511,9 +511,9 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 	 * @param strict if true, only include loadContainers of included concepts, otherwise include relevantcontainers.
 	 * @return a set of URI:s (set of Strings) for containers.
 	 */
-	private Set findContainersForIncludedConcepts(boolean strict) {
+	private Set<URI> findContainersForIncludedConcepts(boolean strict) {
 		String presentationURI = session.getContainerURIForLayouts();
-		HashSet set = new HashSet();
+		HashSet<URI> set = new HashSet<URI>();
 		ResourceStore store = ConzillaKit.getDefaultKit().getResourceStore();
 		DrawerLayout [] dls = contextMap.getDrawerLayouts();
 		for (int i = 0; i < dls.length; i++) {

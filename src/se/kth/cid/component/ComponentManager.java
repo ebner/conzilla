@@ -115,7 +115,7 @@ public interface ComponentManager {
 	 * 
 	 * @return a List of {@link URI}s for every loaded {@link Container}.
 	 */
-	Set getLoadedRelevantContainers();
+	Set<URI> getLoadedRelevantContainers();
 	
 	/**
 	 * @param containerURI the {@link URI} for the container required-

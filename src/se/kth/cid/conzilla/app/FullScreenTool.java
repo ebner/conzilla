@@ -92,7 +92,7 @@ public class FullScreenTool extends StateTool {
 		Component p = c;
 		Class fClass = java.awt.Frame.class;
 		while (!fClass.isInstance(p)) {
-			p.getClass().getMethod("getParent", null);
+			p.getClass().getMethod("getParent", (Class[]) null);
 			p = ((Component) p).getParent();
 		}
 		return (Frame) p;

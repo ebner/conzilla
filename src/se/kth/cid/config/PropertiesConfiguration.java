@@ -141,7 +141,7 @@ public class PropertiesConfiguration implements Config {
 	
 	private synchronized List getPropertyValues(String key) {
 		int valueCount = getPropertyValueCount(key);
-		List result = new ArrayList();
+		List<String> result = new ArrayList<String>();
 		if (valueCount == 1) {
 			String value = config.getProperty(key);
 			if (value == null) {
@@ -369,11 +369,11 @@ public class PropertiesConfiguration implements Config {
 	 */
 	public List getKeyList(String prefix) {
 		Enumeration keyIterator = config.propertyNames();
-		ArrayList result = new ArrayList();
+		ArrayList<String> result = new ArrayList<String>();
 		
 		while (keyIterator.hasMoreElements()) {
-			Object next = keyIterator.nextElement();
-			if ((prefix != null) && !((String) next).startsWith(prefix)) {
+			String next = (String) keyIterator.nextElement();
+			if ((prefix != null) && !next.startsWith(prefix)) {
 				continue;
 			}
 			result.add(next);

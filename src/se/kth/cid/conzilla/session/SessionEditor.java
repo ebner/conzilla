@@ -118,7 +118,7 @@ public class SessionEditor extends JPanel implements ItemListener, ActionListene
     }
     
     protected void loadContainers(SessionManager sm) {
-        Vector ccVec = new Vector();
+        Vector<String> ccVec = new Vector<String>();
         
 //        modelVec.add("New container");
         for (Iterator models = manager.getContainers(Container.COMMON).iterator(); models.hasNext();) {
@@ -128,7 +128,7 @@ public class SessionEditor extends JPanel implements ItemListener, ActionListene
             }
         }
         
-        Vector clVec = new Vector(ccVec);
+        Vector<String> clVec = new Vector<String>(ccVec);
         
         Iterator it = sm.getSessions().iterator();
         while(it.hasNext()) {
@@ -148,8 +148,8 @@ public class SessionEditor extends JPanel implements ItemListener, ActionListene
     }
     
     protected void loadBaseURIs(SessionManager pm) {
-		HashSet cu = new HashSet();
-		HashSet lu = new HashSet();
+		HashSet<String> cu = new HashSet<String>();
+		HashSet<String> lu = new HashSet<String>();
         
         for (Iterator projects = pm.getSessions().iterator();projects.hasNext();) {
             Session project = (Session) projects.next();
@@ -157,8 +157,8 @@ public class SessionEditor extends JPanel implements ItemListener, ActionListene
             lu.add(project.getBaseURIForLayouts());
         }
         
-        conceptBaseURI.setModel(new DefaultComboBoxModel(new Vector(cu)));
-        layoutBaseURI.setModel(new DefaultComboBoxModel(new Vector(lu)));
+        conceptBaseURI.setModel(new DefaultComboBoxModel(new Vector<String>(cu)));
+        layoutBaseURI.setModel(new DefaultComboBoxModel(new Vector<String>(lu)));
     }
     
     protected void loadFromProject() {

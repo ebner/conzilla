@@ -18,6 +18,7 @@ import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.session.Session;
 import se.kth.cid.conzilla.session.SessionManager;
 import se.kth.cid.conzilla.util.wizard.Wizard;
+import se.kth.cid.conzilla.util.wizard.WizardComponent;
 
 /**
  * @author matthias
@@ -30,7 +31,7 @@ public class SessionWizard extends Wizard {
 
     public SessionWizard(SessionManager sessionManager) {
         this.sessionManager = sessionManager;
-        ArrayList list = new ArrayList();
+        ArrayList<WizardComponent> list = new ArrayList<WizardComponent>();
         list.add(new SpecifySessionName());
         list.add(new SpecifyNameSpace());
         list.add(new SpecifyContainer.SpecifyInformationContainer());

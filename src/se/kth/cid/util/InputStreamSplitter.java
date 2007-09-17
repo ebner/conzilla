@@ -44,22 +44,22 @@ public class InputStreamSplitter extends Thread {
 	/**
 	 * Collection of streams to write to.
 	 */
-	private List sinks;
+	private List<OutputStream> sinks;
 
 	/**
 	 * Collection of piped streams for reading.
 	 */
-	private List sources;
+	private List<PipedInputStream> sources;
 
 	/**
 	 * Collection of to be executed actions.
 	 */
-	private List consumers;
+	private List<InputStreamConsumer> consumers;
 
 	/**
 	 * Collection of threads executing the actions.
 	 */
-	private List threads;
+	private List<Thread> threads;
 
 	/**
 	 * Locking helper.
@@ -123,10 +123,10 @@ public class InputStreamSplitter extends Thread {
 		this.usable = true;
 		this.originalStream = in;
 
-		this.sinks = Collections.synchronizedList(new ArrayList());
-		this.sources = Collections.synchronizedList(new ArrayList());
-		this.consumers = Collections.synchronizedList(new ArrayList());
-		this.threads = Collections.synchronizedList(new ArrayList());
+		this.sinks = Collections.synchronizedList(new ArrayList<OutputStream>());
+		this.sources = Collections.synchronizedList(new ArrayList<PipedInputStream>());
+		this.consumers = Collections.synchronizedList(new ArrayList<InputStreamConsumer>());
+		this.threads = Collections.synchronizedList(new ArrayList<Thread>());
 
 		this.bufferSize = 8192; // 8kB
 	}
@@ -140,7 +140,7 @@ public class InputStreamSplitter extends Thread {
 	 * @param consumers
 	 *            Collection of InputStreamConsumer objects.
 	 */
-	public InputStreamSplitter(InputStream in, Collection consumers) {
+	public InputStreamSplitter(InputStream in, Collection<InputStreamConsumer> consumers) {
 		this(in);
 		this.consumers.addAll(consumers);
 	}

@@ -85,9 +85,9 @@ public class CollaborillaConfiguration {
 	 * 
 	 * @return List of LocationInformation objects.
 	 */
-	public List getLocations() {
+	public List<LocationInformation> getLocations() {
 		List encInfoList = config.getStringList(Settings.CONZILLA_COLLAB_LOCATIONS, new ArrayList());
-		List result = new ArrayList();
+		List<LocationInformation> result = new ArrayList<LocationInformation>();
 
 		Iterator encInfoIt = encInfoList.iterator();
 		while (encInfoIt.hasNext()) {

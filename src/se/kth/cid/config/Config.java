@@ -214,7 +214,7 @@ public interface Config {
 	/**
 	 * @param key
 	 *            Property key.
-	 * @return Returns a property value as String.
+	 * @return Returns a property value as String, or null if the property is not found.
 	 */
 	public String getString(String key);
 

@@ -180,7 +180,7 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 			setCursor(Cursor.getDefaultCursor());
 			return false;
 		}
-		List children = new ArrayList();
+		List<SessionNode> children = new ArrayList<SessionNode>();
 		if (maps != null) {
 			for (Iterator it = maps.iterator(); it.hasNext(); ) {
 				SessionNode newNode = new SessionNode(it.next(), SessionNode.TYPE_CONTEXTMAP);
@@ -194,9 +194,9 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 //			}
 //		}
 		
-		Collections.sort(children, new Comparator() {
-			public int compare(Object o1, Object o2) {
-				return ((SessionNode) o1).toString().compareToIgnoreCase(((SessionNode) o2).toString());
+		Collections.sort(children, new Comparator<SessionNode>() {
+			public int compare(SessionNode o1, SessionNode o2) {
+				return o1.toString().compareToIgnoreCase(o2.toString());
 			}
 		});
 		node.removeAllChildren();
@@ -288,12 +288,10 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 	 * @return Returns a sorted list of available sessions.
 	 */
 	private List getSessionList(boolean sort) {
-		List sessions = new ArrayList(sessionManager.getSessions());
+		List<Session> sessions = new ArrayList<Session>(sessionManager.getSessions());
 		if (sort) {
-			Collections.sort(sessions, new Comparator() {
-				public int compare(Object o1, Object o2) {
-					Session s1 = (Session) o1;
-					Session s2 = (Session) o2;
+			Collections.sort(sessions, new Comparator<Session>() {
+				public int compare(Session s1, Session s2) {
 					if (s1.getTitle() != null) {
 						return s1.getTitle().compareToIgnoreCase(s2.getTitle());
 					} else {
@@ -307,11 +305,11 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 	
     /**
 	 * @param session
-	 *            Session to look for context-maps.
+	 *            Session to look in for context-maps.
 	 * @return Returns a sorted list of context-maps within a session.
 	 */
     private List getMaps(Session session, boolean sort) {
-    	List result = new ArrayList();
+    	List<ContextMap> result = new ArrayList<ContextMap>();
 		String uri = session.getContainerURIForLayouts();
 		Container container = null;
 		ResourceStore store = ConzillaKit.getDefaultKit().getResourceStore();
@@ -333,8 +331,8 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 			result.add(map);
 		}
 		if (sort) {
-			Collections.sort(result, new Comparator() {
-				public int compare(Object o1, Object o2) {
+			Collections.sort(result, new Comparator<ContextMap>() {
+				public int compare(ContextMap o1, ContextMap o2) {
 					String map1 = new SessionNode(o1, SessionNode.TYPE_CONTEXTMAP).toString();
 					String map2 = new SessionNode(o2, SessionNode.TYPE_CONTEXTMAP).toString();
 					return map1.compareToIgnoreCase(map2);

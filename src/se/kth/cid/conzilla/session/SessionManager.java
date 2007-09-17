@@ -44,7 +44,7 @@ public interface SessionManager {
 	/**
 	 * @return List of all sessions known.
 	 */
-	Collection getSessions();
+	Collection<Session> getSessions();
 	
 	int getSessionCount();
 

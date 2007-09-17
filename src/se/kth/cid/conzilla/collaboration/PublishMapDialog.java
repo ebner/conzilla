@@ -156,8 +156,8 @@ public class PublishMapDialog extends JFrame {
      * Loads available locations from the configuration.
      */
     private void loadLocations() {
-    	List locList = collabConfig.getLocations();
-    	locationsModel = new DefaultComboBoxModel(new Vector(locList));
+    	List<LocationInformation> locList = collabConfig.getLocations();
+    	locationsModel = new DefaultComboBoxModel(new Vector<LocationInformation>(locList));
     	destinationComboBox.setModel(locationsModel);
     }
     
