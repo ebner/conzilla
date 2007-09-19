@@ -110,10 +110,10 @@ public class SpecifyMapID extends WizardComponentAdapter {
         if (!namespace.endsWith("/")) {
         	namespace += "/";
         }
-        String base =  namespace + "map";
+        String base =  namespace + "contextmap";
         String uri = containerManager.createUniqueURI(base);
         mapURI.setText(uri);
-        mapId.setText("map" + uri.substring(base.length()));
+        mapId.setText("contextmap" + uri.substring(base.length()));
         setReady(true);
     }
     
@@ -131,4 +131,5 @@ public class SpecifyMapID extends WizardComponentAdapter {
         update();
         passedAlong.put(MAP_ID, URI.create(mapURI.getText()));
     }
+
 }
