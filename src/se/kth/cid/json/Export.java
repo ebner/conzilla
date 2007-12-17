@@ -156,12 +156,12 @@ public class Export {
 	
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
-		buf.append("{"+titleStr+",\n");	
-		buf.append(conceptsStr+",\n");
-		buf.append(layoutsStr+",\n");
-		buf.append("metadata: {},\n");
+		buf.append("{"+titleStr+",");
+		buf.append(conceptsStr+",");
+		buf.append(layoutsStr+",");
+		buf.append("metadata: {},");
 		buf.append(layersStr+"}");
-
-		return buf.toString();
+		return buf.toString().replaceAll("\\n", "\\\\n");
 	}
+
 }

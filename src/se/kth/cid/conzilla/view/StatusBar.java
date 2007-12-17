@@ -128,7 +128,7 @@ public class StatusBar extends JPanel implements PropertyChangeListener {
 			statusText.removeMouseListener(mouseAdapter);
 			statusText.addMouseListener(mouseAdapter);
 		} else if (containerPublished) {
-			setStatusText("This context-map is not published. It's container is published. Click here for additional information.");
+			setStatusText("This context-map is not published. Its container is published. Click here for additional information.");
 			setOnlineIcon(false);
 			statusText.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			statusText.removeMouseListener(mouseAdapter);

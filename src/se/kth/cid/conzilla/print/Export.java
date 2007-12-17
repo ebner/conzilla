@@ -33,6 +33,7 @@ import javax.swing.filechooser.FileFilter;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.svggen.SVGGraphics2DIOException;
+import org.json.JSONException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
@@ -234,9 +235,12 @@ public class Export implements Extra {
 					storeLocation(parentFolder);
 				}
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			showError(e.getMessage());
+		} catch (FileNotFoundException fnfe) {
+			fnfe.printStackTrace();
+			showError(fnfe.getMessage());
+		} catch (JSONException jsone) {
+			jsone.printStackTrace();
+			showError(jsone.getMessage());
 		}
     }
     
@@ -305,7 +309,7 @@ public class Export implements Extra {
 		}
     }
 
-    private void exportToJSON(File file, MapScrollPane spane) throws FileNotFoundException {
+    private void exportToJSON(File file, MapScrollPane spane) throws FileNotFoundException, JSONException {
     	FileOutputStream out = new FileOutputStream(file);
     	BufferedWriter bf = new BufferedWriter(new OutputStreamWriter(out));
     	MapStoreManager sman = spane.getDisplayer().getStoreManager();

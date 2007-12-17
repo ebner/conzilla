@@ -55,7 +55,7 @@ public class StartupProgressSplash extends JFrame {
 		requestFocus();
 		setVisible(true);
 		mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		toFront();
+		setAlwaysOnTop(true);
 	}
 	
 	private void centerScreen() {
@@ -168,7 +168,6 @@ public class StartupProgressSplash extends JFrame {
 		    	progressBar.setValue(percent);
 			}
     	});
-    	toFront();
     }
     
     public void setStatusText(final String text) {
@@ -177,7 +176,6 @@ public class StartupProgressSplash extends JFrame {
 				statusLabel.setText(text);
 			}
     	});
-    	toFront();
     }
 
 }

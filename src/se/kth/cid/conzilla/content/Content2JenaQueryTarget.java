@@ -31,8 +31,7 @@ public class Content2JenaQueryTarget implements PopupTrigger2QueryTarget {
 	
 	static {
 		FormletStore.requireFormletConfigurations("formlets/formlets.rdf");
-		FormletStore
-				.requireFormletConfigurations("formlets/Simple_Dublin_Core/formlets.rdf");
+		FormletStore.requireFormletConfigurations("formlets/Simple_Dublin_Core/formlets.rdf");
 		FormletStore.requireFormletConfigurations("formlets/ULM/formlets.rdf");
 	}
 	static public String dcFormletCId = "http://kmr.nada.kth.se/shame/SDC/formlet#Simple-profile";
@@ -100,4 +99,5 @@ public class Content2JenaQueryTarget implements PopupTrigger2QueryTarget {
 		ComponentManager rcm = ((Component) component).getComponentManager();
 		return rcm.getLoadedRelevantContainers().size() > 1;
 	}
+
 }

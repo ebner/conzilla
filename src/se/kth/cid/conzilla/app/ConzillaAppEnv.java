@@ -190,7 +190,8 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 		splash.setPercentage(20);
 		
 		splash.setStatusText("Loading core components...");
-		kit = new ConzillaKit(this);
+		ConzillaKit.createFullKit(this);
+		kit = ConzillaKit.getDefaultKit();
 		splash.setPercentage(40);
 		
 		splash.setStatusText("Loading required containers...");

@@ -76,20 +76,27 @@ public class ConzillaKit {
 		return defaultKit;
 	}
 	
+	public static void createMinimalKit(ConzillaEnvironment env) throws IOException {
+		defaultKit = new ConzillaKit(env);
+		defaultKit.initMinimalKit();
+	}
 	
-
-	public ConzillaKit(ConzillaEnvironment env) throws IOException {
-		defaultKit = this;
-		this.environment = env;
-
+	private void initMinimalKit() throws IOException {
 		initFormletStore();
 		extras = new Hashtable();
 		localeManager = new ConzillaLocaleManager();
 		SoftCache cache = new SoftCache();
 		metaCache = new MetaDataDiskCache();
-		store = new ResourceStore(cache, metaCache, new RDFComponentFactory(cache,
-				new RDFContainerManager()));
+		store = new ResourceStore(cache, metaCache, new RDFComponentFactory(cache, new RDFContainerManager()));
 		styleManager = new se.kth.cid.rdf.style.RDFStyleManager(store);
+	}
+	
+	public static void createFullKit(ConzillaEnvironment env) throws IOException {
+		createMinimalKit(env);
+		defaultKit.initFullKit();
+	}
+	
+	private void initFullKit() throws IOException {
 		//agentManager = new AgentManager();
 		bookmarkStore = new BookmarkStore("bookmarks.xml");
 
@@ -97,7 +104,7 @@ public class ConzillaKit {
 		MultiContentDisplayer md = new MultiContentDisplayer();
 		contentDisplayer = md;
 
-		md.addContentDisplayer(null, env.getDefaultContentDisplayer());
+		md.addContentDisplayer(null, environment.getDefaultContentDisplayer());
 		//md.addContentDisplayer(MIMEType.CONCEPTMAP, new FrameMapContentDisplayer());
 		md.addContentDisplayer(MIMEType.CONCEPTMAP, new OpenMapContentDisplayer());
 
@@ -112,6 +119,10 @@ public class ConzillaKit {
 
 		// fixLibrary();
 		loadExtras();
+	}
+
+	private ConzillaKit(ConzillaEnvironment env) throws IOException {
+		this.environment = env;
 	}
 
 	void initFormletStore() {

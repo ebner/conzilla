@@ -49,7 +49,7 @@ public interface Container extends Resource {
 	 * 
 	 * @return a list of URIs as Strings, never null but may be empty.
 	 */
-	List getDefinedContextMaps();
+	List<String> getDefinedContextMaps();
 
 	/**
 	 * Finds all ContextMaps in the container that references the given
@@ -59,7 +59,7 @@ public interface Container extends Resource {
 	 *            URI as string for resource to check
 	 * @return a list of URIs for maps as Strings, never null may be mepty.
 	 */
-	Set getMapsReferencingResource(String uri);
+	Set<String> getMapsReferencingResource(String uri);
 
 	/**
 	 * Adds an request for a container for individual component. Typically the
@@ -96,7 +96,7 @@ public interface Container extends Resource {
 	 * @return Collection of URIs (Strings) for the requested containers, never
 	 *         null.
 	 */
-	Collection getRequestedContainersForURI(String uri);
+	Collection<String> getRequestedContainersForURI(String uri);
 
 	/**
 	 * All Components requesting some container are returned.
@@ -104,7 +104,7 @@ public interface Container extends Resource {
 	 * @return Collection components identified by their URIs (Strings), never
 	 *         null.
 	 */
-	Collection getURIsWithRequestedContainers();
+	Collection<String> getURIsWithRequestedContainers();
 
 	/**
 	 * Returns the URI that was finally used to retrieve this component.
