@@ -34,6 +34,7 @@ import se.kth.cid.conzilla.browse.ZoomDefaultTool;
 import se.kth.cid.conzilla.browse.ZoomTool;
 import se.kth.cid.conzilla.config.CollaborationSettingsDialog;
 import se.kth.cid.conzilla.config.Settings;
+import se.kth.cid.conzilla.content.SourceViewer;
 import se.kth.cid.conzilla.controller.ControllerException;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.controller.MapManagerFactory;
@@ -279,8 +280,47 @@ public class DefaultMenuFactory implements MenuFactory {
 				conzilla.getViewManager().getView(controller).pack();
 			}
 		}, 400);
+		
+		ToolsMenu sourceViews = new ToolsMenu("SOURCE", DefaultMenuFactory.class.getName());
+		
+		sourceViews.addTool(new Tool("SOURCE_N3", DefaultMenuFactory.class.getName()) {
+			public void actionPerformed(ActionEvent e) {
+				showSourceInWindow(controller, "N3-PP");
+			}
+		}, 10);
+		
+		sourceViews.addTool(new Tool("SOURCE_NTRIPLE", DefaultMenuFactory.class.getName()) {
+			public void actionPerformed(ActionEvent e) {
+				showSourceInWindow(controller, "N-TRIPLE");
+			}
+		}, 20);
+		
+		sourceViews.addTool(new Tool("SOURCE_RDFXML", DefaultMenuFactory.class.getName()) {
+			public void actionPerformed(ActionEvent e) {
+				showSourceInWindow(controller, "RDF/XML-ABBREV");
+			}
+		}, 30);
+		
+		sourceViews.addTool(new Tool("SOURCE_TURTLE", DefaultMenuFactory.class.getName()) {
+			public void actionPerformed(ActionEvent e) {
+				showSourceInWindow(controller, "TURTLE");
+			}
+		}, 40);
+		
+		viewm.add(sourceViews);
+		viewm.setPriority(sourceViews, 500);
 
 		return viewm;
+	}
+	
+	private void showSourceInWindow(final MapController controller, final String format) {
+		Thread sourceViewThread = new Thread(new Runnable() {
+			public void run() {
+				SourceViewer source = new SourceViewer(controller, format);
+				source.setVisible(true);
+			}
+		});
+		sourceViewThread.start();
 	}
 
 	ToolsMenu createSettingsMenu(final MapController controller) {
