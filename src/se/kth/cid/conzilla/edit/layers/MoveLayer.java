@@ -294,20 +294,27 @@ public class MoveLayer extends Layer implements KeyListener {
             return;
         }
        
-        if (textIsInBox)
+        if (textIsInBox) {
             td = editObject.getTitleDrawer();
-        else
+        } else {
             td = ((TripleMapObject) editObject).getLiteralDrawer();
+        }
+        
+        if (td == null) {
+        	return;
+        }
+        
         title.removeKeyListener(this);
         title.setScale(controller.getView().getMapScrollPane().getDisplayer().getScale());
         mapdisplayer.doAttractFocus(true);
         td.setTitleVisible(true);
         remove(title);
         title = null;
-        if (textIsInBox)
+        if (textIsInBox) {
             editObject.setEditable(false, m);
-        else
+        } else {
              ((TripleMapObject) editObject).setLiteralEditable(false, m);
+        }
 
         editObject.updateBox();
         editObject = null;

@@ -131,12 +131,13 @@ public class ConzillaSplitPane extends JPanel {
     	int rightDivididerLocation;
     	
 		//Calculates and sets the new rightdividerLocation.
-        if (!view.getRightPanel().isEmpty() && view.getRightPanel().getPreferredSize().width != 0)
+        if (!view.getRightPanel().isEmpty() && (view.getRightPanel().getPreferredSize().width != 0) && (rightSplitter.getRightComponent() != null)) {
             rightDivididerLocation = rightSplitter.getWidth()
                     - rightSplitter.getRightComponent().getPreferredSize().width
                     - rightSplitter.getDividerSize() - 5;
-        else
+        } else {
             rightDivididerLocation = rightSplitter.getWidth();
+        }
         rightSplitter.setDividerLocation(rightDivididerLocation);
 		rightSplitter.revalidate();
     }

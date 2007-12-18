@@ -47,7 +47,7 @@ public class RemoveDrawerMapTool extends ActionMapMenuTool {
         Set drawerLayouts = editMapManager.getHandleStore().getMarkedLayouts(); 
         if (drawerLayouts != null && drawerLayouts.size() > 1) {
             int result = confirmMultipleRemove(drawerLayouts.size());
-            if ( result == JOptionPane.CANCEL_OPTION) {
+            if (result == JOptionPane.CANCEL_OPTION) {
                 return;
             }
             ComponentCache cache = ConzillaKit.getDefaultKit().getResourceStore().getCache();
@@ -96,7 +96,6 @@ public class RemoveDrawerMapTool extends ActionMapMenuTool {
         }
     }
 
-
     private boolean isManaged(Concept concept) {
         Session session = controller.getConceptMap().getComponentManager().getEditingSesssion();
         String lc = concept.getLoadContainer();
@@ -110,44 +109,48 @@ public class RemoveDrawerMapTool extends ActionMapMenuTool {
      * {@link JOptionPane#CANCEL_OPTION} to abort removal.
      */
     private int confirmSingleRemove(Concept concept, int referredTo, boolean managed) {
-//        String C = concept.getTriple() != null ? "CONCEPT-RELATION" : "CONCEPT";
         String c = concept.getTriple() != null ? "concept-relation" : "concept";
         if (referredTo == 1 && managed) {
-            return JOptionPane.showConfirmDialog(
+        	Object[] options = {"Remove completely", "Remove only from this map", "Cancel"};
+            return JOptionPane.showOptionDialog(
                     controller.getView().getMapScrollPane().getDisplayer(),
-                    "The "+c+" to be removed from this map does not appear in any other maps " +
-                    "and can henceforth be deleted altogether.\n\n"+
-                    "Do you also want to delete the concept altogether?",
-                    "Delete "+c+" altogether?"+c,
+                    "This " + c + " does not appear in any other currently loaded maps,\n"+
+                    "but might be used by another map you are not aware of right now.\n\n" +
+                    "Do you want to remove this " + c + " just from this map or do you\n" +
+                    "want to remove it completely?",
+                    "Remove " + c + " completely?",
                     JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.QUESTION_MESSAGE,
+                    null, options, options[1]);
         } else {
-            int result = JOptionPane.showConfirmDialog(
-                    controller.getView().getMapScrollPane().getDisplayer(),
-                    "You are about to remove a "+c+" from this map.\n" +
-                    "Note: The "+c+" itself will not be deleted "+
-                    (referredTo != 1 ? "since it occurs in other maps." 
-                            : "since the current session does not\n" +
-                                    "have permission to delete it."),
-                    "Remove "+c+"s apperance?",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.WARNING_MESSAGE);
-            return result == JOptionPane.NO_OPTION ? JOptionPane.CANCEL_OPTION : result;
+//            int result = JOptionPane.showConfirmDialog(
+//                    controller.getView().getMapScrollPane().getDisplayer(),
+//                    "You are about to remove a "+c+" from this map.\n" +
+//                    "Note: The "+c+" itself will not be deleted "+
+//                    (referredTo != 1 ? "since it occurs in other maps." 
+//                            : "since the current session does not\n" +
+//                                    "have permission to delete it."),
+//                    "Remove "+c+"s apperance?",
+//                    JOptionPane.YES_NO_OPTION,
+//                    JOptionPane.WARNING_MESSAGE);
+//            return result == JOptionPane.NO_OPTION ? JOptionPane.CANCEL_OPTION : result;
+        	return JOptionPane.NO_OPTION;
         }
     }
     
     private int confirmMultipleRemove(int nrOfOccurences) {
-        return JOptionPane.showConfirmDialog(
+    	Object[] options = {"Remove completely", "Remove only from this map", "Cancel"};
+        return JOptionPane.showOptionDialog(
                 controller.getView().getMapScrollPane().getDisplayer(),
-                "Removing a concept from this context-map does not automatically mean\n" +
-                "deleting the concept itself, since this could break it's presentation in other maps.\n"+
-                "However, if a concept is not referenced from other maps, and the current \n" +
-                "session has enough permissions, the concept may be deleted.\n" +
-                "(when we say \"concept\" we intend \"concept or concept-relation\".)\n" +
-                "\n" +
-                "Do you also want to delete concepts that are not presented in other maps?",
-                "Try to remove "+nrOfOccurences+" concepts permanently?",
+                "Removing a concept from this context-map does not automatically mean deleting\n" +
+                "the concept itself, since this could break its presentation in other maps.\n\n"+
+                "However, if a concept is not referenced in other maps and the current session\n" +
+                "has enough permissions, the concept may be deleted.\n\n" +
+                "Do you want to delete the concepts completely where possible?",
+                "Remove " + nrOfOccurences + " concepts?",
                 JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.WARNING_MESSAGE);
+                JOptionPane.WARNING_MESSAGE,
+                null, options, options[1]);
     }
+    
 }
