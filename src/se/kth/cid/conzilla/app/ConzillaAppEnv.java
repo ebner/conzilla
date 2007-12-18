@@ -147,17 +147,18 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 			throw new InstallException();
 		}
 		
+		final File lockFile = new File(Installer.getConzillaDir(), "lock");
 		InstanceChecker ic = null;
 		if (Installer.getConzillaDir().exists()) {
-			ic = new InstanceChecker(new File(Installer.getConzillaDir(), "lock"));
+			ic = new InstanceChecker(lockFile);
 			if (ic.isApplicationActive()) {
 				Tracer.trace("Another instance of Conzilla is already running.", Tracer.WARNING);
 				JOptionPane.showMessageDialog(null, "Another instance of Conzilla is already running.", "Multiple Instances", JOptionPane.ERROR_MESSAGE);
+				// TODO send message to the conzilla server socket
 				System.exit(-1);
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "Conzilla is not properly configured. Exiting.", "Unable to start", JOptionPane.ERROR_MESSAGE);
-			
 		}
 		
 		Config config = ConfigurationManager.getConfiguration();
@@ -207,6 +208,13 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 		splash.setPercentage(100);
 		
 		splash.dispose();
+		
+		Thread serverThread = new Thread(new Runnable() {
+			public void run() {
+				new CommandListener(lockFile).start();
+			}
+		});
+		serverThread.start();
 	}
 
 	private void loadContainers() {
