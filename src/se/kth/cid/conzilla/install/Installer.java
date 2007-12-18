@@ -28,7 +28,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -114,23 +113,18 @@ public class Installer implements Runnable {
 	}
 
 	public static void installOrExit(String why) {
-		Object[] options = { "Yes, install", "No, exit." };
-		int result = JOptionPane.showOptionDialog(null, why + "\n\n"
-				+ "Conzilla would need to install files in the directory\n" + "\n" + getConzillaDir() + "\n" + "\n"
-				+ "to be able to start. Do you want to do this now?",
+//		Object[] options = { "Yes, install", "No, exit." };
+//		int result = JOptionPane.showOptionDialog(null, why + "\n\n"
+//				+ "Conzilla would need to install files in the directory\n" + "\n" + getConzillaDir() + "\n" + "\n"
+//				+ "to be able to start. Do you want to do this now?",
+//				"Install?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, 
+//				options, // the titles of buttons
+//				options[0]); // default button title
 
-		"Install?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, // don't
-																					// use
-																					// a
-																					// custom
-																					// Icon
-				options, // the titles of buttons
-				options[0]); // default button title
-
-		if (result == JOptionPane.YES_OPTION)
+//		if (result == JOptionPane.YES_OPTION)
 			startInstall();
-		else
-			System.exit(0);
+//		else
+//			System.exit(0);
 	}
 
 	public static void startInstall() {
@@ -167,13 +161,11 @@ public class Installer implements Runnable {
 		final Thread installThread = new Thread(install, "Install");
 
 		cancel.addActionListener(new AbstractAction() {
-			private static final long serialVersionUID = 1L;
 			public void actionPerformed(ActionEvent action) {
 				dialog.dispose();
 			}
 		});
 		ok.addActionListener(new AbstractAction() {
-			private static final long serialVersionUID = 1L;
 			public void actionPerformed(ActionEvent action) {
 				install.startConzilla = true;
 				dialog.dispose();
@@ -312,8 +304,7 @@ public class Installer implements Runnable {
 
 	void abort(String error, Exception e) throws InterruptedException {
 		logArea.append("\n" + error + "\n\nInstall aborted.");
-		ErrorMessage
-				.showError("Intallation Error", error + "\n\nPlease correct this " + "and re-run Conzilla", e, null);
+		ErrorMessage.showError("Intallation Error", error + "\n\nPlease correct this " + "and re-run Conzilla", e, null);
 		throw new InterruptedException();
 	}
 
