@@ -190,16 +190,16 @@ public class SessionChooserDialog
     }
 
     public Session findSession(String uri) {
-        Collection projects = sessionManager.getSessions();
-               if (!projects.isEmpty()) {
-                   Vector eS = getSessionsOf(projects, uri, true);
-                   if (eS.size() == 1) {
-                       return (Session) eS.firstElement();
-                   }
-               }
-        
-        launchDialog(uri);
-        return session;
+    	Collection projects = sessionManager.getSessions();
+    	if (!projects.isEmpty()) {
+    		Vector eS = getSessionsOf(projects, uri, true);
+    		if (eS.size() == 1) {
+    			return (Session) eS.firstElement();
+    		}
+    	}
+
+    	launchDialog(uri);
+    	return session;
     }
     
     public void launchDialog(String uri) {

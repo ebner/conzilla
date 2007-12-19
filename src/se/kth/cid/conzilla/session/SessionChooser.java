@@ -180,11 +180,10 @@ public class SessionChooser {
         Collection projects = sessionManager.getSessions();
 
         if (projects.isEmpty()) {
-            session = sessionManager.getSessionFactory().createSession(null);
-//            if (SessionEditor.launchProjectEditorDialog(session, sessionManager, modelManager)
-//                == JOptionPane.OK_OPTION) {
-//                sessionManager.addSession(session);
-//            }
+//			session = sessionManager.getSessionFactory().createSession(null);
+//			if (SessionEditor.launchProjectEditorDialog(session, sessionManager, modelManager) == JOptionPane.OK_OPTION) {
+//				sessionManager.addSession(session);
+//			}
             projects = sessionManager.getSessions();
         }
 

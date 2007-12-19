@@ -86,6 +86,7 @@ public abstract class SessionManagerImpl implements SessionManager {
 		Session oldSession = current;
 		current = session;
 		propertyChangeSupport.firePropertyChange(SessionManager.PROPERTY_SESSION_SELECTED, oldSession, session);
+		
 		return true;
 	}
 
