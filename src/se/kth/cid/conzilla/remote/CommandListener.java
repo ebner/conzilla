@@ -4,7 +4,7 @@
  *  Licensed under the GNU GPL. For full terms see the file COPYRIGHT.
  */
 
-package se.kth.cid.conzilla.app;
+package se.kth.cid.conzilla.remote;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,6 +17,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.util.Tracer;
 
 /**
@@ -34,7 +35,7 @@ public class CommandListener {
 	/**
 	 * @param lockFile File to write the port number to. The file should exist.
 	 */
-	CommandListener(File infoFile) {
+	public CommandListener(File infoFile) {
 		file = infoFile;
 	}
 
@@ -49,6 +50,7 @@ public class CommandListener {
 		} catch (FileNotFoundException e) {
 			Tracer.error(e.getMessage());
 		}
+		file.deleteOnExit();
 	}
 	
 	private void waitAndServeClient() {
@@ -58,19 +60,23 @@ public class CommandListener {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			String command = null;
 			while ((command = reader.readLine()) != null) {
-				executeCommand(command.toUpperCase());
+				executeCommand(command);
 			}
 		} catch (IOException ignored) {}
 	}
-	
+
 	private void executeCommand(String command) {
-		if ("FOREGROUND".equals(command)) {
+		if (command.equals(RemoteCommands.FOREGROUND)) {
 			ConzillaKit.getDefaultKit().getConzilla().getViewManager().getWindow().toFront();
+		} else if (command.startsWith(RemoteCommands.OPEN)) {
+			// TODO open map
+		} else if (command.equals(RemoteCommands.QUIT)) {
+			// TODO close conzilla
 		} else {
-			System.out.println("Received unknown command: " + command);
+			Tracer.debug("Received unknown command: " + command);
 		}
 	}
-	
+
 	/**
 	 * This method does not return, ideally started as thread.
 	 */
@@ -95,9 +101,9 @@ public class CommandListener {
 				} catch (IOException ignored) {}
 			}
 		});
-		
+
 		writePortNumberToFile();
-		
+
 		// this is not multi-threaded on purpose
 		while (true) {
 			waitAndServeClient();

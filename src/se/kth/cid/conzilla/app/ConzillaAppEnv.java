@@ -32,6 +32,8 @@ import se.kth.cid.conzilla.content.ContentDisplayer;
 import se.kth.cid.conzilla.controller.ControllerException;
 import se.kth.cid.conzilla.install.Installer;
 import se.kth.cid.conzilla.properties.Images;
+import se.kth.cid.conzilla.remote.CommandListener;
+import se.kth.cid.conzilla.remote.ConzillaInstructor;
 import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.util.Tracer;
 
@@ -148,13 +150,17 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 		}
 		
 		final File lockFile = new File(Installer.getConzillaDir(), "lock");
+		final File portFile = new File(Installer.getConzillaDir(), "port");
 		InstanceChecker ic = null;
 		if (Installer.getConzillaDir().exists()) {
 			ic = new InstanceChecker(lockFile);
 			if (ic.isApplicationActive()) {
-				Tracer.trace("Another instance of Conzilla is already running.", Tracer.WARNING);
-				JOptionPane.showMessageDialog(null, "Another instance of Conzilla is already running.", "Multiple Instances", JOptionPane.ERROR_MESSAGE);
-				// TODO send message to the conzilla server socket
+				try {
+					new ConzillaInstructor(portFile).toForeground();
+				} catch (IllegalArgumentException iae) {
+					Tracer.trace("Another instance of Conzilla is already running.", Tracer.WARNING);
+					JOptionPane.showMessageDialog(null, "Another instance of Conzilla is already running.", "Multiple Instances", JOptionPane.ERROR_MESSAGE);
+				}
 				System.exit(-1);
 			}
 		} else {
@@ -211,7 +217,7 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 		
 		Thread serverThread = new Thread(new Runnable() {
 			public void run() {
-				new CommandListener(lockFile).start();
+				new CommandListener(portFile).start();
 			}
 		});
 		serverThread.start();
