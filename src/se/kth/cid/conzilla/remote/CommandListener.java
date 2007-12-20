@@ -6,16 +6,15 @@
 
 package se.kth.cid.conzilla.remote;
 
-import java.io.BufferedReader;
+import java.awt.Window;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -31,7 +30,7 @@ import se.kth.cid.util.Tracer;
  */
 public class CommandListener {
 	
-	private ServerSocket socket;
+	private DatagramSocket socket;
 
 	private File file;
 
@@ -57,20 +56,22 @@ public class CommandListener {
 	}
 	
 	private void waitAndServeClient() {
-		Socket client;
+		byte[] data = new byte[2048]; 
+		DatagramPacket packet = new DatagramPacket(data, data.length);
 		try {
-			client = socket.accept();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
-			String command = null;
-			while ((command = reader.readLine()) != null) {
-				executeCommand(command);
-			}
+			socket.receive(packet);
+			String command = new String(packet.getData(), 0, packet.getLength());
+			executeCommand(command);
 		} catch (IOException ignored) {}
 	}
 
 	private void executeCommand(String command) {
 		if (command.equals(RemoteCommands.FOREGROUND)) {
-			ConzillaKit.getDefaultKit().getConzilla().getViewManager().getWindow().toFront();
+			Window cWin = ConzillaKit.getDefaultKit().getConzilla().getViewManager().getWindow();
+			if (cWin != null) {
+				cWin.toFront();
+				cWin.requestFocus();
+			}
 		} else if (command.startsWith(RemoteCommands.OPEN + " ")) {
 			String uriStr = command.substring(RemoteCommands.OPEN.length() + 1);
 			URI uri = null;
@@ -98,8 +99,7 @@ public class CommandListener {
 	 */
 	public void start() {
 		try {
-			socket = new ServerSocket();
-			socket.bind(new InetSocketAddress(InetAddress.getLocalHost(), 0));
+			socket = new DatagramSocket(new InetSocketAddress(InetAddress.getLocalHost(), 0));
 		} catch (IOException e) {
 			Tracer.error(e.getMessage());
 			return;
@@ -110,11 +110,9 @@ public class CommandListener {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
 				Tracer.debug("Shutting down listener on " + socket.getLocalSocketAddress());
-				try {
-					if (socket != null) {
-						socket.close();
-					}
-				} catch (IOException ignored) {}
+				if (socket != null) {
+					socket.close();
+				}
 			}
 		});
 

@@ -10,11 +10,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
 import java.net.UnknownHostException;
 
 import se.kth.cid.util.Tracer;
@@ -28,7 +27,7 @@ import se.kth.cid.util.Tracer;
  */
 public class ConzillaInstructor {
 	
-	SocketAddress socketAddr;
+	InetSocketAddress inetSocketAddr;
 
 	/**
 	 * @param lockFile
@@ -43,7 +42,7 @@ public class ConzillaInstructor {
 			throw new IllegalArgumentException("Unable to determine port number.");
 		}
 		try {
-			socketAddr = new InetSocketAddress(InetAddress.getLocalHost(), port);
+			inetSocketAddr = new InetSocketAddress(InetAddress.getLocalHost(), port);
 		} catch (UnknownHostException ignored) {}
 	}
 
@@ -81,22 +80,21 @@ public class ConzillaInstructor {
 	}
 	
 	private void sendCommandToConzilla(String command) {
-		Socket socket = new Socket();
+		DatagramSocket socket = null;
+		DatagramPacket packet = null;
 		try {
-			socket.connect(socketAddr, 2000);
-			Tracer.debug("Sending command to running instance: " + command);
-			PrintWriter writer = new PrintWriter(socket.getOutputStream());
-			writer.println(command);
-			writer.close();
+			socket = new DatagramSocket(null);
+			packet = new DatagramPacket(command.getBytes(), command.getBytes().length);
+			socket.connect(inetSocketAddr);
+			socket.send(packet);
+			Tracer.debug("Sent \"" + command + "\" to " + inetSocketAddr);
 	    } catch (IOException e) {
 			Tracer.error(e.getMessage());
-		} finally {
-			if (socket != null) {
-				try {
-					socket.close();
-				} catch (IOException ignored) {}
-			}
-		}
+	    } finally {
+	    	if (socket != null) {
+	    		socket.close();
+	    	}
+	    }
 	}
 	
 	public void toForeground() {
