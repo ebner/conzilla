@@ -13,6 +13,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.print.PageFormat;
 import java.awt.print.Pageable;
 import java.awt.print.Paper;
@@ -86,12 +87,13 @@ public class MapPrinter implements Extra {
 	            JFrame frame = new JFrame();
 	            frame.getContentPane().add(mapSP);
 	            frame.pack();
-	            frame.setVisible(true);
-	            
-	            g.translate((int) pf.getImageableX(), (int) pf.getImageableY());
-	            g.setClip(0, 0, finalDim.width, finalDim.height);
+	    
+	            Graphics2D g2 = (Graphics2D) g;
+	           	AffineTransform afTr = new AffineTransform(pf.getMatrix());
+	           	g2.getTransform().concatenate(afTr);
+            	g.translate((int) pf.getImageableX(), (int) pf.getImageableY());
+            	g.setClip(0, 0, finalDim.width, finalDim.height);
 	            mapSP.getViewport().getView().print(g);
-	            frame.dispose();
 	            return Printable.PAGE_EXISTS;
 
 			} catch (ComponentException e) {
