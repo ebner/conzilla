@@ -149,8 +149,11 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 			throw new InstallException();
 		}
 		
-		final File lockFile = new File(Installer.getConzillaDir(), "lock");
-		final File portFile = new File(Installer.getConzillaDir(), "port");
+		final File lockFile = new File(Installer.getConzillaDir(), ".lock");
+		// we have to use two different files. if we write the port into the lock file
+		// the method to aquire the lock works differently for some reason...
+		final File portFile = new File(Installer.getConzillaDir(), ".port");
+		
 		InstanceChecker ic = null;
 		if (Installer.getConzillaDir().exists()) {
 			ic = new InstanceChecker(lockFile);
@@ -304,7 +307,7 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 	}
 
 	private void loadStartMap() {
-		Vector startMaps = new Vector();
+		Vector<URI> startMaps = new Vector<URI>();
 
 		String strStartMap = ConfigurationManager.getConfiguration().getString(Settings.CONZILLA_STARTMAP);
 		if (strStartMap != null) {
@@ -323,8 +326,9 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 			e1.printStackTrace();
 		}
 
-		if (startMaps.size() == 0)
+		if (startMaps.size() == 0) {
 			return;
+		}
 
 		int i;
 		for (i = 0; i < startMaps.size(); i++) {
