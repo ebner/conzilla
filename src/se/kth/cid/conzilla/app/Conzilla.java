@@ -330,15 +330,26 @@ public class Conzilla implements PropertyChangeListener {
 	// FIXME: HACK!!!
 	public void pushMark(Set set, Mark mark, Object o) {
 		Iterator en = viewManager.getViews();
-		while (en.hasNext())
-			((View) en.next()).getMapScrollPane().getDisplayer().pushMark(set, mark, o);
+		while (en.hasNext()) {
+			View nextView = (View) en.next();
+			if (nextView.getMapScrollPane() != null && nextView.getMapScrollPane().getDisplayer() != null) {
+				nextView.getMapScrollPane().getDisplayer().pushMark(set, mark, o);
+			}
+		}
 	}
 
 	public void popMark(Set set, Object o) {
+		if (set == null || o == null) {
+			return;
+		}
+		
 		Iterator en = viewManager.getViews();
-		while (en.hasNext())
-			((View) en.next()).getMapScrollPane().getDisplayer().popMark(set, o);
-
+		while (en.hasNext()) {
+			View nextView = (View) en.next();
+			if (nextView.getMapScrollPane() != null && nextView.getMapScrollPane().getDisplayer() != null) {
+				nextView.getMapScrollPane().getDisplayer().popMark(set, o);
+			}
+		}
 	}
 
 	public void exit(int result) {

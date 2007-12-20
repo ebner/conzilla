@@ -308,10 +308,12 @@ public class MapController implements PropertyChangeListener, EditListener {
 	}
 
 	public void detach() {
-		ComponentManager cManager = getConceptMap().getComponentManager();
-		if (cManager.getEditingSesssion() != null){
-			//Release lock when session not needed.
-			cManager.setLockForEditing(this, null);
+		if (getConceptMap() != null) {
+			ComponentManager cManager = getConceptMap().getComponentManager();
+			if (cManager.getEditingSesssion() != null){
+				//Release lock when session not needed.
+				cManager.setLockForEditing(this, null);
+			}
 		}
 		
 		if (selector != null) {

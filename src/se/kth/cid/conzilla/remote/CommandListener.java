@@ -16,8 +16,11 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import se.kth.cid.conzilla.app.ConzillaKit;
+import se.kth.cid.conzilla.controller.ControllerException;
 import se.kth.cid.util.Tracer;
 
 /**
@@ -68,10 +71,23 @@ public class CommandListener {
 	private void executeCommand(String command) {
 		if (command.equals(RemoteCommands.FOREGROUND)) {
 			ConzillaKit.getDefaultKit().getConzilla().getViewManager().getWindow().toFront();
-		} else if (command.startsWith(RemoteCommands.OPEN)) {
-			// TODO open map
+		} else if (command.startsWith(RemoteCommands.OPEN + " ")) {
+			String uriStr = command.substring(RemoteCommands.OPEN.length() + 1);
+			URI uri = null;
+			try {
+				uri = new URI(uriStr);
+			} catch (URISyntaxException e) {
+				Tracer.debug("Received invalid URI: " + uriStr);
+			}
+			if (uri != null) {
+				try {
+					ConzillaKit.getDefaultKit().getConzilla().openMapInNewView(uri, null);
+				} catch (ControllerException e) {
+					Tracer.debug("Unable to open URI as requested: " + e.getMessage());
+				}
+			}
 		} else if (command.equals(RemoteCommands.QUIT)) {
-			// TODO close conzilla
+			ConzillaKit.getDefaultKit().getConzilla().getViewManager().closeViews();
 		} else {
 			Tracer.debug("Received unknown command: " + command);
 		}
