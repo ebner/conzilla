@@ -40,36 +40,37 @@ public class BoxDraw {
         BoxStyle style,
         OverlayStyle ostyle) {
         Icon icon = style.getIcon();
+		Stroke s = g.getStroke();
+
 		if (shape == null || style.getType() == BoxStyle.INVISIBLE) {
 	        if (icon != null) {
 	        	icon.paintIcon(null, g, outerBox.x, outerBox.y);
 	        }
-	        return;
+		} else {
+			if (ostyle != null && ostyle.isLineWidthModified()) {
+				g.setStroke(LineDraw.makeStroke(style.getBorderLineStyle(), ostyle));
+			} else
+				g.setStroke(style.getStroke());
+			if (style.isBackgroundOpaque()) {
+				if (style.isFilled()) {
+					g.setColor(ostyle.getForegroundColor());
+					g.fill(shape);
+				} else {
+					g.setColor(ostyle.getBackgroundColor());
+					g.fill(shape);
+				}
+			}
+			if (ostyle != null) {
+				g.setColor(ostyle.getForegroundColor());
+			} else {
+				g.setColor(Color.BLACK);
+			}
+			g.draw(shape);
+			if (icon != null) {
+				icon.paintIcon(null, g, outerBox.x, outerBox.y);
+			}
 		}
-        Stroke s = g.getStroke();
-        if (ostyle != null && ostyle.isLineWidthModified()) {
-            g.setStroke(LineDraw.makeStroke(style.getBorderLineStyle(), ostyle));
-        } else
-            g.setStroke(style.getStroke());
-        if (style.isBackgroundOpaque()) {
-        	if (style.isFilled()) {
-        		g.setColor(ostyle.getForegroundColor());
-        		g.fill(shape);
-        	} else {
-        		g.setColor(ostyle.getBackgroundColor());
-        		g.fill(shape);
-        	}
-        }
-        if (ostyle != null) {
-            g.setColor(ostyle.getForegroundColor());
-        } else {
-            g.setColor(Color.BLACK);
-        }
-        g.draw(shape);
-        if (icon != null) {
-        	icon.paintIcon(null, g, outerBox.x, outerBox.y);
-        }
-        
+		
         if (ostyle.isMarked()) {
             g.fill(new Ellipse2D.Double(innerBox.x+innerBox.width-8,innerBox.y+2,6,6));
         }
