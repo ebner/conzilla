@@ -277,7 +277,6 @@ public class MoveLayer extends Layer implements KeyListener {
         titleBounds = td.getTitleBounds();
         title.addKeyListener(this);
         title.setBounds(titleBounds);
-        title.setScale(1.0);
         add(title);
         if (textIsInBox) {
             editObject.setEditable(true, m);
@@ -305,7 +304,6 @@ public class MoveLayer extends Layer implements KeyListener {
         }
         
         title.removeKeyListener(this);
-        title.setScale(controller.getView().getMapScrollPane().getDisplayer().getScale());
         mapdisplayer.doAttractFocus(true);
         td.setTitleVisible(true);
         remove(title);

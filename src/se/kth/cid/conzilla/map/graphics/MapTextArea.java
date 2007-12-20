@@ -156,33 +156,4 @@ public class MapTextArea extends JTextArea {
         setDisabledTextColor(c);
         setForeground(c);
     }
-
-    /**
-     * 
-     * @return {@link Dimension} with unscaled dimensions.
-     * @see java.awt.Component#getPreferredSize()
-     * @see #setScale(double)
-     */
-    public Dimension getPreferredSize() {
-        if (scale == 1.0f) {
-            return super.getPreferredSize();
-        }
-        
-        Dimension dim = super.getPreferredSize();
-        return new Dimension((int) ((dim.width / scale))+1,
-                (int) ((dim.height / scale))+1);
-    }
-
-    /**
-     * Sets scale by resizing font.
-     * Hence, make sure that you do not draw using a graphics object with a scaled
-     * AffineTransform.
-     * 
-     * @param scale
-     */
-    public void setScale(double scale) {
-        this.scale = scale;
-        setFont(origFont.deriveFont((float) (origFont.getSize2D() * scale)));
-    }
-
 }

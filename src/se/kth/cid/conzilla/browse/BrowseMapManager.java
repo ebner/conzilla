@@ -218,6 +218,9 @@ public class BrowseMapManager implements MapManager, PropertyChangeListener {
         bar.add(localeChooser);
 
         browse.install(view.getMapScrollPane());
+        if (popupControl.isActivated()) {
+    		popup.activate(view.getMapScrollPane());
+        }
 
         updateGoMenu();
 
@@ -257,6 +260,8 @@ public class BrowseMapManager implements MapManager, PropertyChangeListener {
         bar.removeTool(fullScreen);
         bar.remove(localeChooser);
         browse.uninstall(view.getMapScrollPane());
+		popup.deactivate(view.getMapScrollPane());
+
 //        browse.detach();
 
         view.getController().removePropertyChangeListener(this);
@@ -326,8 +331,12 @@ public class BrowseMapManager implements MapManager, PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent e) {
         if (e.getPropertyName().equals(MapController.MAP_PROPERTY)) {
             controller.getView().getMapScrollPane().setPanningState(true);
+    		popup.deactivate((MapScrollPane) e.getOldValue());
             browse.uninstall((MapScrollPane) e.getOldValue());
             browse.install((MapScrollPane) e.getNewValue());
+            if (popupControl.isActivated()) {
+        		popup.activate((MapScrollPane) e.getNewValue());            	
+            }
             highlighter.sHigh.propertyChange(e);
             highlighter.vHigh.propertyChange(e);
         }

@@ -6,6 +6,8 @@
 
 package se.kth.cid.conzilla.print;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -17,18 +19,24 @@ import java.awt.print.Paper;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.net.URI;
 
+import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 
+import se.kth.cid.component.ComponentException;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.app.Extra;
 import se.kth.cid.conzilla.controller.MapController;
+import se.kth.cid.conzilla.map.MapDisplayer;
 import se.kth.cid.conzilla.map.MapScrollPane;
+import se.kth.cid.conzilla.map.MapStoreManager;
 import se.kth.cid.conzilla.menu.DefaultMenuFactory;
 import se.kth.cid.conzilla.properties.Images;
 import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.conzilla.tool.ToolsMenu;
 import se.kth.cid.conzilla.util.ErrorMessage;
+import se.kth.cid.layout.ContextMap;
 
 public class MapPrinter implements Extra {
     class Printer implements Printable, Pageable {
@@ -45,7 +53,8 @@ public class MapPrinter implements Extra {
         public PageFormat getPageFormat(int i) {
             PageFormat pf = new PageFormat();
             Paper p = pf.getPaper();
-            p.setImageableArea(0, 0, p.getWidth(), p.getHeight());
+            p.setImageableArea(28, 28, p.getWidth()-56, p.getHeight()-56); //1cm border everywhere, 
+            // where 56 ~= 20 (mm) / 25.4 (mm/inch) * 72 (pixels/inch)
             pf.setPaper(p);
             return pf;
         }
@@ -59,15 +68,36 @@ public class MapPrinter implements Extra {
             if (pageIndex >= 1)
                 return Printable.NO_SUCH_PAGE;
 
-            java.awt.Component vp = scrollPane.getViewport().getView();
-            int w = vp.getSize().width;
+			try {
+	            ConzillaKit kit = ConzillaKit.getDefaultKit();
+	            ContextMap cMap = scrollPane.getDisplayer().getStoreManager().getConceptMap();
+	            URI mapURI = URI.create(cMap.getURI());
+				MapStoreManager manager = new MapStoreManager(mapURI, kit.getResourceStore(), 
+						kit.getStyleManager(), null);
+	            MapDisplayer mapD = new MapDisplayer(manager);
+	            MapScrollPane mapSP = new MapScrollPane(mapD);
+	            mapD.resizeMap();
+	            Dimension dim = mapSP.getPreferredSize();
+	            double scale = ((double) pf.getImageableWidth()) / ((double) dim.width);
+	            mapSP.setScale(scale);
+	            Dimension finalDim = mapSP.getPreferredSize();
+	            mapSP.setSize(finalDim);
+	            
+	            JFrame frame = new JFrame();
+	            frame.getContentPane().add(mapSP);
+	            frame.pack();
+	            frame.setVisible(true);
+	            
+	            g.translate((int) pf.getImageableX(), (int) pf.getImageableY());
+	            g.setClip(0, 0, finalDim.width, finalDim.height);
+	            mapSP.getViewport().getView().print(g);
+	            frame.dispose();
+	            return Printable.PAGE_EXISTS;
 
-            double scale = pf.getWidth() / w;
-            ((Graphics2D) g).scale(scale, scale);
-
-            vp.print(g);
-
-            return Printable.PAGE_EXISTS;
+			} catch (ComponentException e) {
+				e.printStackTrace();
+			}
+            return Printable.NO_SUCH_PAGE;
         }
     }
 

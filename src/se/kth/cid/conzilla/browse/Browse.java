@@ -241,7 +241,7 @@ public class Browse {
 
 	public void install(MapScrollPane pane) {
 
-		popup.activate(pane);
+//		popup.activate(pane);
 		pane.getDisplayer().addMapEventListener(pressListener,
 				MapDisplayer.PRESS_RELEASE);
 		pane.getDisplayer().addMapEventListener(klickListener,
@@ -260,7 +260,7 @@ public class Browse {
 		pane.getDisplayer().removeMapEventListener(cursorListener,
 				MapDisplayer.MOVE_DRAG);
 
-		popup.deactivate(pane);
+//		popup.deactivate(pane);
 
 		unMark();
 		marked = null;

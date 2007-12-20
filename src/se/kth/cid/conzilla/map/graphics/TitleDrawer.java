@@ -179,6 +179,7 @@ public class TitleDrawer extends MapDrawer {
         if (outerBb == null) {
             return null;
         }
+        //return outerBb.getBounds();
         
         int horisontalAnchor = getHorizontalAnchor();
         int verticalAnchor = getVerticalAnchor();
@@ -193,19 +194,18 @@ public class TitleDrawer extends MapDrawer {
             //This avoids (in most cases) the text to be cut of to early 
             //(due to the nonlinear scaling of some fonts in
             //the affine translation in the graphics object).
-            width = preferredSize.width; //+ (int) ((re.getWidth() - preferredSize.width + ew) / 2);
+            width = preferredSize.width + (int) ((outerBb.getWidth() - preferredSize.width) / 2)-dx;
             switch (horisontalAnchor) {
             case ConceptLayout.WEST:
                 x = (int) (dx + outerBb.getX());
             break;
                 case ConceptLayout.CENTER:
-                    x =  (int) (((outerBb.getWidth() - preferredSize.width - ew) / 2)
-                            + dx
+                    x =  (int) (((outerBb.getWidth() - preferredSize.width) / 2)
                             + outerBb.getX());
                 break;
                 case ConceptLayout.EAST:
-                    x = (int) ((outerBb.getWidth() - preferredSize.width - ew)
-                            + dx
+                    x = (int) ((outerBb.getWidth() - preferredSize.width)
+                            - dx
                             + outerBb.getX());
                 break;
             }
@@ -226,13 +226,12 @@ public class TitleDrawer extends MapDrawer {
                 y = (int) (dy + outerBb.getY());
             break;
             case ConceptLayout.CENTER:
-                y = (int) (((outerBb.getHeight() - preferredSize.height - eh) / 2)
-                        + dy
+                y = (int) (((outerBb.getHeight() - preferredSize.height) / 2)
                         + outerBb.getY());
             break;
             case ConceptLayout.SOUTH:
-                y = (int) ((outerBb.getHeight() - preferredSize.height - eh)
-                        + dy
+                y = (int) ((outerBb.getHeight() - preferredSize.height)
+                        - dy
                         + outerBb.getY());
             break;
             }
@@ -242,7 +241,9 @@ public class TitleDrawer extends MapDrawer {
             y = (int) outerBb.getY() + dy;
         }
 
-        return new Rectangle(x, y, width, height);
+        Rectangle rect = new Rectangle(x, y, width, height); 
+        System.out.println("Rect = "+rect.toString());
+        return rect;
     }
     
     protected void fixVisibility() {
@@ -257,7 +258,6 @@ public class TitleDrawer extends MapDrawer {
 
     public void setScale(double scale) {
         this.scale = scale;
-        title.setScale(scale);
         resize();
     }
     
@@ -266,7 +266,7 @@ public class TitleDrawer extends MapDrawer {
                 (int) outerBb.getY(), 
                 (int) outerBb.getWidth() - ew, 
                 (int) outerBb.getHeight() - eh);
-        title.setSize((int) (bb.width*scale),(int) (bb.height*scale));
+        title.setSize((int) (bb.width),(int) (bb.height));
     }
 
     
@@ -275,7 +275,7 @@ public class TitleDrawer extends MapDrawer {
         if (bb == null) {
             return;
         }
-        title.setSize((int) (bb.width*scale),(int) (bb.height*scale));
+        title.setSize((int) (bb.width),(int) (bb.height));
     }
 
     public void setTitle() {
@@ -311,20 +311,20 @@ public class TitleDrawer extends MapDrawer {
 
         title.setColor(mark.getForegroundColor());
 
-        AffineTransform t = g.getTransform();
+  /*      AffineTransform t = g.getTransform();
         AffineTransform t2 = new AffineTransform();
         t2.setToTranslation(t.getTranslateX(),t.getTranslateY());
-        g.setTransform(t2);
+        g.setTransform(t2);*/
         if (visible && hardvisible) {
             cellRendererPane.paintComponent(
                 g,
                 title,
                 editorLayer,
-                (int) (bb.x*scale),
-                (int) (bb.y*scale),
-                (int) (bb.width*scale),
-                (int) (bb.height*scale));
+                (int) (bb.x),// - (((int) ((bb.width)*scale)-bb.width)/2),
+                (int) (bb.y),// - (((int) ((bb.height)*scale)-bb.height)/2),
+                (int) ((bb.width)),
+                (int) ((bb.height)));
         }
-        g.setTransform(t);
+//        g.setTransform(t);
     }
 }

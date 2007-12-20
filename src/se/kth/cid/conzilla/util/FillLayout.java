@@ -53,7 +53,6 @@ public class FillLayout implements LayoutManager {
 		Dimension dim = co.getSize();
 
 		for (int i = 0; i < comps.length; i++) {
-			Point p = comps[i].getLocation();
 			Dimension d = comps[i].getPreferredSize();
 			if (comps[i] instanceof MapDisplayer) {
 				int diffX = dim.width - d.width;
@@ -61,6 +60,7 @@ public class FillLayout implements LayoutManager {
 				comps[i].setSize(d.width+(diffX / 2), d.height + (diffY / 2));
 				((MapDisplayer) comps[i]).setOffset(new Point((int) (diffX / 2), (int) (diffY / 2)));
 			}
+			Point p = comps[i].getLocation();
 			comps[i].setSize(new Dimension(dim.width - p.x, dim.height - p.y));
 		}
 	}
