@@ -17,6 +17,8 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.net.URI;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -37,8 +39,10 @@ import javax.swing.event.MouseInputAdapter;
 
 import se.kth.cid.component.Component;
 import se.kth.cid.component.ComponentException;
+import se.kth.cid.component.ComponentManager;
 import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.app.ConzillaKit;
+import se.kth.cid.conzilla.collaboration.ContainerEntry;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapDisplayer;
 import se.kth.cid.conzilla.properties.ColorTheme;
@@ -47,8 +51,9 @@ import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.conzilla.view.View;
 import se.kth.cid.notions.ContentInformation;
 import se.kth.cid.util.ContentInformationWithTitle;
+import se.kth.cid.util.TagManager;
 
-public class ListContentSelector extends JPanel implements ContentSelector {
+public class ListContentSelector extends JPanel implements ContentSelector, PropertyChangeListener {
     private static final long serialVersionUID = 1L;
 
 	Vector contentInformation;
@@ -68,6 +73,10 @@ public class ListContentSelector extends JPanel implements ContentSelector {
     JPanel titlePane;
     JList list;
     int selected;
+
+	private ComponentManager componentManager;
+
+	private Set contentSet;
 
     private void updateColors() {
 //        list.setBackground(GlobalConfig.getGlobalConfig().getColor(ContentSelector.COLOR_BACKGROUND));
@@ -178,7 +187,7 @@ public class ListContentSelector extends JPanel implements ContentSelector {
 
         close.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                selectContentFromSet(null);
+                selectContentFromSet(null, null);
                 popup.deactivate();
                 /*	      removeAll();
                   revalidate();
@@ -275,9 +284,21 @@ public class ListContentSelector extends JPanel implements ContentSelector {
         return cit.getComponent();
     }
 
-    public void selectContentFromSet(Set content) {
+    public void selectContentFromSet(Set content, ComponentManager componentManager) {
         Vector old = this.contentInformation;
 
+        if (this.componentManager != componentManager) {
+        	if (this.componentManager != null) {
+        		this.componentManager.getTagManager().removePropertyChangeListener(this);
+        	}
+
+        	if (componentManager != null) {
+        		this.componentManager = componentManager;
+        		componentManager.getTagManager().addPropertyChangeListener(this);
+        	}
+        }
+        
+        this.contentSet = content;
         if (content == null) {
             this.contentInformation = null;
             list.setListData(new Vector());
@@ -285,11 +306,14 @@ public class ListContentSelector extends JPanel implements ContentSelector {
             TreeSet ts = new TreeSet();
             for (Iterator contentIt = content.iterator(); contentIt.hasNext();) {
                 ContentInformation ci = (ContentInformation) contentIt.next();
-                try {
-                    ts.add(new ContentInformationWithTitle(ci));
-                } catch (ComponentException e) {
-                    System.out.println("Cannot add ContentInformation since I cannot load the content Component.");
-                    e.printStackTrace();
+                if (this.componentManager == null ||
+                		this.componentManager.getContainerVisible(URI.create(ci.getContainer().getURI()))) {
+                	try {
+                		ts.add(new ContentInformationWithTitle(ci));
+                	} catch (ComponentException e) {
+                		System.out.println("Cannot add ContentInformation since I cannot load the content Component.");
+                		e.printStackTrace();
+                	}
                 }
             }
             
@@ -358,5 +382,12 @@ public class ListContentSelector extends JPanel implements ContentSelector {
     public void paint(Graphics g) {
         MapDisplayer.setRenderingHints(g);
         super.paint(g);
+    }
+    
+    public void propertyChange(PropertyChangeEvent e) {
+        String prop = e.getPropertyName(); 	
+        if (prop.equals(TagManager.TAG_VISIBILITY_CHANGED)) {
+        	selectContentFromSet(this.contentSet, this.componentManager);
+        }
     }
 }

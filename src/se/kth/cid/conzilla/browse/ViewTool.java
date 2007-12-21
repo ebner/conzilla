@@ -10,18 +10,23 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.net.URI;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import se.kth.cid.component.AttributeEntry;
+import se.kth.cid.component.ComponentManager;
 import se.kth.cid.concept.Concept;
+import se.kth.cid.conzilla.content.Content2JenaQueryTarget;
 import se.kth.cid.conzilla.content.ContentSelector;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.map.MapObject;
 import se.kth.cid.conzilla.map.graphics.Mark;
 import se.kth.cid.conzilla.tool.ActionMapMenuTool;
+import se.kth.cid.layout.ContextMap;
+import se.kth.cid.notions.ContentInformation;
 import se.kth.cid.util.AttributeEntryUtil;
 
 /**
@@ -70,7 +75,7 @@ public class ViewTool extends ActionMapMenuTool implements PropertyChangeListene
         }
         return false;
     }
-
+    
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -84,11 +89,11 @@ public class ViewTool extends ActionMapMenuTool implements PropertyChangeListene
         }
 
         if (currentViewed != null) {
-            selector.selectContentFromSet(null);
+            selector.selectContentFromSet(null, null);
             removeMark();
         }
         
-        selector.selectContentFromSet(contentInformations);
+        selector.selectContentFromSet(contentInformations, controller.getConceptMap().getComponentManager());
         AttributeEntry title = AttributeEntryUtil.getTitle(mapEvent.mapObject.getConcept());
         if (title != null) {
             String [] titles = new String[1];

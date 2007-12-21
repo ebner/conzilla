@@ -12,8 +12,11 @@ import java.util.Set;
 import javax.swing.JComponent;
 
 import se.kth.cid.component.Component;
+import se.kth.cid.component.ComponentManager;
+import se.kth.cid.component.Container;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.properties.ColorTheme.Colors;
+import se.kth.cid.layout.ContextMap;
 
 /** This interface describes the functionality of an object that
  *  is able to select amongst content.
@@ -78,13 +81,17 @@ public interface ContentSelector
   void setController(MapController controller);
   MapController getController();
 
-  /** Sets the content to select amongst.
+  /** 
+   * Sets the content to select amongst and an optional ComponentManager to use as filter.
+   * If the set of contentIndormation is set to null, the content selection is disabled.
+   * If the ComponentManager is given, only those contentInformations which originate from
+   * visible Containers are shown.
    *
-   *  If set to null, the selecting of content is disabled.
-   *
-   *  @param contentInformation the content to select amongst as a {@link Collection} of {@link se.kth.cid.notions.ContentInformation}s.
+   *  @param contentInformation the content to select amongst as a {@link Collection} of 
+   *  {@link se.kth.cid.notions.ContentInformation}s. A {@link ComponentManager} is used 
+   *  to filter out only ContentInformations that originate from visible {@link Container}s.
    */
-  void selectContentFromSet(Set contentInformation);
+  void selectContentFromSet(Set contentInformation, ComponentManager componentManager);
     
   /** Selects one content, i.e. a remote control.
    *

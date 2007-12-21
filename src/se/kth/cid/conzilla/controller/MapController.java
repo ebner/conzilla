@@ -138,7 +138,7 @@ public class MapController implements PropertyChangeListener, EditListener {
 			this.manager.deInstall();
 			view.getMapScrollPane().getDisplayer().reset();
 		}
-		this.selector.selectContentFromSet(null);
+		this.selector.selectContentFromSet(null, null);
 		this.manager = managerFactory.createManager(this);
 		this.manager.install();
 
@@ -276,7 +276,7 @@ public class MapController implements PropertyChangeListener, EditListener {
 		
 		view.setMap(mapStoreManager);
 		if (oldContextMap != null) {
-			this.selector.selectContentFromSet(null);
+			this.selector.selectContentFromSet(null, null);
 			oldContextMap.removeEditListener(this);
 		}
 		ContextMap contextMap = getConceptMap();
@@ -317,7 +317,7 @@ public class MapController implements PropertyChangeListener, EditListener {
 		}
 		
 		if (selector != null) {
-			selector.selectContentFromSet(null);
+			selector.selectContentFromSet(null, null);
 		}
 
 		if (manager != null) {
