@@ -241,9 +241,7 @@ public class TitleDrawer extends MapDrawer {
             y = (int) outerBb.getY() + dy;
         }
 
-        Rectangle rect = new Rectangle(x, y, width, height); 
-        System.out.println("Rect = "+rect.toString());
-        return rect;
+        return new Rectangle(x, y, width, height); 
     }
     
     protected void fixVisibility() {
