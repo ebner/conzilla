@@ -9,6 +9,7 @@ package se.kth.cid.conzilla.history;
 import java.net.URI;
 import java.util.Vector;
 
+import se.kth.cid.component.Component;
 import se.kth.cid.component.Resource;
 import se.kth.cid.component.ResourceStore;
 import se.kth.cid.conzilla.controller.MapController;
@@ -16,6 +17,7 @@ import se.kth.cid.identity.URIClassifier;
 import se.kth.cid.layout.ConceptLayout;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.layout.DrawerLayout;
+import se.kth.cid.util.AttributeEntryUtil;
 
 public class HistoryManager {
 	Vector historyListeners;
@@ -42,12 +44,16 @@ public class HistoryManager {
 		return URIClassifier.parseValidURI(ns.getDetailedMap(), ns.getConceptMap().getURI());
 	}
 
-	String getTitle(Resource comp) {
+	String getTitle(Component comp) {
 		if (comp == null)
 			return null;
 
-		// TODO: Change to resource..
-		return comp.getURI();
+		
+		String title = AttributeEntryUtil.getTitleAsString(comp);
+		if (title == null) {
+			title = comp.getURI();
+		}
+		return title;
 	}
 
 	String getTitle(DrawerLayout ns) {
