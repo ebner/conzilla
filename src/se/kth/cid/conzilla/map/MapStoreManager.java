@@ -109,6 +109,9 @@ public class MapStoreManager implements EditListener {
 	}
 
 	public Concept getConcept(String layoutID) {
+		if (concepts == null) {
+			return null;
+		}
 		return (Concept) concepts.get(layoutID);
 	}
 
