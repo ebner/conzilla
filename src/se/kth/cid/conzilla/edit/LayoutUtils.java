@@ -106,8 +106,8 @@ public class LayoutUtils {
             new ContextMap.BoundingBox(
                 prefX,
                 prefY,
-                prefDim.width + 5,
-                prefDim.height + 5);
+                prefDim.width,
+                prefDim.height);
         onGridMinimumSize(box, gridModel);
         return box;
     }
@@ -142,8 +142,6 @@ public class LayoutUtils {
         ContextMap.BoundingBox bb,
         GridModel gridmodel) {
         onGrid(bb.pos, gridmodel);
-        bb.dim.width += (int) gridmodel.getGranularity() / 2.0;
-        bb.dim.height += (int) gridmodel.getGranularity() / 2.0;
         onGrid(bb.dim, gridmodel);
         return bb;
     }
