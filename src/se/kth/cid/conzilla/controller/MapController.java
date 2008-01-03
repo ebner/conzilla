@@ -337,7 +337,9 @@ public class MapController implements PropertyChangeListener, EditListener {
 	}
 
 	public void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-		propSupport.firePropertyChange(propertyName, oldValue, newValue);
+		if (propSupport != null) {
+			propSupport.firePropertyChange(propertyName, oldValue, newValue);
+		}
 	}
 	
 	/**

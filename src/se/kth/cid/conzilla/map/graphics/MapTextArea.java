@@ -7,7 +7,6 @@
 package se.kth.cid.conzilla.map.graphics;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.MouseListener;

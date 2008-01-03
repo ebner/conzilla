@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -42,6 +43,8 @@ import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.rdf.RDFModel;
 import se.kth.cid.util.AttributeEntryUtil;
+import se.kth.cid.util.Tracer;
+import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
 import se.kth.nada.kmr.shame.applications.util.MetaDataPanel;
 import se.kth.nada.kmr.shame.container.EditContainer;
 import se.kth.nada.kmr.shame.formlet.CompoundFormletConfiguration;
@@ -94,8 +97,12 @@ public class InfoPanel extends JPanel {
     }
     
     static {
-        FormletStore.requireFormletConfigurations("formlets/formlets.rdf");
-        FormletStore.requireFormletConfigurations("formlets/Simple_Dublin_Core/formlets.rdf");
+        try {
+			FormletStoreSingleton.requireFormletConfigurations("formlets/formlets.rdf");
+			FormletStoreSingleton.requireFormletConfigurations("formlets/Simple_Dublin_Core/formlets.rdf");
+		} catch (IOException e) {
+			Tracer.debug(e.getMessage());
+		}
     }
     static private String dcFormletCId = "http://kmr.nada.kth.se/shame/SDC/formlet#Simple-profile";
 
@@ -228,7 +235,7 @@ public class InfoPanel extends JPanel {
     }
     
     public void setFormletConfigurationId(String fcid) {
-        FormletConfiguration fc = FormletStore.getInstance().getFormletConfiguration(fcid);
+        FormletConfiguration fc = ConzillaKit.getDefaultKit().getFormletStore().getFormletConfiguration(fcid);
         if (fc != null) {
             lock = true;
             metadataPanel.setFormletConfigurationId(fc.getId());
@@ -337,7 +344,7 @@ public class InfoPanel extends JPanel {
     
     protected Vector getFormletChoices() {
         Vector list = new Vector();
-        FormletStore store = FormletStore.getInstance();
+        FormletStore store = ConzillaKit.getDefaultKit().getFormletStore();
         for (Iterator fcs = store.getFormletConfigurations().iterator(); fcs.hasNext();) {
             FormletConfiguration fc = (FormletConfiguration) fcs.next();
             if (fc instanceof CompoundFormletConfiguration) {

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.nada.kmr.shame.edit.impl.EditForm;
 import se.kth.nada.kmr.shame.form.FormModel;
 import se.kth.nada.kmr.shame.form.impl.AbstractForm;
@@ -94,7 +95,7 @@ public class MetaDataPanel extends SinglePanelFormContainer {
                 return;
             }
         }
-        FormletStore store = FormletStore.getInstance();
+        FormletStore store = ConzillaKit.getDefaultKit().getFormletStore();
         formlet = store.getFormlet(formletID);
         
         if (editable) {

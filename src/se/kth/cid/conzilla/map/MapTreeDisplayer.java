@@ -8,6 +8,7 @@ package se.kth.cid.conzilla.map;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
@@ -36,8 +37,9 @@ import se.kth.cid.layout.ResourceLayout;
 import se.kth.cid.layout.StatementLayout;
 import se.kth.cid.rdf.RDFModel;
 import se.kth.cid.util.AttributeEntryUtil;
+import se.kth.cid.util.Tracer;
+import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
 import se.kth.nada.kmr.shame.applications.util.MetaDataPanel;
-import se.kth.nada.kmr.shame.formlet.FormletStore;
 
 /**
  * TODO: Description
@@ -48,9 +50,14 @@ import se.kth.nada.kmr.shame.formlet.FormletStore;
 public class MapTreeDisplayer extends JSplitPane implements TreeSelectionListener {
     
     static {
-        FormletStore.requireFormletConfigurations("formlets/formlets.rdf");
-        FormletStore.requireFormletConfigurations("formlets/graphics/formlets.rdf");
+        try {
+			FormletStoreSingleton.requireFormletConfigurations("formlets/formlets.rdf");
+			FormletStoreSingleton.requireFormletConfigurations("formlets/graphics/formlets.rdf");
+		} catch (IOException e) {
+			Tracer.debug(e.getMessage());
+		}
     }
+    
     static private String contextMapFCID = "http://kmr.nada.kth.se/shame/graphics/formlet#contextmapprofile";
     static private String nodeLayoutFCID = "http://kmr.nada.kth.se/shame/graphics/formlet#nodelayoutprofile";
     static private String conceptLayoutFCID = "http://kmr.nada.kth.se/shame/graphics/formlet#conceptlayoutprofile";

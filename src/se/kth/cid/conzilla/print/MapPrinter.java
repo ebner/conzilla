@@ -6,7 +6,6 @@
 
 package se.kth.cid.conzilla.print;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Graphics;

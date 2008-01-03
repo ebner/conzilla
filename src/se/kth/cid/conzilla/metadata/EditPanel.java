@@ -7,6 +7,7 @@
 package se.kth.cid.conzilla.metadata;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
@@ -24,7 +25,8 @@ import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.tool.ActionMapMenuTool;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.layout.LayerLayout;
-import se.kth.nada.kmr.shame.formlet.FormletStore;
+import se.kth.cid.util.Tracer;
+import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
 
 /**
  * TODO: Description
@@ -33,11 +35,16 @@ import se.kth.nada.kmr.shame.formlet.FormletStore;
  * @author   matthias
  */
 public class EditPanel extends InfoPanel {
+	
     static {
-        FormletStore.requireFormletConfigurations("formlets/formlets.rdf");
-        FormletStore.requireFormletConfigurations("formlets/Simple_Dublin_Core/formlets.rdf");
-        FormletStore.requireFormletConfigurations("formlets/ULM/formlets.rdf");
-        FormletStore.requireFormletConfigurations("formlets/foaf/formlets.rdf");
+        try {
+			FormletStoreSingleton.requireFormletConfigurations("formlets/formlets.rdf");
+			FormletStoreSingleton.requireFormletConfigurations("formlets/Simple_Dublin_Core/formlets.rdf");
+	        FormletStoreSingleton.requireFormletConfigurations("formlets/ULM/formlets.rdf");
+	        FormletStoreSingleton.requireFormletConfigurations("formlets/foaf/formlets.rdf");
+		} catch (IOException e) {
+			Tracer.debug(e.getMessage());
+		}
     }
     
     static public class EditMetadataTool extends ActionMapMenuTool {

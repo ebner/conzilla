@@ -7,6 +7,7 @@
 package se.kth.cid.conzilla.content;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.net.URI;
 
 import javax.swing.AbstractAction;
@@ -24,7 +25,8 @@ import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.metadata.EditPanel;
 import se.kth.cid.conzilla.metadata.InfoPanel;
 import se.kth.cid.notions.ContentInformation;
-import se.kth.nada.kmr.shame.formlet.FormletStore;
+import se.kth.cid.util.Tracer;
+import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
 
 /**
  * Basically a convenience method for Content editing using the 
@@ -35,10 +37,14 @@ import se.kth.nada.kmr.shame.formlet.FormletStore;
  */
 public class ContentEditor extends InfoPanel {
     static {
-        FormletStore.requireFormletConfigurations("formlets/notions/formlets.rdf");
-        FormletStore.requireFormletConfigurations("formlets/formlets.rdf");
-        FormletStore.requireFormletConfigurations("formlets/Simple_Dublin_Core/formlets.rdf");
-        FormletStore.requireFormletConfigurations("formlets/ULM/formlets.rdf");
+        try {
+			FormletStoreSingleton.requireFormletConfigurations("formlets/notions/formlets.rdf");
+			FormletStoreSingleton.requireFormletConfigurations("formlets/formlets.rdf");
+	        FormletStoreSingleton.requireFormletConfigurations("formlets/Simple_Dublin_Core/formlets.rdf");
+	        FormletStoreSingleton.requireFormletConfigurations("formlets/ULM/formlets.rdf");
+		} catch (IOException e) {
+			Tracer.debug(e.getMessage());
+		}
     }
     
     public static String contentFormletConfigurationId = "http://kmr.nada.kth.se/shame/notions/formlet#DC-content";

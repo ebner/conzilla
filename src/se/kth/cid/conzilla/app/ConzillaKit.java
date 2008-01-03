@@ -37,6 +37,7 @@ import se.kth.cid.rdf.RDFContainerManager;
 import se.kth.cid.style.StyleManager;
 import se.kth.cid.tree.TreeTagNodeResource;
 import se.kth.cid.util.Tracer;
+import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
 import se.kth.nada.kmr.shame.formlet.FormletStore;
 
 /** A kit of resources for the conzilla environment. */
@@ -64,7 +65,7 @@ public class ConzillaKit {
 	
 	SessionManager sessionManager;
 
-	Hashtable extras;
+	Hashtable<String, Extra> extras;
 
 	MenuFactory menuFactory;
 	
@@ -83,7 +84,7 @@ public class ConzillaKit {
 	
 	private void initMinimalKit() throws IOException {
 		initFormletStore();
-		extras = new Hashtable();
+		extras = new Hashtable<String, Extra>();
 		localeManager = new ConzillaLocaleManager();
 		SoftCache cache = new SoftCache();
 		metaCache = new MetaDataDiskCache();
@@ -126,7 +127,8 @@ public class ConzillaKit {
 	}
 
 	void initFormletStore() {
-		formletStore = FormletStore.getInstance();
+		//formletStore = FormletStore.getInstance();
+		formletStore = FormletStoreSingleton.getInstance();
 	}
 
 	void loadExtras() {

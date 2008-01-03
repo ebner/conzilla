@@ -6,6 +6,7 @@
 
 package se.kth.cid.conzilla.browse;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,14 +15,16 @@ import java.util.Set;
 
 import se.kth.cid.component.Component;
 import se.kth.cid.component.ComponentManager;
+import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.map.MapObject;
 import se.kth.cid.conzilla.metadata.EditPanel;
 import se.kth.cid.conzilla.metadata.PopupTrigger2QueryTarget;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.rdf.RDFComponent;
 import se.kth.cid.rdf.RDFModel;
+import se.kth.cid.util.Tracer;
+import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
 import se.kth.nada.kmr.shame.formlet.Formlet;
-import se.kth.nada.kmr.shame.formlet.FormletStore;
 import se.kth.nada.kmr.shame.query.QueryTarget;
 import se.kth.nada.kmr.shame.query.impl.JenaModelQueryTarget;
 import se.kth.nada.kmr.shame.util.RDFUtil;
@@ -34,8 +37,12 @@ import com.hp.hpl.jena.rdf.model.Resource;
 public class MapObject2JenaQueryTarget implements PopupTrigger2QueryTarget {
 	
 	static {
-		FormletStore.requireFormletConfigurations("formlets/formlets.rdf");
-		FormletStore.requireFormletConfigurations("formlets/ULM/formlets.rdf");
+		try {
+			FormletStoreSingleton.requireFormletConfigurations("formlets/formlets.rdf");
+			FormletStoreSingleton.requireFormletConfigurations("formlets/ULM/formlets.rdf");
+		} catch (IOException e) {
+			Tracer.debug(e.getMessage());
+		}
 	}
 	
 	public MapObject2JenaQueryTarget() {
@@ -91,8 +98,7 @@ public class MapObject2JenaQueryTarget implements PopupTrigger2QueryTarget {
 		List ontologies = new ArrayList();
 		ontologies.addAll(getFormlet(popupTrigger).getOntologies());
 
-		return new JenaModelQueryTarget(componentModel,
-				componentResource, ontologies);
+		return new JenaModelQueryTarget(componentModel, componentResource, ontologies);
 	}
 
 	public Formlet getFormlet(Object popupTrigger) {
@@ -102,7 +108,7 @@ public class MapObject2JenaQueryTarget implements PopupTrigger2QueryTarget {
 		} else {
 			formletToUse = EditPanel.concept_form;
 		}
-		return FormletStore.getInstance().getFormlet(formletToUse);
+		return ConzillaKit.getDefaultKit().getFormletStore().getFormlet(formletToUse);
 	}
 
 	public boolean isCollaborative(Object popupTrigger) {

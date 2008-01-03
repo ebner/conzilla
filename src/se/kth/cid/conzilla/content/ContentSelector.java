@@ -16,7 +16,6 @@ import se.kth.cid.component.ComponentManager;
 import se.kth.cid.component.Container;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.properties.ColorTheme.Colors;
-import se.kth.cid.layout.ContextMap;
 
 /** This interface describes the functionality of an object that
  *  is able to select amongst content.

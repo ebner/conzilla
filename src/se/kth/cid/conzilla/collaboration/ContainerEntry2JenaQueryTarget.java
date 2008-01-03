@@ -10,11 +10,11 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.metadata.EditPanel;
 import se.kth.cid.conzilla.metadata.PopupTrigger2QueryTarget;
 import se.kth.cid.rdf.CV;
 import se.kth.nada.kmr.shame.formlet.Formlet;
-import se.kth.nada.kmr.shame.formlet.FormletStore;
 import se.kth.nada.kmr.shame.query.QueryTarget;
 import se.kth.nada.kmr.shame.query.impl.JenaModelQueryTarget;
 
@@ -49,7 +49,7 @@ public class ContainerEntry2JenaQueryTarget implements PopupTrigger2QueryTarget 
 	}
 
 	public Formlet getFormlet(Object popupTrigger) {
-		return FormletStore.getInstance().getFormlet(EditPanel.container_form);
+		return ConzillaKit.getDefaultKit().getFormletStore().getFormlet(EditPanel.container_form);
 	}
 
 	public QueryTarget getCollaborativeQueryTarget(Object popupTrigger) {

@@ -6,10 +6,13 @@
 
 package se.kth.cid.conzilla.agent;
 
+import java.io.IOException;
+
 import javax.swing.JComponent;
 
+import se.kth.cid.util.Tracer;
+import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
 import se.kth.nada.kmr.shame.applications.util.MetaDataPanel;
-import se.kth.nada.kmr.shame.formlet.FormletStore;
 
 /**
  * An SHAMEditor for information on the agent.
@@ -20,8 +23,12 @@ import se.kth.nada.kmr.shame.formlet.FormletStore;
 public class AgentPane extends MetaDataPanel{
     //Preload neccessary formlets in the FormletStore.
     static {
-        FormletStore.requireFormletConfigurations("formlets/formlets.rdf");
-        FormletStore.requireFormletConfigurations("formlets/foaf/formlets.rdf");
+        try {
+			FormletStoreSingleton.requireFormletConfigurations("formlets/formlets.rdf");
+			FormletStoreSingleton.requireFormletConfigurations("formlets/foaf/formlets.rdf");
+		} catch (IOException e) {
+			Tracer.debug(e.getMessage());
+		}
     }
     
     static String agentFormletId =  
