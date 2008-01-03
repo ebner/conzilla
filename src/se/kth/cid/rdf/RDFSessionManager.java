@@ -153,7 +153,9 @@ public class RDFSessionManager extends SessionManagerImpl implements SessionFact
 			Resource inter;
 
 			// Title for project
-			re.addProperty(title, pro.getTitle());
+			if (pro.getTitle() != null) {
+				re.addProperty(title, pro.getTitle());
+			}
 
 			// BaseURI for Concepts.
 			inter = model.createResource();

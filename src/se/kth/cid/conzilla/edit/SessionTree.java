@@ -292,7 +292,7 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 		if (sort) {
 			Collections.sort(sessions, new Comparator<Session>() {
 				public int compare(Session s1, Session s2) {
-					if (s1.getTitle() != null) {
+					if (s1.getTitle() != null && s2.getTitle() != null) {
 						return s1.getTitle().compareToIgnoreCase(s2.getTitle());
 					} else {
 						return 0;
