@@ -43,8 +43,8 @@ public class SindiceClient {
 		
 		// Submit files
 		List<URI> files = new ArrayList<URI>();
-		files.add(URI.create("http://collaborilla.conzilla.org/repository/people/amb/urn_path_/org/conzilla/people/amb/virginska/information.rdf"));
-		files.add(URI.create("http://collaborilla.conzilla.org/repository/people/amb/urn_path_/org/conzilla/people/amb/virginska/presentation.rdf"));
+		//files.add(URI.create("http://collaborilla.conzilla.org/repository/people/amb/urn_path_/org/conzilla/people/amb/virginska/information.rdf"));
+		//files.add(URI.create("http://collaborilla.conzilla.org/repository/people/amb/urn_path_/org/conzilla/people/amb/virginska/presentation.rdf"));
 		client.submitRDFLocations(files);
 	}
 	
