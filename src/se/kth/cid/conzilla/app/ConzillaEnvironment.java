@@ -11,6 +11,7 @@ import se.kth.cid.conzilla.content.ContentDisplayer;
 public interface ConzillaEnvironment {
 	
 	public static final String DEFAULT_STARTMAP = "urn:path:/org/conzilla/builtin/maps/default";
+	public static final String DEFAULT_BLANKMAP = "urn:path:/org/conzilla/builtin/maps/blank";
 
 	ContentDisplayer getDefaultContentDisplayer();
 

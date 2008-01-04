@@ -918,6 +918,18 @@ Conzilla is here described as an instance (example) of Software.</dc:description
     <rdf:subject rdf:resource="http://conzilla.org/model/concepts/#19d12cc100aa47f3cfe"/>
     <dc:title xml:lang="en">is a</dc:title>
   </rdf:Statement>
+  <rdf:Seq rdf:about="urn:path:/org/conzilla/builtin/maps/blank">
+    <rdf:type rdf:resource="http://conzilla.org/model/graphic#ContextMap"/>
+    <NS1:dimension>100,100</NS1:dimension>
+    <dc:description>
+      <rdf:Alt>
+        <rdf:li xml:lang="sv">Detta är en inbyggd tom karta som visas upp när ingen annan karta är tillgänglig eller lämplig att visa.</rdf:li>
+        <rdf:li xml:lang="en">This is a built in empty map that is shown when no other map is available or suitable to show.</rdf:li>
+      </rdf:Alt>
+    </dc:description>
+    <dc:title xml:lang="en">--Blank contextmap--</dc:title>
+    <dc:title xml:lang="sv">--Tom sammanhangskarta--</dc:title>
+  </rdf:Seq>
   <rdf:Seq rdf:about="urn:path:/org/conzilla/builtin/maps/default">
     <rdf:li>
       <rdf:Seq rdf:about="urn:path:/org/conzilla/builtin/maps/default#topLayer">
