@@ -14,7 +14,7 @@ import se.kth.cid.util.TagManager;
 /** 
  *
  *  @author Matthias Palmer
- *  @version $Revision$
+ *  @version $Revision$<
  */
 public class MemGroupLayout extends MemResourceLayout implements GroupLayout, LayerLayout
 {

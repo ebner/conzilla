@@ -258,6 +258,12 @@ public class RDFComponent
         }
     }    
 	
+    public void removeFromContainer(Container container) {
+    	if (container instanceof RDFModel) {
+    		removeFromModel((RDFModel) container);
+    	}
+    }
+    
     public StmtIterator getProperties(Property prop) {
         //return getPropertiesFromModel(totalModel.getTotalRDFModel(), prop);
         return getPropertiesFromModel(getLoadModel(), prop.toString());

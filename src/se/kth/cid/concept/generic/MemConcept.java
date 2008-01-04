@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import se.kth.cid.component.AttributeEntry;
+import se.kth.cid.component.Container;
 import se.kth.cid.component.FiringResourceImpl;
 import se.kth.cid.component.ReadOnlyException;
 import se.kth.cid.component.ComponentManager;
@@ -147,6 +148,11 @@ public class MemConcept extends FiringResourceImpl implements Concept {
 	public ComponentManager getComponentManager() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void removeFromContainer(Container cont) {
+		// TODO Auto-generated method stub
+		
 	}
     
 }

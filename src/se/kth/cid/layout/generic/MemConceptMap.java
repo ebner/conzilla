@@ -12,6 +12,7 @@ import java.util.Set;
 
 import se.kth.cid.component.AttributeEntry;
 import se.kth.cid.component.ComponentManager;
+import se.kth.cid.component.Container;
 import se.kth.cid.component.InvalidURIException;
 import se.kth.cid.component.ReadOnlyException;
 import se.kth.cid.identity.MIMEType;
@@ -187,5 +188,10 @@ public class MemConceptMap extends GenericConceptMap {
 
 	public Rectangle getBoundingBox() {
 		return null;
+	}
+
+	public void removeFromContainer(Container cont) {
+		// TODO Auto-generated method stub
+		
 	}
 }

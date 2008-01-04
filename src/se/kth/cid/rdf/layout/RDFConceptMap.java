@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import se.kth.cid.component.Container;
 import se.kth.cid.component.EditEvent;
 import se.kth.cid.component.InvalidURIException;
 import se.kth.cid.component.ReadOnlyException;
@@ -437,6 +438,20 @@ public class RDFConceptMap
             m.removeRequestedContainerForURI(getURI(), containerURI);   
         }
 //        rcm.refresh();
+    }
+    
+
+    public void removeFromContainer(Container container) throws ReadOnlyException {
+        if (container instanceof RDFModel) {
+        	RDFModel m = (RDFModel) container;
+        	recursivelyRemoveFromModel(m);
+        	for (Iterator conts = m.getRequestedContainersForURI(getURI()).iterator();
+        	conts.hasNext();) {
+        		String containerURI = (String) conts.next();
+        		m.removeRequestedContainerForURI(getURI(), containerURI);   
+        	}
+        	container.setEdited(true);
+        }
     }
     
     //From BookkeepingConceptMap

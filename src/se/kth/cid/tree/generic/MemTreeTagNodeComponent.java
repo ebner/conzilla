@@ -10,6 +10,7 @@ import java.util.List;
 
 import se.kth.cid.component.AttributeEntry;
 import se.kth.cid.component.ComponentManager;
+import se.kth.cid.component.Container;
 import se.kth.cid.component.ContainerManager;
 import se.kth.cid.component.EditListener;
 import se.kth.cid.component.FiringResourceImpl;
@@ -108,6 +109,9 @@ public class MemTreeTagNodeComponent
     public void remove() {
     }
 
+    public void removeFromContainer(Container cont) {
+    }
+    
     /**
      * @see se.kth.cid.component.Component#refreshRelevantContainers()
      */

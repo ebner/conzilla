@@ -85,4 +85,5 @@ public interface Component extends Resource {
      */
     void remove();
 
+    void removeFromContainer(Container cont);
 }
