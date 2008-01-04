@@ -17,6 +17,7 @@ import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.Container;
 import se.kth.cid.component.ContainerManager;
 import se.kth.cid.component.ResourceStore;
+import se.kth.cid.conzilla.app.ConzillaEnvironment;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.app.Extra;
 import se.kth.cid.conzilla.clipboard.Clipboard;
@@ -161,7 +162,7 @@ public class EditMapManagerFactory implements MapManagerFactory {
             ResourceStore store =
                 ConzillaKit.getDefaultKit().getResourceStore();
             ContextMap cMap = store.getAndReferenceConceptMap(uri);
-            return cMap.getComponentManager().getEditingSesssion() == null;
+            return cMap.getComponentManager().getEditingSesssion() == null && !uri.toString().equals(ConzillaEnvironment.DEFAULT_BLANKMAP);
         } catch (ComponentException ce) {
         }
         return false;

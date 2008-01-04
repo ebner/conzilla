@@ -334,6 +334,9 @@ public class BrowseMapManager implements MapManager, PropertyChangeListener {
     		popup.deactivate((MapScrollPane) e.getOldValue());
             browse.uninstall((MapScrollPane) e.getOldValue());
             browse.install((MapScrollPane) e.getNewValue());
+            editMode.setEnabled(!(((MapScrollPane) e.getNewValue()).getDisplayer()
+            		.getStoreManager().getConceptMap().getURI()
+            		.equals(ConzillaEnvironment.DEFAULT_BLANKMAP)));
             if (popupControl.isActivated()) {
         		popup.activate((MapScrollPane) e.getNewValue());            	
             }
