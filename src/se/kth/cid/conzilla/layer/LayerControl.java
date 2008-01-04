@@ -342,7 +342,10 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
             cb = new JCheckBox();
     		cb.setBackground(Color.white);
             LayerManager lm = layout.getConceptMap().getLayerManager();
-    		cb.setSelected(lm.getLayerVisible(layout.getURI()));
+            boolean b = lm.getLayerVisible(layout.getURI());
+            System.out.println("selected "+ cb.isSelected());
+    		cb.setSelected(b);
+            System.out.println("selected "+ cb.isSelected());
     		refreshEditGroupLayout();
             add(cb);
             add(label);
@@ -476,6 +479,7 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
     }
     
     protected void fix() {
+    	lock = true;
         LayerManager lMapNew = controller.getConceptMap().getLayerManager();
         
         if (lMan != lMapNew) {
@@ -490,10 +494,14 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
         layerSlider.setMinimum(0);
         layerSlider.setMaximum(layerEntries.getLayers().size());
         layerSlider.setValue(0);
+        lock = false;
     }
 
     public void stateChanged(ChangeEvent e) {
-        lock = true;
+        if (lock) {
+        	return;
+        }
+    	lock = true;
         int nr = (int) layerSlider.getValue();
 
         layerEntries.selectTo(nr);

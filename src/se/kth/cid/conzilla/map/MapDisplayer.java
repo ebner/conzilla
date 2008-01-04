@@ -507,8 +507,8 @@ public class MapDisplayer extends JPanel implements EditListener,
         Enumeration en = lman.getLayers().elements();
         while (en.hasMoreElements()) {
             LayerLayout ls = (LayerLayout) en.nextElement();
-            if (!lman.getLayerVisible(ls.getURI()))
-                continue;
+/*            if (!lman.getLayerVisible(ls.getURI()))
+                continue;*/
             if (!ls.isLeaf())
                 addResourceLayouts(ls);
         }
