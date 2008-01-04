@@ -8,6 +8,7 @@ package se.kth.cid.conzilla.layer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -23,6 +24,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -78,6 +80,8 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
     PopupLayerInfo pli;
 
 	private boolean editEnabled = false;
+
+	private JPanel panel;
     
     public class LayerEntries extends JPanel implements EditListener {
         /*
@@ -240,18 +244,6 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
 			}
 			LayerEntries.this.repaint();        	
         }
-        
-        private void addLabelText(String text) {
-    		JLabel label = new JLabel(text);
-    		JPanel labelPanel = new JPanel();
-    		labelPanel.setOpaque(false);
-    		labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.X_AXIS));
-    		labelPanel.add(Box.createHorizontalGlue());
-    		labelPanel.add(label);
-    		labelPanel.add(Box.createHorizontalGlue());
-    		labelPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.black));
-    		add(labelPanel);
-        }
 
         public void refresh(LayerManager lMan) {
         	clear();
@@ -265,13 +257,14 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
         	}
         	
         	layerEntries = new Vector();
-        	add(Box.createVerticalStrut(7));
-    		addLabelText("ContextMap Layers");
+        	add(Box.createVerticalStrut(8));
+//    		addLabelText(this, "ContextMap Layers");
 
             Enumeration en = lMan.getLayers().elements();
             while (en.hasMoreElements())
                 addLayerEntry((LayerLayout) en.nextElement());
-            add(Box.createVerticalGlue());
+//            add(Box.createVerticalGlue());
+        	add(Box.createVerticalStrut(19));
             revalidate();
         }
         
@@ -281,14 +274,14 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
             entry.addMouseMotionListener(pli.mouseListener);
 			entry.addMouseListener(pli.mouseListener);
 
-            layerEntries.insertElementAt(entry, 0);
+            layerEntries.add(entry);
             add(entry);
         }
 
         public void selectTo(int range) {
             for (int i = 0; i < layerEntries.size(); i++)
                 ((LayerEntry) layerEntries.elementAt(i))
-                        .setLayerVisible(i >= range);
+                        .setLayerVisible(i < range);
         }
 
         protected void setLayerChoosen(LayerEntry entry) {
@@ -343,9 +336,7 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
     		cb.setBackground(Color.white);
             LayerManager lm = layout.getConceptMap().getLayerManager();
             boolean b = lm.getLayerVisible(layout.getURI());
-            System.out.println("selected "+ cb.isSelected());
     		cb.setSelected(b);
-            System.out.println("selected "+ cb.isSelected());
     		refreshEditGroupLayout();
             add(cb);
             add(label);
@@ -453,6 +444,8 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
         layerEntries.setBackground(Color.white);
 
         layerSlider = new JSlider();
+        layerSlider.setBackground(Color.white);
+        layerSlider.setInverted(true);
         layerSlider.setOrientation(JSlider.VERTICAL);
         layerSlider.setMajorTickSpacing(1);
         layerSlider.setMinorTickSpacing(1);
@@ -463,9 +456,12 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
 
         layerSlider.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         setLayout(new BorderLayout());
-        add(layerEntries, BorderLayout.CENTER);
-        add(layerSlider, BorderLayout.EAST);
-        
+        panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(layerEntries, BorderLayout.CENTER);
+        panel.add(layerSlider, BorderLayout.WEST);
+        add(panel, BorderLayout.NORTH);
+        //add(Box.createVerticalGlue());
     }
 
     public void activate() {
@@ -490,10 +486,12 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
         }
 
         layerEntries.refresh(lMan);
+        Dimension d = layerSlider.getPreferredSize();
+        layerSlider.setPreferredSize(new Dimension(d.width,layerEntries.getPreferredSize().height));
         
         layerSlider.setMinimum(0);
         layerSlider.setMaximum(layerEntries.getLayers().size());
-        layerSlider.setValue(0);
+        layerSlider.setValue(layerEntries.getLayers().size());
         lock = false;
     }
 
@@ -525,5 +523,17 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
         	setEditingEnabled(controller.getConceptMap().getComponentManager().getEditingSesssion() != null);
         	layerEntries.refreshGroupLayouts();
         }
+    }
+    
+    public static void addLabelText(JComponent comp, String text) {
+		JLabel label = new JLabel(text);
+		JPanel labelPanel = new JPanel();
+		labelPanel.setOpaque(false);
+		labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.X_AXIS));
+		labelPanel.add(Box.createHorizontalGlue());
+		labelPanel.add(label);
+		labelPanel.add(Box.createHorizontalGlue());
+		labelPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.black));
+		comp.add(labelPanel);
     }
 }
