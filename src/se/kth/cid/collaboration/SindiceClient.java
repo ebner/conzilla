@@ -121,10 +121,11 @@ public class SindiceClient {
 	    method.getParams().setSoTimeout(SO_TIMEOUT);
 	    method.setRequestHeader("Accept", mediaType);
 	    
-	    NameValuePair queryPair = new NameValuePair(queryName, queryValue);
-	    NameValuePair pagePair = new NameValuePair("page", Integer.toString(page));
-	    method.setQueryString(new NameValuePair[] { queryPair, pagePair });
-		
+	    method.setQueryString(new NameValuePair[] { 
+	    		new NameValuePair(queryName, queryValue),
+	    		new NameValuePair("page", Integer.toString(page))
+	    });
+
 	    try {
 			int statusCode = client.executeMethod(method);
 			if (statusCode < 200 || statusCode > 299) {
