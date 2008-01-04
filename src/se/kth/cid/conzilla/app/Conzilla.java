@@ -176,6 +176,10 @@ public class Conzilla implements PropertyChangeListener {
 		ConfigurationManager.getConfiguration().setProperty(Settings.CONZILLA_VIEWMANAGER_DEFAULT, manager.getClass().getName());
 	}
 
+	public MapManagerFactory getDefaultMapManagerFactory() {
+		return defaultMapManagerFactory;
+	}
+
 	public void setDefaultMapManagerFactory(MapManagerFactory mf) {
 		defaultMapManagerFactory = mf;
 	}
@@ -355,6 +359,10 @@ public class Conzilla implements PropertyChangeListener {
 	public void exit(int result) {
 		resetAll();
 
+    	if (!viewManager.closeable()) {
+    		return;
+    	}
+		viewManager.saveProperties();
 		Enumeration en = kit.getExtras();
 		while (en.hasMoreElements())
 			if (!((Extra) en.nextElement()).saveExtra())
@@ -375,8 +383,14 @@ public class Conzilla implements PropertyChangeListener {
 
 	public void propertyChange(PropertyChangeEvent e) {
 		if (ViewManager.VIEWS_PROPERTY.equals(e.getPropertyName())) {
-			if (!viewManager.getViews().hasNext())
-				exit(0);
+			if (!viewManager.getViews().hasNext()) {
+				try {
+					openMapInNewView(URI.create(ConzillaEnvironment.DEFAULT_BLANKMAP), null);
+				} catch (ControllerException e1) {
+					e1.printStackTrace();
+				}
+//				exit(0);
+			}
 		} else if (MapController.MAP_PROPERTY.equals(e.getPropertyName())
 				|| View.ZOOM_PROPERTY.equals(e.getPropertyName())) {
 			if (ConfigurationManager.getConfiguration().getBoolean(Settings.CONZILLA_PACK)) {

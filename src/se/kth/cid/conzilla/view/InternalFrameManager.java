@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenuBar;
 
+import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.controller.MapController;
 
 public class InternalFrameManager extends AbstractViewManager implements PropertyChangeListener {
@@ -49,10 +50,7 @@ public class InternalFrameManager extends AbstractViewManager implements Propert
 
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-            	if (closeable()) {
-            		saveProperties();
-            		closeViews();
-            	}
+            	ConzillaKit.getDefaultKit().getConzilla().exit(0);
             }
         });
 

@@ -81,10 +81,7 @@ public class TabManager
         
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-            	if (closeable()) {
-            		saveProperties();
-            		closeViews();
-            	}
+            	ConzillaKit.getDefaultKit().getConzilla().exit(0);
             }
         });
         

@@ -230,12 +230,12 @@ public class DefaultMenuFactory implements MenuFactory {
 
 		newWindow = new Tool("EXIT", DefaultMenuFactory.class.getName()) {
 			public void actionPerformed(ActionEvent ae) {
-				//kit.getConzilla().exit(0);
-				ViewManager manager = conzilla.getViewManager();
+				kit.getConzilla().exit(0);
+				/*ViewManager manager = conzilla.getViewManager();
 				if (manager.closeable()) {
 					manager.saveProperties();
 					manager.closeViews();
-				}
+				}*/
 			}
 		};
 		newWindow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, Event.CTRL_MASK));
