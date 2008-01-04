@@ -38,17 +38,22 @@ import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
 
 import se.kth.cid.component.ComponentException;
+import se.kth.cid.component.ComponentManager;
 import se.kth.cid.component.Container;
 import se.kth.cid.component.ResourceStore;
+import se.kth.cid.conzilla.app.Conzilla;
+import se.kth.cid.conzilla.app.ConzillaEnvironment;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.controller.ControllerException;
 import se.kth.cid.conzilla.controller.MapController;
+import se.kth.cid.conzilla.history.LinearHistory;
 import se.kth.cid.conzilla.properties.Images;
 import se.kth.cid.conzilla.session.Session;
 import se.kth.cid.conzilla.session.SessionImpl;
 import se.kth.cid.conzilla.session.SessionManager;
 import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.layout.ContextMap;
+import se.kth.cid.util.AttributeEntryUtil;
 import se.kth.cid.util.Tracer;
 
 /**
@@ -269,6 +274,60 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 				}
 			});
 			menu.add(itemOpenTab);
+
+			if (node.getType() == SessionNode.TYPE_CONTEXTMAP) {
+				
+				final SessionNode sessionNode = (SessionNode) node.getParent();
+				Session session = (Session) sessionNode.getUserObject();	
+
+				if ( session == controller.getConceptMap().getComponentManager().getEditingSesssion()) {
+					JMenuItem itemRemoveTab = new JMenuItem("Remove");
+					final boolean onMap = controller.getConceptMap().getURI().equals(node.getURI());
+					itemRemoveTab.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							ContextMap cMap = (ContextMap) node.getUserObject();
+							ComponentManager cMan = controller.getConceptMap().getComponentManager();
+							Container container = cMan.getContainer(URI.create(cMan.getEditingSesssion().getContainerURIForLayouts()));
+							if (container != null) {
+								boolean hasConcepts = cMap.getDrawerLayouts().length != 0; 
+								String title = AttributeEntryUtil.getTitleAsString(cMap); 
+								int answer = JOptionPane.showConfirmDialog(null, "Remove the Context-map named "
+										+ (title != null ? title : "no title") + "?"
+										+ (hasConcepts ? " from the current session?\n" +
+												"Observe that concepts added to the Context-map in this session \n" +
+												"will not be removed. You should consider removing these concepts\n " +
+												"before you go ahed if they are not used elsewhere." : "")
+												, "Continue and remove ConceptMap from this session?", JOptionPane.YES_NO_OPTION);
+								if (answer == JOptionPane.YES_NO_OPTION) {
+									String loadContainerURI = cMap.getLoadContainer();
+									cMap.removeFromContainer(container);
+									setChildrenOfSessionNode(sessionNode);
+									if (onMap) {
+										if (loadContainerURI.equals(container.getURI())) {
+											LinearHistory lh = controller.getLinearHistory();
+											lh.removeHistoryEvent(lh.getIndex());
+											try {
+												URI nMapURI = URI.create(ConzillaEnvironment.DEFAULT_BLANKMAP);
+												controller.showMap(nMapURI);
+												controller.getHistoryManager().fireOpenNewMapEvent(controller, null, nMapURI);
+											} catch (ControllerException e1) {
+												e1.printStackTrace();
+											}
+										} else {
+											Conzilla conzilla = ConzillaKit.getDefaultKit().getConzilla();
+											conzilla.changeMapManagerFactory(controller, conzilla.getDefaultMapManagerFactory());
+										}
+									}
+								}
+							}
+						}
+					});
+//					itemRemoveTab.setVisible();
+					menu.add(itemRemoveTab);
+					
+				}
+			}
+
 		}
 		
 		if (node.getType() == SessionNode.TYPE_SESSION) {
