@@ -15,8 +15,10 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import se.kth.cid.component.Component;
@@ -414,8 +416,9 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 		}
 		setPercentage(20);
 
+		String remotePresCont = null;
 		if (!conceptContURI.equals(layoutContURI)) {
-			String remotePresCont = buildRemoteURL(locationInfo.getPublishingLocation(), layoutContURI);
+			remotePresCont = buildRemoteURL(locationInfo.getPublishingLocation(), layoutContURI);
 			printInformation("Uploading container " + layoutContURI + " to " + remotePresCont);
 			remote.put(remotePresCont, getInputStreamOfContainer(layoutCont));
 			if (remote.isVersioned(remotePresCont)) {
@@ -427,6 +430,16 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 
 		remote.disconnect();
 		setPercentage(45);
+		
+		// Send URLs to Sindice
+		List<URI> files = new ArrayList<URI>();
+		files.add(URI.create(remoteInfoCont));
+		if (remotePresCont != null) {
+			files.add(URI.create(remotePresCont));
+		}
+		new SindiceClient().submitRDFLocations(files);
+		printInformation("Announced containers at Sindice.com");
+		setPercentage(50);
 	}
 	
 	private void cacheDataSet(CollaborillaDataSet dataSet) throws CollaborillaException {
