@@ -161,6 +161,13 @@ public class LinearHistory
     return "LinearHistory[" + history.toString() +
       ", index = " + index + "]";
   }
+  
+  public void removeHistoryEvent(int index) {
+	  history.remove(index);
+	  if (this.index >= index) {
+		  this.index--;
+	  }
+  }
 
   /** Adds a history event to this history.
    *
