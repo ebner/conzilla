@@ -11,7 +11,7 @@
   </description>
   
   <!-- <property name="build.compiler"     value="jikes"/> -->
-  <property name="build.compiler"          value="javac1.4"/>
+  <property name="build.compiler"          value="javac1.5"/>
 	
   <property name="signature_keystore"	   value="misc/conzilla.keystore"/>
   <property name="signature_alias"		   value="cidkey"/>
