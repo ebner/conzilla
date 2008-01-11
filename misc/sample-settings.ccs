@@ -1,0 +1,4 @@
+host=test
+port=2108
+namespace=http://test.com
+location.1=Test%20Location||url1|url2
