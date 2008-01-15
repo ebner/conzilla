@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?> 
 <!-- $Id$ -->
-<jnlp spec="1.0+" codebase="http://www.conzilla.org/webstart/" version="2.2" href="conzilla.jnlp">
+<jnlp spec="1.5+" codebase="http://www.conzilla.org/webstart/" version="2.2" href="conzilla.jnlp">
 	<information>
 		<title>Conzilla 2.2</title>
 		<vendor>KMR group at KTH (Royal Institute of Technology)</vendor>
@@ -13,8 +13,14 @@
 		<icon width="128" height="128" href="img/conzilla128.png"/>
 		<!--<icon href="splash.png" kind="splash"/>-->
 		<offline-allowed/>
-		<association mime-type="text/conzilla-context-map" extensions="ccm"/>
-		<association mime-type="text/conzilla-collaboration-settings" extensions="ccs"/>
+		<association mime-type="text/conzilla-context-map" extensions="ccm">
+			<description>Conzilla Context-Map</description>
+			<icon width="32" height="32" href="img/ccm.png"/>
+		</association>
+		<association mime-type="text/conzilla-collaboration-settings" extensions="ccs">
+			<description>Conzilla Collaboration Settings</description>
+			<!--<icon width="32" height="32" href"img/ccm.png"/>-->
+		</association>
 		<shortcut online="true">
 			<desktop/>
 			<menu submenu="Conzilla"/>
@@ -25,28 +31,30 @@
 		<all-permissions/>
 	</security>
 	<resources>
-		<j2se version="1.4+" initial-heap-size="64M" max-heap-size="256M"/>
+		<j2se version="1.5+" initial-heap-size="64M" max-heap-size="256M"/>
 		<jar href="conzilla.jar" main="true"/>
 		<jar href="lib/antlr.jar"/>
-		<jar href="lib/commons-httpclient-contrib.jar"/>
-		<jar href="lib/commons-codec.jar"/>
+		<jar href="lib/arq.jar"/>
 		<jar href="lib/batik-awt-util.jar"/>
 		<jar href="lib/batik-dom.jar"/>
 		<jar href="lib/batik-svggen.jar"/>
 		<jar href="lib/batik-util.jar"/>
 		<jar href="lib/batik-xml.jar"/>
 		<jar href="lib/collaborilla.jar"/>
+		<jar href="lib/commons-codec.jar"/>
 		<jar href="lib/commons-httpclient.jar"/>
+		<jar href="lib/commons-httpclient-contrib.jar"/>
 		<jar href="lib/commons-logging.jar"/>
 		<jar href="lib/commons-net.jar"/>
 		<jar href="lib/commons-transaction.jar"/>
 		<jar href="lib/icu4j.jar"/>
+		<jar href="lib/iri.jar"/>
 		<jar href="lib/jakarta-slide-webdavlib.jar"/>
 		<jar href="lib/jdom-1.0.jar"/>
 		<jar href="lib/jena.jar"/>
-		<jar href="lib/iri.jar"/>
 		<jar href="lib/jnlp.jar"/>
 		<jar href="lib/log4j.jar"/>
+		<jar href="lib/org.json.jar"/>
 		<jar href="lib/SHAME.jar"/>
 		<jar href="lib/SHAME-formlets.jar"/>
 		<jar href="lib/swing-layout.jar"/>
