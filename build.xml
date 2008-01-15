@@ -98,6 +98,8 @@
     <delete dir="${build_directory}"/>
     <delete dir="${javadoc_directory}"/>
   	<delete dir="${webstart_directory}"/>
+  	<delete dir="${distribution_directory}"/>
+  	<delete dir="${script_directory}"/>
   </target>
   
   <target name="conditional_cleanup" unless="compile_without_cleanup">
