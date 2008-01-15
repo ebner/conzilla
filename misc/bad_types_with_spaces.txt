@@ -1,0 +1,11 @@
+Action State
+Final State
+Concurrent Join
+Initial State
+Concurrent Fork
+Activity State
+Directed Association
+Object Input Flow
+Object Output Flow
+[Guard Condition]
+Riktad association
