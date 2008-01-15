@@ -212,9 +212,10 @@
   </target>
 	
   <target name="webstart" depends="jar">
-    <copy tofile="${webstart_directory}/conzilla.jar" file="${distribution_directory}/${ant.project.name}.jar"/>
-	<copy tofile="${webstart_directory}/logo.png" file="misc/jws-logo.png"/>
-  	<copy todir="${webstart_directory}" file="misc/conzilla.jnlp"/>
+  	<copy todir="${webstart_directory}">
+  		<fileset dir="misc/webstart"/>
+	</copy>
+  	<copy tofile="${webstart_directory}/conzilla.jar" file="${distribution_directory}/${ant.project.name}.jar"/>	
   	<copy todir="${webstart_directory}/lib">
       <fileset dir="${library_directory}">
         <include name="**/*.jar"/>

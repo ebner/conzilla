@@ -1,0 +1,4 @@
+host=collaborilla.conzilla.org
+port=2108
+namespace=http://conzilla.org/users/$username
+location.1=Collaborilla Repository||dav%3A%2F%2F$username%3A$password%40collaborilla.conzilla.org%2Frepository%2Fusers%2F$username|http%3A%2F%2Fcollaborilla.conzilla.org%2Frepository%2Fusers%2F$username
