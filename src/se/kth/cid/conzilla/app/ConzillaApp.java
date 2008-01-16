@@ -43,7 +43,7 @@ public class ConzillaApp extends ConzillaAppEnv {
 		}
 
 		ConzillaApp app = new ConzillaApp();
-
+		app.arguments = argv;
 		String associated = null;
 
 		if (argv.length >= 1) {
@@ -77,8 +77,7 @@ public class ConzillaApp extends ConzillaAppEnv {
 				askForConfiguration = false;
 			// Conzilla Context-Map (ccm)
 			} else if (associated.toLowerCase().endsWith(".ccm")) {
-				// TODO
-				//app.loadContextMap(associated);
+				app.loadContextMap(associated, false);
 			} else {
 				Tracer.debug("Unknown file extension. Not doing anything.");
 			}

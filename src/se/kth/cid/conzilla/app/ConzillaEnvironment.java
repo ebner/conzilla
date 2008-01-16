@@ -25,6 +25,8 @@ public interface ConzillaEnvironment {
 	boolean toggleOnlineState();
 
 	boolean hasLocalDiskAccess();
+	
+	void loadContextMap(String ccm, boolean newView);
 
 	void exit(int result);
 	

@@ -15,11 +15,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import se.kth.cid.conzilla.app.ConzillaKit;
-import se.kth.cid.conzilla.controller.ControllerException;
 import se.kth.cid.util.Tracer;
 
 /**
@@ -73,20 +70,8 @@ public class CommandListener {
 				cWin.requestFocus();
 			}
 		} else if (command.startsWith(RemoteCommands.OPEN + " ")) {
-			String uriStr = command.substring(RemoteCommands.OPEN.length() + 1);
-			URI uri = null;
-			try {
-				uri = new URI(uriStr);
-			} catch (URISyntaxException e) {
-				Tracer.debug("Received invalid URI: " + uriStr);
-			}
-			if (uri != null) {
-				try {
-					ConzillaKit.getDefaultKit().getConzilla().openMapInNewView(uri, null);
-				} catch (ControllerException e) {
-					Tracer.debug("Unable to open URI as requested: " + e.getMessage());
-				}
-			}
+			String ccm = command.substring(RemoteCommands.OPEN.length() + 1);
+			ConzillaKit.getDefaultKit().getConzillaEnvironment().loadContextMap(ccm, true);
 		} else if (command.equals(RemoteCommands.QUIT)) {
 			ConzillaKit.getDefaultKit().getConzilla().getViewManager().closeViews();
 		} else {

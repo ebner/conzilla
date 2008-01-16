@@ -27,6 +27,7 @@ import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.Container;
 import se.kth.cid.config.Config;
 import se.kth.cid.config.ConfigurationManager;
+import se.kth.cid.config.PropertiesConfiguration;
 import se.kth.cid.conzilla.config.Settings;
 import se.kth.cid.conzilla.content.ContentDisplayer;
 import se.kth.cid.conzilla.controller.ControllerException;
@@ -35,6 +36,7 @@ import se.kth.cid.conzilla.properties.Images;
 import se.kth.cid.conzilla.remote.CommandListener;
 import se.kth.cid.conzilla.remote.ConzillaInstructor;
 import se.kth.cid.conzilla.util.ErrorMessage;
+import se.kth.cid.conzilla.view.View;
 import se.kth.cid.util.Tracer;
 
 /**
@@ -52,6 +54,10 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 	public ConzillaKit kit;
 	
 	private boolean onlineState;
+	
+	private View startMapView;
+	
+	protected String[] arguments;
 
 	static class InstallException extends IOException {
 	}
@@ -159,7 +165,11 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 			ic = new InstanceChecker(lockFile);
 			if (ic.isApplicationActive()) {
 				try {
-					new ConzillaInstructor(portFile).toForeground();
+					ConzillaInstructor instructor = new ConzillaInstructor(portFile);
+					if ((arguments.length >= 2) && arguments[0].toLowerCase().equals("-open")) {
+						instructor.openContextMap(arguments[1]);
+					}
+					instructor.toForeground();
 				} catch (IllegalArgumentException iae) {
 					Tracer.trace("Another instance of Conzilla is already running.", Tracer.WARNING);
 					JOptionPane.showMessageDialog(null, "Another instance of Conzilla is already running.", "Multiple Instances", JOptionPane.ERROR_MESSAGE);
@@ -305,6 +315,35 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 		}
 		return null;
 	}
+	
+	public void loadContextMap(String metaFile, boolean newView) {
+		Tracer.debug("Attempting to open context-map described in file: " + metaFile);
+		
+		Config ccm = new PropertiesConfiguration("Context-Map");
+		try {
+			ccm.load(new File(metaFile).toURL());
+		} catch (Exception e) {
+			Tracer.error(e.getMessage());
+		}
+		
+		String mapURI = ccm.getString("uri");
+		
+		if (mapURI == null) {
+			Tracer.debug("No context-map URI found in ccm-file");
+		}
+		
+		try {
+			if (newView) {
+				ConzillaKit.getDefaultKit().getConzilla().openMapInNewView(new URI(mapURI), null);
+			} else {
+				ConzillaKit.getDefaultKit().getConzilla().openMapInOldView(new URI(mapURI), startMapView);
+			}
+		} catch (ControllerException e) {
+			Tracer.error(e.getMessage());
+		} catch (URISyntaxException e) {
+			Tracer.error(e.getMessage());
+		}
+	}
 
 	private void loadStartMap() {
 		Vector<URI> startMaps = new Vector<URI>();
@@ -333,7 +372,7 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 		int i;
 		for (i = 0; i < startMaps.size(); i++) {
 			try {
-				kit.getConzilla().openMapInNewView((URI) startMaps.get(i), null);
+				startMapView = kit.getConzilla().openMapInNewView((URI) startMaps.get(i), null);
 			} catch (ControllerException e) {
 				Tracer.trace(e.getMessage(), Tracer.ERROR);
 				continue;

@@ -28,4 +28,8 @@ public class ServiceEnvironment implements ConzillaEnvironment {
 		return true;
 	}
 
+	public void loadContextMap(String ccm, boolean newView) {
+		// stub
+	}
+
 }
