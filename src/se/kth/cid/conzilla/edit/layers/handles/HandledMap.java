@@ -285,13 +285,19 @@ public class HandledMap extends HandledObject {
             }
 
             if (ns.getBodyVisible()) {
-                store.getAndSetBoxFollowers(ns);
-                //Just for initializing followers....
-                Handle h = store.getBoxHandlesStruct(ns).tot;
-                addHandle(h);
-                addHandles(h.getFollowers());
-                draggers.add(h);
-               	}
+            	store.getAndSetBoxFollowers(ns);
+            	//Just for initializing followers....
+            	BoxHandlesStruct handlesStruct = store.getBoxHandlesStruct(ns);
+            	Handle h = null;
+            	if (handlesStruct != null) {
+            		h = handlesStruct.tot;
+            	}
+            	if (h != null) {
+            		addHandle(h);
+            		addHandles(h.getFollowers());
+            		draggers.add(h);
+            	}
+            }
             
             if (ns instanceof StatementLayout) {
               StatementLayout sl = (StatementLayout) ns;
