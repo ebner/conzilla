@@ -47,12 +47,11 @@ public class MapStoreManager implements EditListener {
 
 		editListeners = new Vector();
 
-		if (launchContainer != null)
-			loadReferenceRequestedContainersFromContainer(launchContainer,
-					mapURI.toString());
+		if (launchContainer != null) {
+			loadReferenceRequestedContainersFromContainer(launchContainer, mapURI.toString());
+		}
 		conceptMap = store.getAndReferenceConceptMap(mapURI);
-		Container lc = store.getAndReferenceContainer(URI.create(conceptMap
-				.getLoadContainer()));
+		Container lc = store.getAndReferenceContainer(URI.create(conceptMap.getLoadContainer()));
 		loadReferenceRequestedContainersFromContainer(lc, mapURI.toString());
 
 		referenceConcepts();

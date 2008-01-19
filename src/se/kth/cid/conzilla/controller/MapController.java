@@ -285,7 +285,7 @@ public class MapController implements PropertyChangeListener, EditListener {
 			contextMap.getComponentManager().setCollaborative(true);
 		}
 		
-		if (isMapRemote(mapURI.toString())) {
+		if (isURIRemote(mapURI.toString())) {
 			containerEntries.update();
 		} else {
 			containerEntries.clear();
@@ -294,16 +294,20 @@ public class MapController implements PropertyChangeListener, EditListener {
 		firePropertyChange(MAP_PROPERTY, oldPane, view.getMapScrollPane());
 	}
 	
-	private boolean isMapRemote(String uri) {
-		if (uri.toLowerCase().startsWith("conzilla:/")) {
+	public static boolean isURIRemote(String uri) {
+		if (uri.startsWith("res:/")) {
 			return false;
 		}
-		if (uri.toLowerCase().startsWith("urn:path:/org/conzilla/local/")) {
+		if (uri.startsWith("conzilla:/")) {
 			return false;
 		}
-		if (uri.toLowerCase().startsWith("urn:path:/org/conzilla/builtin/")) {
+		if (uri.startsWith("urn:path:/org/conzilla/local/")) {
 			return false;
 		}
+		if (uri.startsWith("urn:path:/org/conzilla/builtin/")) {
+			return false;
+		}
+
 		return true;
 	}
 

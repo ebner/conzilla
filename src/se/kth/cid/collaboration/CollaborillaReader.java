@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.Set;
 
 import se.kth.cid.conzilla.app.ConzillaKit;
+import se.kth.cid.conzilla.controller.MapController;
 import se.kth.nada.kmr.collaborilla.client.CollaborillaDataSet;
 import se.kth.nada.kmr.collaborilla.client.CollaborillaException;
 import se.kth.nada.kmr.collaborilla.client.CollaborillaStatefulClient;
@@ -61,10 +62,14 @@ public class CollaborillaReader {
 	 *            URI of a container or context-map.
 	 * @param revision
 	 *            Revision.
-	 * @return Dataset with Collaborilla data. Returns null if the dataset can
+	 * @return Dataset with Collaborilla data. Returns null if the dataset cannot
 	 *         be retrieved neither online nor offline.
 	 */
 	public CollaborillaDataSet getDataSet(URI uri, int revision) {
+		if (!MapController.isURIRemote(uri.toString())) {
+			return null;
+		}
+		
 		CollaborillaStatelessClient csc = null;
 		CollaborillaDataSet dataSet = null;
 		
@@ -290,34 +295,23 @@ public class CollaborillaReader {
 	 * @return Returns true if the URI is found in the information directory or
 	 *         metadata cache.
 	 */
-	public boolean isPublished(URI componentURI) {
-		boolean result = false;
-		String uri = componentURI.toString();
+	public boolean isPublished(URI uri) {
+		if (!MapController.isURIRemote(uri.toString())) {
+			return false;
+		}
 		
-		if (uri.startsWith("urn:path:/org/conzilla/builtin/") || uri.startsWith("conzilla:/")) {
-			result = false;
-		} else if (support.getMetaDataCache().isCached(componentURI.toString())) {
-			result = true;
-		} else if (isOnline()) {
-			CollaborillaStatefulClient csc = null;
-			try {
-				csc = support.getStatefulClient();
-				csc.connect();
-				csc.setIdentifier(componentURI.toString(), false);
-				result = true;
-			} catch (CollaborillaException ignored) {
-				// We get an "Object not found" if the URI is not online
-			} finally {
-				if (csc != null) {
-					try {
-						csc.disconnect();
-					} catch (CollaborillaException ignored) {
-					}
-				}
+		if (support.getMetaDataCache().isCached(uri.toString())) {
+			return true;
+		}
+		
+		if (isOnline()) {
+			CollaborillaDataSet dataSet = getDataSet(uri, LATEST_REVISION);
+			if (dataSet != null) {
+				return true;
 			}
 		}
 		
-		return result;
+		return false;
 	}
 
 }
