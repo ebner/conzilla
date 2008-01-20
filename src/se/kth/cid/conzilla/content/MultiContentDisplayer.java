@@ -10,10 +10,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Hashtable;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.Resource;
 import se.kth.cid.identity.MIMEType;
 import se.kth.cid.layout.ContextMap;
-import se.kth.cid.util.Tracer;
 
 public class MultiContentDisplayer extends AbstractContentDisplayer {
     Hashtable contentDisplayers;
@@ -23,6 +25,8 @@ public class MultiContentDisplayer extends AbstractContentDisplayer {
     ContentDisplayer currentContentDisplayer;
 
     PropertyChangeListener listener;
+    
+    Log log = LogFactory.getLog(MultiContentDisplayer.class);
 
     public MultiContentDisplayer() {
         contentDisplayers = new Hashtable();
@@ -35,10 +39,11 @@ public class MultiContentDisplayer extends AbstractContentDisplayer {
     }
 
     public void addContentDisplayer(MIMEType type, ContentDisplayer displayer) {
-        if (type == null)
+        if (type == null) {
             defaultContentDisplayer = displayer;
-        else
+        } else {
             contentDisplayers.put(type, displayer);
+        }
     }
 
     public void setContent(Resource c) throws ContentException {
@@ -83,8 +88,7 @@ public class MultiContentDisplayer extends AbstractContentDisplayer {
         try {
             super.setContent(currentContentDisplayer.getContent());
         } catch (ContentException e) {
-            Tracer.trace("AbstractContentDisplayer threw exception!",
-                    Tracer.ERROR);
+        	log.error("AbstractContentDisplayer threw exception!", e);
         }
     }
 }

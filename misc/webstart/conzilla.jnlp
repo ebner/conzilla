@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?> 
-<!-- $Id$ -->
+<!-- $Id:conzilla.jnlp 1181 2008-01-15 18:46:11Z ebnerh $ -->
 <jnlp spec="1.5+" codebase="http://www.conzilla.org/webstart/" version="2.2" href="conzilla.jnlp">
 	<information>
 		<title>Conzilla 2.2</title>
@@ -45,6 +45,7 @@
 		<jar href="lib/commons-httpclient.jar"/>
 		<jar href="lib/commons-httpclient-contrib.jar"/>
 		<jar href="lib/commons-logging.jar"/>
+		<jar href="lib/commons-logging-api.jar"/>
 		<jar href="lib/commons-net.jar"/>
 		<jar href="lib/commons-transaction.jar"/>
 		<jar href="lib/icu4j.jar"/>

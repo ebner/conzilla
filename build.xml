@@ -12,6 +12,7 @@
   
   <!-- <property name="build.compiler"     value="jikes"/> -->
   <property name="build.compiler"          value="javac1.5"/>
+  <property name="debug_value"         	   value="true"/>
 	
   <property name="signature_keystore"	   value="misc/conzilla.keystore"/>
   <property name="signature_alias"		   value="cidkey"/>
@@ -120,6 +121,7 @@
       classpathref="project_classpath"
       deprecation="true"
       debug="${debug_value}"
+	  debuglevel="lines,vars,source"
       excludes="
       **/TmpFormatHandler.java
       **/protege/*

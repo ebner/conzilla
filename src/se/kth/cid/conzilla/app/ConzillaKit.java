@@ -14,6 +14,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.collaboration.MetaDataCache;
 import se.kth.cid.collaboration.MetaDataDiskCache;
 import se.kth.cid.component.ComponentException;
@@ -36,7 +39,6 @@ import se.kth.cid.rdf.RDFComponentFactory;
 import se.kth.cid.rdf.RDFContainerManager;
 import se.kth.cid.style.StyleManager;
 import se.kth.cid.tree.TreeTagNodeResource;
-import se.kth.cid.util.Tracer;
 import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
 import se.kth.nada.kmr.shame.formlet.FormletStore;
 
@@ -70,6 +72,8 @@ public class ConzillaKit {
 	MenuFactory menuFactory;
 	
 	MetaDataCache metaCache;
+	
+	Log log = LogFactory.getLog(ConzillaKit.class);
 
 	static ConzillaKit defaultKit;
 
@@ -139,7 +143,7 @@ public class ConzillaKit {
 			String extra = (String)extraIt.next();
 
 			if (extra == null) {
-				Tracer.trace("Extra invalid: " + extra, Tracer.WARNING);
+				log.warn("Extra is invalid: " + extra);
 				continue;
 			}
 			Extra nextra;
@@ -147,14 +151,13 @@ public class ConzillaKit {
 				nextra = (Extra) Class.forName(extra).newInstance();
 				registerExtra(nextra);
 			} catch (ClassCastException e) {
-				Tracer.trace("This is not an Extra: " + extra, Tracer.WARNING);
+				log.warn("This is not an Extra: " + extra, e);
 			} catch (ClassNotFoundException e) {
-				Tracer.trace("Could not find Extra: " + extra, Tracer.WARNING);
+				log.warn("Could not find Extra: " + extra, e);
 			} catch (InstantiationException e) {
-				Tracer.trace("Could not instantiate Extra: " + extra + "\n " + e.getMessage(), Tracer.WARNING);
+				log.warn("Could not instantiate Extra: " + extra, e);
 			} catch (IllegalAccessException e) {
-				Tracer.trace("Could not instantiate Extra (illegal access): " + extra + "\n " + e.getMessage(),
-						Tracer.WARNING);
+				log.warn("Could not instantiate Extra (illegal access): " + extra, e);
 			}
 		}
 	}
@@ -180,10 +183,11 @@ public class ConzillaKit {
 	}
 
 	public void registerExtra(Extra extra) {
-		if (extra.initExtra(this))
+		if (extra.initExtra(this)) {
 			extras.put(extra.getName(), extra);
-		else
-			Tracer.trace("Extra was not initialized: " + extra.getClass().getName(), Tracer.WARNING);
+		} else {
+			log.warn("Extra was not initialized: " + extra.getClass().getName());
+		}
 	}
 
 	public Enumeration getExtras() {
@@ -267,13 +271,13 @@ public class ConzillaKit {
 		try {
 			TreeTagNodeResource library = store.getComponentManager().loadTree(libraryURI);
 			if (library == null)
-				Tracer.debug("rootLibrary not loaded...");
+				log.debug("Root library not loaded...");
 			else {
-				Tracer.debug("rootLibrary loaded...");
+				log.debug("Root library loaded...");
 				rootLibrary = library;
 			}
 		} catch (ComponentException ce) {
-			Tracer.debug("Failed to load the Root library.");
+			log.debug("Failed to load the root library", ce);
 		}
 	}
 

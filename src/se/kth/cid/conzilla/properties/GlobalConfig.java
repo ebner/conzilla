@@ -21,8 +21,10 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.Vector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.identity.URIClassifier;
-import se.kth.cid.util.Tracer;
 
 /**
  * @deprecated This class has been replaced by the ConfigurationManager
@@ -38,6 +40,8 @@ public class GlobalConfig extends Properties {
     Vector colorSets;
     Properties defaults;
     URI base;
+    
+    Log log = LogFactory.getLog(GlobalConfig.class);
     
     GlobalConfig(Properties defaults) {
         super(defaults);
@@ -78,8 +82,7 @@ public class GlobalConfig extends Properties {
             addDefaults(props);
             is.close();
         } catch (IOException e) {
-            Tracer.trace("Could not load defaults for " + propClass.getName()
-                    + "\n " + e.getMessage(), Tracer.WARNING);
+            log.trace("Could not load defaults for " + propClass.getName(), e);
         }
     }
 

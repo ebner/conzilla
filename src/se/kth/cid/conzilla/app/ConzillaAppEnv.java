@@ -6,8 +6,14 @@
 
 package se.kth.cid.conzilla.app;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -23,6 +29,9 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.IconUIResource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.Container;
 import se.kth.cid.config.Config;
@@ -37,7 +46,6 @@ import se.kth.cid.conzilla.remote.CommandListener;
 import se.kth.cid.conzilla.remote.ConzillaInstructor;
 import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.conzilla.view.View;
-import se.kth.cid.util.Tracer;
 
 /**
  * This class represents the information specific to Conzilla when run as an
@@ -50,6 +58,8 @@ import se.kth.cid.util.Tracer;
 public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 	
 	ContentDisplayer defaultContentDisplayer;
+	
+	Log log = LogFactory.getLog(ConzillaAppEnv.class);
 
 	public ConzillaKit kit;
 	
@@ -76,9 +86,9 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 		try {
 			String os = (String) System.getProperties().get("os.name");
 			String version = (String) System.getProperties().get("java.version");
-			Tracer.debug("OS = " + os);
-			Tracer.debug("Java version = " + version);
-			Tracer.debug("Conzilla version = " + Conzilla.CURRENT_VERSION);
+			log.info("OS = " + os);
+			log.info("Java version = " + version);
+			log.info("Conzilla version = " + Conzilla.CURRENT_VERSION);
 			if ((os != null) && (version != null)) {
 				if (os.toLowerCase().matches(".*mac.*")) {
 					if (Float.parseFloat(version.substring(0, 3)) >= 1.5) {
@@ -171,7 +181,7 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 					}
 					instructor.toForeground();
 				} catch (IllegalArgumentException iae) {
-					Tracer.trace("Another instance of Conzilla is already running.", Tracer.WARNING);
+					log.warn("Another instance of Conzilla is already running", iae);
 					JOptionPane.showMessageDialog(null, "Another instance of Conzilla is already running.", "Multiple Instances", JOptionPane.ERROR_MESSAGE);
 				}
 				System.exit(-1);
@@ -200,9 +210,9 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 		
 		initOnlineState();
 		if (isOnline()) {
-			Tracer.debug("Conzilla starting in ONLINE mode");
+			log.info("Conzilla starting in ONLINE mode");
 		} else {
-			Tracer.debug("Conzilla starting in OFFLINE mode");
+			log.info("Conzilla starting in OFFLINE mode");
 		}
 
 		splash.setStatusText("Initializing content displayer...");
@@ -275,10 +285,10 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 						+ ":\n " + e.getMessage(), e, null);
 			}
 			if (loadContainer(uri, purpose, "", false) != null) {
-				Tracer.debug("Succeeded loading container " + uri.toString());
+				log.info("Succeeded loading container " + uri.toString());
 				loaded = true;
 			} else {
-				Tracer.debug("Failed loading container " + uri.toString());
+				log.error("Failed loading container " + uri.toString());
 			}
 		}
 		return loaded;
@@ -317,31 +327,31 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 	}
 	
 	public void loadContextMap(String metaFile, boolean newView) {
-		Tracer.debug("Attempting to open context-map described in file: " + metaFile);
+		log.info("Attempting to open context-map described in file: " + metaFile);
 		
 		Config ccm = new PropertiesConfiguration("Context-Map");
 		try {
 			ccm.load(new File(metaFile).toURL());
 		} catch (Exception e) {
-			Tracer.error(e.getMessage());
+			log.error(e);
 		}
 		
 		String mapURI = ccm.getString("uri");
 		
 		if (mapURI == null) {
-			Tracer.debug("No context-map URI found in ccm-file");
-		}
-		
-		try {
-			if (newView) {
-				ConzillaKit.getDefaultKit().getConzilla().openMapInNewView(new URI(mapURI), null);
-			} else {
-				ConzillaKit.getDefaultKit().getConzilla().openMapInOldView(new URI(mapURI), startMapView);
+			log.info("No context-map URI found in ccm-file");
+		} else {
+			try {
+				if (newView) {
+					ConzillaKit.getDefaultKit().getConzilla().openMapInNewView(new URI(mapURI), null);
+				} else {
+					ConzillaKit.getDefaultKit().getConzilla().openMapInOldView(new URI(mapURI), startMapView);
+				}
+			} catch (ControllerException e) {
+				log.error(e);
+			} catch (URISyntaxException e) {
+				log.error(e);
 			}
-		} catch (ControllerException e) {
-			Tracer.error(e.getMessage());
-		} catch (URISyntaxException e) {
-			Tracer.error(e.getMessage());
 		}
 	}
 
@@ -374,7 +384,7 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 			try {
 				startMapView = kit.getConzilla().openMapInNewView((URI) startMaps.get(i), null);
 			} catch (ControllerException e) {
-				Tracer.trace(e.getMessage(), Tracer.ERROR);
+				log.error("Unable to open map", e);
 				continue;
 			}
 			return;
@@ -437,6 +447,7 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 			if (installedVersion.startsWith("1.1") || installedVersion.startsWith("2.1")) {
 				config.setProperty("conzilla.colortheme.theme-definitions.standard.concept-focus", "0xffa22b2b");
 				config.setProperty("conzilla.colortheme.theme-definitions.standard.context", "0xff0d418e");
+				copyFile(new File(getClass().getClassLoader().getResource("install/" + Installer.LOG_CONFIG_FILE).getFile()), new File(Installer.getConzillaDir(), Installer.LOG_CONFIG_FILE));
 			}
 			
 			// Upgrade path 2.1.x -> 2.2.x
@@ -448,10 +459,36 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 		}
 	}
 	
+	void copyFile(File source, File destination) {
+		OutputStream os = null;
+		InputStream is = null;
+		try {
+			os = new BufferedOutputStream(new FileOutputStream(destination));
+			is = new BufferedInputStream(new FileInputStream(source));
+
+			byte[] b = new byte[2048];
+			int s;
+			while ((s = is.read(b)) != -1) {
+				os.write(b, 0, s);
+			}
+		} catch (IOException e) {
+			log.error("Unable to copy file from " + source + " to " + destination, e);
+		} finally {
+			try {
+				if (os != null) {
+					os.close();
+				}
+				if (is != null) {
+					is.close();
+				}
+			} catch (Exception ignored) {}
+		}
+	}
+	
 	void upgradeSuccessful(String oldVersion, String newVersion) {
 		Config config = ConfigurationManager.getConfiguration();
 		config.setProperty(Settings.CONZILLA_VERSION, Conzilla.CURRENT_VERSION);
-		Tracer.debug("Conzilla configuration upgrade from " + oldVersion + " to " + newVersion + " successful");
+		log.info("Conzilla configuration upgrade from " + oldVersion + " to " + newVersion + " successful");
 		
 		try {
 			tryInit();

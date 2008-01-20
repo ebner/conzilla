@@ -23,6 +23,9 @@ import java.util.Set;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.config.Settings;
 import se.kth.cid.conzilla.content.ListContentSelector;
@@ -34,7 +37,6 @@ import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.conzilla.view.View;
 import se.kth.cid.conzilla.view.ViewManager;
 import se.kth.cid.layout.ContextMap;
-import se.kth.cid.util.Tracer;
 
 public class Conzilla implements PropertyChangeListener {
 	
@@ -49,6 +51,8 @@ public class Conzilla implements PropertyChangeListener {
 	MapManagerFactory defaultMapManagerFactory;
 	
 	Window window;
+	
+	Log log = LogFactory.getLog(Conzilla.class);
 
 	public Conzilla() {
 	}
@@ -100,19 +104,19 @@ public class Conzilla implements PropertyChangeListener {
 			String vm = (String)viewIt.next();
 
 			if (vm == null) {
-				Tracer.trace("ViewManager invalid: " + vm, Tracer.WARNING);
+				log.warn("Invalid ViewManager: " + vm);
 				continue;
 			}
 			try {
 				registerViewManager((ViewManager) Class.forName(vm).newInstance());
 			} catch (ClassNotFoundException e) {
-				Tracer.trace("Could not find ViewManager: " + vm, Tracer.WARNING);
+				log.warn("Could not find ViewManager: " + vm);
 			} catch (InstantiationException e) {
-				Tracer.trace("Could not make ViewManager: " + vm + "\n " + e.getMessage(), Tracer.WARNING);
+				log.warn("Could not create ViewManager: " + vm, e);
 			} catch (IllegalAccessException e) {
-				Tracer.trace("Could not make ViewManager: " + vm + "\n " + e.getMessage(), Tracer.WARNING);
+				log.warn("Could not create ViewManager: " + vm, e);
 			} catch (ClassCastException e) {
-				Tracer.trace("Could not make ViewManager: " + vm + "\n " + e.getMessage(), Tracer.WARNING);
+				log.warn("Could not create ViewManager: " + vm, e);
 			}
 		}
 		String viewm = ConfigurationManager.getConfiguration().getString(Settings.CONZILLA_VIEWMANAGER_DEFAULT, "");

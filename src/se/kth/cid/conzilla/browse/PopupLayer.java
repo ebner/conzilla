@@ -26,6 +26,9 @@ import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.app.ConzillaKit;
@@ -39,7 +42,6 @@ import se.kth.cid.conzilla.metadata.DescriptionPanel;
 import se.kth.cid.conzilla.properties.ColorTheme;
 import se.kth.cid.conzilla.util.PopupHandler;
 import se.kth.cid.layout.DrawerLayout;
-import se.kth.cid.util.Tracer;
 
 /** Extends PopupHandler so that descriptions are
  *  displayed inside a JPanel wich are in turn
@@ -56,6 +58,8 @@ public class PopupLayer extends PopupHandler {
     static final Color TRANSLUCENT_COLOR = new Color(0.9f, 0.9f, 1.0f, 0.7f);
     static final Color TRANSLUCENT_COLOR_ACTIVE = new Color(204, 204, 255, 200);
 
+    Log log = LogFactory.getLog(PopupLayer.class);
+    
     boolean subMap;
     MapEvent mapPopupMapEvent;
     Timer timer;
@@ -336,12 +340,7 @@ public class PopupLayer extends PopupHandler {
 
         } catch (ComponentException ex) {
             subMap = false;
-            Tracer.trace(
-                "Could not load map "
-                    + e.mapObject.getDrawerLayout().getDetailedMap()
-                    + ":\n "
-                    + ex.getMessage(),
-                Tracer.WARNING);
+            log.warn("Could not load map " + e.mapObject.getDrawerLayout().getDetailedMap(), ex);
         }
     }
 

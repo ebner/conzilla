@@ -56,6 +56,8 @@ public class Installer implements Runnable {
 	public static final String ONTDIR = "ont";
 
 	public static final String CONFIG_FILE = "conzilla.properties";
+	
+	public static final String LOG_CONFIG_FILE = "log4j.properties";
 
 	static URI configURI;
 
@@ -216,12 +218,14 @@ public class Installer implements Runnable {
 			File localDir = new File(conzillaDir, LOCALDIR);
 			File ontDir = new File(conzillaDir, ONTDIR);
 			File configFile = new File(conzillaDir, CONFIG_FILE);
+			File logConfigFile = new File(conzillaDir, LOG_CONFIG_FILE);
 			
 			installFile(ONTDIR + "/defaultmenu.rdf", new File(ontDir, "defaultmenu.rdf"));
 			installFile(ONTDIR + "/defaultstyle.rdf", new File(ontDir, "defaultstyle.rdf"));
 			installFile(ONTDIR + "/sessions.rdf", new File(ontDir, "sessions.rdf"));
 			installFile(LOCALDIR + "/providedEditableModel.rdf", new File(localDir, "providedEditableModel.rdf"));
 			installFile(CONFIG_FILE, configFile);
+			installFile(LOG_CONFIG_FILE, logConfigFile);
 
 			logArea.append("Creating default settings...");
 			Config config = ConfigurationManager.getConfiguration();

@@ -12,24 +12,28 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.Resource;
-import se.kth.cid.util.Tracer;
 
 public class FrameMapContentDisplayer extends AbstractContentDisplayer {
 	
 	JFrame frame;
 
 	MapContentDisplayer displayer;
+	
+	Log log = LogFactory.getLog(FrameMapContentDisplayer.class);
 
 	public FrameMapContentDisplayer() {
 		frame = new JFrame("Content");
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent ev) {
-				Tracer.debug("CLOSED!!!");
+				log.debug("closed");
 				try {
 					setContent(null);
 				} catch (ContentException e) {
-					Tracer.trace("AbstractContentDisplayer threw exception!", Tracer.ERROR);
+					log.error("AbstractContentDisplayer threw exception", e);
 				}
 			}
 		});

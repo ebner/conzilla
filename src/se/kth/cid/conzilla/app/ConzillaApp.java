@@ -7,16 +7,25 @@
 package se.kth.cid.conzilla.app;
 
 import java.awt.Window;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.SwingUtilities;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.PropertyConfigurator;
 
 import se.kth.cid.collaboration.CollaborillaConfiguration;
 import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.content.ApplicationContentDisplayer;
+import se.kth.cid.conzilla.install.Installer;
 import se.kth.cid.conzilla.view.ViewManager;
-import se.kth.cid.util.Tracer;
 
 public class ConzillaApp extends ConzillaAppEnv {
+	
+	static Log log = LogFactory.getLog(ConzillaApp.class);
 	
 	public ConzillaApp() {
 	}
@@ -41,6 +50,23 @@ public class ConzillaApp extends ConzillaAppEnv {
 					"javaws -open settings.ccs http://conzilla.org/webstart/conzilla.jnlp");
 			System.exit(-1);
 		}
+		
+		// LOGGING ->
+    	URL url = null;
+		try {
+			File logConfig = new File(Installer.getConzillaDir(), "log4j.properties");
+			if (logConfig.exists()) {
+				url = logConfig.toURL();
+			}
+		} catch (MalformedURLException e) {
+			System.out.println("Unable to load logging configuration, using default values.");
+		}
+		if (url != null) {
+			PropertyConfigurator.configure(url);
+		}
+		
+		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.Log4JLogger");
+		// <- LOGGING
 
 		ConzillaApp app = new ConzillaApp();
 		app.arguments = argv;
@@ -79,7 +105,7 @@ public class ConzillaApp extends ConzillaAppEnv {
 			} else if (associated.toLowerCase().endsWith(".ccm")) {
 				app.loadContextMap(associated, false);
 			} else {
-				Tracer.debug("Unknown file extension. Not doing anything.");
+				log.debug("Unknown file extension. Not doing anything.");
 			}
 		}
 
