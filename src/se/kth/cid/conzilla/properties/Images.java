@@ -108,6 +108,8 @@ public class Images {
 
 	public final static String ICON_PUBLISH = "/graphics/toolbarButtonGraphics/general/Publish16.png";
 	
+	public final static String ICON_REDO = "/graphics/edit/Redo16.png";
+	
 	public final static String ICON_REFRESH = "/graphics/browse/Refresh16.png";
 	
 	public final static String ICON_RESOLVER_TABLE = "/graphics/menu/ResolverTable16.png";
@@ -131,6 +133,8 @@ public class Images {
 	public final static String ICON_SETTINGS_PERSONAL_INFO = "/graphics/menu/PersonalInfo16.png";
 
 	public final static String ICON_TIE = "/graphics/edit/Tie16.gif";
+	
+	public final static String ICON_UNDO = "/graphics/edit/Undo16.png";
 	
 	public final static String ICON_ZOOM = "/graphics/menu/Zoom16.png";
 
