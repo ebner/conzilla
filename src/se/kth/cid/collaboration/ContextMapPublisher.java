@@ -30,8 +30,10 @@ import se.kth.cid.component.storage.RemoteStorage;
 import se.kth.cid.component.storage.RemoteStorageException;
 import se.kth.cid.component.storage.RemoteStorageHelper;
 import se.kth.cid.concept.Concept;
+import se.kth.cid.config.Config;
 import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.app.ConzillaKit;
+import se.kth.cid.conzilla.config.Settings;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.session.Session;
 import se.kth.cid.layout.ContextMap;
@@ -432,13 +434,22 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 		setPercentage(45);
 		
 		// Send URLs to Sindice
-		List<URI> files = new ArrayList<URI>();
-		files.add(URI.create(remoteInfoCont));
-		if (remotePresCont != null) {
-			files.add(URI.create(remotePresCont));
+		Config config = ConfigurationManager.getConfiguration();
+		if (config.getString(Settings.CONZILLA_EXTERNAL_SINDICE_PUBLISH) == null) {
+			config.setProperty(Settings.CONZILLA_EXTERNAL_SINDICE_PUBLISH, true);
 		}
-		new SindiceClient().submitRDFLocations(files);
-		printInformation("Announced containers at Sindice.com");
+		
+		boolean useSindice = config.getBoolean(Settings.CONZILLA_EXTERNAL_SINDICE_PUBLISH, true);
+		if (useSindice) {
+			List<URI> files = new ArrayList<URI>();
+			files.add(URI.create(remoteInfoCont));
+			if (remotePresCont != null) {
+				files.add(URI.create(remotePresCont));
+			}
+			new SindiceClient().submitRDFLocations(files);
+			printInformation("Announced containers at Sindice.com");
+		}
+		
 		setPercentage(50);
 	}
 	

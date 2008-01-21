@@ -24,6 +24,8 @@ public class Settings {
 	
 	public static final String CONZILLA_COLLAB_PREV_LOCATION = "conzilla.collaborilla.prev-location";
 	
+	public static final String CONZILLA_EXTERNAL_SINDICE_PUBLISH = "conzilla.external.sindice.publish";
+	
 	public static final String CONZILLA_EXTRAS = "conzilla.extra.list";
 	
 	public static final String CONZILLA_EXPORT_PATH = "conzilla.export.path";

@@ -21,6 +21,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.config.Config;
 import se.kth.cid.config.ConfigurationManager;
@@ -28,7 +31,6 @@ import se.kth.cid.config.PropertiesConfiguration;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.config.CollaborationSettingsDialog;
 import se.kth.cid.conzilla.config.Settings;
-import se.kth.cid.util.Tracer;
 
 /**
  * Helper class for handling the collaboration settings.
@@ -41,6 +43,8 @@ public class CollaborillaConfiguration {
 	public static final URI AGENT_LOAD_URI = URI.create("conzilla://ont/defaultagent.rdf");
 	
 	private Config config;
+	
+	private Log log = LogFactory.getLog(CollaborillaConfiguration.class);
 
 	public CollaborillaConfiguration(Config config) {
 		this.config = config;
@@ -158,7 +162,7 @@ public class CollaborillaConfiguration {
 			encPublishingLocation = URLEncoder.encode(info.getPublishingLocation(), "UTF-8");
 			encPublicAccessLocation = URLEncoder.encode(info.getPublicAccessLocation(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			Tracer.debug("Unable to encode information: " + e.getMessage());
+			log.error("Unable to encode information", e);
 		}
 		String encInfo = encTitle + "|" + encDescription + "|" + encPublishingLocation + "|" + encPublicAccessLocation;
 		return encInfo;
@@ -206,7 +210,7 @@ public class CollaborillaConfiguration {
 			locationInfo.setPublishingLocation(URLDecoder.decode(tokens[2], "UTF-8"));
 			locationInfo.setPublicAccessLocation(URLDecoder.decode(tokens[3], "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
-			Tracer.debug("Unable to decode information: " + e.getMessage());
+			log.error("Unable to decode information", e);
 		}
 		return locationInfo;
 	}
@@ -316,7 +320,7 @@ public class CollaborillaConfiguration {
 		try {
 			collabSettings.load(new File(settingsFile).toURL());
 		} catch (Exception e) {
-			Tracer.debug(e.getMessage());
+			log.error(e);
 			return false;
 		}
 		
@@ -326,7 +330,7 @@ public class CollaborillaConfiguration {
 		String namespace = collabSettings.getString("namespace");
 		
 		if ((hostname == null) || (port == -1) || (location != null && location.size() == 0) || (namespace == null)) {
-			Tracer.debug("Configuration incomplete.");
+			log.warn("Configuration incomplete");
 			return false;
 		}
 		
@@ -344,14 +348,14 @@ public class CollaborillaConfiguration {
 	public void importCollaborationSettings(String settingsFile) {
 		boolean successful = importCollaborationSettingsFromFile(settingsFile);
 		if (successful) {
-			Tracer.debug("Collaboration settings successfully imported.");
+			log.info("Collaboration settings successfully imported");
 			JOptionPane.showMessageDialog(null,
 					"Collaboration settings successfully imported!\n\n" +
 					"Please complete the configuration with your personal information\nin the following dialog.",
 					"Import successful", JOptionPane.INFORMATION_MESSAGE);
 			new CollaborationSettingsDialog().setVisible(true);
 		} else {
-			Tracer.debug("Failed to import configuration from file " + settingsFile);
+			log.info("Failed to import configuration from file " + settingsFile);
 			JOptionPane.showMessageDialog(null,
 					"Failed to import configuration from file\n" + settingsFile,
 					"Import failed", JOptionPane.ERROR_MESSAGE);

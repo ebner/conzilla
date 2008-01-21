@@ -36,6 +36,7 @@ import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.Container;
 import se.kth.cid.config.Config;
 import se.kth.cid.config.ConfigurationManager;
+import se.kth.cid.config.LoggingConfiguration;
 import se.kth.cid.config.PropertiesConfiguration;
 import se.kth.cid.conzilla.config.Settings;
 import se.kth.cid.conzilla.content.ContentDisplayer;
@@ -442,12 +443,14 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 				// show message and throw e.g. a RuntimeException
 			//}
 			
-			// Upgrade path 2.1.x -> now
-			// (Conzilla 2.1 was released with version set to 1.1 by mistake)
+			// Upgrade path 2.1.x -> now (Conzilla 2.1 was released with version set to 1.1 by mistake)
 			if (installedVersion.startsWith("1.1") || installedVersion.startsWith("2.1")) {
 				config.setProperty("conzilla.colortheme.theme-definitions.standard.concept-focus", "0xffa22b2b");
 				config.setProperty("conzilla.colortheme.theme-definitions.standard.context", "0xff0d418e");
-				copyFile(new File(getClass().getClassLoader().getResource("install/" + Installer.LOG_CONFIG_FILE).getFile()), new File(Installer.getConzillaDir(), Installer.LOG_CONFIG_FILE));
+				config.setProperty(Settings.CONZILLA_EXTERNAL_SINDICE_PUBLISH, true);
+				File log4jConfigFile = new File(Installer.getConzillaDir(), Installer.LOG_CONFIG_FILE);
+				copyFile(new File(getClass().getClassLoader().getResource("install/" + Installer.LOG_CONFIG_FILE).getFile()), log4jConfigFile);
+				LoggingConfiguration.loadConfiguration(log4jConfigFile);
 			}
 			
 			// Upgrade path 2.1.x -> 2.2.x

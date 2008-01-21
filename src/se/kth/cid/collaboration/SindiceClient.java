@@ -19,10 +19,10 @@ import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
-
-import se.kth.cid.util.Tracer;
 
 /**
  * Client for accessing the semantic indexer at sindice.com. 
@@ -56,6 +56,8 @@ public class SindiceClient {
 	
 	private HttpClient client;
 	
+	private Log log = LogFactory.getLog(SindiceClient.class);
+	
 	public SindiceClient() {
 		client = new HttpClient();
 	}
@@ -76,9 +78,9 @@ public class SindiceClient {
 	    try {
 			client.executeMethod(method);
 		} catch (HttpException e) {
-			Tracer.error(e.getMessage());
+			log.error(e);
 		} catch (IOException e) {
-			Tracer.error(e.getMessage());
+			log.error(e);
 		} finally {
 			method.releaseConnection();
 		}
@@ -95,7 +97,7 @@ public class SindiceClient {
 				results.add(queryResult);
 			} while (new JSONArray(queryResult).length() == 10);
 		} catch (JSONException e) {
-			Tracer.error("Unable to create JSON from String: " + e.getMessage());
+			log.error("Unable to create JSON from String: " + e.getMessage());
 		}
 		
 		JSONArray jsonResult = new JSONArray();
@@ -106,7 +108,7 @@ public class SindiceClient {
 					jsonResult.put(partArray.get(i));
 				}
 			} catch (JSONException e) {
-				Tracer.error("Unable to handle JSON array: " + e.getMessage());
+				log.error("Unable to handle JSON array", e);
 			}
 		}
 		
@@ -129,13 +131,13 @@ public class SindiceClient {
 	    try {
 			int statusCode = client.executeMethod(method);
 			if (statusCode < 200 || statusCode > 299) {
-				Tracer.debug("Got status code " + statusCode + ", query was probably not successful");
+				log.warn("Got status code " + statusCode + ", query was probably not successful");
 			}
 			result = method.getResponseBody();
 		} catch (HttpException e) {
-			Tracer.error(e.getMessage());
+			log.error(e);
 		} catch (IOException e) {
-			Tracer.error(e.getMessage());
+			log.error(e);
 		} finally {
 			method.releaseConnection();
 		}

@@ -7,20 +7,16 @@
 package se.kth.cid.conzilla.app;
 
 import java.awt.Window;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.PropertyConfigurator;
 
 import se.kth.cid.collaboration.CollaborillaConfiguration;
 import se.kth.cid.config.ConfigurationManager;
+import se.kth.cid.config.LoggingConfiguration;
 import se.kth.cid.conzilla.content.ApplicationContentDisplayer;
-import se.kth.cid.conzilla.install.Installer;
 import se.kth.cid.conzilla.view.ViewManager;
 
 public class ConzillaApp extends ConzillaAppEnv {
@@ -51,23 +47,9 @@ public class ConzillaApp extends ConzillaAppEnv {
 			System.exit(-1);
 		}
 		
-		// LOGGING ->
-    	URL url = null;
-		try {
-			File logConfig = new File(Installer.getConzillaDir(), "log4j.properties");
-			if (logConfig.exists()) {
-				url = logConfig.toURL();
-			}
-		} catch (MalformedURLException e) {
-			System.out.println("Unable to load logging configuration, using default values.");
-		}
-		if (url != null) {
-			PropertyConfigurator.configure(url);
-		}
+		// init commons logging / log4j
+		LoggingConfiguration.init();
 		
-		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.Log4JLogger");
-		// <- LOGGING
-
 		ConzillaApp app = new ConzillaApp();
 		app.arguments = argv;
 		String associated = null;
