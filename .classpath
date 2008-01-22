@@ -29,5 +29,6 @@
 	<classpathentry kind="lib" path="lib/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/SHAME.jar"/>
 	<classpathentry kind="lib" path="lib/collaborilla.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-api.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
