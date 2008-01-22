@@ -6,10 +6,14 @@
 
 package se.kth.cid.util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.nio.channels.FileChannel;
 
@@ -53,6 +57,32 @@ public class FileOperations {
     	sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
         sourceChannel.close();
         destinationChannel.close();
+    }
+    
+    public static void copyFile(InputStream is, OutputStream os) {
+    	BufferedInputStream bis = null;
+    	BufferedOutputStream bos = null;
+		try {
+			bis = new BufferedInputStream(is);
+			bos = new BufferedOutputStream(os);
+			
+			byte[] b = new byte[2048];
+			int s;
+			while ((s = bis.read(b)) != -1) {
+				bos.write(b, 0, s);
+			}
+		} catch (IOException e) {
+			log.error("Unable to copy file", e);
+		} finally {
+			try {
+				if (bis != null) {
+					bis.close();
+				}
+				if (bos != null) {
+					bos.close();
+				}
+			} catch (Exception ignored) {}
+		}
     }
     
 	/**

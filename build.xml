@@ -122,7 +122,7 @@
       classpathref="project_classpath"
       deprecation="true"
       debug="${debug_value}"
-	debuglevel="lines"
+      debuglevel="source,lines,vars"
       excludes="
       **/TmpFormatHandler.java
       **/protege/*

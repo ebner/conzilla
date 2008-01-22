@@ -7,6 +7,7 @@
 package se.kth.cid.conzilla.app;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -420,6 +421,7 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 		}
 		
 		if (error != null) {
+			log.error("Could not start Conzilla", ex);
 			ErrorMessage.showError("Fatal Error", "Could not start Conzilla:\n\n" + error
 					+ "\n\nThis is probably an installer bug." + "\n\nGiving up.\n\n", ex, null);
 			exit(1);
@@ -445,7 +447,7 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 				config.setProperty(Settings.CONZILLA_EXTERNAL_SINDICE_PUBLISH, true);
 				File log4jConfigFile = new File(Installer.getConzillaDir(), Installer.LOG_CONFIG_FILE);
 				try {
-					FileOperations.copyFile(new File(getClass().getClassLoader().getResource("install/" + Installer.LOG_CONFIG_FILE).getFile()), log4jConfigFile);
+					FileOperations.copyFile(getClass().getClassLoader().getResource("install/" + Installer.LOG_CONFIG_FILE).openStream(), new FileOutputStream(log4jConfigFile));
 				} catch (IOException e) {
 					log.error("Unable to copy file", e);
 				}
@@ -460,32 +462,6 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 			upgradeSuccessful(installedVersion, thisVersion);
 		}
 	}
-	
-//	void copyFile(File source, File destination) {
-//		OutputStream os = null;
-//		InputStream is = null;
-//		try {
-//			os = new BufferedOutputStream(new FileOutputStream(destination));
-//			is = new BufferedInputStream(new FileInputStream(source));
-//
-//			byte[] b = new byte[2048];
-//			int s;
-//			while ((s = is.read(b)) != -1) {
-//				os.write(b, 0, s);
-//			}
-//		} catch (IOException e) {
-//			log.error("Unable to copy file from " + source + " to " + destination, e);
-//		} finally {
-//			try {
-//				if (os != null) {
-//					os.close();
-//				}
-//				if (is != null) {
-//					is.close();
-//				}
-//			} catch (Exception ignored) {}
-//		}
-//	}
 	
 	void upgradeSuccessful(String oldVersion, String newVersion) {
 		Config config = ConfigurationManager.getConfiguration();
