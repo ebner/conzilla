@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.channels.FileChannel;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Commonly used file operations.
  * 
@@ -21,6 +24,8 @@ import java.nio.channels.FileChannel;
  */
 public class FileOperations {
 	
+	static Log log = LogFactory.getLog(FileOperations.class);
+	
 	public static void moveFile(URI temp, URI orig) {
 		if (temp.equals(orig)) {
 			return;
@@ -28,15 +33,15 @@ public class FileOperations {
 		File tmpFile = new File(temp);
 		File destFile = new File(orig);
 		if ((tmpFile != null) && (destFile != null)) {
-			Tracer.debug("Moving temporary file " + tmpFile + " to " + destFile);
+			log.debug("Moving temporary file " + tmpFile + " to " + destFile);
 			if (!tmpFile.renameTo(destFile)) {
 				try {
 					copyFile(tmpFile, destFile);
 				} catch (IOException e) {
-					Tracer.debug(e.getMessage());
+					log.error(e);
 				}
 				if (!tmpFile.delete()) {
-					Tracer.debug("Unable to delete temporary file");
+					log.warn("Unable to delete temporary file");
 				}
 			}
 		}
@@ -66,8 +71,10 @@ public class FileOperations {
 				file = new File(dir, children[i]);
 				if (file.isFile()) {
 					if (!file.delete()) {
+						log.warn("Could not delete file " + file);
 						return false;
 					}
+					log.debug("Deleted file " + file);
 				}
 			}
 		}

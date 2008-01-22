@@ -24,7 +24,7 @@ public class ContributionInformationDiskStore extends DiskCache implements Contr
 	private static ContributionInformationStore instance;
 
 	private ContributionInformationDiskStore() {
-		super("ContributionInformationStore", new File(getIndexFilePath(indexFileName)));
+		super(new File(getIndexFilePath(indexFileName)));
 		setFlushingInterval(30000); // 30 seconds
 	}
 	

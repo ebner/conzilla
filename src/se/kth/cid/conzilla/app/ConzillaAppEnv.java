@@ -6,14 +6,8 @@
 
 package se.kth.cid.conzilla.app;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -47,6 +41,7 @@ import se.kth.cid.conzilla.remote.CommandListener;
 import se.kth.cid.conzilla.remote.ConzillaInstructor;
 import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.conzilla.view.View;
+import se.kth.cid.util.FileOperations;
 
 /**
  * This class represents the information specific to Conzilla when run as an
@@ -449,7 +444,11 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 				config.setProperty("conzilla.colortheme.theme-definitions.standard.context", "0xff0d418e");
 				config.setProperty(Settings.CONZILLA_EXTERNAL_SINDICE_PUBLISH, true);
 				File log4jConfigFile = new File(Installer.getConzillaDir(), Installer.LOG_CONFIG_FILE);
-				copyFile(new File(getClass().getClassLoader().getResource("install/" + Installer.LOG_CONFIG_FILE).getFile()), log4jConfigFile);
+				try {
+					FileOperations.copyFile(new File(getClass().getClassLoader().getResource("install/" + Installer.LOG_CONFIG_FILE).getFile()), log4jConfigFile);
+				} catch (IOException e) {
+					log.error("Unable to copy file", e);
+				}
 				LoggingConfiguration.loadConfiguration(log4jConfigFile);
 			}
 			
@@ -462,31 +461,31 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 		}
 	}
 	
-	void copyFile(File source, File destination) {
-		OutputStream os = null;
-		InputStream is = null;
-		try {
-			os = new BufferedOutputStream(new FileOutputStream(destination));
-			is = new BufferedInputStream(new FileInputStream(source));
-
-			byte[] b = new byte[2048];
-			int s;
-			while ((s = is.read(b)) != -1) {
-				os.write(b, 0, s);
-			}
-		} catch (IOException e) {
-			log.error("Unable to copy file from " + source + " to " + destination, e);
-		} finally {
-			try {
-				if (os != null) {
-					os.close();
-				}
-				if (is != null) {
-					is.close();
-				}
-			} catch (Exception ignored) {}
-		}
-	}
+//	void copyFile(File source, File destination) {
+//		OutputStream os = null;
+//		InputStream is = null;
+//		try {
+//			os = new BufferedOutputStream(new FileOutputStream(destination));
+//			is = new BufferedInputStream(new FileInputStream(source));
+//
+//			byte[] b = new byte[2048];
+//			int s;
+//			while ((s = is.read(b)) != -1) {
+//				os.write(b, 0, s);
+//			}
+//		} catch (IOException e) {
+//			log.error("Unable to copy file from " + source + " to " + destination, e);
+//		} finally {
+//			try {
+//				if (os != null) {
+//					os.close();
+//				}
+//				if (is != null) {
+//					is.close();
+//				}
+//			} catch (Exception ignored) {}
+//		}
+//	}
 	
 	void upgradeSuccessful(String oldVersion, String newVersion) {
 		Config config = ConfigurationManager.getConfiguration();

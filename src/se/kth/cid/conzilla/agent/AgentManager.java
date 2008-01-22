@@ -19,12 +19,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.identity.MIMEType;
 import se.kth.cid.rdf.CV;
 import se.kth.cid.rdf.RDFModel;
-import se.kth.cid.util.Tracer;
 import se.kth.nada.kmr.shame.applications.util.Container;
 import se.kth.nada.kmr.shame.container.EditContainer;
 
@@ -42,6 +44,9 @@ import com.hp.hpl.jena.vocabulary.RDF;
  * @author matthias
  */
 public class AgentManager implements EditContainer{
+	
+	Log log = LogFactory.getLog(AgentManager.class);	
+	
 	static final public String AGENT = "agent";
 
 	URI agentURI;
@@ -112,20 +117,20 @@ public class AgentManager implements EditContainer{
 		try {
 			agentContainer = (RDFModel) kit.getResourceStore().getAndReferenceContainer(uri);
 			if (agentContainer != null) {
-				Tracer.debug("The 'defaultagent.rdf' file already exists.");
+				log.debug("The 'defaultagent.rdf' file already exists");
 			}
 		} catch (ComponentException e) {
 			// If the agent information file is missing, we try to create it.
 			try {
-				Tracer.debug("The file containing information on the agent does not exist; trying to create it.");
+				log.debug("The file containing information on the agent does not exist - will try to create it");
 				// ComponentHandler handler =
 				// kit.getComponentStore().getHandler();
 				Object[] objs = kit.getResourceStore().checkCreateContainer(uri);
 				agentContainer = (RDFModel) kit.getResourceStore().createContainer(uri, (URI) objs[0],
 						(MIMEType) objs[1]);
 			} catch (ComponentException e1) {
-				e1.printStackTrace();
-				throw new RuntimeException("No existing file with information on agent and cannot create new either!");
+				log.error("No existing file with information on agent and cannot create new either", e1);
+				throw new RuntimeException("No existing file with information on agent and cannot create new either");
 			}
 		}
 		agentContainer.setPurpose(AGENT);

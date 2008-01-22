@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Stack;
 import java.util.Vector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.ResourceStore;
 import se.kth.cid.concept.Concept;
@@ -24,7 +27,6 @@ import se.kth.cid.rdf.RDFAttributeEntry;
 import se.kth.cid.rdf.RDFComponent;
 import se.kth.cid.rdf.RDFConcept;
 import se.kth.cid.style.StyleManager;
-import se.kth.cid.util.Tracer;
 
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
@@ -36,6 +38,9 @@ import com.hp.hpl.jena.vocabulary.RDFS;
  *  @version $Revision$
  */
 public class RDFStyleManager implements StyleManager {
+	
+	Log log = LogFactory.getLog(RDFStyleManager.class);
+	
     ResourceStore store;
 
     /** For each type there is a stack of types....*/
@@ -166,7 +171,7 @@ public class RDFStyleManager implements StyleManager {
     	if (stmts != null) {
     		while (stmts.hasNext()) {
     			String str = stmts.nextStatement().getResource().getURI();
-    			Tracer.debug("found one style has string, " + str);
+    			log.debug("Found one style has string " + str);
     			RDFComponent style = getStyle(str);
     			if (style != null) {
     				styles.add(style);

@@ -5,7 +5,8 @@
  */
 
 package se.kth.cid.rdf;
-import se.kth.cid.util.Tracer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -15,6 +16,8 @@ import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
 /** Conzilla Vocabulary class.
  */
 public class CV {
+	
+	static Log log = LogFactory.getLog(CV.class);
 
     /** The <B>notions</B> namespace encompasses properties and vocabularies
      *  regarding abstract notions such as Concepts, Contexts and Content.
@@ -250,9 +253,8 @@ public class CV {
             
         } catch (Exception e) {
             // shouldn't happen
-            Tracer.bug("Error while creating vocabulary: " + e.getMessage());
-            throw new RuntimeException(
-                "RDF Exception while creating vocabulary: " + e);
+            log.error("Error while creating vocabulary", e);
+            throw new RuntimeException("RDF Exception while creating vocabulary: " + e);
         }
     }
     

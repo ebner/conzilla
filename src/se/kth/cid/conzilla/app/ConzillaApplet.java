@@ -14,14 +14,18 @@ import java.util.StringTokenizer;
 
 import javax.swing.JApplet;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.conzilla.content.AppletContentDisplayer;
 import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.conzilla.view.TabManager;
-import se.kth.cid.util.Tracer;
 
 public class ConzillaApplet extends JApplet {
-	private static final long serialVersionUID = 1L;
+	
 	ConzillaAppletEnv conzillaEnv;
+	
+	Log log = LogFactory.getLog(ConzillaApplet.class);
 
 	public class ConzillaAppletEnv extends ConzillaAppEnv {
 		public ConzillaAppletEnv() {
@@ -97,23 +101,22 @@ public class ConzillaApplet extends JApplet {
 			try {
 				String url = (new java.net.URL(getDocumentBase(), pf)).toString();
 				configURL = new URI(url);
-
 			} catch (java.net.MalformedURLException me) {
-				Tracer.debug("PropertyFile isn't on the specified location...");
+				log.warn("Property file isn't on the specified location", me);
 			} catch (URISyntaxException me) {
-				Tracer.bug("conzilla.properties isn't on the specified location...");
+				log.warn("conzilla.properties isn't on the specified location", me);
 			}
 		else
 			// Absolute location specified
 			try {
 				configURL = new URI(pf);
 			} catch (URISyntaxException me) {
-				Tracer.bug("conzilla.properties isn't on the specified location...");
+				log.warn("conzilla.properties isn't on the specified location", me);
 			}
 //		GlobalConfig config = GlobalConfig.getGlobalConfig();
 //		config.setBaseURI(URIUtil.getParentDirectory(configURL.toString()));
 //		Config config = ConfigurationManager.getConfiguration();
-		Tracer.error("FIXME: configuration loading mechanism not implemented in ConzillaApplet");
+		log.info("FIXME: configuration loading mechanism not implemented in ConzillaApplet");
 
 		// Fetch the map to start initially.
 		// --------------------------------

@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.Component;
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.Container;
@@ -19,13 +22,14 @@ import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.metadata.InfoPanel;
 import se.kth.cid.conzilla.tool.ActionMapMenuTool;
-import se.kth.cid.util.Tracer;
 
 /** 
  *  @author Matthias Palm?r
  *  @version $Revision$
  */
 public class LinkToContentMapTool extends ActionMapMenuTool {
+	
+	Log log = LogFactory.getLog(LinkToContentMapTool.class);
 
     Concept concept;
     String kind;
@@ -50,12 +54,11 @@ public class LinkToContentMapTool extends ActionMapMenuTool {
         if (mapEvent.hitType != MapEvent.HIT_NONE
             && (c = mapObject.getConcept()) != null) {
             this.concept = c;
-            Tracer.debug("Concept is:" + concept.toString());
+            log.debug("Concept is " + concept.toString());
             return true;
         }
         return false;
     }
-
 
     public void actionPerformed(ActionEvent e) {
         Component contentComponent;

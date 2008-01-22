@@ -37,6 +37,9 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.ComponentManager;
 import se.kth.cid.component.Container;
@@ -54,7 +57,6 @@ import se.kth.cid.conzilla.session.SessionManager;
 import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.util.AttributeEntryUtil;
-import se.kth.cid.util.Tracer;
 
 /**
  * A tree to display sessions and its maps. Provides various listeners for
@@ -64,6 +66,8 @@ import se.kth.cid.util.Tracer;
  * @version $Id$
  */
 public class SessionTree extends JTree implements TreeSelectionListener, TreeWillExpandListener, KeyListener, MouseListener {
+	
+	Log log = LogFactory.getLog(SessionTree.class);
 
 	private TreePath selectedTreePath;
 
@@ -375,7 +379,7 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 		try {
 			container = store.getAndReferenceContainer(URI.create(uri));
 		} catch (ComponentException ce) {
-			Tracer.debug("Layout container of session could not be loaded. URI: " + uri);
+			log.error("Layout container of session could not be loaded. URI: " + uri, ce);
 			return null;
 		}
 		List maps = container.getDefinedContextMaps();

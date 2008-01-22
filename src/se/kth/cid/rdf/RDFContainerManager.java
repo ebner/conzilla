@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.collaboration.CollaborillaReader;
 import se.kth.cid.collaboration.CollaborillaSupport;
 import se.kth.cid.component.Component;
@@ -41,7 +44,6 @@ import se.kth.cid.rdf.layout.RDFConceptMap;
 import se.kth.cid.util.FileOperations;
 import se.kth.cid.util.FtpURLWrapper;
 import se.kth.cid.util.InputStreamSplitter;
-import se.kth.cid.util.Tracer;
 import se.kth.cid.util.InputStreamSplitter.InputStreamConsumer;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -63,6 +65,8 @@ import com.hp.hpl.jena.vocabulary.RDF;
  * @version $Revision$
  */
 public class RDFContainerManager implements ContainerManager {
+	
+	Log log = LogFactory.getLog(RDFContainerManager.class);
 
 	public static class MyRDFErrorHandler implements RDFErrorHandler {
 		public void error(Exception e) {
@@ -508,11 +512,11 @@ public class RDFContainerManager implements ContainerManager {
 		String action = publish ? "publish" : "save"; // FIXME: hm. no
 		// publishing code in here
 		if (!publish && (!m.isEdited() || !m.isEditable())) {
-			Tracer.debug("trying to save model " + m.getURI() + " but it is not edited so it "
+			log.debug("Trying to save model " + m.getURI() + " but it is not edited so it "
 					+ "does not have to be published!");
 			return true;
 		}
-		Tracer.debug("trying to " + action + " model " + m.getURI());
+		log.debug("Trying to " + action + " model " + m.getURI());
 
 		URI uri = publish ? URI.create(m.getPublishURL()) : m.getLoadURI();
 		OutputStream os = null;
@@ -536,13 +540,11 @@ public class RDFContainerManager implements ContainerManager {
 				m.write(os, "RDF/XML-ABBREV");
 				os.close();
 				m.setEdited(false);
-				Tracer.debug("Succeeded " + action + " in format RDF/XML-ABBREV");
+				log.debug("Succeeded " + action + " in format RDF/XML-ABBREV");
 				FileOperations.moveFile(tmpFileURI, uri);
 				return true;
 			} catch (Exception e) {
-				e.printStackTrace();
-				Tracer.debug("Failed " + action + " using RDF/XML-ABBREV");
-				Tracer.debug("Trying N-TRIPLE instead");
+				log.warn("Failed " + action + " using RDF/XML-ABBREV, trying N-TRIPLE instead", e);
 				try {
 					if (os != null) {
 						os.close();
@@ -554,18 +556,16 @@ public class RDFContainerManager implements ContainerManager {
 					m.write(os, "N-TRIPLE");
 					os.close();
 					m.setEdited(false);
-					Tracer.debug("Succeeded " + action + " in format N-TRIPLE");
+					log.debug("Succeeded " + action + " in format N-TRIPLE");
 					FileOperations.moveFile(tmpFileURI, uri);
 					return true;
 				} catch (IOException e1) {
-					Tracer.debug("Failed " + action + " using N-TRIPLE as well");
-					Tracer.debug("File only half " + action + ", hence file corrupt!");
-					e1.printStackTrace();
+					log.error("Failed " + action + " using N-TRIPLE as well. File only half " + action + ", file is probably corrupt!");
 				}
 			}
 
 		} catch (IOException io) {
-			Tracer.debug("Failed saving:" + io.getMessage());
+			log.error("Failed saving model", io);
 		}
 		return false;
 	}
@@ -577,7 +577,7 @@ public class RDFContainerManager implements ContainerManager {
 	// the remote locations code (FTP + WebDAV) is replaced by RemoteStorage
 	// implementations anyway.
 	private OutputStream getOutputStream(URI uri) throws IOException {
-		Tracer.debug("Trying to fetch OutputStream for " + uri.toString());
+		log.debug("Trying to fetch OutputStream for " + uri.toString());
 		// If uri resolves to a file: or home:
 		File f = getFile(uri);
 		if (f != null) {
@@ -685,7 +685,7 @@ public class RDFContainerManager implements ContainerManager {
 					fetchAndCacheRemoteModel(model, url, remote, lastMod);
 				}
 			} catch (RemoteStorageException rse) {
-				Tracer.debug(rse.getMessage());
+				log.error(rse);
 				throw new ComponentException(rse);
 			} finally {
 				if (remote != null) {
@@ -735,7 +735,7 @@ public class RDFContainerManager implements ContainerManager {
 		}
 
 		setEditable(origURI, loadURI, model);
-		Tracer.debug("Model loaded from: " + loadURI.toString());
+		log.debug("Model loaded from: " + loadURI.toString());
 
 		// totalModel.addModel(model);
 		addContainer(model, cache);

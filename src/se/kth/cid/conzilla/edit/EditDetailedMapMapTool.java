@@ -29,6 +29,9 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.border.EmptyBorder;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.InvalidURIException;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.controller.ControllerException;
@@ -38,7 +41,6 @@ import se.kth.cid.conzilla.map.MapObject;
 import se.kth.cid.conzilla.metadata.MetaDataFieldPanel;
 import se.kth.cid.conzilla.tool.ActionMapMenuTool;
 import se.kth.cid.conzilla.util.ErrorMessage;
-import se.kth.cid.util.Tracer;
 
 /** 
  *  @author Matthias Palmr
@@ -46,6 +48,9 @@ import se.kth.cid.util.Tracer;
  */
 
 public class EditDetailedMapMapTool extends ActionMapMenuTool {
+	
+	Log log = LogFactory.getLog(EditDetailedMapMapTool.class);
+	
     class DMDialog extends JDialog {
 
     	JTextField textField;
@@ -185,7 +190,7 @@ public class EditDetailedMapMapTool extends ActionMapMenuTool {
 
         public void showDialog() {
             setLocationRelativeTo(controller.getView().getMapScrollPane());
-            Tracer.debug("Loc: " + getLocation());
+            log.debug("Loc: " + getLocation());
             pack();
             super.setVisible(true);
         }
@@ -198,21 +203,17 @@ public class EditDetailedMapMapTool extends ActionMapMenuTool {
                     try {
                         //Never send a relative uri anymore, RDF...
                     	String uri = new URI(textField.getText()).toString();
-                    	Tracer.debug(
-                            "absolute uri is " + uri);
+                    	log.debug("Absolute URI is " + uri);
                         mapObject.getDrawerLayout().setDetailedMap(uri);
                     } catch (URISyntaxException e) {
-                        ErrorMessage.showError(
-                            "Parse Error",
-                            "Invalid URI",
-                            e,
-                            this);
+                    	log.error("Invalid URI", e);
+                        ErrorMessage.showError("Parse Error", "Invalid URI", e, this);
                         return;
                     }
                 }
                 setVisible(false);
             } catch (InvalidURIException e) {
-                Tracer.bug("Invalid URI: " + e.getMessage());
+                log.error("Invalid URI", e);
             }
         }
 

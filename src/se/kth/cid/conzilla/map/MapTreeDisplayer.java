@@ -22,6 +22,9 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.Container;
 import se.kth.cid.component.ResourceStore;
@@ -37,7 +40,6 @@ import se.kth.cid.layout.ResourceLayout;
 import se.kth.cid.layout.StatementLayout;
 import se.kth.cid.rdf.RDFModel;
 import se.kth.cid.util.AttributeEntryUtil;
-import se.kth.cid.util.Tracer;
 import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
 import se.kth.nada.kmr.shame.applications.util.MetaDataPanel;
 
@@ -48,13 +50,15 @@ import se.kth.nada.kmr.shame.applications.util.MetaDataPanel;
  * @author   matthias
  */
 public class MapTreeDisplayer extends JSplitPane implements TreeSelectionListener {
+	
+	static Log log = LogFactory.getLog(MapTreeDisplayer.class);
     
     static {
         try {
 			FormletStoreSingleton.requireFormletConfigurations("formlets/formlets.rdf");
 			FormletStoreSingleton.requireFormletConfigurations("formlets/graphics/formlets.rdf");
 		} catch (IOException e) {
-			Tracer.debug(e.getMessage());
+			log.error(e);
 		}
     }
     

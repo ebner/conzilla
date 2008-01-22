@@ -9,6 +9,9 @@ package se.kth.cid.conzilla.content;
 import java.awt.Container;
 import java.net.URI;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.Resource;
 import se.kth.cid.conzilla.app.ConzillaKit;
@@ -16,9 +19,11 @@ import se.kth.cid.conzilla.map.MapDisplayer;
 import se.kth.cid.conzilla.map.MapScrollPane;
 import se.kth.cid.conzilla.map.MapStoreManager;
 import se.kth.cid.layout.ContextMap;
-import se.kth.cid.util.Tracer;
 
 public class MapContentDisplayer extends AbstractContentDisplayer {
+	
+	Log log = LogFactory.getLog(MapContentDisplayer.class);
+	
     Container container;
 
     Object constraints;
@@ -44,7 +49,7 @@ public class MapContentDisplayer extends AbstractContentDisplayer {
                     "Cannot display component " + c.getURI(), c);
         }
 
-        Tracer.debug("MapContent will show " + c.getURI());
+        log.debug("MapContent will show " + c.getURI());
 
         try {
             ConzillaKit kit = ConzillaKit.getDefaultKit();

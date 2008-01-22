@@ -24,6 +24,9 @@ import javax.swing.KeyStroke;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.collaboration.CollaborillaConfiguration;
 import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.app.Conzilla;
@@ -50,7 +53,6 @@ import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.conzilla.view.ViewManager;
 import se.kth.cid.util.LocaleEditor;
 import se.kth.cid.util.LocaleManager;
-import se.kth.cid.util.Tracer;
 
 public class DefaultMenuFactory implements MenuFactory {
 
@@ -59,6 +61,8 @@ public class DefaultMenuFactory implements MenuFactory {
 	public static final String LOCAL_HELP_MAP = "urn:path:/org/conzilla/builtin/help/overview_map";
 
 	public static final String NET_HELP_MAP = "urn:path:/org/conzilla/help/startmap_help";
+	
+	Log log = LogFactory.getLog(DefaultMenuFactory.class);
 
 	ConzillaKit kit;
 
@@ -359,7 +363,7 @@ public class DefaultMenuFactory implements MenuFactory {
 		settings.addTool(new Tool("SET_AS_START_MAP", DefaultMenuFactory.class.getName()) {
 			{setIcon(Images.getImageIcon(Images.ICON_HOME));}
 			public void actionPerformed(ActionEvent ae) {
-				Tracer.debug("Set this map as startmap");
+				log.debug("Set this map as startmap");
 				String uri = controller.getConceptMap().getURI();
 				ConfigurationManager.getConfiguration().setProperty(Settings.CONZILLA_STARTMAP, uri);
 			}
@@ -417,7 +421,7 @@ public class DefaultMenuFactory implements MenuFactory {
 		tools.addTool(new Tool("RELOAD_ALL", DefaultMenuFactory.class.getName()) {
 			{setIcon(Images.getImageIcon(Images.ICON_REFRESH));}
 			public void actionPerformed(ActionEvent ae) {
-				Tracer.debug("Reload");
+				log.debug("Reload");
 				conzilla.reload();
 			}
 		}, 100);
@@ -484,7 +488,7 @@ public class DefaultMenuFactory implements MenuFactory {
 	}
 
 	void makeLocalesMenu(ToolsMenu localeMenu) {
-		Tracer.debug("Changing localeMenu");
+		log.debug("Changing localeMenu");
 		localeMenu.removeAll();
 
 		localeMenu.addTool(new Tool("MANAGE_LANGUAGES", DefaultMenuFactory.class.getName()) {
@@ -522,7 +526,7 @@ public class DefaultMenuFactory implements MenuFactory {
 				public void propertyChange(PropertyChangeEvent e) {
 					if (((Boolean) e.getNewValue()).booleanValue() && e.getPropertyName().equals(ACTIVATED)) {
 						ColorTheme.setColorTheme(themeId);
-						Tracer.debug("Color theme set to \"" + themeName + "\"");
+						log.info("Color theme set to \"" + themeName + "\"");
 					}
 				}
 			});

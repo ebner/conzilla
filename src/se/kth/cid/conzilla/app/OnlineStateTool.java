@@ -10,10 +10,12 @@ import java.beans.PropertyChangeEvent;
 
 import javax.swing.Icon;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.conzilla.browse.BrowseMapManagerFactory;
 import se.kth.cid.conzilla.properties.Images;
 import se.kth.cid.conzilla.tool.StateTool;
-import se.kth.cid.util.Tracer;
 
 /**
  * Toggle Conzilla's online state.
@@ -23,7 +25,7 @@ import se.kth.cid.util.Tracer;
  */
 public class OnlineStateTool extends StateTool {
 
-	private static final long serialVersionUID = 1L;
+	Log log = LogFactory.getLog(OnlineStateTool.class);
 
 	public OnlineStateTool() {
 		super("ONLINESTATE", BrowseMapManagerFactory.class.getName(), !isOnline());
@@ -36,9 +38,9 @@ public class OnlineStateTool extends StateTool {
 		if (evt.getPropertyName().equals(ACTIVATED)) {
 			boolean isOnline = ConzillaKit.getDefaultKit().getConzillaEnvironment().toggleOnlineState();
 			if (isOnline) {
-				Tracer.debug("Conzilla set to ONLINE mode");
+				log.info("Conzilla set to ONLINE mode");
 			} else {
-				Tracer.debug("Conzilla set to OFFLINE mode");
+				log.info("Conzilla set to OFFLINE mode");
 			}
 			setToolTip();
 		}

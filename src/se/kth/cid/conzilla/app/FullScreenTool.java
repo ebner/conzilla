@@ -15,12 +15,14 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.Icon;
 import javax.swing.JFrame;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.browse.BrowseMapManagerFactory;
 import se.kth.cid.conzilla.config.Settings;
 import se.kth.cid.conzilla.properties.Images;
 import se.kth.cid.conzilla.tool.StateTool;
-import se.kth.cid.util.Tracer;
 
 /**
  * Toggle Conzilla's full screen mode.
@@ -30,7 +32,7 @@ import se.kth.cid.util.Tracer;
  */
 public class FullScreenTool extends StateTool {
 
-	private static final long serialVersionUID = 1L;
+	Log log = LogFactory.getLog(FullScreenTool.class);
 	
 	private Component toolBar;
 
@@ -55,7 +57,7 @@ public class FullScreenTool extends StateTool {
 			try {
 				frame = (JFrame)getEnclosingFrame(this.toolBar);
 			} catch (NoSuchMethodException e) {
-				Tracer.debug("Unable to get parent frame, full screen mode not supported");
+				log.warn("Unable to get parent frame, full screen mode not supported");
 			}
 
 			if (frame != null) {
@@ -80,7 +82,7 @@ public class FullScreenTool extends StateTool {
 					frame.addNotify();
 					frame.setVisible(true);
 				} else {
-					Tracer.debug("Unable to access graphics device, full screen mode not supported");
+					log.warn("Unable to access graphics device, full screen mode not supported");
 				}
 			}
 			

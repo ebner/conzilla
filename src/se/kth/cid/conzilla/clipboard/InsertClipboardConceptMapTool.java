@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.InvalidURIException;
 import se.kth.cid.component.ReadOnlyException;
 import se.kth.cid.concept.Concept;
@@ -26,11 +29,13 @@ import se.kth.cid.layout.ConceptLayout;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.layout.DrawerLayout;
 import se.kth.cid.layout.StatementLayout;
-import se.kth.cid.util.Tracer;
 
 class InsertClipboardConceptMapTool extends InsertMapTool {
 
+	Log log = LogFactory.getLog(InsertClipboardConceptMapTool.class);
+	
     GridModel gridModel;
+    
     Clipboard clipboard;
 
     public InsertClipboardConceptMapTool(
@@ -188,13 +193,12 @@ class InsertClipboardConceptMapTool extends InsertMapTool {
                 }
             }
         } catch (ReadOnlyException re) {
-            Tracer.bug(
-                "Map can't be edited but we are in edit mode... \n"
-                    + re.getMessage());
+            log.error("Map can't be edited but we are in edit mode", re);
         } catch (InvalidURIException iue) {
+        	log.error("Concept doesn't seem to have a valid URI", iue);
             ErrorMessage.showError(
                 "Can't paste concept.",
-                "Concept don't seem to have a valid URI."
+                "Concept doesn't seem to have a valid URI."
                     + "Can't create a graphical representation for it.",
                 iue,
                 controller.getView().getMapScrollPane().getDisplayer());

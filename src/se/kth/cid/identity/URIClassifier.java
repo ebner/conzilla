@@ -9,7 +9,8 @@ package se.kth.cid.identity;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import se.kth.cid.util.Tracer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Classifies an URI
@@ -20,6 +21,9 @@ import se.kth.cid.util.Tracer;
  * @version $Revision: 1.12
  */
 public class URIClassifier {
+	
+	static Log log = LogFactory.getLog(URIClassifier.class);
+	
 	private URIClassifier() {
 	}
 
@@ -62,7 +66,7 @@ public class URIClassifier {
 			else
 				return URIClassifier.parseURI(nuri, null);
 		} catch (URISyntaxException e) {
-			Tracer.bug("Malformed URI '" + e + "': \n" + e.getMessage());
+			log.error("Malformed URI", e);
 			return null; // Never reached
 		}
 	}

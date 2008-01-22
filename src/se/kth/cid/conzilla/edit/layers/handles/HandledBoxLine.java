@@ -9,6 +9,9 @@ package se.kth.cid.conzilla.edit.layers.handles;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.EditEvent;
 import se.kth.cid.conzilla.edit.LineTool;
 import se.kth.cid.conzilla.edit.TieTool;
@@ -17,9 +20,11 @@ import se.kth.cid.layout.ConceptLayout;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.layout.DrawerLayout;
 import se.kth.cid.layout.StatementLayout;
-import se.kth.cid.util.Tracer;
 
 public class HandledBoxLine extends HandledLine {
+	
+	Log log = LogFactory.getLog(HandledBoxLine.class);
+	
     public HandledBoxLine(MapEvent m, LineTool linetool, TieTool tietool,
             HandleStore store) {
         super(m, linetool, tietool, store);
@@ -37,7 +42,7 @@ public class HandledBoxLine extends HandledLine {
         Handle secondHandle;
         int segment = 0;
         do {
-            Tracer.debug("segment " + segment);
+            log.debug("Segment " + segment);
             secondHandle = (Handle) it.next();
             addHandle(new SegmentHandle.ConceptLineSegmentHandle(firstHandle,
                     secondHandle, segment, mapObject));

@@ -6,7 +6,8 @@
 
 package se.kth.cid.rdf;
 
-import se.kth.cid.util.Tracer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -14,6 +15,9 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 
 public class ModelEditHelper {
+	
+	static Log log = LogFactory.getLog(ModelEditHelper.class);
+	
     public static boolean setStringToModel(
         Model model,
         String uri,
@@ -54,11 +58,7 @@ public class ModelEditHelper {
                 if (st != null)
                     st.remove();
             } catch (Exception re) {
-                Tracer.debug(
-                    "Failed removing old value of property "
-                        + prop.getURI()
-                        + " in model."
-                        + re.getMessage());
+                log.error("Failed removing old value of property " + prop.getURI() + " in model", re);
                 return false;
             }
 
@@ -70,19 +70,11 @@ public class ModelEditHelper {
                 else if (cls == Boolean.class)
                     subject.addProperty(prop, ((Boolean) newValue).toString());
             } catch (Exception re) {
-                Tracer.debug(
-                    "Failed inserting new value with property "
-                        + prop.getURI()
-                        + " in model."
-                        + re.getMessage());
+                log.error("Failed inserting new value with property " + prop.getURI() + " in model", re);
                 return false;
             }
         } catch (Exception re) {
-            Tracer.debug(
-                "Failed to fetch subject to edit the property"
-                    + prop.getURI()
-                    + " for in model."
-                    + re.getMessage());
+            log.error("Failed to fetch subject to edit the property" + prop.getURI() + " for in model", re);
             return false;
         }
         return true;

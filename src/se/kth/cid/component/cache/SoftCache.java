@@ -12,14 +12,19 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.Component;
 import se.kth.cid.component.EditEvent;
 import se.kth.cid.component.EditListener;
-import se.kth.cid.util.Tracer;
 
 /** Resource cache.
  */
 public class SoftCache implements ComponentCache, EditListener {
+	
+	Log log = LogFactory.getLog(SoftCache.class);
+	
     public static final int CHECK_COUNT_INTERVAL = 100;
     public static final long CHECK_TIME_INTERVAL = 15 * 60 * 1000;
     public static final long CACHE_RELEASE_TIME = 15 * 60 * 1000;
@@ -92,7 +97,7 @@ public class SoftCache implements ComponentCache, EditListener {
     protected void checkQueue() {
         Reference r;
         while ((r = queue.poll()) != null) {
-            Tracer.debug("Removing from cache: " + ((ComponentRef) r).getURI());
+            log.debug("Removing from cache: " + ((ComponentRef) r).getURI());
             cache.remove(((ComponentRef) r).getURI());
         }
     }

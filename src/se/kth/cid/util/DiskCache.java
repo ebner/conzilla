@@ -20,6 +20,9 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.conzilla.InfoMessageException;
 import se.kth.cid.conzilla.install.Installer;
 
@@ -32,13 +35,13 @@ import se.kth.cid.conzilla.install.Installer;
  */
 public abstract class DiskCache {
 	
+	Log log = LogFactory.getLog(DiskCache.class);
+	
 	private long flushingInterval = 10000; // 10 seconds
 	
 	private int bufferSize = 8192; // 8kB
 	
 	private boolean modified;
-	
-	private String cacheName;
 	
 	private File indexFile;
 	
@@ -63,9 +66,8 @@ public abstract class DiskCache {
 		}
 	}
 	
-	public DiskCache(String cacheName, File indexFile) {
+	public DiskCache(File indexFile) {
 		this.indexFile = indexFile;
-		this.cacheName = cacheName;
 		
 		if (indexFile.exists()) {
 			loadIndex(indexFile);
@@ -74,7 +76,7 @@ public abstract class DiskCache {
 		}
 		
 		initIndexFlushers();
-		debug("INIT: Started");
+		log.info("Started");
 	}
 
 	/**
@@ -87,7 +89,7 @@ public abstract class DiskCache {
 		BufferedInputStream bis = null;
 		XMLDecoder input = null;
 		try {
-			debug("INIT: Loading Index from " + indexFile);
+			log.info("Loading Index from " + indexFile);
 			bis = new BufferedInputStream(new FileInputStream(indexFile), bufferSize);
 			input = new XMLDecoder(bis);
 			cacheMap = (HashMap) input.readObject();
@@ -95,6 +97,7 @@ public abstract class DiskCache {
 			// instead of throwing an exception:
 			// this.createIndex();
 			// this.clear();
+			log.error("Unable to load cache index", ioe);
 			throw new InfoMessageException("Unable to load cache index", ioe);
 		} finally {
 			if (input != null) {
@@ -109,23 +112,13 @@ public abstract class DiskCache {
 	private void createIndex() {
 		File cacheDirFile = new File(getCacheDirectory());
 		if (!(cacheDirFile.exists() && cacheDirFile.isDirectory())) {
-			debug("INIT: Cache directory does not exist, creating");
+			log.info("Cache directory does not exist, creating");
 			if (!cacheDirFile.mkdirs()) {
-				debug("INIT: Unable to create cache directory");
+				log.warn("Unable to create cache directory");
 				throw new InfoMessageException("Unable to create cache directory.");
 			}
 		}
 		cacheMap = new HashMap();
-	}
-	
-	/**
-	 * Prints a message through the Tracer class.
-	 * 
-	 * @param message
-	 *            Debug message.
-	 */
-	protected void debug(String message) {
-		Tracer.debug(cacheName + ": " + message);
 	}
 	
 	/**
@@ -157,7 +150,7 @@ public abstract class DiskCache {
 	 * Activates a TaskTimer and a ShutdownHook to flush the index to disk.
 	 */
 	private void initIndexFlushers() {
-		debug("INIT: Setting up index flushing timer and shutdown hook");
+		log.info("Setting up index flushing timer and shutdown hook");
 		new Timer().schedule(new IndexFlusher(this), flushingInterval, flushingInterval);
 		Runtime.getRuntime().addShutdownHook(new Thread(new IndexFlusher(this)));
 	}
@@ -184,7 +177,7 @@ public abstract class DiskCache {
 			}
 			FileOperations.moveFile(tmpDataFile.toURI(), indexFile.toURI());
 			setModified(false);
-			debug("FLUSH: Wrote cache index to disk");
+			log.debug("Wrote cache index to disk");
 		}
 	}
 	

@@ -13,6 +13,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.Component;
 import se.kth.cid.component.ComponentManager;
 import se.kth.cid.conzilla.app.ConzillaKit;
@@ -22,7 +25,6 @@ import se.kth.cid.conzilla.metadata.PopupTrigger2QueryTarget;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.rdf.RDFComponent;
 import se.kth.cid.rdf.RDFModel;
-import se.kth.cid.util.Tracer;
 import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
 import se.kth.nada.kmr.shame.formlet.Formlet;
 import se.kth.nada.kmr.shame.query.QueryTarget;
@@ -36,12 +38,14 @@ import com.hp.hpl.jena.rdf.model.Resource;
 
 public class MapObject2JenaQueryTarget implements PopupTrigger2QueryTarget {
 	
+	static Log log = LogFactory.getLog(MapObject2JenaQueryTarget.class);
+	
 	static {
 		try {
 			FormletStoreSingleton.requireFormletConfigurations("formlets/formlets.rdf");
 			FormletStoreSingleton.requireFormletConfigurations("formlets/ULM/formlets.rdf");
 		} catch (IOException e) {
-			Tracer.debug(e.getMessage());
+			log.error(e);
 		}
 	}
 	

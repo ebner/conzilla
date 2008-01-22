@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.Container;
 import se.kth.cid.component.EditEvent;
@@ -25,9 +28,11 @@ import se.kth.cid.layout.DrawerLayout;
 import se.kth.cid.layout.ResourceLayout;
 import se.kth.cid.style.StyleManager;
 import se.kth.cid.tree.TreeTagNode;
-import se.kth.cid.util.Tracer;
 
 public class MapStoreManager implements EditListener {
+	
+	Log log = LogFactory.getLog(MapStoreManager.class);
+	
 	ContextMap conceptMap;
 
 	HashMap concepts;
@@ -102,8 +107,7 @@ public class MapStoreManager implements EditListener {
 			 * conceptTypes.put(layout.getURI(), nt); nt.addEditListener(this);
 			 */
 		} catch (ComponentException e) {
-			System.out.println("no concept found");
-			Tracer.debug("No Component found: \n" + e.getMessage());
+			log.error("No Component found", e);
 		}
 	}
 

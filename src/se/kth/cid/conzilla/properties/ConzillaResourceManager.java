@@ -13,13 +13,17 @@ import java.util.ResourceBundle;
 
 import javax.swing.AbstractButton;
 
-import se.kth.cid.util.Tracer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Mikael Nilsson
  * @version $Revision$
  */
 public class ConzillaResourceManager {
+	
+	Log log = LogFactory.getLog(ConzillaResourceManager.class);
+	
 	static ConzillaResourceManager defaultManager;
 
 	Locale defaultLocale;
@@ -59,14 +63,14 @@ public class ConzillaResourceManager {
 		ResourceBundle b = getBundle(resourceBundle);
 
 		if (b == null) {
-			Tracer.debug("ResourceBundle " + resourceBundle + " not found (called with key " + key + ")");
+			log.warn("ResourceBundle " + resourceBundle + " not found (called with key " + key + ")");
 			return null;
 		}
 
 		try {
 			return b.getString(key);
 		} catch (MissingResourceException e) {
-			Tracer.debug("resource " + key + " not found in RB " + resourceBundle);
+			log.error("Resource " + key + " not found in resource bundle " + resourceBundle, e);
 			return null;
 		}
 	}

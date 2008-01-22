@@ -15,6 +15,9 @@ import java.awt.Stroke;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.edit.EditMapManager;
@@ -22,10 +25,10 @@ import se.kth.cid.conzilla.map.MapDisplayer;
 import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.map.MapScrollPane;
 import se.kth.cid.conzilla.properties.ColorTheme;
-import se.kth.cid.util.Tracer;
 
 public class GridLayer extends LayerComponent implements PropertyChangeListener {
-	private static final long serialVersionUID = 1L;
+	
+	Log log = LogFactory.getLog(GridLayer.class);
 
 	protected GridModel gridModel;
 
@@ -36,14 +39,12 @@ public class GridLayer extends LayerComponent implements PropertyChangeListener 
 	public GridLayer(MapController controller) {
 		super(controller, false);
 		this.controller = controller;
-		if (!(controller.getManager() instanceof EditMapManager))
-			Tracer
-					.bug("MapManager in controller isn't a EditMapManager despite the fact that we are in edit mode");
-		this.gridModel = ((EditMapManager) controller.getManager())
-				.getGridModel();
+		if (!(controller.getManager() instanceof EditMapManager)) {
+			log.warn("MapManager in controller isn't a EditMapManager despite the fact that we are in edit mode");
+		}
+		this.gridModel = ((EditMapManager) controller.getManager()).getGridModel();
 		float[] arr = { 0, 3 };
-		stroke = new BasicStroke(1, BasicStroke.CAP_ROUND,
-				BasicStroke.JOIN_ROUND, 0f, arr, 0f);
+		stroke = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0f, arr, 0f);
 	}
 
 	public boolean hasFixedLevel() {

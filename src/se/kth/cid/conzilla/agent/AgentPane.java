@@ -10,7 +10,9 @@ import java.io.IOException;
 
 import javax.swing.JComponent;
 
-import se.kth.cid.util.Tracer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
 import se.kth.nada.kmr.shame.applications.util.MetaDataPanel;
 
@@ -20,14 +22,17 @@ import se.kth.nada.kmr.shame.applications.util.MetaDataPanel;
  * @version  $Revision$, $Date$
  * @author   matthias
  */
-public class AgentPane extends MetaDataPanel{
+public class AgentPane extends MetaDataPanel {
+	
+	static Log log = LogFactory.getLog(AgentPane.class);
+	
     //Preload neccessary formlets in the FormletStore.
     static {
         try {
 			FormletStoreSingleton.requireFormletConfigurations("formlets/formlets.rdf");
 			FormletStoreSingleton.requireFormletConfigurations("formlets/foaf/formlets.rdf");
 		} catch (IOException e) {
-			Tracer.debug(e.getMessage());
+			log.error(e);
 		}
     }
     

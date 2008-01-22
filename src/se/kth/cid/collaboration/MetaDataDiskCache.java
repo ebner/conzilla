@@ -10,6 +10,9 @@ import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.util.DiskCache;
 import se.kth.nada.kmr.collaborilla.client.CollaborillaDataSet;
 
@@ -21,22 +24,16 @@ import se.kth.nada.kmr.collaborilla.client.CollaborillaDataSet;
  */
 public class MetaDataDiskCache extends DiskCache implements MetaDataCache {
 	
+	Log log = LogFactory.getLog(MetaDataDiskCache.class);
+	
 	private final static String indexFileName = "metadata.xml";
 
-	private final static String simpleClassName = MetaDataDiskCache.class.getName().substring(
-			MetaDataDiskCache.class.getName().lastIndexOf('.') + 1);
-	
 	private HashMap metaDataAge;
 
 	public MetaDataDiskCache() {
-		super(simpleClassName, new File(getIndexFilePath(indexFileName)));
+		super(new File(getIndexFilePath(indexFileName)));
 		metaDataAge = new HashMap();
 	}
-	
-//	protected void debug(String message) {
-//		String timestamp = new SimpleDateFormat("HH:mm:ss.SSS").format(new Date());
-//		Tracer.debug(timestamp + ": " + message);
-//	}
 	
 	/*
 	 * Interface implementation
@@ -48,7 +45,7 @@ public class MetaDataDiskCache extends DiskCache implements MetaDataCache {
 	public synchronized void clear() {
 		cacheMap.clear();
 		setModified(true);
-		debug("CLEAR: Cache cleared");
+		log.info("Cache cleared");
 	}
 
 	/**
@@ -56,7 +53,7 @@ public class MetaDataDiskCache extends DiskCache implements MetaDataCache {
 	 */
 	public synchronized CollaborillaDataSet getDataSet(String uri, Date maxAge) {
 		if (!cacheMap.containsKey(uri)) {
-			debug("GET: Dataset not in cache: " + uri);
+			log.debug("GET: Dataset not in cache: " + uri);
 			return null;
 		}
 		
@@ -80,23 +77,23 @@ public class MetaDataDiskCache extends DiskCache implements MetaDataCache {
 			CollaborillaDataSet cachedDataSet = (CollaborillaDataSet) cacheMap.get(uri);
 			Date dataTime = dataSet.getTimestampModified();
 			if (dataTime == null) {
-				debug("PUT: Timestamp (modified) should not be null: not caching dataset");
+				log.warn("PUT: Timestamp (modified) should not be null: not caching dataset");
 				return false;
 			}
 			if (cachedDataSet != null && cachedDataSet.getTimestampModified() != null) {
 				if (!dataSet.getTimestampModified().after(cachedDataSet.getTimestampModified())) {
-					debug("PUT: Dataset is already cached and up-to-date: " + uri);
+					log.debug("PUT: Dataset is already cached and up-to-date: " + uri);
 					metaDataAge.put(uri, new Date());
 					return false;
 				}
 			}
-			debug("PUT: Updated dataset available: " + uri);
+			log.debug("PUT: Updated dataset available: " + uri);
 		}
 		
 		cacheMap.put(uri, dataSet);
 		metaDataAge.put(uri, new Date());
 		setModified(true);
-		debug("PUT: Dataset cached: " + uri);
+		log.info("PUT: Dataset cached: " + uri);
 
 		return true;
 	}
@@ -107,7 +104,7 @@ public class MetaDataDiskCache extends DiskCache implements MetaDataCache {
 	public synchronized void removeDataSet(String uri) {
 		if (cacheMap.containsKey(uri)) {
 			cacheMap.remove(uri);
-			debug("REMOVE: Dataset removed from cache: " + uri);
+			log.info("REMOVE: Dataset removed from cache: " + uri);
 		}
 	}
 	

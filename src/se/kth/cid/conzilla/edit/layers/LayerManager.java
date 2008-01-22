@@ -10,13 +10,15 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.Stack;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapDisplayer;
 import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.map.MapEventListener;
 import se.kth.cid.conzilla.map.MapMouseInputListener;
 import se.kth.cid.conzilla.map.MapScrollPane;
-import se.kth.cid.util.Tracer;
 
 /**
  * Manages a stack of layers, the topmost receives all mapevents, all are
@@ -27,6 +29,9 @@ import se.kth.cid.util.Tracer;
  * @author Matthias Palmer.
  */
 public abstract class LayerManager implements MapEventListener {
+	
+	Log log = LogFactory.getLog(LayerManager.class);
+	
     protected MapController controller;
 
     Stack layers;
@@ -106,10 +111,9 @@ public abstract class LayerManager implements MapEventListener {
     }
 
     public void uninstall(MapScrollPane pane) {
-        if (this.pane != pane)
-            Tracer
-                    .bug("Uninstalling a MapScrollPane in edit that's not installed."
-                            + "Maybe several uninstalls are triggered.");
+        if (this.pane != pane) {
+            log.warn("Uninstalling a MapScrollPane in edit that's not installed. Maybe several uninstalls are triggered.");
+        }
         Iterator it = layers.iterator();
         while (it.hasNext())
             deinstall(pane, (LayerComponent) it.next());

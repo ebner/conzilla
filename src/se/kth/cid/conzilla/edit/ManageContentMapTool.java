@@ -35,6 +35,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.AttributeEntry;
 import se.kth.cid.component.Component;
 import se.kth.cid.component.ComponentException;
@@ -58,13 +61,14 @@ import se.kth.cid.layout.ContextMap;
 import se.kth.cid.notions.ContentInformation;
 import se.kth.cid.rdf.CV;
 import se.kth.cid.util.AttributeEntryUtil;
-import se.kth.cid.util.Tracer;
 
 /** 
- *  @author Matthias Palm?r
+ *  @author Matthias Palmer
  *  @version $Revision$
  */
-public class ManageContentMapTool extends ActionMapMenuTool implements ListSelectionListener{
+public class ManageContentMapTool extends ActionMapMenuTool implements ListSelectionListener {
+	
+	static Log log = LogFactory.getLog(ManageContentMapTool.class);
 
     class ContentInformationRenderer extends DefaultListCellRenderer {
             /**
@@ -125,7 +129,7 @@ public class ManageContentMapTool extends ActionMapMenuTool implements ListSelec
         if (mapEvent.hitType != MapEvent.HIT_NONE
             && (c = mapObject.getConcept()) != null) {
             this.concept = c;
-            Tracer.debug("Concept is:" + concept.toString());
+            log.debug("Concept is " + concept.toString());
             return true;
         }
         return false;
@@ -558,7 +562,7 @@ public class ManageContentMapTool extends ActionMapMenuTool implements ListSelec
         String contentURI = dialog.getURI();
 
         if (contentURI != null && contentURI.length() != 0) {
-        	Tracer.debug("We have a contentURI and we want to write a statement in the Concepts RDFModel: "
+        	log.debug("We have a content URI and we want to write a statement in the Concepts RDFModel: "
         			+ cContainer.getURI());
         	contentComponent = getOrCreateContentComponent(contentURI);
         	createContentOnConcept(concept, contentComponent);

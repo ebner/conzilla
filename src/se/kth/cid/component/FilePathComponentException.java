@@ -11,7 +11,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import se.kth.cid.util.Tracer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * If a component can't be created due to missing directorys, this is the
@@ -21,6 +22,9 @@ import se.kth.cid.util.Tracer;
  * @version $Revision$
  */
 public class FilePathComponentException extends PathComponentException {
+	
+	Log log = LogFactory.getLog(FilePathComponentException.class);
+	
 	File file;
 
 	/**
@@ -41,9 +45,10 @@ public class FilePathComponentException extends PathComponentException {
 		try {
 			return new URI(file.toURL().toString());
 		} catch (URISyntaxException urise) {
+			log.error(urise);
 			urise.printStackTrace();
 		} catch (MalformedURLException e) {
-			Tracer.error("Malformed File:\n " + e.getMessage());
+			log.error("Malformed URL", e);
 		}
 		return null;
 	}

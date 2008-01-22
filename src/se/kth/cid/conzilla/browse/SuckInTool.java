@@ -11,6 +11,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URI;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.Resource;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.content.ContentException;
@@ -21,11 +24,11 @@ import se.kth.cid.conzilla.properties.Images;
 import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.layout.ContextMap;
-import se.kth.cid.util.Tracer;
 
 public class SuckInTool extends Tool {
-	private static final long serialVersionUID = 1L;
-
+	
+	Log log = LogFactory.getLog(SuckInTool.class);
+	
 	PropertyChangeListener displayerListener;
 
 	ContentSelector sel;
@@ -51,9 +54,7 @@ public class SuckInTool extends Tool {
 		};
 
 		sel.addSelectionListener(ContentSelector.SELECTION, displayerListener);
-
 		setContent();
-
 	}
 
 	void setContent() {
@@ -68,7 +69,7 @@ public class SuckInTool extends Tool {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		Tracer.debug("SuckIn!");
+		log.debug("Suck in!");
 		try {
 			if (content != null) {
 				ContextMap oldMap = controller.getView().getMapScrollPane().getDisplayer().getStoreManager().getConceptMap();
@@ -80,23 +81,21 @@ public class SuckInTool extends Tool {
 					ConzillaKit.getDefaultKit().getContentDisplayer().setContent(null); // Closing
 																						// ContentDisplayer.
 				} catch (ContentException ce) {
-					Tracer.bug("Couldn't close contentDisplayer");
+					log.error("Couldn't close content displayer");
 				}
 			}
 		} catch (ControllerException ex) {
+			log.error("Failed to load map " + content.getURI(), ex);
 			ErrorMessage.showError("Load Error", "Failed to load map\n\n" + content.getURI(), ex, dialogParent);
 		}
 	}
 
 	public void detach() {
 		sel.removeSelectionListener(ContentSelector.SELECTION, displayerListener);
-
 		sel = null;
-
 		controller = null;
-
 		content = null;
-
 		dialogParent = null;
 	}
+
 }

@@ -16,8 +16,10 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.conzilla.app.ConzillaKit;
-import se.kth.cid.util.Tracer;
 
 /**
  * Listens on a socket for commands such as bringing the window to the foreground or
@@ -26,6 +28,8 @@ import se.kth.cid.util.Tracer;
  * @author Hannes Ebner
  */
 public class CommandListener {
+	
+	Log log = LogFactory.getLog(CommandListener.class);
 	
 	private DatagramSocket socket;
 
@@ -47,7 +51,7 @@ public class CommandListener {
 			printer.println(socket.getLocalPort());
 			printer.close();
 		} catch (FileNotFoundException e) {
-			Tracer.error(e.getMessage());
+			log.error(e);
 		}
 		file.deleteOnExit();
 	}
@@ -75,7 +79,7 @@ public class CommandListener {
 		} else if (command.equals(RemoteCommands.QUIT)) {
 			ConzillaKit.getDefaultKit().getConzilla().getViewManager().closeViews();
 		} else {
-			Tracer.debug("Received unknown command: " + command);
+			log.info("Received unknown command: " + command);
 		}
 	}
 
@@ -86,15 +90,15 @@ public class CommandListener {
 		try {
 			socket = new DatagramSocket(new InetSocketAddress(InetAddress.getLocalHost(), 0));
 		} catch (IOException e) {
-			Tracer.error(e.getMessage());
+			log.error(e);
 			return;
 		}
 		
-		Tracer.debug("Listening on " + socket.getLocalSocketAddress());
+		log.info("Listening on " + socket.getLocalSocketAddress());
 		
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
-				Tracer.debug("Shutting down listener on " + socket.getLocalSocketAddress());
+				log.info("Shutting down listener on " + socket.getLocalSocketAddress());
 				if (socket != null) {
 					socket.close();
 				}

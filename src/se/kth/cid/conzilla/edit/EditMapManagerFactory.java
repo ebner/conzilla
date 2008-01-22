@@ -13,6 +13,9 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.Container;
 import se.kth.cid.component.ContainerManager;
@@ -35,7 +38,6 @@ import se.kth.cid.conzilla.tool.ToolsMenu;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.rdf.RDFContainerManager;
 import se.kth.cid.rdf.RDFSessionManager;
-import se.kth.cid.util.Tracer;
 
 /** This class creates EditMapManagers for a single MapController.
  *
@@ -43,6 +45,8 @@ import se.kth.cid.util.Tracer;
  *  @version $Revision$
  */
 public class EditMapManagerFactory implements MapManagerFactory {
+	
+	Log log = LogFactory.getLog(EditMapManagerFactory.class);
 	
     public static final String PROJECTS_URI = "conzilla://ont/sessions.rdf";
 
@@ -97,7 +101,7 @@ public class EditMapManagerFactory implements MapManagerFactory {
             menu.addTool(new Tool("NEW_MAP", EditMapManagerFactory.class.getName()) {
                 {setIcon(Images.getImageIcon(Images.ICON_FILE_NEW));}
                 public void actionPerformed(ActionEvent ae) {
-                    Tracer.debug("Create a new map in new window");
+                    log.debug("Create a new map in new window");
                     newMap.openNewMapInNewView(mc);
                 }
             }, 150);

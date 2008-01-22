@@ -10,6 +10,9 @@ import java.util.Enumeration;
 import java.util.Set;
 import java.util.Vector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.layout.BookkeepingConceptMap;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.layout.DrawerLayout;
@@ -21,13 +24,15 @@ import se.kth.cid.layout.ResourceLayout;
 import se.kth.cid.tree.TreeTagNode;
 import se.kth.cid.tree.generic.MemTreeTagManager;
 import se.kth.cid.util.TagManager;
-import se.kth.cid.util.Tracer;
 
 /**
  * @author Matthias Palmer
  * @version $Revision$
  */
 public class MemLayerManager implements LayerManager {
+	
+	Log log = LogFactory.getLog(MemLayerManager.class);
+	
 	LayerLayout layers;
 
 	LayerLayout current;
@@ -196,21 +201,22 @@ public class MemLayerManager implements LayerManager {
 			}
 		}
 
-		if (!ttn.getAllowsChildren())
-			Tracer
-					.bug("Trying to add a ConceptLayout to parent that cannot have children");
+		if (!ttn.getAllowsChildren()) {
+			log.warn("Trying to add a ConceptLayout to parent that cannot have children");
+		}
 		ttn.add(nw);
 		fireLayerChange(new LayerEventImpl(LayerEvent.OBJECTSTYLE_ADDED));
 	}
 
 	public boolean removeResourceLayout(ResourceLayout os) {
-		Tracer.debug("inside removeResourceLayout in MemLayerManager1");
-		if (!os.getChildren().isEmpty())
+		log.debug("inside removeResourceLayout in MemLayerManager");
+		if (!os.getChildren().isEmpty()) {
 			return false;
-		Tracer.debug("inside removeResourceLayout in MemLayerManager1");
+		}
 		boolean bo = layers.recursivelyRemoveChild(os);
-		if (bo)
+		if (bo) {
 			fireLayerChange(new LayerEventImpl(LayerEvent.OBJECTSTYLE_REMOVED));
+		}
 
 		return bo;
 	}

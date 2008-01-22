@@ -11,6 +11,9 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.Container;
 import se.kth.cid.component.EditEvent;
@@ -29,11 +32,10 @@ import se.kth.cid.rdf.RDFComponent;
 import se.kth.cid.rdf.RDFComponentFactory;
 import se.kth.cid.rdf.RDFContainerManager;
 import se.kth.cid.rdf.RDFModel;
-import se.kth.cid.util.Tracer;
 
 public class SaveTool extends Tool implements EditListener {
 
-	private static final long serialVersionUID = 1L;
+	Log log = LogFactory.getLog(SaveTool.class);
 
 	MapController controller;
 
@@ -108,7 +110,7 @@ public class SaveTool extends Tool implements EditListener {
 
 				while (it.hasNext()) {
 					Concept c = (Concept) it.next();
-					Tracer.debug("concept " + c.getURI());
+					log.debug("concept " + c.getURI());
 					set.add(((se.kth.cid.component.Component) c).getLoadContainer());
 				}
 
@@ -140,18 +142,19 @@ public class SaveTool extends Tool implements EditListener {
 			while (itC.hasNext()) {
 				Concept c = (Concept) itC.next();
 				if (c.isEdited()) {
-					Tracer.debug("And now saving it.");
+					log.debug("And now saving it");
 					store.getComponentManager().saveResource(c);
 				}
 			}
 
 			if (cmap.isEdited()) {
-				Tracer.debug("saving conceptmap");
+				log.debug("Saving conceptmap");
 				store.getComponentManager().saveResource(cmap);
 			}
 
 		} catch (ComponentException ce) {
-			ErrorMessage.showError("Save Error", "Failed to save.layout\n\n" + cmap.getURI(), ce, controller
+			log.error("Failed to save layout", ce);
+			ErrorMessage.showError("Save Error", "Failed to save layout\n\n" + cmap.getURI(), ce, controller
 					.getView().getMapScrollPane().getDisplayer());
 		}
 

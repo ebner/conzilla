@@ -15,6 +15,9 @@ import javax.swing.JComponent;
 import javax.swing.JToolBar;
 import javax.swing.JToolBar.Separator;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.ContainerManager;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.app.FullScreenTool;
@@ -39,9 +42,10 @@ import se.kth.cid.conzilla.tool.ToolsBar;
 import se.kth.cid.conzilla.view.View;
 import se.kth.cid.rdf.RDFContainerManager;
 import se.kth.cid.util.LocaleChooser;
-import se.kth.cid.util.Tracer;
 
 public class EditMapManager extends LayerManager implements MapManager, PropertyChangeListener {
+	
+	Log log = LogFactory.getLog(EditMapManager.class);
 	
 	GridTool grid;
 
@@ -272,7 +276,7 @@ public class EditMapManager extends LayerManager implements MapManager, Property
     	if (session != null) { //Just in case
     		sessionManager.setCurrentSession(session);
     	}
-        Tracer.debug("got Focus in EditMapManager");
+        log.debug("Got focus");
     }
 
     public void propertyChange(PropertyChangeEvent e) {

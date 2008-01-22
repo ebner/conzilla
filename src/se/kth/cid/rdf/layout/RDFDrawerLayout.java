@@ -11,6 +11,9 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.EditEvent;
 import se.kth.cid.component.InvalidURIException;
 import se.kth.cid.component.ReadOnlyException;
@@ -21,7 +24,6 @@ import se.kth.cid.rdf.CV;
 import se.kth.cid.rdf.RDFContainerManager;
 import se.kth.cid.rdf.RDFModel;
 import se.kth.cid.style.LineStyle;
-import se.kth.cid.util.Tracer;
 
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -37,6 +39,9 @@ import com.hp.hpl.jena.rdf.model.impl.SelectorImpl;
 public class RDFDrawerLayout
     extends RDFResourceLayout
     implements DrawerLayout, BookkeepingDrawerLayout {
+	
+	Log log = LogFactory.getLog(RDFDrawerLayout.class);
+	
     // REMOVE: String concepturi;
     String detailedMap;
     ContextMap.BoundingBox bb;
@@ -129,15 +134,11 @@ public class RDFDrawerLayout
     			StringTokenizer loc =
     				new StringTokenizer(it.next().toString(), ",");
     			if (loc.countTokens() >= 2)
-    				vec.add(
-    						new ContextMap.Position(
-    								Integer.parseInt(loc.nextToken()),
-    								Integer.parseInt(loc.nextToken())));
+    				vec.add(new ContextMap.Position(Integer.parseInt(loc.nextToken()), Integer.parseInt(loc.nextToken())));
     		}
     		it.close();
     		boxLine =
-    			(ContextMap.Position[]) vec.toArray(
-    					new ContextMap.Position[vec.size()]);
+    			(ContextMap.Position[]) vec.toArray(new ContextMap.Position[vec.size()]);
     	}
     }
     protected void removeFromModel(RDFModel model) {
@@ -229,7 +230,7 @@ public class RDFDrawerLayout
             setEdited(true);
             conceptMap.fireEditEvent(new EditEvent(conceptMap, this, DETAILEDMAP_EDITED, uri));
         } catch (Exception re) {
-            Tracer.debug("Failed changing model." + re.getMessage());
+            log.error("Failed changing model", re);
         }
     }
 
@@ -308,7 +309,7 @@ public class RDFDrawerLayout
             conceptMap.fireEditEvent(
                 new EditEvent(conceptMap, this, BOUNDINGBOX_EDITED, bb));
         } catch (Exception re) {
-            Tracer.debug("Failed changing model." + re.getMessage());
+            log.error("Failed changing model", re);
         }
     }
     public boolean getBodyVisible() {
@@ -337,9 +338,9 @@ public class RDFDrawerLayout
             if (st != null)
                 st.remove();
         } catch (Exception re) {
-            Tracer.debug(
-                "Failed removing old hyperlink in model." + re.getMessage());
+            log.error("Failed removing old hyperlink in model", re);
         }
+        
         try {
             if (model == null)
                 model = getLoadModel();
@@ -354,8 +355,7 @@ public class RDFDrawerLayout
             if (!visible && bb != null)
                 object.addProperty(CV.bodyVisible, "false");
         } catch (Exception re) {
-            Tracer.debug(
-                "Failed removing old hyperlink in model." + re.getMessage());
+            log.error("Failed removing old hyperlink in model", re);
         }
     }
 
@@ -426,9 +426,7 @@ public class RDFDrawerLayout
 
             return true;
         } catch (Exception re) {
-            Tracer.debug(
-                "Failed setting new line in model..." + re.getMessage());
-            re.printStackTrace();
+            log.error("Failed setting new line in model", re);
         }
 
         return false;

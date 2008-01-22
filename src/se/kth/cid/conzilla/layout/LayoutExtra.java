@@ -12,6 +12,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.app.Extra;
 import se.kth.cid.conzilla.controller.MapController;
@@ -24,7 +27,6 @@ import se.kth.cid.layout.ConceptLayout;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.layout.DrawerLayout;
 import se.kth.cid.layout.StatementLayout;
-import se.kth.cid.util.Tracer;
 
 /** Proof of concept layout support, star-shaped box layout
  *  with order depending on number of relations attached.
@@ -32,6 +34,9 @@ import se.kth.cid.util.Tracer;
  *  @author Matthias Palmer.
  */
 public class LayoutExtra implements Layout, Extra{
+	
+	Log log = LogFactory.getLog(LayoutExtra.class);
+	
     GridModel gridModel;
 
     public LayoutExtra() {
@@ -67,7 +72,7 @@ public class LayoutExtra implements Layout, Extra{
                     "LAYOUT_TRIVIAL",
                     LayoutExtra.class.getName()) {
             public void actionPerformed(ActionEvent ae) {
-                Tracer.debug("Layouts the current map.");
+                log.debug("Layouting the current map");
                 layout(mc);
             }
         }, 200);

@@ -12,11 +12,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.AttributeEntry;
 import se.kth.cid.concept.Concept;
 import se.kth.cid.concept.Triple;
 import se.kth.cid.notions.ContentOnConcept;
-import se.kth.cid.util.Tracer;
 
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -32,6 +34,9 @@ import com.hp.hpl.jena.vocabulary.RDF;
  *  @version $Revision$
  */
 public class RDFConcept extends RDFComponent implements Concept, Triple {
+	
+	Log log = LogFactory.getLog(RDFConcept.class);
+	
     Statement statement;
 
     public RDFConcept(URI uri) {
@@ -213,7 +218,7 @@ public class RDFConcept extends RDFComponent implements Concept, Triple {
             m.add(reifObj);
             statement = statement.changeObject(object);
         } catch (Exception re) {
-           Tracer.debug("Failed to set object on statement....");
+           log.error("Failed to set object on statement", re);
         }
     }
 

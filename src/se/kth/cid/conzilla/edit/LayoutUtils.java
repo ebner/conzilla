@@ -10,6 +10,9 @@ import java.awt.geom.CubicCurve2D;
 import java.util.Collection;
 import java.util.Enumeration;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.conzilla.edit.layers.GridModel;
 import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.layout.ContextMap;
@@ -17,14 +20,15 @@ import se.kth.cid.layout.DrawerLayout;
 import se.kth.cid.layout.ResourceLayout;
 import se.kth.cid.layout.StatementLayout;
 import se.kth.cid.style.LineStyle;
-import se.kth.cid.util.Tracer;
 
 /** 
  *
- *  @author Matthias Palm�r
+ *  @author Matthias Palmer
  *  @version $Revision$
  */
 public class LayoutUtils {
+	
+	static Log log = LogFactory.getLog(LayoutUtils.class);
 
     /** Calculates the best initial tripleline between the subject and object DrawerLayouts.
      *
@@ -39,9 +43,9 @@ public class LayoutUtils {
         GridModel gm) {
         ContextMap.Position[] pos = new ContextMap.Position[2];
         pos[1] = findPosition_FirstFromBody(subjectEnd, null, gm);
-        if (pos[1] == null)
-            Tracer.bug(
-                "Trying to add triple to non visible ConceptLayout, despite the fact it is choosen by a mapEvent!!!!! inconsistant!!!!");
+        if (pos[1] == null) {
+            log.warn("Trying to add triple to non visible ConceptLayout, despite the fact it is choosen by a mapEvent - inconsistant!");
+        }
         pos[0] = findPosition_FirstFromBody(objectEnd, pos[0], gm);
 
         return pos;
@@ -86,7 +90,6 @@ public class LayoutUtils {
                     (int) (pos[0].x + ((pos[3].x - pos[0].x) * 0.7)),
                     (int) (pos[0].y + ((pos[3].y - pos[0].y) * 0.7)));
             return pos;
-
         }
     }
 
@@ -333,4 +336,5 @@ public class LayoutUtils {
                 : null;
         return point2 == null ? point1 : point2;
     }
+
 }

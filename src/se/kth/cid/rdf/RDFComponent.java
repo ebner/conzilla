@@ -22,7 +22,6 @@ import se.kth.cid.component.EditEvent;
 import se.kth.cid.component.FiringResourceImpl;
 import se.kth.cid.component.ReadOnlyException;
 import se.kth.cid.identity.MIMEType;
-import se.kth.cid.util.Tracer;
 import se.kth.nada.kmr.shame.util.RDFUtil;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -40,11 +39,9 @@ import com.hp.hpl.jena.vocabulary.RDF;
  *  @author Matthias Palmer
  *  @version $Revision$
  */
-public class RDFComponent
-	extends FiringResourceImpl
-    implements se.kth.cid.component.Component {
+public class RDFComponent extends FiringResourceImpl implements se.kth.cid.component.Component {
 
-	public static final Log LOG = LogFactory.getLog(RDFComponent.class);
+	static final Log log = LogFactory.getLog(RDFComponent.class);
 
 	protected RDFComponentManager rcm;
 	
@@ -284,8 +281,7 @@ public class RDFComponent
             return model.listStatements(new SelectorImpl(subject, property,
                     (RDFNode) null));
         } catch (Exception re) {
-            Tracer.debug("failed fetching property " + prop
-                    + " for resource" + getURI() + "\n" + re.getMessage());
+            log.error("failed fetching property " + prop + " for resource" + getURI(), re);
         }
         return null;
     }
@@ -309,8 +305,7 @@ public class RDFComponent
                 }
             } 
         } catch (Exception re) {
-            Tracer.debug("failed fetching property " + prop
-                    + " for resource" + getURI() + "\n" + re.getMessage());
+            log.error("Failed fetching property " + prop + " for resource" + getURI(), re);
         }
         return null;
     }
@@ -341,7 +336,7 @@ public class RDFComponent
         if (model == null) {
             Container cont = rcm.getContainerManager().findLoadContainerForResource(this);
             if (! (cont instanceof RDFModel)) {
-            	LOG.fatal("LoadModel is not a RDFModel.");
+            	log.fatal("LoadModel is not a RDFModel.");
             }
             if (cont == null) {
                 cont = rcm.getCurrentConceptContainer();

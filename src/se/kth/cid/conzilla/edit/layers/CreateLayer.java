@@ -26,6 +26,9 @@ import javax.swing.JMenu;
 import javax.swing.KeyStroke;
 import javax.swing.event.MouseInputAdapter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.InvalidURIException;
 import se.kth.cid.component.ReadOnlyException;
@@ -47,7 +50,6 @@ import se.kth.cid.layout.DrawerLayout;
 import se.kth.cid.layout.StatementLayout;
 import se.kth.cid.tree.TreeTagNode;
 import se.kth.cid.util.AttributeEntryUtil;
-import se.kth.cid.util.Tracer;
 
 import com.hp.hpl.jena.vocabulary.RDF;
 
@@ -62,6 +64,8 @@ import com.hp.hpl.jena.vocabulary.RDF;
  * @author Matthias Palmer
  */
 public class CreateLayer extends LayerComponent implements MapMouseInputListener, TreeTagNodeMenuListener {
+	
+	static Log log = LogFactory.getLog(CreateLayer.class);
 
 	protected GridModel gridModel;
 
@@ -395,7 +399,7 @@ public class CreateLayer extends LayerComponent implements MapMouseInputListener
 
 			ns.setBoundingBox(LayoutUtils.preferredBoxOnGrid(gridModel, mapEvent.mapX, mapEvent.mapY, dim));
 		} catch (InvalidURIException ex) {
-			Tracer.bug("Invalid URI: " + ex.getMessage());
+			log.error("Invalid URI", ex);
 		}
 	}
 
@@ -407,7 +411,7 @@ public class CreateLayer extends LayerComponent implements MapMouseInputListener
 			ns = cmap.addStatementLayout(concept.getURI(), sdl.getURI(), odl != null ? odl.getURI() : null);
 			mapObject = controller.getView().getMapScrollPane().getDisplayer().getMapObject(ns.getURI());
 		} catch (InvalidURIException ex) {
-			Tracer.bug("Invalid URI: " + ex.getMessage());
+			log.error("Invalid URI", ex);
 		}
 
 		return ns;
@@ -417,7 +421,7 @@ public class CreateLayer extends LayerComponent implements MapMouseInputListener
 	protected static Concept createConcept(java.awt.Component jc, CreateStateControl sc, boolean includeType,
 			boolean includeTitle) {
 		ConzillaKit kit  = ConzillaKit.getDefaultKit();
-		Tracer.debug("createConcept 1");
+		log.debug("createConcept 1");
 		URI typeURI = null;
 		if (includeType)
 			typeURI = sc.getTypeURI();
@@ -436,7 +440,7 @@ public class CreateLayer extends LayerComponent implements MapMouseInputListener
 			concept.addAttributeEntry(RDF.type.toString(), typeURI);
 			//unset session.
 			
-			Tracer.debug("Concept created as " + concept.getURI());
+			log.debug("Concept created as " + concept.getURI());
 			if (includeTitle) {
 				adjustMetaData(concept, sc, includeType);
 			}

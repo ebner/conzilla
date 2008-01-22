@@ -32,6 +32,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.collaboration.CollaborillaReader;
 import se.kth.cid.collaboration.CollaborillaSupport;
 import se.kth.cid.component.Component;
@@ -43,7 +46,6 @@ import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.rdf.RDFModel;
 import se.kth.cid.util.AttributeEntryUtil;
-import se.kth.cid.util.Tracer;
 import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
 import se.kth.nada.kmr.shame.applications.util.MetaDataPanel;
 import se.kth.nada.kmr.shame.container.EditContainer;
@@ -61,6 +63,8 @@ import com.hp.hpl.jena.rdf.model.Resource;
  * @author   matthias
  */
 public class InfoPanel extends JPanel {
+	
+	static Log log = LogFactory.getLog(InfoPanel.class);
     
     public static class Conzilla2SHAMEContainerWrapper implements EditContainer {
         se.kth.cid.component.Resource resource;
@@ -101,7 +105,7 @@ public class InfoPanel extends JPanel {
 			FormletStoreSingleton.requireFormletConfigurations("formlets/formlets.rdf");
 			FormletStoreSingleton.requireFormletConfigurations("formlets/Simple_Dublin_Core/formlets.rdf");
 		} catch (IOException e) {
-			Tracer.debug(e.getMessage());
+			log.error(e);
 		}
     }
     static private String dcFormletCId = "http://kmr.nada.kth.se/shame/SDC/formlet#Simple-profile";

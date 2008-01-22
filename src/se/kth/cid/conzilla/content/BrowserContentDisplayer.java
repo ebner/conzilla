@@ -9,10 +9,14 @@ package se.kth.cid.conzilla.content;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.Resource;
-import se.kth.cid.util.Tracer;
 
 public abstract class BrowserContentDisplayer extends AbstractContentDisplayer {
+	
+	Log log = LogFactory.getLog(BrowserContentDisplayer.class);
 
 	public void setContent(Resource c) throws ContentException {
 		if (c == null) {
@@ -20,7 +24,7 @@ public abstract class BrowserContentDisplayer extends AbstractContentDisplayer {
 			return;
 		}
 
-		Tracer.debug("Browser will show " + c.getURI());
+		log.debug("Browser will show " + c.getURI());
 
 		// URI baseuri=URIClassifier.parseValidURI(c.getURI());
 		try {

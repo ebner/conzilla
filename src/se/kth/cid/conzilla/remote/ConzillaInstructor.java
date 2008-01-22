@@ -16,7 +16,8 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 
-import se.kth.cid.util.Tracer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Checks for a lock file, opens it, and reads the port number in it.
@@ -26,6 +27,8 @@ import se.kth.cid.util.Tracer;
  * @author Hannes Ebner
  */
 public class ConzillaInstructor {
+	
+	Log log = LogFactory.getLog(ConzillaInstructor.class);
 	
 	InetSocketAddress inetSocketAddr;
 
@@ -57,7 +60,7 @@ public class ConzillaInstructor {
 			reader = new BufferedReader(new FileReader(file));
 			portStr = reader.readLine();
 		} catch (IOException e) {
-			Tracer.error(e.getMessage());
+			log.error(e);
 		} finally {
 			if (reader != null) {
 				try {
@@ -72,7 +75,7 @@ public class ConzillaInstructor {
 			try {
 				port = Integer.parseInt(portStr);
 			} catch (NumberFormatException nfe) {
-				Tracer.error(nfe.getMessage());
+				log.error(nfe);
 			}
 		}
 		
@@ -87,9 +90,9 @@ public class ConzillaInstructor {
 			packet = new DatagramPacket(command.getBytes(), command.getBytes().length);
 			socket.connect(inetSocketAddr);
 			socket.send(packet);
-			Tracer.debug("Sent \"" + command + "\" to " + inetSocketAddr);
+			log.info("Sent \"" + command + "\" to " + inetSocketAddr);
 	    } catch (IOException e) {
-			Tracer.error(e.getMessage());
+			log.error(e);
 	    } finally {
 	    	if (socket != null) {
 	    		socket.close();

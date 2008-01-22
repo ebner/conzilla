@@ -11,6 +11,9 @@ import java.awt.geom.AffineTransform;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.EditEvent;
 import se.kth.cid.component.EditListener;
 import se.kth.cid.conzilla.controller.MapController;
@@ -21,11 +24,13 @@ import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.map.MapMouseInputListener;
 import se.kth.cid.conzilla.map.MapScrollPane;
 import se.kth.cid.layout.ContextMap;
-import se.kth.cid.util.Tracer;
 
 public abstract class Layer
     extends LayerComponent
     implements EditListener, MapMouseInputListener {
+	
+	Log log = LogFactory.getLog(Layer.class);
+	
     protected MapDisplayer mapdisplayer;
     protected HandledObject handles;
     protected MapEvent mapevent;
@@ -35,9 +40,9 @@ public abstract class Layer
 
     public Layer(MapController controller) {
         super(controller, true);
-        if (!(controller.getManager() instanceof EditMapManager))
-            Tracer.bug(
-                "MapManager in controller isn't a EditMapManager despite the fact that we are in edit mode");
+        if (!(controller.getManager() instanceof EditMapManager)) {
+            log.warn("MapManager in controller isn't a EditMapManager despite the fact that we are in edit mode");
+        }
         gridModel = ((EditMapManager) controller.getManager()).getGridModel();
         setHandledObject(null, MapEvent.Null);
         setVisible(true);

@@ -12,6 +12,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.Component;
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.ComponentFactory;
@@ -27,7 +30,6 @@ import se.kth.cid.rdf.layout.RDFResourceLayout;
 import se.kth.cid.rdf.layout.RDFStatementLayout;
 import se.kth.cid.tree.TreeTagNodeResource;
 import se.kth.cid.tree.generic.MemTreeTagManager;
-import se.kth.cid.util.Tracer;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
@@ -42,6 +44,8 @@ import com.hp.hpl.jena.vocabulary.RDF;
  * @version $Revision$
  */
 public class RDFComponentFactory extends MemTreeTagManager implements ComponentFactory {
+	
+	Log log = LogFactory.getLog(RDFComponentFactory.class);
 
 //	Container currentConceptContainer;
 
@@ -274,16 +278,16 @@ public class RDFComponentFactory extends MemTreeTagManager implements ComponentF
 		if (re instanceof RDFTreeTagNode) {
 			HashSet hs = new HashSet();
 			RDFTreeTagNode.getAllRelevantModelsRecursively(hs, (RDFTreeTagNode) re);
-			Tracer.debug("relevantmodels recursively nr = " + hs.size());
+			log.debug("relevantmodels recursively nr = " + hs.size());
 			it = hs.iterator();
 		} else {
 			re.getComponentManager().refresh();
 			Set s = re.getComponentManager().getLoadedRelevantContainers();
-			Tracer.debug("relevantmodels nr = " + s.size());
+			log.debug("relevantmodels nr = " + s.size());
 			it = s.iterator();
 		}
 
-		Tracer.debug("RDFFormatHAndler saveComponent....");
+		log.debug("RDFFormatHAndler saveComponent....");
 
 		while (it.hasNext()) {
 			if (!this.containerManager.saveModel((RDFModel)
@@ -328,13 +332,14 @@ public class RDFComponentFactory extends MemTreeTagManager implements ComponentF
 			Resource object = st.getResource();
 
 			RDFConceptMap cMap = null;
-			if (owner.getConceptMap() != null)
+			if (owner.getConceptMap() != null) {
 				cMap = (RDFConceptMap) owner.getConceptMap();
-			else if (owner instanceof RDFConceptMap)
+			} else if (owner instanceof RDFConceptMap) {
 				cMap = (RDFConceptMap) owner;
-			else
-				Tracer.bug("Oups, tried to load a RDFResourceLayout to be a child to a RDFResourceLayout"
-						+ "that haven't got a RDFConceptMap and isn't a RDFConceptMap either.");
+			} else {
+				log.error("Oups, tried to load a RDFResourceLayout to be a child to a RDFResourceLayout "
+						+ "that haven't got a RDFConceptMap and isn't a RDFConceptMap either");
+			}
 
 			os = loadLayoutAccordingToType(uri, object, cMap);
 			if (os == null) {
@@ -348,7 +353,7 @@ public class RDFComponentFactory extends MemTreeTagManager implements ComponentF
 				}
 			}
 		} catch (URISyntaxException mue) {
-			Tracer.debug("Failed loading uri = " + uri + "\n" + mue.getMessage());
+			log.error("Failed loading uri = " + uri, mue);
 		}
 		return os;
 	}

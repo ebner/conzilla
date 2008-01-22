@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.config.ConfigurationManager;
-import se.kth.cid.util.Tracer;
 
 /**
  * Class to handle various sets of colors, called color themes.<br>
@@ -22,6 +24,8 @@ import se.kth.cid.util.Tracer;
  * @version $Id$
  */
 public class ColorTheme {
+	
+	static Log log = LogFactory.getLog(ColorTheme.class);
 
 	/**
 	 * Should be used for property change listeners to listen on. Contains the
@@ -165,7 +169,7 @@ public class ColorTheme {
 				THEME_DEFINITIONS_KEY + "." + currentTheme + "." + colorKey);
 		if (result == null) {
 			result = Color.BLACK;
-			Tracer.debug("Color theme \"" + currentTheme + "\" not complete, unable to find key \"" + COLORTHEME + "."
+			log.warn("Color theme \"" + currentTheme + "\" not complete, unable to find key \"" + COLORTHEME + "."
 					+ currentTheme + "." + colorKey + "\", setting color to black instead");
 		}
 		return result;

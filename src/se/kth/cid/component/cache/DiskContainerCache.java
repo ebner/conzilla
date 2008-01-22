@@ -19,11 +19,13 @@ import java.util.Iterator;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.conzilla.InfoMessageException;
 import se.kth.cid.util.DiskCache;
 import se.kth.cid.util.FileOperations;
 import se.kth.cid.util.Hashing;
-import se.kth.cid.util.Tracer;
 
 /**
  * Implementation of the ContainerCache interface, stores remote container files
@@ -36,11 +38,10 @@ import se.kth.cid.util.Tracer;
  * @version $Id$
  */
 public class DiskContainerCache extends DiskCache implements ContainerCache {
+	
+	Log log = LogFactory.getLog(DiskContainerCache.class);
 
 	private final static String indexFileName = "containers.xml";
-
-	private final static String simpleClassName = DiskContainerCache.class.getName().substring(
-			DiskContainerCache.class.getName().lastIndexOf('.') + 1);
 
 	/*
 	 * Constructors
@@ -52,7 +53,7 @@ public class DiskContainerCache extends DiskCache implements ContainerCache {
 	 * shutdown hook to make sure the cache index is up to date.
 	 */
 	public DiskContainerCache() {
-		super(simpleClassName, new File(getIndexFilePath(indexFileName)));
+		super(new File(getIndexFilePath(indexFileName)));
 		createContainerCacheDir();
 	}
 
@@ -63,9 +64,9 @@ public class DiskContainerCache extends DiskCache implements ContainerCache {
 	private void createContainerCacheDir() {
 		File cacheDirFile = new File(getContainerCacheDirectory());
 		if (!(cacheDirFile.exists() && cacheDirFile.isDirectory())) {
-			debug("INIT: Cache directory does not exist, creating");
+			log.info("Cache directory does not exist, creating");
 			if (!cacheDirFile.mkdirs()) {
-				debug("INIT: Unable to create cache directory");
+				log.error("Unable to create cache directory");
 				throw new InfoMessageException("Unable to create cache directory.");
 			}
 		}
@@ -142,7 +143,7 @@ public class DiskContainerCache extends DiskCache implements ContainerCache {
 		FileOperations.deleteAllFilesInDir(new File(getContainerCacheDirectory()));
 		cacheMap.clear();
 		setModified(true);
-		debug("CLEAR: Cache cleared");
+		log.info("Cache cleared");
 	}
 
 	/**
@@ -152,7 +153,7 @@ public class DiskContainerCache extends DiskCache implements ContainerCache {
 	public InputStream getContainer(String uri, Date maxAge) {
 		synchronized (cacheMap) {
 			if (!cacheMap.containsKey(uri)) {
-				debug("GET: Container not in cache: " + uri);
+				log.debug("GET: Container not in cache: " + uri);
 				return null;
 			}
 		}
@@ -171,18 +172,18 @@ public class DiskContainerCache extends DiskCache implements ContainerCache {
 		BufferedInputStream bis;
 		GZIPInputStream input;
 		try {
-			debug("GET: Loading cached container: " + uri);
+			log.debug("GET: Loading cached container: " + uri);
 			fis = new FileInputStream(getCachedFilePath(cci.getFileName()));
 			bis = new BufferedInputStream(fis, getBufferSize());
 			try {
 				input = new GZIPInputStream(bis, getBufferSize());
 			} catch (IOException e) {
-				debug("GET: ERROR: " + e.getMessage());
+				log.error("GET: ERROR", e);
 				return null;
 			}
 		} catch (FileNotFoundException fnfe) {
 			// should not happen
-			debug("GET: ERROR: Container is indexed but file was not found. Removing index entry.");
+			log.error("GET: ERROR: Container is indexed but file was not found. Removing index entry.", fnfe);
 			removeContainer(uri);
 			return null;
 		}
@@ -206,11 +207,11 @@ public class DiskContainerCache extends DiskCache implements ContainerCache {
 			
 			if ((cachedInfo.getLastModificationDate() != null) &&
 					(cachedInfo.getLastModificationDate().compareTo(lastModificationDate) >= 0)) {
-				debug("PUT: Container is already cached and up-to-date: " + uri);
+				log.debug("PUT: Container is already cached and up-to-date: " + uri);
 				return false;
 			}
 
-			debug("PUT: Updated container available: " + uri);
+			log.debug("PUT: Updated container available: " + uri);
 
 			hashedFileName = cachedInfo.getFileName();
 			filePath = getCachedFilePath(hashedFileName);
@@ -225,7 +226,7 @@ public class DiskContainerCache extends DiskCache implements ContainerCache {
 				if (!testFile.exists()) {
 					break;
 				} else {
-					debug("PUT: Hash collision, calculating new hash: " + uri);
+					log.warn("PUT: Hash collision, calculating new hash: " + uri);
 					hashModifier = hashModifier.concat("#");
 				}
 			}
@@ -236,7 +237,7 @@ public class DiskContainerCache extends DiskCache implements ContainerCache {
 		try {
 			container.close();
 		} catch (IOException e) {
-			Tracer.debug(e.getMessage());
+			log.error("Couldn't close container file", e);
 		}
 		
 		long cachedFileSize = cachedFile.length();
@@ -251,7 +252,7 @@ public class DiskContainerCache extends DiskCache implements ContainerCache {
 		}
 		this.setModified(true);
 
-		debug("PUT: Container cached: " + uri);
+		log.info("PUT: Container cached: " + uri);
 
 		return true;
 	}
@@ -275,7 +276,7 @@ public class DiskContainerCache extends DiskCache implements ContainerCache {
 				cacheMap.remove(uri);
 			}
 
-			debug("REMOVE: Container removed from cache: " + uri);
+			log.info("REMOVE: Container removed from cache: " + uri);
 		}
 	}
 	

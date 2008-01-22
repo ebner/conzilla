@@ -12,6 +12,9 @@ import java.util.Vector;
 
 import javax.swing.tree.MutableTreeNode;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.EditEvent;
 import se.kth.cid.component.ReadOnlyException;
 import se.kth.cid.layout.BookkeepingResourceLayout;
@@ -23,7 +26,6 @@ import se.kth.cid.rdf.RDFComponentManager;
 import se.kth.cid.rdf.RDFModel;
 import se.kth.cid.rdf.RDFTreeTagNode;
 import se.kth.cid.tree.TreeTagNode;
-import se.kth.cid.util.Tracer;
 
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.RDFNode;
@@ -41,6 +43,9 @@ import com.hp.hpl.jena.vocabulary.RDF;
  */
 public class RDFResourceLayout extends RDFTreeTagNode implements LayerLayout,
 		BookkeepingResourceLayout {
+	
+	Log log = LogFactory.getLog(RDFResourceLayout.class);
+	
 	protected RDFConceptMap conceptMap;
 
 	Vector objectOfTriples;
@@ -50,17 +55,16 @@ public class RDFResourceLayout extends RDFTreeTagNode implements LayerLayout,
 	protected boolean seekForChildren = true;
 
 	public RDFResourceLayout(URI uri, RDFConceptMap cMap, Resource nodeType) {
-		super(uri, CV.displayResource, nodeType != null ? nodeType
-				: CV.NodeLayout);
-		if (cMap == null)
-			if (this instanceof RDFConceptMap)
+		super(uri, CV.displayResource, nodeType != null ? nodeType : CV.NodeLayout);
+		if (cMap == null) {
+			if (this instanceof RDFConceptMap) {
 				conceptMap = (RDFConceptMap) this;
-			else
-				Tracer.bug("Within constructor for RDFResourceLayout: "
-								+ "argument containing conceptmap is null and this object isn't a conceptmap...."
-								+ "In short, buggging out in desperate need for a ConceptMap.");
-		else
+			} else {
+				log.warn("Within constructor for RDFResourceLayout: argument containing conceptmap is null and this object isn't a conceptmap");
+			}
+		} else {
 			conceptMap = cMap;
+		}
 		subjectOfTriples = new Vector();
 		objectOfTriples = new Vector();
 	}
@@ -127,8 +131,7 @@ public class RDFResourceLayout extends RDFTreeTagNode implements LayerLayout,
 	 *         Never null.
 	 */
 	public StatementLayout[] getObjectOfStatementLayouts() {
-		return (StatementLayout[]) objectOfTriples
-				.toArray(new StatementLayout[objectOfTriples.size()]);
+		return (StatementLayout[]) objectOfTriples.toArray(new StatementLayout[objectOfTriples.size()]);
 	}
 
 	/**
@@ -138,8 +141,7 @@ public class RDFResourceLayout extends RDFTreeTagNode implements LayerLayout,
 	 *         Never null.
 	 */
 	public StatementLayout[] getSubjectOfStatementLayouts() {
-		return (StatementLayout[]) subjectOfTriples
-				.toArray(new StatementLayout[subjectOfTriples.size()]);
+		return (StatementLayout[]) subjectOfTriples.toArray(new StatementLayout[subjectOfTriples.size()]);
 	}
 
 	public boolean getAllowsChildren() {

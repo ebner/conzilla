@@ -18,6 +18,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Helper to split a single InputStream into several InputStreams and/or
  * OutputStreams. The OutputStreams have to exist already and are given in the
@@ -35,6 +38,8 @@ import java.util.List;
  * @version $Id$
  */
 public class InputStreamSplitter extends Thread {
+	
+	Log log = LogFactory.getLog(InputStreamSplitter.class);
 
 	/**
 	 * The InputStream we want to split.
@@ -293,7 +298,7 @@ public class InputStreamSplitter extends Thread {
 			}
 		} catch (IOException ioe) {
 			// This should be replaced with something different...
-			Tracer.error(ioe.getMessage());
+			log.error(ioe);
 		} finally {
 			try {
 				if (this.originalStream != null) {

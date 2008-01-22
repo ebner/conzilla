@@ -6,8 +6,6 @@
 
 package se.kth.cid.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * This class is used for debugging and for putting trace printouts in code that
@@ -20,58 +18,13 @@ import org.apache.commons.logging.LogFactory;
  * 
  * @author Mikael Nilsson
  * @version $Revision$
- * @deprecated Replaced by Apache Commons Logging. Supposed to be used like "Log
- *             log = LogFactory.getLog(CLASS.class);" after the class
- *             declaration.
+ * @deprecated Replaced by Apache Commons Logging. Supposed to be used like<br>
+ *             <pre>Log log = LogFactory.getLog(CLASS.class);</pre><br>
+ *             after the class declaration.<br>
  */
 public class Tracer {
 
-	// if we see "TRACER" in the logs we know that we have to replace the call -
-	// we should not call this class as we can get the line numbers etc!
-	private static Log log = LogFactory.getLog(Tracer.class);
-
     private Tracer() {
-    }
-
-    /**
-	 * Used when a serious error has occured, from which recovery is not
-	 * foreseen. Will throw an Error with the given message, as well as issue a
-	 * trace with level Tracer.ERROR.
-	 * 
-	 * @param trace
-	 *            the string to display.
-	 * @exception Error
-	 *                always thrown.
-	 * @deprecated
-	 */
-    public static void error(String trace) throws Error {
-        log.error(trace);
-        throw new Error(trace);
-    }
-
-    /**
-     * Used when a bug has been discovered. Will throw an Error with the given
-     * message, as well as issue a trace with level Tracer.BUG.
-     * 
-     * @param trace
-     *            the string to display.
-     * @exception Error
-     *                always thrown.
-     */
-    public static void bug(String trace) throws Error {
-        log.error(trace);
-        throw new Error(trace);
-    }
-
-    /**
-     * Used to debug program action. Actually shorthand for <br>
-     * <code> Tracer.trace(trace, Tracer.DEBUG) </code>
-     * 
-     * @param trace
-     *            the string to display.
-     */
-    public static void debug(String trace) {
-        log.debug(trace);
     }
 
 }

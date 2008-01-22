@@ -33,6 +33,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputListener;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.Component;
 import se.kth.cid.component.EditEvent;
 import se.kth.cid.component.EditListener;
@@ -51,7 +54,6 @@ import se.kth.cid.layout.LayerManager;
 import se.kth.cid.layout.ResourceLayout;
 import se.kth.cid.layout.StatementLayout;
 import se.kth.cid.util.TagManager;
-import se.kth.cid.util.Tracer;
 
 // In order of increasing color priority:
 //
@@ -68,6 +70,8 @@ public class MapDisplayer extends JPanel implements EditListener,
     public static final int PRESS_RELEASE = 1;
 
     public static final int MOVE_DRAG = 2;
+    
+    Log log = LogFactory.getLog(MapDisplayer.class);
 
     MapStoreManager manager;
 
@@ -272,8 +276,7 @@ public class MapDisplayer extends JPanel implements EditListener,
         try {
             gr.setClip(transform.createInverse().createTransformedShape(clip));
         } catch (NoninvertibleTransformException e) {
-            Tracer.error("Non-invertible transform: " + transform + ":\n "
-                    + e.getMessage());
+            log.error("Non-invertible transform: " + transform, e);
         }
 
         setRenderingHints(gr);
@@ -425,7 +428,7 @@ public class MapDisplayer extends JPanel implements EditListener,
         //if (!rc.contains(((se.kth.cid.component.Resource)
         // pc.getSource()).getURI()))
         //	return;
-        Tracer.debug("Visibility of containers changed, mapdisplayer notified");
+        log.debug("Visibility of containers changed, mapdisplayer notified");
         visibleOrderedDrawMapObjects = null;
         visibleAntiOrderedDrawMapObjects = null;
         resizeMap();
@@ -466,7 +469,7 @@ public class MapDisplayer extends JPanel implements EditListener,
                 	mo.componentEdited(e);
                 }
             } else {
-                Tracer.bug("Some unknown sub.layout editevent. Do not know how to handle!");
+                log.warn("Some unknown sub.layout editevent. Do not know how to handle!");
             }
         } else if (e.getEditType() >= ContextMap.FIRST_CONTEXTMAP_EDIT_CONSTANT
                 && e.getEditType() <= ContextMap.LAST_CONTEXTMAP_ONLY_EDIT_CONSTANT) {
@@ -489,8 +492,9 @@ public class MapDisplayer extends JPanel implements EditListener,
         } else if (e.getEditType() != se.kth.cid.component.Resource.METADATA_EDITED
                 && e.getEditType() != Component.ATTRIBUTES_EDITED
                 && e.getEditType() != se.kth.cid.component.Resource.SAVED
-                && e.getEditType() != se.kth.cid.component.Resource.EDITED)
-            Tracer.bug("Some unknown non-layout editevent. Do not know how to handle!");
+                && e.getEditType() != se.kth.cid.component.Resource.EDITED) {
+            log.warn("Some unknown non-layout editevent. Do not know how to handle!");
+        }
 
         visibleOrderedDrawMapObjects = null;
         resizeMap();

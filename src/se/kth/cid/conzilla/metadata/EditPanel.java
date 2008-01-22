@@ -12,6 +12,9 @@ import java.io.IOException;
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.Component;
 import se.kth.cid.component.Container;
 import se.kth.cid.component.EditEvent;
@@ -25,7 +28,6 @@ import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.tool.ActionMapMenuTool;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.layout.LayerLayout;
-import se.kth.cid.util.Tracer;
 import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
 
 /**
@@ -36,6 +38,8 @@ import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
  */
 public class EditPanel extends InfoPanel {
 	
+	static Log log = LogFactory.getLog(EditPanel.class);
+	
     static {
         try {
 			FormletStoreSingleton.requireFormletConfigurations("formlets/formlets.rdf");
@@ -43,7 +47,7 @@ public class EditPanel extends InfoPanel {
 	        FormletStoreSingleton.requireFormletConfigurations("formlets/ULM/formlets.rdf");
 	        FormletStoreSingleton.requireFormletConfigurations("formlets/foaf/formlets.rdf");
 		} catch (IOException e) {
-			Tracer.debug(e.getMessage());
+			log.error(e);
 		}
     }
     

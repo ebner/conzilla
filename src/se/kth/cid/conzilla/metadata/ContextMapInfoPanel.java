@@ -21,6 +21,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.collaboration.CollaborillaReader;
 import se.kth.cid.collaboration.CollaborillaSupport;
 import se.kth.cid.collaboration.MetaDataCache;
@@ -35,7 +38,6 @@ import se.kth.cid.layout.ContextMap;
 import se.kth.cid.rdf.FOAF;
 import se.kth.cid.rdf.RDFModel;
 import se.kth.cid.util.AttributeEntryUtil;
-import se.kth.cid.util.Tracer;
 import se.kth.nada.kmr.collaborilla.client.CollaborillaDataSet;
 import se.kth.nada.kmr.shame.applications.util.MetaDataPanel;
 import se.kth.nada.kmr.shame.container.EditContainer;
@@ -54,6 +56,8 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
  * @author Hannes Ebner
  */
 public class ContextMapInfoPanel extends JPanel {
+	
+	Log log = LogFactory.getLog(ContextMapInfoPanel.class);
 	
     private JScrollPane authorMetadataScrollPane;
     private JPanel authorPanel;
@@ -158,7 +162,7 @@ public class ContextMapInfoPanel extends JPanel {
         try {
 			container = ConzillaKit.getDefaultKit().getResourceStore().getAndReferenceContainer(URI.create(containerString));
 		} catch (ComponentException e) {
-			Tracer.debug(e.getMessage());
+			log.error(e);
 			return;
 		}
 		RDFModel model = (RDFModel) container;
@@ -173,7 +177,7 @@ public class ContextMapInfoPanel extends JPanel {
     private void initAuthorMetadata() {
     	Model sessionModel = getSessionMetaDataModel();
     	if (sessionModel == null) {
-    		Tracer.debug("No session metadata found.");
+    		log.warn("No session metadata found");
     		tabbedPane.remove(authorPanel);
     		mapAuthorField.setText("Unknown");
     		return;
@@ -193,7 +197,7 @@ public class ContextMapInfoPanel extends JPanel {
     		Statement statement = statements.nextStatement();
     		creatorURI = statement.getObject().toString();
     	} else {
-    		Tracer.debug("No author metadata found.");
+    		log.warn("No author metadata found");
     		tabbedPane.remove(authorPanel);
     		return;
     	}
@@ -227,7 +231,7 @@ public class ContextMapInfoPanel extends JPanel {
     	if (contributionModel != null) {
             resource = contributionModel.getResource(uri);
     	} else {
-    		Tracer.debug("No session metadata found.");
+    		log.warn("No session metadata found");
     		tabbedPane.remove(sessionPanel);
     		return;
     	}  	

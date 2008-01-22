@@ -13,6 +13,9 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.zip.GZIPOutputStream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Compresses an InputStream and provides the compressed data as new
  * InputStream. No intermediate GZIPOutputStream for compression is necessary.
@@ -23,6 +26,8 @@ import java.util.zip.GZIPOutputStream;
  * @see java.util.zip.GZIPOutputStream
  */
 public class GZIPInputStreamCompressor extends Thread {
+	
+	Log log = LogFactory.getLog(GZIPInputStreamCompressor.class);
 
 	/**
 	 * Original InputStream.
@@ -153,7 +158,7 @@ public class GZIPInputStreamCompressor extends Thread {
 			}
 		} catch (IOException ioe) {
 			// This should be replaced with something different...
-			Tracer.error(ioe.getMessage());
+			log.error(ioe);
 		} finally {
 			try {
 				if (input != null) {

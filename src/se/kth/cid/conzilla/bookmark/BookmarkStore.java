@@ -22,10 +22,12 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.conzilla.InfoMessageException;
 import se.kth.cid.conzilla.install.Installer;
 import se.kth.cid.util.FileOperations;
-import se.kth.cid.util.Tracer;
 
 /**
  * Takes care of loading and storing the TreeModel of the BookmarkTree.
@@ -34,13 +36,13 @@ import se.kth.cid.util.Tracer;
  * @version $Id$
  */
 public class BookmarkStore {
+	
+	Log log = LogFactory.getLog(BookmarkStore.class);
 
 	/**
 	 * The marker for detecting whether to store the TreeModel or not.
 	 */
 	private boolean modified = false;
-	
-	private static String storeName = "BookmarkStore";
 	
 	private File dataFile;
 	
@@ -91,11 +93,11 @@ public class BookmarkStore {
 			}
 		});
 		
-		debug("Setting up flushing timer and shutdown hook");
+		log.debug("Setting up flushing timer and shutdown hook");
 		new Timer().schedule(new StoreFlusher(), flushingInterval, flushingInterval);
 		Runtime.getRuntime().addShutdownHook(new Thread(new StoreFlusher()));
 		
-		debug("Started");
+		log.info("Started");
 	}
 	
 	/**
@@ -108,13 +110,14 @@ public class BookmarkStore {
 		BufferedInputStream bis = null;
 		XMLDecoder input = null;
 		try {
-			debug("Loading data from " + modelFile);
+			log.debug("Loading data from " + modelFile);
 			bis = new BufferedInputStream(new FileInputStream(modelFile), bufferSize);
 			try {
 				input = new XMLDecoder(bis);
 				model = (BookmarkTreeModel) input.readObject();
 			} catch (Exception e) {
-				debug(e.getMessage() + ": creating new model");
+				log.error("Error when loading old model", e);
+				log.info("Will create new model");
 				createModel();
 			}
 		} catch (IOException ioe) {
@@ -133,10 +136,6 @@ public class BookmarkStore {
 		//BookmarkInformation root = new BookmarkInformation("root", "Bookmarks", BookmarkInformation.TYPE_FOLDER);
 		//model = new DefaultTreeModel(new BookmarkNode(root));
 		model = new BookmarkTreeModel();
-	}
-	
-	private void debug(String message) {
-		Tracer.debug(storeName + ": " + message);
 	}
 	
 	private static String getIndexFilePath(String file) {
@@ -161,7 +160,7 @@ public class BookmarkStore {
 				try {
 					encoder.writeObject(model);
 				} catch (Exception e) {
-					debug("Error occured while saving bookmarks");
+					log.error("Error occured while saving bookmarks", e);
 					return;
 				}
 			} catch (FileNotFoundException fnfe) {
@@ -173,7 +172,7 @@ public class BookmarkStore {
 			}
 			FileOperations.moveFile(tmpDataFile.toURI(), dataFile.toURI());
 			modified = false;
-			debug("Wrote data to disk");
+			log.debug("Wrote data to disk");
 		}
 	}
 	

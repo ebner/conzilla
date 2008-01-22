@@ -18,6 +18,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.Component;
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.Container;
@@ -25,7 +28,6 @@ import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.metadata.EditPanel;
 import se.kth.cid.conzilla.metadata.InfoPanel;
 import se.kth.cid.notions.ContentInformation;
-import se.kth.cid.util.Tracer;
 import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
 
 /**
@@ -36,6 +38,9 @@ import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
  * @author   matthias
  */
 public class ContentEditor extends InfoPanel {
+	
+	static Log log = LogFactory.getLog(ContentEditor.class); 
+	
     static {
         try {
 			FormletStoreSingleton.requireFormletConfigurations("formlets/notions/formlets.rdf");
@@ -43,7 +48,7 @@ public class ContentEditor extends InfoPanel {
 	        FormletStoreSingleton.requireFormletConfigurations("formlets/Simple_Dublin_Core/formlets.rdf");
 	        FormletStoreSingleton.requireFormletConfigurations("formlets/ULM/formlets.rdf");
 		} catch (IOException e) {
-			Tracer.debug(e.getMessage());
+			log.error(e);
 		}
     }
     

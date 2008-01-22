@@ -30,6 +30,8 @@ import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jdesktop.layout.GroupLayout;
 
 import se.kth.cid.collaboration.CollaborillaConfiguration;
@@ -42,7 +44,6 @@ import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.identity.MIMEType;
 import se.kth.cid.rdf.CV;
 import se.kth.cid.rdf.RDFModel;
-import se.kth.cid.util.Tracer;
 import se.kth.nada.kmr.shame.applications.util.Container;
 
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -55,6 +56,8 @@ import com.hp.hpl.jena.vocabulary.RDF;
  * @version $Id$
  */
 public class CollaborationSettingsDialog extends JFrame {
+	
+	Log log = LogFactory.getLog(CollaborationSettingsDialog.class);
 
 	private DefaultListModel locationsModel;
 	
@@ -442,7 +445,7 @@ public class CollaborationSettingsDialog extends JFrame {
 			try {
 				ConzillaKit.getDefaultKit().getResourceStore().getComponentManager().saveResource(agentContainer);
 			} catch (ComponentException e) {
-				Tracer.debug("Agent information could not be saved: " + e.getMessage());
+				log.error("Agent information could not be saved", e);
 			}
 		}
 	}
@@ -457,7 +460,7 @@ public class CollaborationSettingsDialog extends JFrame {
 			Object[] objs = kit.getResourceStore().checkCreateContainer(uri);
 			agentContainer = (RDFModel) kit.getResourceStore().createContainer(uri, (URI) objs[0], (MIMEType) objs[1]);
 		} catch (ComponentException e) {
-			Tracer.bug(e.getMessage());
+			log.error("No existing file with information on agent and cannot create new either", e);
 			throw new RuntimeException("No existing file with information on agent and cannot create new either!");
 		}
 		agentContainer.setPurpose("agent");

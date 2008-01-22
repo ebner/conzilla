@@ -13,6 +13,9 @@ import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.Container;
 import se.kth.cid.component.ContainerManager;
@@ -22,7 +25,6 @@ import se.kth.cid.conzilla.session.Session;
 import se.kth.cid.conzilla.session.SessionFactory;
 import se.kth.cid.conzilla.session.SessionImpl;
 import se.kth.cid.conzilla.session.SessionManagerImpl;
-import se.kth.cid.util.Tracer;
 
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -36,6 +38,8 @@ import com.hp.hpl.jena.vocabulary.RDF;
  * @author matthias
  */
 public class RDFSessionManager extends SessionManagerImpl implements SessionFactory {
+	
+	Log log = LogFactory.getLog(RDFSessionManager.class);
 
 	ContainerManager containerManager;
 
@@ -122,15 +126,15 @@ public class RDFSessionManager extends SessionManagerImpl implements SessionFact
 				model.setEdited(true);
 				store.getComponentManager().saveResource(model);
 			} catch (ComponentException e) {
-				e.printStackTrace();
-				Tracer.bug("Failed to save project container on uri :" + containerUri);
+				log.error("Failed to save project container on uri: " + containerUri, e);
 			}
 		} else {
-			Tracer.bug("Failed to save project container since model could not be located for uri:\n" + containerUri);
+			log.error("Failed to save project container since model could not be located for uri: " + containerUri);
 		}
 	}
 
 	public static Property title = null;
+	
 	static {
 		title = new PropertyImpl("http://purl.org/dc/elements/1.1/title");
 	}
@@ -197,7 +201,7 @@ public class RDFSessionManager extends SessionManagerImpl implements SessionFact
 			loadSession(model);
 			model.setPurpose(SESSIONS);
 		} else {
-			Tracer.bug("Failed to load project container from uri :" + containerUri);
+			log.error("Failed to load project container from uri :" + containerUri);
 		}
 	}
 
@@ -208,7 +212,9 @@ public class RDFSessionManager extends SessionManagerImpl implements SessionFact
 				return (RDFModel) container;
 			}
 		} catch (ComponentException e) {
+			log.error(e);
 		} catch (URISyntaxException e) {
+			log.error(e);
 		}
 		return null;
 	}

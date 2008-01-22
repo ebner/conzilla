@@ -73,8 +73,7 @@ public class MemConceptMap extends GenericConceptMap {
                         + "' was already in this map.");
         }
 
-        MemConceptLayout ns =
-            new MemConceptLayout(mapID, conceptURI, this, null, ttm);
+        MemConceptLayout ns = new MemConceptLayout(mapID, conceptURI, this, null, ttm);
         layerManager.addResourceLayout(ns, parentMapID);
 
         return ns;
@@ -192,6 +191,6 @@ public class MemConceptMap extends GenericConceptMap {
 
 	public void removeFromContainer(Container cont) {
 		// TODO Auto-generated method stub
-		
 	}
+
 }

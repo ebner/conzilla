@@ -15,6 +15,9 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.controller.ControllerException;
 import se.kth.cid.conzilla.controller.MapController;
@@ -30,9 +33,11 @@ import se.kth.cid.conzilla.view.View;
 import se.kth.cid.identity.URIClassifier;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.layout.DrawerLayout;
-import se.kth.cid.util.Tracer;
 
 public class Browse {
+	
+	Log log = LogFactory.getLog(Browse.class);
+	
 	/**
 	 * Listens for press and release in the map.
 	 */
@@ -268,7 +273,7 @@ public class Browse {
 	}
 
 	public void markLastConcept(MapScrollPane pane, String uri) {
-		Tracer.debug("Marking " + uri);
+		log.debug("Marking " + uri);
 		unmarkLastConcept(pane);
 		if (uri == null)
 			return;

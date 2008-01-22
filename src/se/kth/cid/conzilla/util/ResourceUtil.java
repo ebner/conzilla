@@ -9,13 +9,15 @@ package se.kth.cid.conzilla.util;
 import java.net.URI;
 import java.util.Iterator;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.AttributeEntry;
 import se.kth.cid.component.Component;
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.Container;
 import se.kth.cid.component.ContainerManager;
 import se.kth.cid.conzilla.app.ConzillaKit;
-import se.kth.cid.util.Tracer;
 
 import com.hp.hpl.jena.vocabulary.RDF;
 
@@ -26,6 +28,8 @@ import com.hp.hpl.jena.vocabulary.RDF;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class ResourceUtil {
+	
+	static Log log = LogFactory.getLog(ResourceUtil.class);
 
     public static Container findContainer(Component comp) {
         try {
@@ -33,9 +37,9 @@ public class ResourceUtil {
                 .getDefaultKit()
                 .getResourceStore()
                 .getAndReferenceContainer(URI.create(comp.getLoadContainer()));
-        } catch (ComponentException e1) {
-            e1.printStackTrace();
-            Tracer.bug("Couldn't find loadcontainer for contextmap!!!");
+        } catch (ComponentException e) {
+            e.printStackTrace();
+            log.error("Couldn't find loadcontainer for contextmap", e);
             return null;
         }
     }
@@ -55,4 +59,5 @@ public class ResourceUtil {
         }
         return false;
     }
+
 }

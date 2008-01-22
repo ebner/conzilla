@@ -14,8 +14,12 @@ import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.naming.ConfigurationException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.conzilla.install.Installer;
-import se.kth.cid.util.Tracer;
 
 /**
  * ConfigurationManager is loading, saving, and returning Conzilla's configuration.
@@ -25,6 +29,8 @@ import se.kth.cid.util.Tracer;
  * @version $Id$
  */
 public class ConfigurationManager {
+	
+	static Log log = LogFactory.getLog(ConfigurationManager.class);
 
 	/**
 	 * Instance of the ConfigurationManager.
@@ -48,13 +54,6 @@ public class ConfigurationManager {
 	 */
 	private static final boolean saveable = true;
 
-	/**
-	 * Helper to get the class name without packages. (Not needed for JDK >=
-	 * 1.5)
-	 */
-	private final static String simpleClassName = ConfigurationManager.class.getName().substring(
-			ConfigurationManager.class.getName().lastIndexOf('.') + 1);
-
 	/* Private methods */
 
 	/**
@@ -73,13 +72,13 @@ public class ConfigurationManager {
 					getConfiguration().save(configURI.toURL());
 				} catch (MalformedURLException e) {
 					successful = false;
-					debug(e.getMessage());
+					log.error(e);
 				} catch (IOException e) {
 					successful = false;
-					debug(e.getMessage());
+					log.error(e);
 				}
 				if (successful) {
-					debug("Configuration saved to " + configURI);
+					log.debug("Configuration saved to " + configURI);
 				}
 			}
 		}
@@ -99,9 +98,9 @@ public class ConfigurationManager {
 				// We don't call configFile.toURL() because it doesn't escape spaces etc.
 				loadConfiguration(getConfigurationURI().toURL());
 			} catch (MalformedURLException e) {
-				debug(e.getMessage());
+				log.error(e);
 			} catch (IOException e) {
-				debug(e.getMessage());
+				log.error(e);
 			}
 		} else {
 			createConfiguration();
@@ -122,7 +121,7 @@ public class ConfigurationManager {
 	private void loadConfiguration(URL configURL) throws IOException {
 		initMainConfig();
 		mainConfig.load(configURL);
-		debug("INIT: Configuration loaded from " + configURL);
+		log.info("Configuration loaded from " + configURL);
 	}
 
 	/**
@@ -135,11 +134,11 @@ public class ConfigurationManager {
 		File confDir = new File(getConfigurationDirectory());
 		if (!(confDir.exists() && confDir.isDirectory())) {
 			if (!confDir.mkdirs()) {
-				debug("INIT: Unable to create configuration directory");
+				log.error("Unable to create configuration directory");
 			}
 		}
 		initMainConfig();
-		debug("INIT: Configuration created");
+		log.info("Configuration created");
 	}
 
 	/**
@@ -147,13 +146,9 @@ public class ConfigurationManager {
 	 * to disk.
 	 */
 	private void startConfigurationSaver() {
-		debug("INIT: Setting up configuration interval saving");
+		log.debug("Setting up configuration interval saving");
 		new Timer().schedule(new ConfigurationSaver(), flushingInterval, flushingInterval);
 		Runtime.getRuntime().addShutdownHook(new Thread(new ConfigurationSaver()));
-	}
-
-	private static void debug(String message) {
-		Tracer.debug(simpleClassName + ": " + message);
 	}
 
 	/**
@@ -211,8 +206,10 @@ public class ConfigurationManager {
 			initialize();
 		}
 		if (mainConfig == null) {
-			throw new IllegalStateException(simpleClassName
-					+ " is in an illegal state: no configuration is managed.");
+			log.error(ConfigurationManager.class.getSimpleName()
+					+ " is in an illegal state: no configuration is managed");
+			throw new IllegalStateException(ConfigurationManager.class.getSimpleName()
+					+ " is in an illegal state: no configuration is managed");
 		}
 		return mainConfig;
 	}

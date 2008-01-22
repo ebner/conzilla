@@ -8,10 +8,12 @@ package se.kth.cid.conzilla.content;
 
 import java.net.URI;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.Resource;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.controller.ControllerException;
-import se.kth.cid.util.Tracer;
 
 /**
  * Simple content displayer for showing a map in a new view.
@@ -20,6 +22,8 @@ import se.kth.cid.util.Tracer;
  * @version $Id$
  */
 public class OpenMapContentDisplayer extends AbstractContentDisplayer {
+	
+	Log log = LogFactory.getLog(OpenMapContentDisplayer.class);
 	
 	public OpenMapContentDisplayer() {
 	}
@@ -32,7 +36,7 @@ public class OpenMapContentDisplayer extends AbstractContentDisplayer {
 		try {
 			ConzillaKit.getDefaultKit().getConzilla().openMapInNewView(URI.create(c.getURI()), null);
 		} catch (ControllerException e) {
-			Tracer.debug(e.getMessage());
+			log.error(e);
 		}
 	}
 	

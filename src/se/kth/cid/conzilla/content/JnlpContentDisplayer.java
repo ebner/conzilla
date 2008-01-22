@@ -12,9 +12,12 @@ import javax.jnlp.BasicService;
 import javax.jnlp.ServiceManager;
 import javax.jnlp.UnavailableServiceException;
 
-import se.kth.cid.util.Tracer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class JnlpContentDisplayer extends BrowserContentDisplayer {
+	
+	Log log = LogFactory.getLog(JnlpContentDisplayer.class);
 	
 	BasicService basicService;
 
@@ -22,7 +25,7 @@ public class JnlpContentDisplayer extends BrowserContentDisplayer {
 		try {
 			basicService = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
 		} catch (UnavailableServiceException ue) {
-			Tracer.error("Service unavailable: javax.jnlp.BasicService.");
+			log.error("Service unavailable: javax.jnlp.BasicService", ue);
 		}
 	}
 
