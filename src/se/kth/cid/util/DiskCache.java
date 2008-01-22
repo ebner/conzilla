@@ -89,7 +89,7 @@ public abstract class DiskCache {
 		BufferedInputStream bis = null;
 		XMLDecoder input = null;
 		try {
-			log.info("Loading Index from " + indexFile);
+			log.debug("Loading Index from " + indexFile);
 			bis = new BufferedInputStream(new FileInputStream(indexFile), bufferSize);
 			input = new XMLDecoder(bis);
 			cacheMap = (HashMap) input.readObject();
@@ -150,7 +150,7 @@ public abstract class DiskCache {
 	 * Activates a TaskTimer and a ShutdownHook to flush the index to disk.
 	 */
 	private void initIndexFlushers() {
-		log.info("Setting up index flushing timer and shutdown hook");
+		log.debug("Setting up index flushing timer and shutdown hook");
 		new Timer().schedule(new IndexFlusher(this), flushingInterval, flushingInterval);
 		Runtime.getRuntime().addShutdownHook(new Thread(new IndexFlusher(this)));
 	}
