@@ -70,7 +70,7 @@ public class ConzillaResourceManager {
 		try {
 			return b.getString(key);
 		} catch (MissingResourceException e) {
-			log.error("Resource " + key + " not found in resource bundle " + resourceBundle, e);
+			log.error("Resource " + key + " not found in resource bundle " + resourceBundle);
 			return null;
 		}
 	}

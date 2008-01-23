@@ -32,6 +32,7 @@ import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.app.Conzilla;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.app.Extra;
+import se.kth.cid.conzilla.browse.LogViewer;
 import se.kth.cid.conzilla.browse.NewWindowTool;
 import se.kth.cid.conzilla.browse.ZoomDefaultTool;
 import se.kth.cid.conzilla.browse.ZoomTool;
@@ -442,6 +443,12 @@ public class DefaultMenuFactory implements MenuFactory {
 				new AboutMessage();
 			}
 		}, 600);
+		
+		help.addTool(new Tool("SHOWLOG", DefaultMenuFactory.class.getName()) {
+			public void actionPerformed(ActionEvent e) {
+				new LogViewer().setVisible(true);
+			}
+		}, 700);
 
 		// openMap(conzilla, help, controller, ABOUT_MAP, "ABOUT", 100);
 

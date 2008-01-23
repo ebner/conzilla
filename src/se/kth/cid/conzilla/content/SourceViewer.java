@@ -36,7 +36,7 @@ public class SourceViewer extends JFrame {
 		
 		JTextArea text = new JTextArea();
 		text.setEditable(false);
-		text.setFont(new Font("Courier", Font.PLAIN, 10));
+		text.setFont(new Font("Courier", Font.PLAIN, 12));
 		getContentPane().add(new JScrollPane(text));
 		
 		text.append(getContextMapSource());
