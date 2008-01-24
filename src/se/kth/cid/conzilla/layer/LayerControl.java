@@ -20,6 +20,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -215,13 +216,19 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
             popup.addTool(raise, 300);
             create = new Tool("CREATE", LayerControl.class.getName()) {
 				public void actionPerformed(ActionEvent e) {
+					controller.getConceptMap().getComponentManager().getUndoManager().startChange();
 					LayerLayout ll = choosenLayerEntry.getLayerLayout();
 					ContextMap cMap = ll.getConceptMap();
 					Session session = cMap.getComponentManager().getEditingSesssion();
 					LayerLayout nll = ll.getConceptMap().getLayerManager().createLayer(null, 
 							URI.create(session.getContainerURIForLayouts()), cMap);
 					nll.addEditListener(LayerEntries.this);
-		            EditPanel.launchEditPanelInFrame(nll);
+		            EditPanel.launchEditPanelInFrame(nll, new AbstractAction() {
+						public void actionPerformed(ActionEvent e) {
+							controller.getConceptMap().getComponentManager().getUndoManager().makeChange();
+						}
+		            });
+					controller.getConceptMap().getComponentManager().getUndoManager().endChange();
 				}
             };
             popup.addTool(create, 300);
@@ -314,6 +321,9 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
 					le.refreshLabel();
 				}
 				repaint();
+			}
+			if (e.getEditType() == ContextMap.CONTEXTMAP_REFRESHED) {
+				refresh(controller.getConceptMap().getLayerManager());
 			}
 		}
     }

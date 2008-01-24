@@ -50,6 +50,11 @@ public interface ComponentManager {
 	TagManager getTagManager();
 	
 	/**
+	 * @return an UndoManager only relevant if the managed Component is a ContextMap.
+	 */
+	UndoManager getUndoManager();
+	
+	/**
 	 * A reference to the containerManager.
 	 * @return the ContainerManager, never null.
 	 */

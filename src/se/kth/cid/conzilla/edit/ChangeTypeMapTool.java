@@ -21,6 +21,8 @@ import se.kth.cid.conzilla.tool.MapMenuTool;
 import se.kth.cid.conzilla.util.ResourceUtil;
 import se.kth.cid.conzilla.util.TreeTagNodeMenuListener;
 import se.kth.cid.layout.StatementLayout;
+import se.kth.cid.rdf.RDFComponent;
+import se.kth.cid.rdf.RDFComponentManager;
 import se.kth.cid.tree.TreeTagNode;
 
 import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
@@ -72,25 +74,35 @@ public class ChangeTypeMapTool extends MapMenuTool implements TreeTagNodeMenuLis
                 if (mapObject.getDrawerLayout() instanceof StatementLayout) {
                     //Indicates that something has gone wrong, the tripple is missing.
                     StatementLayout sl = (StatementLayout) (mapObject.getDrawerLayout());
-                    if (! sl.isLiteralStatement() 
-                            && JOptionPane.showConfirmDialog(null, "The layout indicates that the concept should be a concept-relation \n" +
+                    if (! sl.isLiteralStatement()) {
+                    	
+                    	if (JOptionPane.showConfirmDialog(null, "The layout indicates that the concept should be a concept-relation \n" +
                             "but the actual relation is missing, \n" +
                             "(perhaps a container failed to load, then check that first before you go ahed). \n" +
                             "Go ahed and add the relation information?",
                             "Create concept-relation",
                             JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                        c.createTriple(sl.getObjectLayout().getConceptURI(), treeTagNode.getValue(), sl.getObjectLayout().getConceptURI(), false);
-                    } else if (JOptionPane.showConfirmDialog(null, "The layout indicates that the concept should be a concept-relation with a literal as object \n" +
+                    		c.createTriple(sl.getObjectLayout().getConceptURI(), treeTagNode.getValue(), sl.getObjectLayout().getConceptURI(), false);
+                    	} else {
+                    		return;
+                    	}
+                    	
+                    } else {
+                    	if (JOptionPane.showConfirmDialog(null, "The layout indicates that the concept should be a concept-relation with a literal as object \n" +
                             "but the actual relation is missing, \n" +
                             "(perhaps a container failed to load, then check that first before you go ahed). \n" +
                             "Go ahed and add the relation information, the literal will be set arbitrary and you have to change it later?", 
                             "Create concept-relation with literal as object", 
-                            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-                        c.createTriple(sl.getObjectLayout().getConceptURI(), treeTagNode.getValue(), "Change me", true);
+                            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    		c.createTriple(sl.getObjectLayout().getConceptURI(), treeTagNode.getValue(), "Change me", true);
+                    	} else {
+                    		return;
+                    	}
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Cannot change a concept to a concept-relation, \n" +
                         "there is to little indormation information, create a new one instead!");
+                    return;
                 }
             }
             Triple triple = c.getTriple();
@@ -98,5 +110,6 @@ public class ChangeTypeMapTool extends MapMenuTool implements TreeTagNodeMenuLis
         }
         controller.getView().getMapScrollPane().getDisplayer().createMapObjects();
         controller.getView().getMapScrollPane().getDisplayer().repaint();
+        controller.getConceptMap().getComponentManager().getUndoManager().makeChange();
     }
 }

@@ -363,7 +363,8 @@ public class MapController implements PropertyChangeListener, EditListener {
 	 * @see se.kth.cid.component.EditListener#componentEdited(se.kth.cid.component.EditEvent)
 	 */
 	public void componentEdited(EditEvent e) {
-		if (e.getEditType() == se.kth.cid.component.Component.ATTRIBUTES_EDITED) {
+		if (e.getEditType() == se.kth.cid.component.Component.ATTRIBUTES_EDITED
+				|| e.getEditType() == ContextMap.CONTEXTMAP_REFRESHED) {
 			firePropertyChange(MAP_PROPERTY, null, null);
 		}
 	}

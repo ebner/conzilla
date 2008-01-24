@@ -137,6 +137,8 @@ public class RDFContainerManager implements ContainerManager {
 
 	private Model union = null;
 
+	private ModelHistoryListenerCentral central;
+
 	// FtpHandler ftpHandler;
 
 	public RDFContainerManager() {
@@ -148,6 +150,14 @@ public class RDFContainerManager implements ContainerManager {
 		}
 	}
 
+	public ModelHistoryListenerCentral getModelHistoryListenerCentral() {
+		if (this.central == null) {
+			this.central = new ModelHistoryListenerCentral();
+		}
+
+		return this.central;
+	}
+	
 	/**
 	 * Tells wether to stay in the same model as the treenode above when
 	 * creating new layouts.

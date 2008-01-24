@@ -31,12 +31,18 @@ import org.apache.commons.logging.LogFactory;
 
 import se.kth.cid.collaboration.CollaborillaReader;
 import se.kth.cid.collaboration.CollaborillaSupport;
+import se.kth.cid.component.Component;
+import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.ComponentFactory;
 import se.kth.cid.component.ComponentManager;
 import se.kth.cid.component.Container;
 import se.kth.cid.component.ContainerManager;
+import se.kth.cid.component.UndoManager;
 import se.kth.cid.config.ConfigurationManager;
+import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.session.Session;
+import se.kth.cid.layout.ContextMap;
+import se.kth.cid.rdf.layout.RDFConceptMap;
 import se.kth.cid.tree.generic.MemTreeTagManager;
 import se.kth.cid.util.TagManager;
 import se.kth.nada.kmr.collaborilla.client.CollaborillaDataSet;
@@ -61,6 +67,8 @@ public class RDFComponentManager implements ComponentManager {
 	private boolean collaborillaCheckNeeded = true;
 
 	private boolean collaborative;
+
+	private RDFUndoManager undoManager;
 
 	public RDFComponentManager(ComponentFactory cf, URI componentURI, TagManager tagManager, boolean collaborative) {
 		this.collaborative = collaborative;
@@ -191,10 +199,17 @@ public class RDFComponentManager implements ComponentManager {
 	}
 
 	public boolean setLockForEditing(Object lockedBy, Session editorSession) {
+		boolean success = false;
 		if (currentSession == null) {
 			this.lockedByObject = lockedBy;
 			this.currentSession = editorSession;
 			if (editorSession != null) {
+				try {
+					Component comp = ConzillaKit.getDefaultKit().getResourceStore().getAndReferenceComponent(uri);
+					if (undoManager == null && comp instanceof RDFConceptMap && componentFactory instanceof RDFComponentFactory) {
+						undoManager = new RDFUndoManager((RDFConceptMap) comp);
+					}
+				} catch (ComponentException e) {}
 				URI cTag = URI.create(editorSession.getContainerURIForConcepts());
 				URI lTag = URI.create(editorSession.getContainerURIForLayouts());
 				containerIsRelevant(cTag, false);
@@ -202,12 +217,19 @@ public class RDFComponentManager implements ComponentManager {
 				tagManager.setTagVisible(lTag, true); //When new tag, since we set just defaulted it to false, setting it to true will generate an event.
 				tagManager.setTagVisible(cTag, true);
 			}
-			return true;
+			success = true;
 		} else if (this.lockedByObject == lockedBy) {
 			this.currentSession = editorSession;
-			return true;
+			success = true;
 		}
-		return false;
+		if (undoManager != null) {
+			if (editorSession != null) {
+				undoManager.startRecording();
+			} else {
+				undoManager.stopRecording();
+			}
+		}
+		return success;
 	}
 
 	public void useRevision(int revision) {
@@ -294,5 +316,9 @@ public class RDFComponentManager implements ComponentManager {
 			}
 		}
 		return set;
+	}
+
+	public UndoManager getUndoManager() {
+		return undoManager;
 	}
 }

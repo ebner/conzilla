@@ -555,8 +555,10 @@ public class MapDisplayer extends JPanel implements EditListener,
 
     void removeResourceLayout(String id) {
         MapObject nmo = (MapObject) drawMapObjects.get(id);
-        nmo.detach();
-        drawMapObjects.remove(id);
+        if (nmo != null) {
+        	nmo.detach();
+        	drawMapObjects.remove(id);
+        }
     }
 
     public void detach() {

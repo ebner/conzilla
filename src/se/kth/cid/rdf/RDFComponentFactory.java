@@ -47,20 +47,11 @@ public class RDFComponentFactory extends MemTreeTagManager implements ComponentF
 	
 	Log log = LogFactory.getLog(RDFComponentFactory.class);
 
-//	Container currentConceptContainer;
-
-//	Container currentLayoutContainer;
-
 	boolean createTriple = true;
-
 	String reificationType = RDF.Statement.getURI();
-
 	boolean treeTagNodeLoadModelDomination = false;
-
 	boolean includeRequestsAutomaticallyManged = true;
-
 	private ComponentCache cache;
-
 	private RDFContainerManager containerManager;
 
 	public RDFComponentFactory(ComponentCache cache, RDFContainerManager cm) {
@@ -109,7 +100,7 @@ public class RDFComponentFactory extends MemTreeTagManager implements ComponentF
 	public void setIncludeRequestsAutmaticallyManaged(boolean bo) {
 		this.includeRequestsAutomaticallyManged = bo;
 	}
-
+	
 	/**
 	 * @see se.kth.cid.component.ContainerManager#loadTree(se.kth.cid.identity.URI)
 	 */

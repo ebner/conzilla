@@ -56,9 +56,13 @@ class InsertClipboardConceptMapTool extends InsertMapTool {
 
     public void actionPerformed(ActionEvent e) {
         if (clipboard.getConcept() != null) {
-            pasteSingleConcept();            
+            controller.getConceptMap().getComponentManager().getUndoManager().startChange();
+        	pasteSingleConcept();
+            controller.getConceptMap().getComponentManager().getUndoManager().endChange();
         } else if (clipboard.getDrawerLayouts() != null) {
+            controller.getConceptMap().getComponentManager().getUndoManager().startChange();
             pasteMultipleConcepts();
+            controller.getConceptMap().getComponentManager().getUndoManager().endChange();
         }
 
     }

@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JFrame;
 
 import org.apache.commons.logging.Log;
@@ -80,7 +81,11 @@ public class EditPanel extends InfoPanel {
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            EditPanel.launchEditPanelInFrame(comp);
+            EditPanel.launchEditPanelInFrame(comp, new AbstractAction() {
+				public void actionPerformed(ActionEvent e) {
+					controller.getConceptMap().getComponentManager().getUndoManager().makeChange();
+				}
+            });
         }
     }
     
@@ -91,8 +96,12 @@ public class EditPanel extends InfoPanel {
     static public String context_form = "http://kmr.nada.kth.se/shame/ulm/formlet#context-form";
     
     static public String container_form = "http://kmr.nada.kth.se/shame/ulm/formlet#container-compound";
-    
+
     static public void launchEditPanelInFrame(final se.kth.cid.component.Component component) {
+    	launchEditPanelInFrame(component, null);
+    }
+
+    static public void launchEditPanelInFrame(final se.kth.cid.component.Component component, final Action doneAction) {
         final EditPanel editPanel = new EditPanel(component);
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -103,6 +112,9 @@ public class EditPanel extends InfoPanel {
                     component.getComponentManager().refresh();
                     if (component instanceof FiringResource) {
                         ((FiringResource) component).fireEditEvent(new EditEvent(component, null, Component.ATTRIBUTES_EDITED, null));
+                    }
+                    if (doneAction != null) {
+                    	doneAction.actionPerformed(e);
                     }
                 }                
             }

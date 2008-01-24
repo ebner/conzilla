@@ -57,7 +57,7 @@ public class RDFComponent extends FiringResourceImpl implements se.kth.cid.compo
 
 	/** A cache of the type of this resource.
      */
-    protected String type = null;
+//    protected String type = null;
 
 	private boolean updating;
         
@@ -116,7 +116,7 @@ public class RDFComponent extends FiringResourceImpl implements se.kth.cid.compo
      * this conzilla session.
      */
     protected void initUpdate() {
-        type = null;
+   //     type = null;
 		rcm.refresh();
 //        refreshRelevantContainers();
     }
@@ -228,20 +228,17 @@ public class RDFComponent extends FiringResourceImpl implements se.kth.cid.compo
     }
 
     public String getType() {
-        if (type != null)
-            return type;
-    
         RDFModel model = getLoadModel();
         if (model != null) {
         	Statement stmt = model.getResource(getURI()).getProperty(RDF.type);
             if (stmt != null) {
-            	type = stmt.getResource().getURI();
+            	return stmt.getResource().getURI();
             } else {
             	return null;
             }
         }
         
-        return type;
+        return null;
     }
 
     public void remove() {

@@ -134,7 +134,7 @@ public class RDFStatementLayout
 			line = (ContextMap.Position[]) vec
 					.toArray(new ContextMap.Position[vec.size()]);
 		} else {
-			line = null;
+			line = new ContextMap.Position[0];
 		}
 
     }
@@ -144,8 +144,20 @@ public class RDFStatementLayout
     }
 
     public void setLine(ContextMap.Position[] line) throws ReadOnlyException {
-        // Do check if no changes are needed here....
-
+        // If line is already the same return directly. 
+    	if (line.length == this.line.length) {
+    		boolean equal = true;
+    		for (int i = 0; i < line.length; i++) {
+				if (!line[i].equals(this.line[i])) {
+					equal = false;
+					break;
+				}
+			}
+			if (equal) {
+				return;
+			}
+    	}
+    	
         isEditable();
 
         RDFModel model = getLoadModel();

@@ -56,6 +56,8 @@ public abstract class RDFTreeTagNode
     /** The RDF predicate (property) linking this RDF resource to its content.
         May be null if there is no content. */
     protected Property property;
+    
+    protected String type;
 
     public RDFTreeTagNode(URI uri, Property property, Resource nodeType) {
     	super(uri);

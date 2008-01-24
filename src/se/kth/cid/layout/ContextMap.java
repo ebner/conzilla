@@ -17,7 +17,8 @@ public interface ContextMap extends Context {
     int DIMENSION_EDITED = FIRST_CONTEXTMAP_EDIT_CONSTANT;
     int RESOURCELAYOUT_ADDED = FIRST_CONTEXTMAP_EDIT_CONSTANT + 1;
     int RESOURCELAYOUT_REMOVED = FIRST_CONTEXTMAP_EDIT_CONSTANT + 2;
-    int CONTEXTMAP_REFRESHED = FIRST_CONTEXTMAP_EDIT_CONSTANT + 3;
+    int RESOURCELAYOUT_PRIORITY_CHANGED = FIRST_CONTEXTMAP_EDIT_CONSTANT + 3;
+    int CONTEXTMAP_REFRESHED = FIRST_CONTEXTMAP_EDIT_CONSTANT + 4;
    
     int LAST_CONTEXTMAP_ONLY_EDIT_CONSTANT = CONTEXTMAP_REFRESHED;
     int LAST_CONTEXTMAP_EDIT_CONSTANT = StatementLayout.LAST_TRIPLESTYLE_EDIT_CONSTANT;
@@ -46,6 +47,14 @@ public interface ContextMap extends Context {
         public Position(int x, int y) {
             this.x = x;
             this.y = y;
+        }
+        
+        public boolean equals(Object obj) {
+        	if (obj instanceof Position) {
+        		Position pos = (Position) obj;
+        		return pos.x==x && pos.y==y;
+        	}
+        	return false;
         }
     }
 

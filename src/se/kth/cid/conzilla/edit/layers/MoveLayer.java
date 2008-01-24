@@ -58,6 +58,7 @@ public class MoveLayer extends Layer implements KeyListener {
     MapToolsMenu menu3;
     private boolean textIsInBox;
 	private MapTextArea title;
+	private boolean dirty = false;
 
     public MoveLayer(
         MapController controller,
@@ -187,6 +188,16 @@ public class MoveLayer extends Layer implements KeyListener {
         super.mousePressed(m);
     }
 
+    public void mouseDragged(MapEvent m) {
+    	super.mouseDragged(m);
+        if (handles != null && pressed) {
+        	if (!dirty) {
+        		dirty = true;
+            	controller.getConceptMap().getComponentManager().getUndoManager().startChange();
+        	}
+        }
+    }
+    
     public void mouseReleased(MapEvent m) {
         super.mouseReleased(m);
         if (handles instanceof HandledMap) {
@@ -202,6 +213,10 @@ public class MoveLayer extends Layer implements KeyListener {
         lock = true;
         store.set();
         lock = false;
+        if (dirty) {
+        	controller.getConceptMap().getComponentManager().getUndoManager().endChange();
+        	dirty = false;
+        }
     }
     public void mouseClicked(MapEvent m) {
         if (!m.mouseEvent.isShiftDown()
@@ -316,6 +331,7 @@ public class MoveLayer extends Layer implements KeyListener {
 
         editObject.updateBox();
         editObject = null;
+        controller.getConceptMap().getComponentManager().getUndoManager().makeChange();
     }
 
     public void layerPaint(Graphics2D g, Graphics2D original) {
@@ -342,11 +358,18 @@ public class MoveLayer extends Layer implements KeyListener {
             return;
 
         if (handles != null)
-            if (!handles.update(e)) {
+            if (e.getEditType() == ContextMap.CONTEXTMAP_REFRESHED || !handles.update(e)) {
                 store.clear(); //A bit brutal???
-                setHandledObject(null, mapevent);
+                setHandledObject(null, MapEvent.Null);
                 //The object didn't survive the update.
             }
+        if (textEdit && e.getEditType() == ContextMap.CONTEXTMAP_REFRESHED) {
+        	textEdit = false; 
+        	remove(title);
+            title = null;
+            editObject = null;
+            mapdisplayer.doAttractFocus(true);
+        }
     }
 
     public void popupMenu(MapEvent m) {

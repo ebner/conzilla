@@ -228,7 +228,7 @@ public class TripleMapObject extends DrawerMapObject {
         if (r != null) {
             col.add(r);
         }
-        boundingboxes.addAll(boxLineDrawer.getBoundingboxes());
+        col.addAll(boxLineDrawer.getBoundingboxes());
 
         if (literalBoxDrawer != null)
             col.add(literalBoxDrawer.getBoundingBox());

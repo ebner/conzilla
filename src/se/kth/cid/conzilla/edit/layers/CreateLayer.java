@@ -246,6 +246,7 @@ public class CreateLayer extends LayerComponent implements MapMouseInputListener
 			draw(m);
 			return;
 		}
+		controller.getConceptMap().getComponentManager().getUndoManager().startChange();
 
 		boolean ctrlIsDown = (m.mouseEvent.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) > 0;
 		switch (stateControl.changeState(m)) {
@@ -284,6 +285,7 @@ public class CreateLayer extends LayerComponent implements MapMouseInputListener
 			startPoint = null;
 			subjectMapEvent = null;
 		}
+		controller.getConceptMap().getComponentManager().getUndoManager().endChange();
 	}
 
 	public void mousePressed(MapEvent m) {

@@ -50,6 +50,7 @@ public class RemoveDrawerMapTool extends ActionMapMenuTool {
             if (result == JOptionPane.CANCEL_OPTION) {
                 return;
             }
+            controller.getConceptMap().getComponentManager().getUndoManager().startChange();
             ComponentCache cache = ConzillaKit.getDefaultKit().getResourceStore().getCache();
             HashSet concepts = new HashSet();
             for (Iterator dls = drawerLayouts.iterator(); dls.hasNext();) {
@@ -66,6 +67,7 @@ public class RemoveDrawerMapTool extends ActionMapMenuTool {
                     remove(concept, concept.isReferredTo(), isManaged(concept));
                 }
             }
+            controller.getConceptMap().getComponentManager().getUndoManager().endChange();
         } else {
             Concept concept = mapObject.getConcept();
             int referredTo = concept != null ? concept.isReferredTo() : 0;
@@ -74,10 +76,12 @@ public class RemoveDrawerMapTool extends ActionMapMenuTool {
             if (result == JOptionPane.CANCEL_OPTION) {
                 return;
             }
+            controller.getConceptMap().getComponentManager().getUndoManager().startChange();
             mapObject.getDrawerLayout().remove();
             if (result == JOptionPane.YES_OPTION) {
                 remove(concept, referredTo-1, isManaged);
             }
+            controller.getConceptMap().getComponentManager().getUndoManager().endChange();
         }    
     }
 

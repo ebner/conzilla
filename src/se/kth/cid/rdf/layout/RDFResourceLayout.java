@@ -322,5 +322,8 @@ public class RDFResourceLayout extends RDFTreeTagNode implements LayerLayout,
 		mirror.setPriority(prio);
 		setEdited(true);
 		m.setEdited(true);
+		conceptMap.fireEditEvent(new EditEvent(this, this,
+				ContextMap.RESOURCELAYOUT_PRIORITY_CHANGED, new Double(prio)));
+
 	}
 }

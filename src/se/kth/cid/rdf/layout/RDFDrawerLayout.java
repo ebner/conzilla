@@ -68,7 +68,18 @@ public class RDFDrawerLayout
       //  seekForChildren = false;
     }
 
-    protected void updateFromModel(RDFModel m) {
+    @Override
+	protected void initUpdate() {
+		super.initUpdate();
+		detailedMap = null;
+		bb = null;
+	    boxLinePathType = LineStyle.PATH_TYPE_STRAIGHT;
+	    boxLine = new ContextMap.Position[0];
+	    horizontalTextAnchor = CENTER;
+	    verticalTextAnchor = CENTER;
+	}
+
+	protected void updateFromModel(RDFModel m) {
     	super.updateFromModel(m);
     	Resource object = m.getResource(getURI());
     	//will have right model because of overloaded currentModel.

@@ -86,6 +86,8 @@ public class RDFModel extends ModelCom implements FiringResource, se.kth.cid.com
 
     private String publishURL;
 
+	private ModelHistory modelHistory;
+
     /** Constructs a LocalComponent
      */
     //public RDFModel(TotalModel totalModel, RDFModelManager mm, URI uri, URI loadURI, MIMEType loadType)
@@ -98,13 +100,13 @@ public class RDFModel extends ModelCom implements FiringResource, se.kth.cid.com
         componentLoadURI = loadURI;
         componentLoadMIMEType = MIMEType.RDF;
     }
-
-    /*
-    public TotalModel getTotalModel()
-    {
-    return totalModel;
+    
+    public ModelHistory getModelHistory() {
+    	if (this.modelHistory == null) {
+    		this.modelHistory = new ModelHistory(this, mm.getModelHistoryListenerCentral());
+    	}
+    	return this.modelHistory;
     }
-    */
 
     public RDFContainerManager getRDFModelManager() {
         return mm;
