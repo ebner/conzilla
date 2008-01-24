@@ -6,12 +6,16 @@
 
 package se.kth.cid.conzilla.edit;
 
+import java.awt.Event;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Enumeration;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,7 +27,9 @@ import se.kth.cid.component.ResourceStore;
 import se.kth.cid.conzilla.app.ConzillaEnvironment;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.app.Extra;
+import se.kth.cid.conzilla.browse.BrowseMapManagerFactory;
 import se.kth.cid.conzilla.clipboard.Clipboard;
+import se.kth.cid.conzilla.controller.ControllerException;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.controller.MapManager;
 import se.kth.cid.conzilla.controller.MapManagerFactory;
@@ -35,6 +41,7 @@ import se.kth.cid.conzilla.session.SessionManager;
 import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.conzilla.tool.ToolsBar;
 import se.kth.cid.conzilla.tool.ToolsMenu;
+import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.rdf.RDFContainerManager;
 import se.kth.cid.rdf.RDFSessionManager;
@@ -108,7 +115,21 @@ public class EditMapManagerFactory implements MapManagerFactory {
             //menu.addTool(new SessionBrowsingTool(sessionManager, mc), 180);
         }
         if (menu.getName().equals(DefaultMenuFactory.TOOLS_MENU)) {
-            menu.addTool((Tool) mc.get("SessionTool"), 300);
+            menu.addTool((Tool) mc.get("SessionTool"), 400);
+            menu.addTool(new Tool("Undo", EditMapManagerFactory.class.getName()) {
+            	{setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.CTRL_MASK));
+            	setIcon(Images.getImageIcon(Images.ICON_UNDO));}
+                public void actionPerformed(ActionEvent ae) {
+                	mc.getConceptMap().getComponentManager().getUndoManager().undo();
+                }
+            }, 170);
+            menu.addTool(new Tool("Redo", EditMapManagerFactory.class.getName()) {
+            	{setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.SHIFT_MASK | Event.CTRL_MASK));
+            	setIcon(Images.getImageIcon(Images.ICON_REDO));}
+                public void actionPerformed(ActionEvent ae) {
+                	mc.getConceptMap().getComponentManager().getUndoManager().redo();
+                }
+            }, 180);
         }
     }
 
