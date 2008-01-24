@@ -185,13 +185,19 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
             edit = new Tool("EDIT", LayerControl.class.getName()) {
 				public void actionPerformed(ActionEvent e) {
 					choosenLayerEntry.getLayerLayout().addEditListener(LayerEntries.this);
-					EditPanel.launchEditPanelInFrame(choosenLayerEntry.getLayerLayout());
+					EditPanel.launchEditPanelInFrame(choosenLayerEntry.getLayerLayout(), new AbstractAction() {
+						public void actionPerformed(ActionEvent e) {
+							controller.getConceptMap().getComponentManager().getUndoManager().makeChange();
+						}
+		            });
 				}
             };
             popup.addTool(edit, 100);
             remove = new Tool("REMOVE", LayerControl.class.getName()) {
 				public void actionPerformed(ActionEvent e) {
+					controller.getConceptMap().getComponentManager().getUndoManager().startChange();
 					choosenLayerEntry.getLayerLayout().remove();
+					controller.getConceptMap().getComponentManager().getUndoManager().endChange();
 					refresh(choosenLayerEntry.getLayerLayout().getConceptMap().getLayerManager());
 				}
             };
