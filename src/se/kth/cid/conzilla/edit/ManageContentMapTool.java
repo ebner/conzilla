@@ -55,7 +55,7 @@ import se.kth.cid.conzilla.content.ContentEditor;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.session.Session;
-import se.kth.cid.conzilla.tool.ActionMapMenuTool;
+import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.conzilla.util.IdentifierDialog;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.notions.ContentInformation;
@@ -66,7 +66,7 @@ import se.kth.cid.util.AttributeEntryUtil;
  *  @author Matthias Palmer
  *  @version $Revision$
  */
-public class ManageContentMapTool extends ActionMapMenuTool implements ListSelectionListener {
+public class ManageContentMapTool extends Tool implements ListSelectionListener {
 	
 	static Log log = LogFactory.getLog(ManageContentMapTool.class);
 

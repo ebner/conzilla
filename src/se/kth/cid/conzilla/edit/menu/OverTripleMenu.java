@@ -38,27 +38,27 @@ public class OverTripleMenu extends MapToolsMenu
   {
     super(EditMapManagerFactory.EDIT_RELATION_MENU, EditMapManagerFactory.class.getName(), controller);
 
-    addMapMenuItem(new EditPanel.EditMetadataTool(controller), 100);
-    addMapMenuItem(new RemoveDrawerMapTool(controller, mm), 110);
-    addMapMenuItem(new ChangeTypeMapTool(controller), 120);
-    addMapMenuItem(new EditDetailedMapMapTool(controller), 130);
+    addTool(new EditPanel.EditMetadataTool(controller), 100);
+    addTool(new RemoveDrawerMapTool(controller, mm), 110);
+    addTool(new ChangeTypeMapTool(controller), 120);
+    addTool(new EditDetailedMapMapTool(controller), 130);
     MapToolsMenu contentMenu = new MapToolsMenu(EditMapManagerFactory.EDIT_CONTENT_MENU,
             EditMapManagerFactory.class.getName(), controller);
-    contentMenu.addMapMenuItem(new LinkToContentMapTool(controller, LinkToContentMapTool.LINK_TO_CONTENT), 100);
-    contentMenu.addMapMenuItem(new LinkToContentMapTool(controller, LinkToContentMapTool.LINK_TO_CONTENT_IN_CONTEXT), 150);
-    contentMenu.addMapMenuItem(new ManageContentMapTool(controller, mm), 200);    
+    contentMenu.addTool(new LinkToContentMapTool(controller, LinkToContentMapTool.LINK_TO_CONTENT), 100);
+    contentMenu.addTool(new LinkToContentMapTool(controller, LinkToContentMapTool.LINK_TO_CONTENT_IN_CONTEXT), 150);
+    contentMenu.addTool(new ManageContentMapTool(controller, mm), 200);    
     ConzillaKit.getDefaultKit().extendMenu(contentMenu, controller);
-    addMapMenuItem(contentMenu, 140);
+    addToolsMenu(contentMenu, 140);
 
     addSeparator(200);
-    addMapMenuItem(new MoveToLayerMapTool(controller), 210);
-    addMapMenuItem(new PathTypeMapTool(controller), 220);    
-    addMapMenuItem(new BoxMapTool(controller), 230);
-    addMapMenuItem(new TripleMapTool(controller), 240);
-    addMapMenuItem(new BoxLineMapTool(controller), 250);
+    addToolsMenu(new MoveToLayerMapTool(controller), 210);
+    addTool(new PathTypeMapTool(controller), 220);    
+    addTool(new BoxMapTool(controller), 230);
+    addTool(new TripleMapTool(controller), 240);
+    addTool(new BoxLineMapTool(controller), 250);
     
     addSeparator(900);
-    addMapMenuItem(new ViewTool(controller), 910);
+    addTool(new ViewTool(controller), 910);
 
     ConzillaKit.getDefaultKit().extendMenu(this, controller);
 

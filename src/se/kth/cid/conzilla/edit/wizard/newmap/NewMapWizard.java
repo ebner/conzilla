@@ -55,6 +55,7 @@ public class NewMapWizard extends Wizard {
 				return;
 			ContextMap cMap = ConzillaKit.getDefaultKit().getResourceStore().getComponentManager().createContextMap(map);
 			ConzillaKit.getDefaultKit().getConzilla().openMapInNewView(map, mmf, mapController);
+			cMap.getComponentManager().getUndoManager().forgetLastChange();
 			EditPanel.launchEditPanelInFrame(cMap);
 		} catch (MalformedURIException me) {
 			ErrorMessage.showError("Parse Error", "Invalid URI\n\n", me, null);

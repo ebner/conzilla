@@ -36,13 +36,13 @@ public class GridLayer extends LayerComponent implements PropertyChangeListener 
 
 	protected BasicStroke stroke;
 
-	public GridLayer(MapController controller) {
+	public GridLayer(MapController controller, GridModel gridModel) {
 		super(controller, false);
 		this.controller = controller;
 		if (!(controller.getManager() instanceof EditMapManager)) {
 			log.warn("MapManager in controller isn't a EditMapManager despite the fact that we are in edit mode");
 		}
-		this.gridModel = ((EditMapManager) controller.getManager()).getGridModel();
+		this.gridModel = gridModel;
 		float[] arr = { 0, 3 };
 		stroke = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0f, arr, 0f);
 	}

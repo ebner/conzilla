@@ -6,6 +6,11 @@
 
 package se.kth.cid.conzilla.edit;
 import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Point2D;
 
 import javax.swing.JOptionPane;
 
@@ -14,17 +19,35 @@ import se.kth.cid.concept.Concept;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.edit.layers.GridModel;
 import se.kth.cid.conzilla.map.MapObject;
-import se.kth.cid.conzilla.tool.ActionMapMenuTool;
+import se.kth.cid.conzilla.map.MapScrollPane;
+import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.layout.ConceptLayout;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.layout.DrawerLayout;
 import se.kth.cid.layout.StatementLayout;
 
-public abstract class InsertMapTool extends ActionMapMenuTool {
+public abstract class InsertMapTool extends Tool {
     public InsertMapTool(String name, String resbundle, MapController cont) {
         super(name, resbundle, cont);
     }
 
+    protected Point getInsertPosition() {
+    	if (mapEvent != null) {
+    		return new Point(mapEvent.mapX, mapEvent.mapY);
+    	} else {
+			try {
+				MapScrollPane scroll = controller.getView().getMapScrollPane();
+				Rectangle visirect = scroll.getVisibleRect();
+				AffineTransform tr = scroll.getDisplayer().getTransform().createInverse();
+				Point middle = new Point(visirect.x+(visirect.width/2), visirect.y+(visirect.height/2));
+	    		Point2D point = tr.transform(middle, null);
+	    		return new Point((int) point.getX(), (int) point.getY());
+			} catch (NoninvertibleTransformException e) {
+			}
+    	}
+    	return new Point(100, 100);
+    }
+    
     protected ConceptLayout makeConceptLayout(String conceptURI)
         throws InvalidURIException {
         ContextMap cmap = controller.getConceptMap();
@@ -103,7 +126,8 @@ public abstract class InsertMapTool extends ActionMapMenuTool {
     	return dl != null ? dl.getURI() : null;
     }
 
-    protected void setBoundingBox(GridModel gridModel, MapObject copiedMapObject, DrawerLayout dl) {
+    protected void setBoundingBox(GridModel gridModel, MapObject copiedMapObject, 
+    		DrawerLayout dl, Point insertionPoint) {
         Dimension dim = null;
         if (copiedMapObject == null) {
             dim = controller.getView().getMapScrollPane().getDisplayer()
@@ -116,14 +140,13 @@ public abstract class InsertMapTool extends ActionMapMenuTool {
         dl.setBoundingBox(
                 LayoutUtils.preferredBoxOnGrid(
                         gridModel,
-                        mapEvent.mapX,
-                        mapEvent.mapY,
+                        insertionPoint.x,
+                        insertionPoint.y,
                         dim));
         dl.setBodyVisible(true);
     }
     
-    protected void setBoxLine(GridModel gridModel, StatementLayout dl) {
-        dl.setBoxLine(LayoutUtils.boxLine(dl, mapEvent,  gridModel));
+    protected void setBoxLine(GridModel gridModel, StatementLayout dl, Point insertionPoint) {
+        dl.setBoxLine(LayoutUtils.boxLine(dl, LayoutUtils.getPosition(insertionPoint),  gridModel));
     }
-
 }

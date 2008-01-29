@@ -10,12 +10,12 @@ import java.awt.event.ActionEvent;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.properties.ConzillaResourceManager;
-import se.kth.cid.conzilla.tool.ActionMapMenuTool;
+import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.layout.DrawerLayout;
 import se.kth.cid.layout.StatementLayout;
 
-public class BoxLineMapTool extends ActionMapMenuTool {
+public class BoxLineMapTool extends Tool {
 
     static final String LINE_VISIBLE = "HIDE_CONCEPTLINE";
     static final String LINE_INVISIBLE = "SHOW_CONCEPTLINE";
@@ -64,7 +64,7 @@ public class BoxLineMapTool extends ActionMapMenuTool {
             ContextMap.Position[] pos =
                 LayoutUtils.boxLine(
                     sl,
-                    mapEvent,
+                    LayoutUtils.getPosition(mapEvent),
                     ((EditMapManager) controller.getManager()).getGridModel());
             sl.setBoxLine(pos);
         }

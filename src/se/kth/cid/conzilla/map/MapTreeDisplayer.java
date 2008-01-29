@@ -31,7 +31,7 @@ import se.kth.cid.component.ResourceStore;
 import se.kth.cid.concept.Concept;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.controller.MapController;
-import se.kth.cid.conzilla.tool.ActionMapMenuTool;
+import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.layout.ConceptLayout;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.layout.DrawerLayout;
@@ -67,7 +67,7 @@ public class MapTreeDisplayer extends JSplitPane implements TreeSelectionListene
     static private String conceptLayoutFCID = "http://kmr.nada.kth.se/shame/graphics/formlet#conceptlayoutprofile";
     static private String statementLayoutFCID = "http://kmr.nada.kth.se/shame/graphics/formlet#statementlayoutprofile";
 
-    static public class MapTreeDisplayTool extends ActionMapMenuTool {
+    static public class MapTreeDisplayTool extends Tool {
         
         public MapTreeDisplayTool(MapController controller) {
             super("VIEW_TREE",MapDisplayer.class.getName(),controller);

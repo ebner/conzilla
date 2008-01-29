@@ -21,7 +21,7 @@ import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.map.MapObject;
 import se.kth.cid.conzilla.map.graphics.Mark;
-import se.kth.cid.conzilla.tool.ActionMapMenuTool;
+import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.util.AttributeEntryUtil;
 
 /**
@@ -32,7 +32,7 @@ import se.kth.cid.util.AttributeEntryUtil;
  * @version $Revision$, $Date$
  * @author matthias
  */
-public class ViewTool extends ActionMapMenuTool implements PropertyChangeListener{
+public class ViewTool extends Tool implements PropertyChangeListener{
 
     private HashSet contentInformations;
     private MapObject currentViewed;

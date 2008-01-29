@@ -5,8 +5,12 @@
  */
 
 package se.kth.cid.conzilla.clipboard;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,6 +19,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.hp.hpl.jena.sparql.algebra.Transform;
+
 import se.kth.cid.component.InvalidURIException;
 import se.kth.cid.component.ReadOnlyException;
 import se.kth.cid.concept.Concept;
@@ -22,8 +28,8 @@ import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.edit.EditMapManager;
 import se.kth.cid.conzilla.edit.InsertMapTool;
 import se.kth.cid.conzilla.edit.layers.GridModel;
-import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.map.MapObject;
+import se.kth.cid.conzilla.map.MapScrollPane;
 import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.layout.ConceptLayout;
 import se.kth.cid.layout.ContextMap;
@@ -33,27 +39,21 @@ import se.kth.cid.layout.StatementLayout;
 class InsertClipboardConceptMapTool extends InsertMapTool {
 
 	Log log = LogFactory.getLog(InsertClipboardConceptMapTool.class);
-	
-    GridModel gridModel;
     
     Clipboard clipboard;
 
     public InsertClipboardConceptMapTool(
         MapController cont,
-        EditMapManager mm,
         Clipboard clipboard) {
         super("INSERT_CONCEPT_FROM_CLIPBOARD", Clipboard.class.getName(), cont);
         this.clipboard = clipboard;
-        gridModel = mm.getGridModel();
     }
 
     protected boolean updateEnabled() {
-        return (
-            mapEvent.hitType == MapEvent.HIT_NONE
-                && (clipboard.getConcept() != null
-                        || clipboard.getDrawerLayouts() != null));
+    	return clipboard.getConcept() != null
+    		|| clipboard.getDrawerLayouts() != null;
     }
-
+    
     public void actionPerformed(ActionEvent e) {
         if (clipboard.getConcept() != null) {
             controller.getConceptMap().getComponentManager().getUndoManager().startChange();
@@ -64,14 +64,14 @@ class InsertClipboardConceptMapTool extends InsertMapTool {
             pasteMultipleConcepts();
             controller.getConceptMap().getComponentManager().getUndoManager().endChange();
         }
-
     }
-
+    
     private void pasteMultipleConcepts() {
-        List drawerLayouts = clipboard.getDrawerLayouts();
+        Point ipoint = getInsertPosition();
+    	List drawerLayouts = clipboard.getDrawerLayouts();
         ArrayList sls = new ArrayList();
         ArrayList cls = new ArrayList();
-        Rectangle rect = new Rectangle(mapEvent.mapX, mapEvent.mapY,1,1);
+        Rectangle rect = new Rectangle(ipoint.x, ipoint.y,1,1);
         for (Iterator dls = drawerLayouts.iterator(); dls.hasNext();) {
             DrawerLayout dl = (DrawerLayout) dls.next();
             if (dl instanceof StatementLayout) {
@@ -91,8 +91,8 @@ class InsertClipboardConceptMapTool extends InsertMapTool {
             }
         }
         
-        int xdiff = mapEvent.mapX-rect.x;
-        int ydiff = mapEvent.mapY-rect.y;
+        int xdiff = ipoint.x-rect.x;
+        int ydiff = ipoint.y-rect.y;
         HashMap dl2dl = new HashMap();
         for (Iterator clsi = cls.iterator(); clsi.hasNext();) {
             DrawerLayout ocl = (DrawerLayout) clsi.next();
@@ -172,17 +172,19 @@ class InsertClipboardConceptMapTool extends InsertMapTool {
     }
 
     private void pasteSingleConcept() {
+        Point ipoint = getInsertPosition();
         Concept concept = clipboard.getConcept();
         MapObject copiedMapObject = clipboard.getMapObject();
 
         try {
-            
+            GridModel gridModel = ((EditMapManager) controller.getManager()).gridModel;
+        	
             if (concept.getTriple() == null 
                     || (copiedMapObject != null 
                             && copiedMapObject.getDrawerLayout() 
                             instanceof ConceptLayout)) {
                 ConceptLayout cl = makeConceptLayout(concept.getURI());
-                setBoundingBox(gridModel, copiedMapObject, cl);
+                setBoundingBox(gridModel, copiedMapObject, cl, ipoint);
             } else {
                 StatementLayout sl = makeStatementLayout(concept);
                 if (sl == null) {
@@ -190,9 +192,9 @@ class InsertClipboardConceptMapTool extends InsertMapTool {
                 }
                 showTriple(sl, gridModel);
                 if (copiedMapObject.getDrawerLayout().getBodyVisible()) {
-                    setBoundingBox(gridModel, copiedMapObject, sl);
+                    setBoundingBox(gridModel, copiedMapObject, sl, ipoint);
                     if (((StatementLayout) copiedMapObject.getDrawerLayout()).getBoxLine() != null) {
-                        setBoxLine(gridModel, sl);
+                        setBoxLine(gridModel, sl, ipoint);
                     }
                 }
             }

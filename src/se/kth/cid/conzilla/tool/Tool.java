@@ -8,11 +8,34 @@ package se.kth.cid.conzilla.tool;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
+import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import se.kth.cid.conzilla.controller.MapController;
+import se.kth.cid.conzilla.map.MapEvent;
+import se.kth.cid.conzilla.map.MapObject;
 import se.kth.cid.conzilla.properties.ConzillaResourceManager;
 
+
+
+
 /**
+ * There are two reasons for this class:
+ * <nl><li>{@link MapMenuItem}s are supposed to be inside menues poped over a map, and hence 
+ * change it behaviour depending which concept/concept-relation/map it is over. 
+ * This is controlled via the {@link #update(MapEvent)} method getting called just before being shown.</li>
+ * <li>In some situations the {@link MapMenuItem} is a single choice, sometimes it is a submenu, 
+ * this flexibility requires the menu to be constructed just in time, just before it is popped. 
+ * The method {@link #getJMenuItem()} is called to retrieve the menu item just before popup of the
+ * containing menu.</li>
+ * </nl>
+ */
+
+/**
+ * The main reason for introducing Tools are that the same tool may be added
+ * to several menues ({@link ToolsMenu}) and ToolBars {@link ToolsBar} without 
+ * swing complaining.
+ * 
  * Tools are objects that are responsible for reacting to the user's gestures.
  * They are usually placed in menus and in toolbars.
  * 
@@ -39,15 +62,30 @@ public abstract class Tool extends AbstractAction {
 
 	private Icon selectedIcon;
 
+	protected MapEvent mapEvent;
+
+	protected MapObject mapObject;
+
+	protected MapController controller;
+
+	private JMenuItem menuItem = null;
+
+	private boolean nextPopupIsOverMap;
+
 	public Tool(String name) {
-		init(name, getClass().getName());
+		setTitleAndTooltip(name, getClass().getName());
 	}
 
 	public Tool(String name, String resbundle) {
-		init(name, resbundle);
+		setTitleAndTooltip(name, resbundle);
 	}
 
-	void init(String name, String resbundle) {
+	public Tool(String name, String resbundle, MapController controller) {
+		setTitleAndTooltip(name, resbundle);
+		this.controller = controller;
+	}
+
+	protected void setTitleAndTooltip(String name, String resbundle) {
 		this.name = name;
 		if (resbundle != null) {
 			String n = ConzillaResourceManager.getDefaultManager().getString(resbundle, name);
@@ -125,5 +163,44 @@ public abstract class Tool extends AbstractAction {
 	 * A tool will be deactivated and have its listeners removed.
 	 */
 	public void detach() {
+	}
+		
+	public void setJMenuItem(JMenuItem mi) {
+		JMenuItem oldmi = getJMenuItem();
+		if (oldmi != null)
+			oldmi.removeActionListener(this);		
+		menuItem  = mi;
+		
+		ConzillaResourceManager.getDefaultManager().plainCustomizeButton(mi, (String) getValue(NAME), (String) getValue(SHORT_DESCRIPTION));
+		mi.addActionListener(this);
+	}
+
+	public JMenuItem getJMenuItem() {
+		return menuItem;
+	}
+	
+	public void updateBeforePopup() {
+		if (nextPopupIsOverMap) {
+			nextPopupIsOverMap = false;
+		} else {
+			mapEvent = null;
+			mapObject = null;
+		}
+		boolean enabled = updateEnabled();
+		setEnabled(enabled);
+		JMenuItem mi = getJMenuItem();
+		if (mi != null) {
+			mi.setEnabled(enabled);
+		}
+	}
+		
+	public void update(MapEvent e) {
+		nextPopupIsOverMap = true;
+		mapEvent = e;
+		mapObject = mapEvent.mapObject;
+	}
+	
+	protected boolean updateEnabled() {
+		return true;
 	}
 }

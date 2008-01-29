@@ -62,12 +62,10 @@ public class MoveLayer extends Layer implements KeyListener {
 
     public MoveLayer(
         MapController controller,
-        LineTool linetool,
-        TieTool tietool,
         EditMapManager mm) {
-        super(controller);
-        this.linetool = linetool;
-        this.tietool = tietool;
+        super(controller, mm.gridModel);
+        this.linetool = mm.line;
+        this.tietool = mm.tie;
         textEdit = false;
         focusCalled = false;
         store = mm.getHandleStore();

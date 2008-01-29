@@ -12,8 +12,8 @@ import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.metadata.EditPanel;
 import se.kth.cid.conzilla.metadata.InfoPanel;
-import se.kth.cid.conzilla.tool.ActionMapMenuTool;
 import se.kth.cid.conzilla.tool.MapToolsMenu;
+import se.kth.cid.conzilla.tool.Tool;
 
 public class BrowseMenu extends MapToolsMenu
 {
@@ -21,14 +21,12 @@ public class BrowseMenu extends MapToolsMenu
   {
     super(BrowseMapManagerFactory.BROWSE_MENU, BrowseMapManagerFactory.class.getName(), controller);
 
-    addMapMenuItem(new SurfAlterationTool(controller, browse), 100);
-    //addMapMenuItem(new ViewAlterationTool("VIEW", BrowseMapManagerFactory.class.getName(), cont), 200);
-    addMapMenuItem(new ViewTool(controller), 200);
-    addMapMenuItem(new ActionMapMenuTool("INFO", BrowseMapManagerFactory.class.getName(), controller) {
-        protected boolean updateEnabled() {
-            return true;
-        }
+    //TODO
+    addTool(new SurfAlterationTool(controller, browse), 100);
 
+    //addMapMenuItem(new ViewAlterationTool("VIEW", BrowseMapManagerFactory.class.getName(), cont), 200);
+    addTool(new ViewTool(controller), 200);
+    addTool(new Tool("INFO", BrowseMapManagerFactory.class.getName()) {
         public void actionPerformed(ActionEvent arg0) {
             if (mapEvent.hitType == MapEvent.HIT_NONE)  {
                 InfoPanel.launchInfoPanelInFrame(BrowseMenu.this.controller.getConceptMap(), EditPanel.context_form);

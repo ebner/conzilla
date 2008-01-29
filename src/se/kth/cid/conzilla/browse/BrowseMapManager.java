@@ -79,20 +79,20 @@ public class BrowseMapManager implements MapManager, PropertyChangeListener {
 	private Separator separator5;
 	private Separator separator6;
 
-    public BrowseMapManager(final MapController controller) {
-    	this.controller = controller;
-    	View view = controller.getView();
+    public BrowseMapManager(final MapController mapController) {
+    	this.controller = mapController;
+    	View view = mapController.getView();
         final ConzillaKit kit = ConzillaKit.getDefaultKit();
-        newWindow = new NewWindowTool(controller);
-        popup = new PopupLayer(controller);
-        browse = new Browse(controller, popup);
-        zoomIn = new ZoomTool(controller, 1.3);
-        zoomOut = new ZoomTool(controller, 1 / 1.3);
-        highlighter = new Highlighter(controller);
-        popupControl = new PopupControlTool(controller, popup);
+        newWindow = new NewWindowTool(mapController);
+        popup = new PopupLayer(mapController);
+        browse = new Browse(mapController, popup);
+        zoomIn = new ZoomTool(mapController, 1.3);
+        zoomOut = new ZoomTool(mapController, 1 / 1.3);
+        highlighter = new Highlighter(mapController);
+        popupControl = new PopupControlTool(mapController, popup);
         localeChooser = new LocaleChooser();
-        fullScreen = new FullScreenTool(view.getToolsBar());
-        reload = new ReloadTool(controller);
+        fullScreen = new FullScreenTool(mapController);
+        reload = new ReloadTool(mapController);
         // We don't need this tool if we don't have disk access (e.g. as applet),
         // as it is directly connected to the DiskContainerCache.
         if (ConzillaKit.getDefaultKit().getConzillaEnvironment().hasLocalDiskAccess()) {
@@ -106,13 +106,13 @@ public class BrowseMapManager implements MapManager, PropertyChangeListener {
                     kit.getConzilla().openMapInOldView(
                             ConfigurationManager.getConfiguration().getURI(Settings.CONZILLA_STARTMAP, new URI(ConzillaEnvironment.DEFAULT_STARTMAP)),
                             kit.getConzilla()
-                                    .getViewManager().getView(controller));
+                                    .getViewManager().getView(mapController));
                 } catch (ControllerException e) {
                     ErrorMessage.showError("Cannot load map",
-                            "Cannot load map", e, controller.getView().getToolsBar());
+                            "Cannot load map", e, mapController.getView().getToolsBar());
                 } catch (URISyntaxException e) {
                     ErrorMessage.showError("Cannot load map",
-                            "Cannot load map", e, controller.getView().getToolsBar());
+                            "Cannot load map", e, mapController.getView().getToolsBar());
                 }
             }
         };
@@ -128,7 +128,7 @@ public class BrowseMapManager implements MapManager, PropertyChangeListener {
 					if (nextExtra instanceof MapManagerFactory) {
 						MapManagerFactory mmf = (MapManagerFactory) nextExtra;
 						if (mmf.getName().equals("EditMapManagerFactory")) {
-							ConzillaKit.getDefaultKit().getConzilla().changeMapManagerFactory(controller, mmf);
+							ConzillaKit.getDefaultKit().getConzilla().changeMapManagerFactory(mapController, mmf);
 						}
 					}
 				}
@@ -144,16 +144,16 @@ public class BrowseMapManager implements MapManager, PropertyChangeListener {
                             .openMapInOldView(new URI(ConzillaEnvironment.DEFAULT_STARTMAP),
                                     kit.getConzilla()
                                             .getViewManager().getView(
-                                                    controller));
+                                                    mapController));
                 } catch (URISyntaxException urise) {
                 	urise.printStackTrace();
                 } catch (ControllerException e) {
                     ErrorMessage.showError("Cannot load map",
-                            "Cannot load map", e, controller.getView().getToolsBar());
+                            "Cannot load map", e, mapController.getView().getToolsBar());
                 }
             }
         };
-        linearHistoryManager = new LinearHistoryManager(controller);
+        linearHistoryManager = new LinearHistoryManager(mapController);
         goMenu = new ToolsMenu("GO", BrowseMapManagerFactory.class.getName());
         goMenu.getPopupMenu().addPopupMenuListener(new PopupMenuListener() {
             public void popupMenuCanceled(PopupMenuEvent e) {

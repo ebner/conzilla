@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.properties.ConzillaResourceManager;
-import se.kth.cid.conzilla.tool.ActionMapMenuTool;
+import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.layout.StatementLayout;
 import se.kth.cid.style.LineStyle;
@@ -21,7 +21,7 @@ import se.kth.cid.style.LineStyle;
  * 
  * @author Matthias Palmer.
  */
-public class PathTypeMapTool extends ActionMapMenuTool {
+public class PathTypeMapTool extends Tool {
 
     static final String CURVE_LINE = "CURVE_LINE";
 

@@ -181,9 +181,9 @@ public class DefaultMenuFactory implements MenuFactory {
 
 		final Conzilla conzilla = kit.getConzilla();
 
-		Tool newWindow = new NewWindowTool(controller);
-		newWindow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK));
-		file.addTool(newWindow, 100);
+		Tool newTool = new NewWindowTool(controller);
+		newTool.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK));
+		file.addTool(newTool, 100);
 
 		Vector v = new Vector();
 		Enumeration e = kit.getExtras();
@@ -221,7 +221,7 @@ public class DefaultMenuFactory implements MenuFactory {
 
 		file.addSeparator(300);
 
-		newWindow = new Tool("CLOSE", DefaultMenuFactory.class.getName()) {
+		newTool = new Tool("CLOSE", DefaultMenuFactory.class.getName()) {
 			public void actionPerformed(ActionEvent ae) {
 				// FIXME
 				if (/* view.tryCloseMap() */true) {
@@ -229,11 +229,11 @@ public class DefaultMenuFactory implements MenuFactory {
 				}
 			}
 		};
-		newWindow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
-		newWindow.setIcon(Images.getImageIcon(Images.ICON_FILE_CLOSE));
-		file.addTool(newWindow, 400);
+		newTool.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
+		newTool.setIcon(Images.getImageIcon(Images.ICON_FILE_CLOSE));
+		file.addTool(newTool, 400);
 
-		newWindow = new Tool("EXIT", DefaultMenuFactory.class.getName()) {
+		newTool = new Tool("EXIT", DefaultMenuFactory.class.getName()) {
 			public void actionPerformed(ActionEvent ae) {
 				kit.getConzilla().exit(0);
 				/*ViewManager manager = conzilla.getViewManager();
@@ -243,9 +243,9 @@ public class DefaultMenuFactory implements MenuFactory {
 				}*/
 			}
 		};
-		newWindow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, Event.CTRL_MASK));
-		newWindow.setIcon(Images.getImageIcon(Images.ICON_EXIT));
-		file.addTool(newWindow, 1000);
+		newTool.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, Event.CTRL_MASK));
+		newTool.setIcon(Images.getImageIcon(Images.ICON_EXIT));
+		file.addTool(newTool, 1000);
 
 		// TODO: Make the RDFModelLoaderMenu an Extra instead of hardcoding it
 		// here.
@@ -267,8 +267,7 @@ public class DefaultMenuFactory implements MenuFactory {
 		zoom.addTool(new ZoomTool(controller, 1.3), 200);
 		zoom.addTool(new ZoomTool(controller, 1 / 1.3), 300);
 
-		viewm.add(zoom);
-		viewm.setPriority(zoom, 100);
+		viewm.addToolsMenu(zoom, 100);
 
 		ExclusiveStateTool[] tools = viewToolSet.getTools();
 		if (tools.length > 1) {
@@ -276,8 +275,7 @@ public class DefaultMenuFactory implements MenuFactory {
 			for (int i = 0; i < tools.length; i++)
 				vt.addTool(tools[i], i * 10);
 
-			viewm.add(vt);
-			viewm.setPriority(vt, 300);
+			viewm.addToolsMenu(vt, 300);
 		}
 
 		viewm.addTool(new Tool("PACK", DefaultMenuFactory.class.getName()) {
@@ -312,8 +310,7 @@ public class DefaultMenuFactory implements MenuFactory {
 			}
 		}, 40);
 		
-		viewm.add(sourceViews);
-		viewm.setPriority(sourceViews, 500);
+		viewm.addToolsMenu(sourceViews, 500);
 
 		return viewm;
 	}
@@ -379,13 +376,11 @@ public class DefaultMenuFactory implements MenuFactory {
 //		}, 150);
 
 		ToolsMenu cm = makeColorMenu();
-		settings.add(cm);
-		settings.setPriority(cm, 200);
+		settings.addToolsMenu(cm, 200);
 
 		// Locales!
 
-		settings.add(localeMenu);
-		settings.setPriority(localeMenu, 300);
+		settings.addToolsMenu(localeMenu, 300);
 
 		settings.addTool(alwaysPack, 500);
 

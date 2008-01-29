@@ -21,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.browse.BrowseMapManagerFactory;
 import se.kth.cid.conzilla.config.Settings;
+import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.properties.Images;
 import se.kth.cid.conzilla.tool.StateTool;
 
@@ -34,12 +35,11 @@ public class FullScreenTool extends StateTool {
 
 	Log log = LogFactory.getLog(FullScreenTool.class);
 	
-	private Component toolBar;
+	MapController controller;
 
-	public FullScreenTool(Component toolBar) {
+	public FullScreenTool(MapController controller) {
 		super("FULLSCREEN", BrowseMapManagerFactory.class.getName(), isFullScreen());
-		
-		this.toolBar = toolBar;
+		this.controller = controller;
 		setIcon(getIcon());
 		setSelectedIcon(getSelectedIcon());
 		setToolTip();
@@ -55,7 +55,7 @@ public class FullScreenTool extends StateTool {
 		if (evt.getPropertyName().equals(ACTIVATED)) {
 			JFrame frame = null;
 			try {
-				frame = (JFrame)getEnclosingFrame(this.toolBar);
+				frame = (JFrame)getEnclosingFrame(this.controller.getView().getToolsBar());
 			} catch (NoSuchMethodException e) {
 				log.warn("Unable to get parent frame, full screen mode not supported");
 			}

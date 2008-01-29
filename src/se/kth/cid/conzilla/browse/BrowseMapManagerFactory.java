@@ -82,8 +82,8 @@ public class BrowseMapManagerFactory implements MapManagerFactory {
             menu.addTool(t, 160);
         }
         if (menu.getName().equals(DefaultMenuFactory.TOOLS_MENU)) {
-            menu.addTool((Tool) mc.get("ContributionsTool"), 100);
-            menu.addTool((Tool) mc.get("LayerTool"), 200);
+            ((ToolsMenu) menu).addTool((Tool) mc.get("ContributionsTool"), 100);
+            ((ToolsMenu) menu).addTool((Tool) mc.get("LayerTool"), 200);
         }
     }
 

@@ -5,6 +5,7 @@
  */
 
 package se.kth.cid.conzilla.edit;
+import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -14,8 +15,8 @@ import javax.swing.JRadioButtonMenuItem;
 
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapEvent;
-import se.kth.cid.conzilla.tool.MapMenuTool;
 import se.kth.cid.conzilla.tool.MapToolsMenu;
+import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.layout.ConceptLayout;
 import se.kth.cid.layout.DrawerLayout;
 
@@ -24,10 +25,8 @@ public class TextAnchorMapTool extends MapToolsMenu
 {  
 
 
-  class AnchorMenuTool extends MapMenuTool
-  {
-      public AnchorMenuTool(final String name, final int value, MapController cont, final boolean vertical)
-      {
+  class AnchorMenuTool extends Tool {
+      public AnchorMenuTool(final String name, final int value, MapController cont, final boolean vertical) {
 	  super(name, EditMapManagerFactory.class.getName(), cont);
 
 	  final JRadioButtonMenuItem mi = new JRadioButtonMenuItem();
@@ -42,6 +41,9 @@ public class TextAnchorMapTool extends MapToolsMenu
 			      drawerLayout.setHorisontalTextAnchor(value);
 		  }});
       }
+
+	public void actionPerformed(ActionEvent e) {
+	}
   }
 
     AnchorMenuTool north;
@@ -62,30 +64,30 @@ public class TextAnchorMapTool extends MapToolsMenu
     ButtonGroup vgroup = new ButtonGroup();
     north = new AnchorMenuTool("NORTH", ConceptLayout.NORTH, cont, true);
     vgroup.add((AbstractButton) north.getJMenuItem());
-    addMapMenuItem(north, 100);
+    addTool(north, 100);
 
     vcenter = new AnchorMenuTool("CENTER", ConceptLayout.CENTER, cont, true);
     vgroup.add((AbstractButton) vcenter.getJMenuItem());
-    addMapMenuItem(vcenter, 200);
+    addTool(vcenter, 200);
 
     south = new AnchorMenuTool("SOUTH", ConceptLayout.SOUTH, cont, true);
     vgroup.add((AbstractButton) south.getJMenuItem());
-    addMapMenuItem(south, 300);
+    addTool(south, 300);
 
     addSeparator(399);
     
     ButtonGroup hgroup = new ButtonGroup();
     west = new AnchorMenuTool("WEST", ConceptLayout.WEST, cont, false);
     hgroup.add((AbstractButton) west.getJMenuItem());
-    addMapMenuItem(west, 400);
+    addTool(west, 400);
 
     hcenter = new AnchorMenuTool("CENTER", ConceptLayout.CENTER, cont, false);
     hgroup.add((AbstractButton) hcenter.getJMenuItem());
-    addMapMenuItem(hcenter, 500);
+    addTool(hcenter, 500);
 
     east = new AnchorMenuTool("EAST", ConceptLayout.EAST, cont, false);
     hgroup.add((AbstractButton) east.getJMenuItem());
-    addMapMenuItem(east, 600);
+    addTool(east, 600);
   }
 
   public void update(MapEvent mapEvent)

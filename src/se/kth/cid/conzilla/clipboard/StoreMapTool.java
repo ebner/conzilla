@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapEvent;
-import se.kth.cid.conzilla.tool.ActionMapMenuTool;
+import se.kth.cid.conzilla.tool.Tool;
 
 /**
  * This stub handles storeing (or cpoying if you prefer) components in the
@@ -19,12 +19,12 @@ import se.kth.cid.conzilla.tool.ActionMapMenuTool;
  * @author Matthias Palmer
  * @version $Revision$
  */
-public class StoreMapTool extends ActionMapMenuTool {
+public class StoreMapTool extends Tool {
 
     protected Clipboard clipboard;
 
     public StoreMapTool(MapController cont, Clipboard clipboard) {
-        super("COPY", Clipboard.class.getName(), cont);
+        super(Clipboard.COPY, Clipboard.class.getName(), cont);
         this.clipboard = clipboard;
     }
 
@@ -35,7 +35,7 @@ public class StoreMapTool extends ActionMapMenuTool {
     public void actionPerformed(ActionEvent e) {
         if (mapObject != null && mapObject.getConcept() != null)
             clipboard.setMapObject(mapObject);
-        else if (mapEvent.hitType == MapEvent.HIT_NONE)
+        else if (mapEvent != null && mapEvent.hitType == MapEvent.HIT_NONE)
             clipboard.setComponent(controller.getConceptMap());
     }
 }

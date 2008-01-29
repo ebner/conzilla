@@ -19,14 +19,14 @@ import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.session.Session;
-import se.kth.cid.conzilla.tool.ActionMapMenuTool;
+import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.layout.DrawerLayout;
 
 /** 
  *  @author Matthias Palmer
  *  @version $Revision$
  */
-public class RemoveDrawerMapTool extends ActionMapMenuTool {
+public class RemoveDrawerMapTool extends Tool {
 
     EditMapManager editMapManager;
     

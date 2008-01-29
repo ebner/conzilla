@@ -32,10 +32,10 @@ public class OverBackgroundMenu extends MapToolsMenu {
 	public OverBackgroundMenu(MapController controller, EditMapManager mm) {
 		super(EditMapManagerFactory.EDIT_MAP_MENU, EditMapManagerFactory.class.getName(), controller);
 
-		addMapMenuItem(new EditPanel.EditMetadataTool(controller), 100);
-		addMapMenuItem(new RemoveContextMapMapTool(controller), 110);
-		addMapMenuItem(new InsertConceptMapTool(controller, mm.getGridModel()), 120);
-		addMapMenuItem(new ResourceInsertionMenu(controller, mm.getGridModel()), 130);
+		addTool(new EditPanel.EditMetadataTool(controller), 100);
+		addTool(new RemoveContextMapMapTool(controller), 110);
+		addTool(new InsertConceptMapTool(controller, mm.getGridModel()), 120);
+		addToolsMenu(new ResourceInsertionMenu(controller, mm.getGridModel()), 130);
 		ConzillaKit.getDefaultKit().extendMenu(this, controller);
 
 		// Not yet mature...

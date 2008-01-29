@@ -59,7 +59,7 @@ public class ResourceInsertionMenu extends MapToolsMenu
     public void update(final MapEvent mapEvent) {
         super.update(mapEvent);
         
-        JMenu menu = (JMenu) getJMenuItem();
+        JMenu menu = this;
         menu.removeAll();
 
         MapStoreManager sm = mapEvent.mapDisplayer.getStoreManager();
@@ -153,10 +153,5 @@ public class ResourceInsertionMenu extends MapToolsMenu
         }
         
         return true;
-    }
-	
-    public void detach() {
-        // TODO Auto-generated method stub
-        super.detach();
     }
 }

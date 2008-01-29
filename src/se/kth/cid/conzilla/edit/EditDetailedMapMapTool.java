@@ -39,7 +39,7 @@ import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.map.MapObject;
 import se.kth.cid.conzilla.metadata.MetaDataFieldPanel;
-import se.kth.cid.conzilla.tool.ActionMapMenuTool;
+import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.conzilla.util.ErrorMessage;
 
 /** 
@@ -47,7 +47,7 @@ import se.kth.cid.conzilla.util.ErrorMessage;
  *  @version $Revision$
  */
 
-public class EditDetailedMapMapTool extends ActionMapMenuTool {
+public class EditDetailedMapMapTool extends Tool {
 	
 	Log log = LogFactory.getLog(EditDetailedMapMapTool.class);
 	

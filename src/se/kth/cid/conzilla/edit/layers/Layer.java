@@ -38,12 +38,12 @@ public abstract class Layer
     protected GridModel gridModel;
     protected ContextMap.Position offset;
 
-    public Layer(MapController controller) {
+    public Layer(MapController controller, GridModel gridModel) {
         super(controller, true);
         if (!(controller.getManager() instanceof EditMapManager)) {
             log.warn("MapManager in controller isn't a EditMapManager despite the fact that we are in edit mode");
         }
-        gridModel = ((EditMapManager) controller.getManager()).getGridModel();
+        this.gridModel = gridModel;
         setHandledObject(null, MapEvent.Null);
         setVisible(true);
         setOpaque(false);
@@ -86,6 +86,10 @@ public abstract class Layer
         this.handles = handles;
         mapevent = m;
     }
+    
+    public HandledObject getHandledObject() {
+    	return this.handles;
+    }
 
     public void mouseMoved(MapEvent m) {
         if (!focusonclick && !m.mouseEvent.isShiftDown()) {
@@ -111,8 +115,16 @@ public abstract class Layer
                 int grad = gridModel.getGranularity();
                 int hgrad = grad / 2;
 
-                m.mapX = (m.mapX + offset.x + hgrad) / grad * grad - offset.x;
-                m.mapY = (m.mapY + offset.y + hgrad) / grad * grad - offset.y;
+                if (m.mapX < 0) {
+                	m.mapX = (m.mapX + offset.x - hgrad) / grad * grad - offset.x;
+                } else  {
+                	m.mapX = (m.mapX + offset.x + hgrad) / grad * grad - offset.x;                	
+                }
+                if (m.mapY < 0) {
+                	m.mapY = (m.mapY + offset.y - hgrad) / grad * grad - offset.y;
+                } else {
+                	m.mapY = (m.mapY + offset.y + hgrad) / grad * grad - offset.y;
+                }
             }
             repaintLayer(handles.drag(m));
         }

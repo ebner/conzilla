@@ -6,6 +6,7 @@
 
 package se.kth.cid.conzilla.edit;
 
+import java.awt.event.ActionEvent;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
@@ -16,13 +17,10 @@ import se.kth.cid.concept.Triple;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.edit.menu.TypeMenu;
-import se.kth.cid.conzilla.map.MapEvent;
-import se.kth.cid.conzilla.tool.MapMenuTool;
+import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.conzilla.util.ResourceUtil;
 import se.kth.cid.conzilla.util.TreeTagNodeMenuListener;
 import se.kth.cid.layout.StatementLayout;
-import se.kth.cid.rdf.RDFComponent;
-import se.kth.cid.rdf.RDFComponentManager;
 import se.kth.cid.tree.TreeTagNode;
 
 import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
@@ -33,7 +31,7 @@ import com.hp.hpl.jena.vocabulary.RDF;
  * 
  * @author matthias
  */
-public class ChangeTypeMapTool extends MapMenuTool implements TreeTagNodeMenuListener {
+public class ChangeTypeMapTool extends Tool implements TreeTagNodeMenuListener {
 
     public ChangeTypeMapTool(MapController cont) {
         super("CHANGE_TYPE", EditMapManagerFactory.class.getName(), cont);
@@ -42,14 +40,13 @@ public class ChangeTypeMapTool extends MapMenuTool implements TreeTagNodeMenuLis
         setJMenuItem(tm);
     }
     
-    public void update(MapEvent e) {
-        super.update(e);
+    public boolean updateEnabled() {
         boolean b = false;
         if (mapObject.getConcept() != null) {
         	String containerURI = mapObject.getConcept().getLoadContainer();
         	b = mapObject.getDrawerLayout().getConceptMap().getComponentManager().getEditingSesssion().getContainerURIForConcepts().equals(containerURI);
         }
-        getJMenuItem().setEnabled(b);
+        return b;
     }
     
     public void selected(TreeTagNode treeTagNode) {
@@ -112,4 +109,7 @@ public class ChangeTypeMapTool extends MapMenuTool implements TreeTagNodeMenuLis
         controller.getView().getMapScrollPane().getDisplayer().repaint();
         controller.getConceptMap().getComponentManager().getUndoManager().makeChange();
     }
+
+	public void actionPerformed(ActionEvent e) {
+	}
 }

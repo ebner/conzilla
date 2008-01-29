@@ -67,8 +67,7 @@ public class LayoutExtra implements Layout, Extra{
 
     public void extendMenu(ToolsMenu menu, final MapController mc) {
         if (menu.getName().equals(DefaultMenuFactory.TOOLS_MENU))
-            menu
-                .addTool(new Tool(
+            menu.addTool(new Tool(
                     "LAYOUT_TRIVIAL",
                     LayoutExtra.class.getName()) {
             public void actionPerformed(ActionEvent ae) {

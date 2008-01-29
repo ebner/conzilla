@@ -21,6 +21,7 @@ import se.kth.cid.component.Container;
 import se.kth.cid.component.EditEvent;
 import se.kth.cid.component.EditListener;
 import se.kth.cid.component.Resource;
+import se.kth.cid.component.UndoListener;
 import se.kth.cid.component.UndoManager;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.rdf.layout.RDFConceptMap;
@@ -51,6 +52,7 @@ public class RDFUndoManager implements UndoManager, EditListener {
 	private RDFConceptMap contextMap;
 	private ModelHistory mhInfo;
 	private ModelHistory mhPres;
+	private ArrayList<UndoListener> undoListeners = new ArrayList<UndoListener>();
 	
 	public RDFUndoManager(RDFConceptMap cMap) {
 		this.contextMap = cMap;
@@ -95,6 +97,7 @@ public class RDFUndoManager implements UndoManager, EditListener {
 					undoBreakMessage(ee);
 					return;
 				}
+				
 			}
 		} else {
 			UndoEvent ee = (UndoEvent) undoObj; 
@@ -105,6 +108,7 @@ public class RDFUndoManager implements UndoManager, EditListener {
 		}
 		changePosition--;
 		contextMap.refresh();
+		fireUndoEvent();
 	}	
 
 	public void redo() {
@@ -123,6 +127,7 @@ public class RDFUndoManager implements UndoManager, EditListener {
 		}
 		changePosition++;
 		contextMap.refresh();
+		fireUndoEvent();
 	}
 
 	private void undoBreakMessage(UndoEvent ee) {
@@ -162,6 +167,7 @@ public class RDFUndoManager implements UndoManager, EditListener {
 				changes.add(ue);
 				changePosition++;
 			}
+			fireUndoEvent();
 		}
 	}
 	
@@ -196,5 +202,29 @@ public class RDFUndoManager implements UndoManager, EditListener {
 			return;
 		}
 		makeChange(e);
+	}
+
+	public void addUndoListener(UndoListener undoListener) {
+		undoListeners.add(undoListener);
+	}
+
+	public void removeUndoListener(UndoListener undoListener) {
+		undoListeners.remove(undoListener);
+	}
+	
+	protected void fireUndoEvent() {
+		Iterator<UndoListener> it = undoListeners.iterator();
+		while(it.hasNext()) {
+			it.next().undoStateChanged();
+		}
+	}
+
+	public void forgetLastChange() {
+		UndoEvent ue = new UndoEvent(null, mhInfo, mhPres);
+		if (!ue.isEmpty()) {
+			undo();
+		}
+		forgetFuture();
+		fireUndoEvent();
 	}
 }

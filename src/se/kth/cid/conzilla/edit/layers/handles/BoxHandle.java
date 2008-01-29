@@ -170,9 +170,12 @@ public class BoxHandle extends DefaultHandle {
             if (gridModel != null && gridModel.isGridOn()) {
                 int grad = gridModel.getGranularity();
                 int hgrad = grad / 2;
+                int xneg = xpos <= 0 ? -1 : 1;
+                int yneg = ypos <= 0 ? -1 : 1;
 
-                xpos = (xpos + radius + hgrad) / grad * grad - radius;
-                ypos = (ypos + radius + hgrad) / grad * grad - radius;
+
+                xpos = (xpos + radius + hgrad*xneg) / grad * grad - radius;
+                ypos = (ypos + radius + hgrad*yneg) / grad * grad - radius;
             }
 
             if (xRel)

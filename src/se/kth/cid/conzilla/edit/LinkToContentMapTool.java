@@ -21,13 +21,13 @@ import se.kth.cid.conzilla.content.ContentEditor;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.metadata.InfoPanel;
-import se.kth.cid.conzilla.tool.ActionMapMenuTool;
+import se.kth.cid.conzilla.tool.Tool;
 
 /** 
  *  @author Matthias Palm?r
  *  @version $Revision$
  */
-public class LinkToContentMapTool extends ActionMapMenuTool {
+public class LinkToContentMapTool extends Tool {
 	
 	Log log = LogFactory.getLog(LinkToContentMapTool.class);
 

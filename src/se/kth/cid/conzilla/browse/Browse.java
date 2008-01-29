@@ -150,8 +150,9 @@ public class Browse {
 
 	protected void updateBrowse(MapEvent e) {
 		// If menu is popup return
-		if (((JMenu) browseMenu.getJMenuItem()).getPopupMenu().isVisible())
+		if (browseMenu.getPopupMenu().isVisible()) {
 			return;
+		}
 
 		// Mark and HandCursor below.
 		if (e.hitType != MapEvent.HIT_NONE) {

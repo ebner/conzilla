@@ -485,6 +485,7 @@ public class MapDisplayer extends JPanel implements EditListener,
                 addDrawerLayout((String) e.getTarget());
                 break;
             case ContextMap.CONTEXTMAP_REFRESHED:
+            case ContextMap.RESOURCELAYOUT_PRIORITY_CHANGED:
             	detachDrawMapObjects();
             	createMapObjects();
                 break;

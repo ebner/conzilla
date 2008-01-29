@@ -9,12 +9,12 @@ import java.awt.event.ActionEvent;
 
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.properties.ConzillaResourceManager;
-import se.kth.cid.conzilla.tool.ActionMapMenuTool;
+import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.layout.DrawerLayout;
 import se.kth.cid.layout.StatementLayout;
 
-public class TripleMapTool extends ActionMapMenuTool
+public class TripleMapTool extends Tool
 {
 
   static final String TRIPLE_VISIBLE = "HIDE_TRIPLE";

@@ -11,8 +11,12 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 
+import se.kth.cid.concept.Concept;
 import se.kth.cid.conzilla.controller.MapController;
+import se.kth.cid.conzilla.edit.EditMapManager;
+import se.kth.cid.conzilla.edit.layers.MoveLayer;
 import se.kth.cid.conzilla.edit.layers.handles.HandleStore;
+import se.kth.cid.conzilla.map.MapObject;
 import se.kth.cid.layout.DrawerLayout;
 import se.kth.cid.layout.GroupLayout;
 
@@ -20,19 +24,26 @@ import se.kth.cid.layout.GroupLayout;
  *  @author Matthias Palmer
  */
 public class StoreEditMapTool extends StoreMapTool {
-    
-    HandleStore handleStore;
-    
-    public StoreEditMapTool(MapController cont, HandleStore handleStore, Clipboard clipboard) {
+        
+    public StoreEditMapTool(MapController cont, Clipboard clipboard) {
         super(cont, clipboard);
-        this.handleStore = handleStore;
     }
 
     protected boolean updateEnabled() {
-        return true;
+    	if (mapEvent != null) {
+    		return true;
+    	} else {
+        	HandleStore handleStore = ((EditMapManager) controller.getManager()).getHandleStore();
+        	MoveLayer moveLayer = ((EditMapManager) controller.getManager()).moveLayer;
+        	MapObject mo = moveLayer.getHandledObject() != null ? moveLayer.getHandledObject().getMapObject() : null;
+        	Concept co = mo != null ? mo.getConcept() : null;
+            return (!handleStore.getMarkedLayouts().isEmpty()) || co!= null;
+    	}
     }
 
     public void actionPerformed(ActionEvent e) {
+    	HandleStore handleStore = ((EditMapManager) controller.getManager()).getHandleStore();
+    	MoveLayer moveLayer = ((EditMapManager) controller.getManager()).moveLayer;
         Set dls = handleStore.getMarkedLayouts();
         ArrayList orderedDls = new ArrayList();
         System.out.println("number of marked dls "+dls.size());
@@ -47,8 +58,15 @@ public class StoreEditMapTool extends StoreMapTool {
 				}
 			}
         	
-            clipboard.setDrawerLayous(orderedDls);
+            clipboard.setDrawerLayouts(orderedDls);
         } else {
+        	if (moveLayer.getHandledObject() != null) {
+        		MapObject mo = moveLayer.getHandledObject().getMapObject();
+        		if (mo != null && mo.getConcept() != null) {
+        			clipboard.setMapObject(mo);
+        			return;
+        		}
+        	}
             super.actionPerformed(e);
         }
     }

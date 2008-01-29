@@ -6,6 +6,7 @@
 
 package se.kth.cid.conzilla.edit;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.geom.CubicCurve2D;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -59,27 +60,27 @@ public class LayoutUtils {
      */
     public static ContextMap.Position[] boxLine(
         StatementLayout owner,
-        MapEvent mapEvent,
+        ContextMap.Position point,
         GridModel gm) {
         if (owner.getBoxLinePathType() == LineStyle.PATH_TYPE_STRAIGHT) {
             ContextMap.Position[] pos = new ContextMap.Position[2];
 //            ContextMap.Position press = getPosition(mapEvent);
             pos[0] = findPosition_FromTriples(owner);
             if (pos[0] == null)
-                pos[0] = getPosition(mapEvent);
+                pos[0] = point;
             pos[1] = findPosition_FirstFromBody(owner, pos[0], gm);
             if (pos[0] == null)
-                pos[0] = getPosition(mapEvent);
+                pos[0] = point;
             return pos;
         } else {
             ContextMap.Position[] pos = new ContextMap.Position[4];
 //            ContextMap.Position press = getPosition(mapEvent);
             pos[0] = findPosition_FromTriples(owner);
             if (pos[0] == null)
-                pos[0] = getPosition(mapEvent);
+                pos[0] = point;
             pos[3] = findPosition_FirstFromBody(owner, pos[0], gm);
             if (pos[0] == null)
-                pos[0] = getPosition(mapEvent);
+                pos[0] = point;
 
             pos[1] =
                 new ContextMap.Position(
@@ -118,9 +119,11 @@ public class LayoutUtils {
     public static ContextMap.Position onGrid(
         ContextMap.Position pos,
         GridModel gridmodel) {
+        int xneg = pos.x <= 0 ? -1 : 1;
+        int yneg = pos.y <= 0 ? -1 : 1;
 
-        pos.x += (int) gridmodel.getGranularity() / 2.0;
-        pos.y += (int) gridmodel.getGranularity() / 2.0;
+        pos.x += (int) (gridmodel.getGranularity() / 2.0*xneg);
+        pos.y += (int) (gridmodel.getGranularity() / 2.0*yneg);
         pos.x -= pos.x % gridmodel.getGranularity();
         pos.y -= pos.y % gridmodel.getGranularity();
         return pos;
@@ -150,6 +153,10 @@ public class LayoutUtils {
     }
     protected static ContextMap.Position getPosition(MapEvent mapEvent) {
         return new ContextMap.Position(mapEvent.mapX, mapEvent.mapY);
+    }
+
+    protected static ContextMap.Position getPosition(Point point) {
+        return new ContextMap.Position(point.x, point.y);
     }
 
     /** Calculates the middle of the triplesLayouts inner end.
@@ -205,10 +212,13 @@ public class LayoutUtils {
         GridModel gm) {
         ContextMap.Position pos;
         pos = findPosition_FromTriples(tripleOwner);
+        int xneg = pos.x <= 0 ? -1 : 1;
+        int yneg = pos.y <= 0 ? -1 : 1;
+
         if (pos != null && gm != null && gm.isGridOn()) {
             int gran = gm.getGranularity();
-            pos.x = (pos.x + gran / 2) / gran * gran;
-            pos.y = (pos.y + gran / 2) / gran * gran;
+            pos.x = (pos.x + (gran / 2)*xneg) / gran * gran;
+            pos.y = (pos.y + (gran / 2)*yneg) / gran * gran;
         }
 
         if (pos == null
@@ -278,6 +288,9 @@ public class LayoutUtils {
             gran = gm.getGranularity();
             halfgran = gran / 2;
         }
+        int xneg = press.x <= 0 ? -1 : 1;
+        int yneg = press.y <= 0 ? -1 : 1;
+        
 
         ContextMap.Position pos = new ContextMap.Position(0, 0);
         if (press == null) {
@@ -293,13 +306,13 @@ public class LayoutUtils {
             else if (press.y > bb.pos.y + bb.dim.height)
                 pos.y = bb.pos.y + bb.dim.height;
             else
-                pos.y = (press.y + halfgran) / gran * gran;
+                pos.y = (press.y + halfgran*yneg) / gran * gran;
         } else {
             if (press.y < bb.pos.y) {
-                pos.x = (press.x + halfgran) / gran * gran;
+                pos.x = (press.x + halfgran*xneg) / gran * gran;
                 pos.y = bb.pos.y;
             } else if (press.y > bb.pos.y + bb.dim.height) {
-                pos.x = (press.x + halfgran) / gran * gran;
+                pos.x = (press.x + halfgran*xneg) / gran * gran;
                 pos.y = bb.pos.y + bb.dim.height;
             } else {
                 pos.x = bb.pos.x;

@@ -18,7 +18,7 @@ import se.kth.cid.conzilla.controller.ControllerException;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.history.LinearHistory;
 import se.kth.cid.conzilla.session.Session;
-import se.kth.cid.conzilla.tool.ActionMapMenuTool;
+import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.util.AttributeEntryUtil;
 
@@ -27,7 +27,7 @@ import se.kth.cid.util.AttributeEntryUtil;
  * 
  * @author matthias
  */
-public class RemoveContextMapMapTool extends ActionMapMenuTool {
+public class RemoveContextMapMapTool extends Tool {
     //EditMapManager editMapManager;
     
     public RemoveContextMapMapTool(MapController cont) {
@@ -38,7 +38,7 @@ public class RemoveContextMapMapTool extends ActionMapMenuTool {
      * Only enable the removal of a Context-map if its loadContainer is the layoutContainer
      * of the current session.
 
-     * @see se.kth.cid.conzilla.tool.ActionMapMenuTool#updateEnabled()
+     * @see se.kth.cid.conzilla.tool.Tool#updateEnabled()
      */
     protected boolean updateEnabled() {
         ContextMap cMap = controller.getConceptMap();

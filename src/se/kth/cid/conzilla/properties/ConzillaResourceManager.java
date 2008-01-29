@@ -83,6 +83,15 @@ public class ConzillaResourceManager {
 		if (buttooltip != null)
 			but.setToolTipText(buttooltip);
 	}
+	
+	public void plainCustomizeButton(AbstractButton but, String name, String tooltip) {
+		if (name != null) {
+			but.setText(name);
+		}
+		if (tooltip != null) {
+			but.setToolTipText(tooltip);
+		}
+	}
 
 	public static ConzillaResourceManager getDefaultManager() {
 		if (defaultManager == null)

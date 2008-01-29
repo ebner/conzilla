@@ -6,19 +6,24 @@
 
 package se.kth.cid.conzilla.edit;
 
+import java.awt.Event;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
 
 import javax.swing.JComponent;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.JToolBar.Separator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import se.kth.cid.component.ContainerManager;
+import se.kth.cid.component.UndoListener;
+import se.kth.cid.component.UndoManager;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.app.FullScreenTool;
 import se.kth.cid.conzilla.browse.Highlighter;
@@ -33,70 +38,61 @@ import se.kth.cid.conzilla.edit.layers.MoveLayer;
 import se.kth.cid.conzilla.edit.layers.handles.HandleStore;
 import se.kth.cid.conzilla.edit.toolbar.CreateTools;
 import se.kth.cid.conzilla.map.MapScrollPane;
+import se.kth.cid.conzilla.menu.DefaultMenuFactory;
 import se.kth.cid.conzilla.properties.Images;
 import se.kth.cid.conzilla.session.Session;
 import se.kth.cid.conzilla.session.SessionChooserMenu;
 import se.kth.cid.conzilla.session.SessionManager;
 import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.conzilla.tool.ToolsBar;
+import se.kth.cid.conzilla.tool.ToolsMenu;
 import se.kth.cid.conzilla.view.View;
 import se.kth.cid.rdf.RDFContainerManager;
 import se.kth.cid.util.LocaleChooser;
 
-public class EditMapManager extends LayerManager implements MapManager, PropertyChangeListener {
-	
+public class EditMapManager extends LayerManager implements MapManager, PropertyChangeListener, UndoListener {
 	Log log = LogFactory.getLog(EditMapManager.class);
-	
-	GridTool grid;
 
-	LineTool line;
+	//Utilities
+	public MapController controller;
+	public GridModel gridModel;
+	public Highlighter highlighter;
+	public LocaleChooser localeChooser;
+	public HandleStore handleStore;
+	public Clipboard clipboard;
 
-	TieTool tie;
+	//Tools
+	public GridTool grid;
+	public LineTool line;
+	public TieTool tie;
+	public Tool save;
+	public Tool fullScreen;
+	public Tool publish;
+	public Tool contributionInfo;
+	public Tool browseMode;
+	public CreateTools create;
+	public Tool undo;
+	public Tool redo;
 
-	Tool save;
-
-	Tool fullScreen;
-
-	Tool publish;
-
-	Tool contributionInfo;
-	
-	Tool browseMode;
-
-	GridModel gridModel;
-
-	CreateTools create;
-
-	SessionChooserMenu sessionMenu;
-
-	Highlighter highlighter;
-
-	MapController controller;
-
-	LocaleChooser localeChooser;
-
-	private HandleStore handleStore;
-
-	private Clipboard clipboard;
-
-    
-    // Two default layers.
-    protected MoveLayer moveLayer;
-    
-    protected GridLayer gridLayer;
-
+	//Separators
 	private Separator separator1;
 	private Separator separator2;
 	private Separator separator3;
 	private Separator separator4;
 	private Separator separator5;
-    
-//    private Tool containerInspector;
 
-    public EditMapManager(MapController controller, Clipboard clipboard) {
-        this.controller = controller;
+	//Menues
+	public SessionChooserMenu sessionMenu;
+	public ToolsMenu editMenu;
+    
+    //Layers.
+	public MoveLayer moveLayer;
+	public GridLayer gridLayer;
+
+    public EditMapManager(final MapController mapController, Clipboard clipboard) {
+        this.controller = mapController;
         this.clipboard = clipboard;
-        highlighter = new Highlighter(controller);
+        highlighter = new Highlighter(mapController);
         localeChooser = new LocaleChooser();
         gridModel = new GridModel(6);
         handleStore = new HandleStore(gridModel);
@@ -116,6 +112,45 @@ public class EditMapManager extends LayerManager implements MapManager, Property
             }
         };
         browseMode.setIcon(Images.getImageIcon(Images.ICON_FILE_BROWSE));
+        editMenu = new ToolsMenu(EditMapManagerFactory.EDIT_MENU, EditMapManagerFactory.class.getName());
+        undo = new Tool("UNDO", EditMapManagerFactory.class.getName()) {
+        	{setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.CTRL_MASK));
+        	setIcon(Images.getImageIcon(Images.ICON_UNDO));}
+            public void actionPerformed(ActionEvent ae) {
+            	mapController.getConceptMap().getComponentManager().getUndoManager().undo();
+            }
+			protected boolean updateEnabled() {
+				return mapController.getConceptMap().getComponentManager().getUndoManager().canUndo();
+			}            
+        };
+        redo = new Tool("REDO", EditMapManagerFactory.class.getName()) {
+        	{setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.SHIFT_MASK | Event.CTRL_MASK));
+        	setIcon(Images.getImageIcon(Images.ICON_REDO));}
+            public void actionPerformed(ActionEvent ae) {
+            	mapController.getConceptMap().getComponentManager().getUndoManager().redo();
+            }
+			protected boolean updateEnabled() {
+				return mapController.getConceptMap().getComponentManager().getUndoManager().canRedo();
+			}            
+        };
+
+        editMenu.addTool(undo, 170);
+        editMenu.addTool(redo, 180);
+        mapController.getConceptMap().getComponentManager().getUndoManager().addUndoListener(this);
+        
+        ConzillaKit.getDefaultKit().extendMenu(editMenu, mapController);
+        ContainerManager cm = ConzillaKit.getDefaultKit().getResourceStore().getContainerManager();
+        sessionMenu = new SessionChooserMenu(mapController, (RDFContainerManager) cm);
+        grid = new GridTool(gridModel);
+        line = new LineTool();
+        tie = new TieTool();
+        save = new SaveTool(mapController);
+        publish = new PublishTool(this, mapController, (SaveTool)save);
+        contributionInfo = new ContributionInfoTool(mapController);
+        fullScreen = new FullScreenTool(mapController);
+        create = new CreateTools(this, mapController, gridModel);
+        gridLayer = new GridLayer(mapController, gridModel);
+        moveLayer = new MoveLayer(mapController, this);
     }
     
     public MoveLayer getMoveLayer() {
@@ -136,24 +171,15 @@ public class EditMapManager extends LayerManager implements MapManager, Property
         controller.addPropertyChangeListener(this);
 
         //SessionMenu
-        ContainerManager cm = ConzillaKit.getDefaultKit().getResourceStore().getContainerManager();
-        sessionMenu = new SessionChooserMenu(controller, (RDFContainerManager) cm);
         view.addMenu(sessionMenu, 35);
     
+        //EditMenu
+        view.addMenu(editMenu, 15);
+        
         //ToolBar
         ToolsBar bar = view.getToolsBar();
         
-        grid = new GridTool(gridModel);
-        line = new LineTool();
-        tie = new TieTool();
-        save = new SaveTool(view.getController());
-        publish = new PublishTool(this, controller, (SaveTool)save);
-        contributionInfo = new ContributionInfoTool(controller);
-        fullScreen = new FullScreenTool(view.getToolsBar());
-        create = new CreateTools(this, controller, gridModel);
-        gridLayer = new GridLayer(controller);
-        moveLayer = new MoveLayer(controller, line, tie, this);
-
+       
         //GridLayer should be at the bottom, then moveLayer next.
         push(gridLayer);
         push(moveLayer);
@@ -216,7 +242,8 @@ public class EditMapManager extends LayerManager implements MapManager, Property
     	controller.removePropertyChangeListener(this);
         
         view.removeMenu(sessionMenu);
-        
+        view.removeMenu(editMenu);
+
         //uninstall layers.
         uninstall(view.getMapScrollPane());
 
@@ -294,5 +321,11 @@ public class EditMapManager extends LayerManager implements MapManager, Property
 
 	public JComponent embeddMap(MapScrollPane map) {
 		return map;
+	}
+
+	public void undoStateChanged() {
+		UndoManager um = controller.getConceptMap().getComponentManager().getUndoManager();
+		undo.setEnabled(um.canUndo());
+		redo.setEnabled(um.canRedo());
 	}
 }

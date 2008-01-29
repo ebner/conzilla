@@ -26,7 +26,7 @@ import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.edit.EditMapManagerFactory;
 import se.kth.cid.conzilla.map.MapEvent;
-import se.kth.cid.conzilla.tool.ActionMapMenuTool;
+import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.layout.LayerLayout;
 import se.kth.nada.kmr.shame.applications.util.FormletStoreSingleton;
@@ -52,7 +52,7 @@ public class EditPanel extends InfoPanel {
 		}
     }
     
-    static public class EditMetadataTool extends ActionMapMenuTool {
+    static public class EditMetadataTool extends Tool {
     
         Component comp;
 
@@ -62,7 +62,7 @@ public class EditPanel extends InfoPanel {
 
 
         /**
-         * @see se.kth.cid.conzilla.tool.ActionMapMenuTool#updateEnabled()
+         * @see se.kth.cid.conzilla.tool.Tool#updateEnabled()
          */
         protected boolean updateEnabled() {
             if (mapEvent.hitType == MapEvent.HIT_NONE) {

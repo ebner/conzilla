@@ -6,6 +6,8 @@
 
 package se.kth.cid.component;
 
+import java.beans.PropertyChangeListener;
+
 /**
  * Allows undo and redo of changed made to a single ContextMap and 
  * it's belonging concepts. Implementations are required to keep a change 
@@ -16,7 +18,16 @@ package se.kth.cid.component;
  * @author matthias
  */
 public interface UndoManager {
-	
+	/**
+	 * Add listener for changes in {@link #canUndo()} or {@link #canRedo()}.
+	 */
+	void addUndoListener(UndoListener undoListener);
+
+	/**
+	 * Remove listener for changes in {@link #canUndo()} or {@link #canRedo()}.
+	 */
+	void removeUndoListener(UndoListener undoListener);
+
 	/**
 	 * @return true if there is changes that can be undone relative to the
 	 * current position in the change history.
@@ -70,4 +81,9 @@ public interface UndoManager {
 	 *
 	 */
 	void makeChange();
+	
+	/**
+	 * Forgets the last change made, making it irrevocabulary done.
+	 */
+	void forgetLastChange();
 }

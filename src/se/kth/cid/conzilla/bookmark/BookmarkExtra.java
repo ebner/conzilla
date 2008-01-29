@@ -85,7 +85,7 @@ public class BookmarkExtra implements Extra {
     		tm.addTool(getAddBookmark(tm, mc, new BookmarkTree(store.getTreeModel(), mc)), 0);
     		tm.addMenuListener(new MenuListener() {
     			public void menuSelected(MenuEvent arg0) {
-    				initMenu(tm, mc);
+    				initMenu((ToolsMenu) tm, mc);
     			}
     			public void menuCanceled(MenuEvent arg0) {}
     			public void menuDeselected(MenuEvent arg0) {}

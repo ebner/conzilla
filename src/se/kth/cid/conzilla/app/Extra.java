@@ -9,6 +9,7 @@ import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.controller.MapManagerFactory;
 import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.conzilla.tool.ToolsMenu;
+import se.kth.cid.conzilla.util.PriorityMenu;
 import se.kth.cid.conzilla.view.View;
 
 /** 
@@ -43,12 +44,16 @@ public interface Extra
     boolean initExtra(ConzillaKit kit);
     
     /**
-     * An extra may add functionality through adding a {@link Tool} to a {@link ToolsMenu}.
+     * An extra may add functionality by adding {@link Tool}s to a {@link ToolsMenu}.
      * The convenience method {@link ConzillaKit#extendMenu(ToolsMenu, MapController)} gives 
      * all Extras the opportunity to extend it by looping over all Extras and calling this method.
      * Hence, every implementation of this method may be called for a wide range of menus, 
-     * and the intention is to use the {@link ToolsMenu#getName()} to decide if and how to 
-     * extend a given menu.
+     * and the intention is to use the {@link PriorityMenu#getName()} to decide if and how to 
+     * extend a given menu. For example:
+     * <code> if (menu.getName().equals("FILE_MENU")) {
+     * 		menu.addTool(new Tool(...));
+     *   }
+     * </code>
      * 
      * @param menu the {@link ToolsMenu} that this Extra may extend.
      * @param mapController some menues occur several times, typically once for each {@link View},

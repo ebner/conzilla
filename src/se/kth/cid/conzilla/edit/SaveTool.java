@@ -52,7 +52,7 @@ public class SaveTool extends Tool implements EditListener {
 		updateEnabled();
 	}
 
-	void updateEnabled() {
+	void updateEdited() {
 		MapStoreManager storeManager = controller.getView().getMapScrollPane().getDisplayer().getStoreManager();
 
 		boolean enable = false;

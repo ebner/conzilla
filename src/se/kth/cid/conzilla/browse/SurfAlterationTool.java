@@ -26,7 +26,7 @@ import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.controller.ControllerException;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapEvent;
-import se.kth.cid.conzilla.tool.MapMenuTool;
+import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.identity.URIClassifier;
 import se.kth.cid.layout.ContextMap;
@@ -42,7 +42,7 @@ import se.kth.cid.util.ComponentWithTitle;
  * @author Matthias Palmer
  * @version $Revision$
  */
-public class SurfAlterationTool extends MapMenuTool {
+public class SurfAlterationTool extends Tool {
 	JMenu choice;
 
 	Browse browse;
@@ -50,6 +50,7 @@ public class SurfAlterationTool extends MapMenuTool {
 	public SurfAlterationTool(MapController cont, Browse browse) {
 		super("SURF", BrowseMapManagerFactory.class.getName(), cont);
 		choice = new JMenu();
+		setJMenuItem(choice);
 		this.browse = browse;
 	}
 
@@ -59,9 +60,7 @@ public class SurfAlterationTool extends MapMenuTool {
 
 		// In case something is wrong or triggered over background.
 		if (mapEvent == null || (mapEvent.mapObject == null || mapEvent.mapObject.getConcept() == null)) {
-			JMenuItem mi = new JMenuItem();
-			setJMenuItem(mi);
-			mi.setEnabled(false);
+			setJMenuItem(new JMenuItem());
 			return;
 		}
 
@@ -79,9 +78,7 @@ public class SurfAlterationTool extends MapMenuTool {
 		// then return a menuItem (possible not enabled if no alternative)
 		// otherwise a menu is returned.
 		if (neighbourHoodMaps.size() == 1) {
-			JMenuItem mi = new JMenuItem();
-			mi.setEnabled(false);
-			setJMenuItem(mi);
+			setJMenuItem(new JMenuItem());
 		} else {
 			/*
 			 * JLabel label = new JLabel( manager.getString(
@@ -125,6 +122,10 @@ public class SurfAlterationTool extends MapMenuTool {
 			setJMenuItem(choice);
 		}
 	}
+	
+	protected boolean updateEnabled() {
+		return choice.getPopupMenu().getComponentCount() > 0;
+	}
 
 	/**
 	 * This is a surf-command that results in a zoomIn via the controller.
@@ -166,5 +167,8 @@ public class SurfAlterationTool extends MapMenuTool {
 			ErrorMessage.showError("Load Error", "Failed to load map\n\n" + comp.getURI(), e, controller
 					.getView().getMapScrollPane());
 		}
+	}
+
+	public void actionPerformed(ActionEvent e) {
 	}
 }

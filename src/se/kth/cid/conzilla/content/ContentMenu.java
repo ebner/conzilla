@@ -8,6 +8,7 @@ package se.kth.cid.conzilla.content;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
+import java.util.Iterator;
 
 import se.kth.cid.component.Component;
 import se.kth.cid.conzilla.app.ConzillaKit;
@@ -59,10 +60,10 @@ public class ContentMenu extends ToolsMenu
   {
       if (!getPopupMenu().isVisible())
 	  {
-	      Enumeration e = getTools();
-	      while(e.hasMoreElements())
+	      Iterator it = getTools().iterator();
+	      while(it.hasNext())
 		  {
-		      Tool t = (Tool) e.nextElement();
+		      Tool t = (Tool) it.next();
 		      if(t instanceof ContentTool)
 			  ((ContentTool) t).update(index);
 		  }

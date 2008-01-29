@@ -5,111 +5,70 @@
  */
 
 package se.kth.cid.conzilla.tool;
+
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Iterator;
 
-import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapEvent;
 
-/** This class is a menu that supports adding tools as buttons.
- *
- *  @author Mikael Nilsson
- *  @version $Revision$
+/**
+ * This class is a menu that supports adding tools as buttons.
+ * 
+ * @author Mikael Nilsson
+ * @version $Revision$
  */
-public class MapToolsMenu extends ToolsMenu implements MapMenuItem
-{
-    protected MapController controller;
-    
-    Hashtable mapMenuTools;
+public class MapToolsMenu extends ToolsMenu {
+	protected MapController controller;
 
-    public MapToolsMenu(String title, String resbundle, MapController cont)
-    {
-	super(title, resbundle);
-	
-	controller = cont;
-	
-	mapMenuTools = new Hashtable();
-    }
+	public MapToolsMenu(String title, String resbundle, MapController cont) {
+		super(title, resbundle);
+		controller = cont;
+	}
 
-    public JMenuItem getJMenuItem()
-    {
-	return this;
-    }
-    
-    
-    public void addMapMenuItem(MapMenuItem t, int prio)
-    {
-	JMenuItem mi = t.getJMenuItem();
-	
-	mapMenuTools.put(t, mi);
-	add(mi);
-	setPriority(mi, prio);
-    }
+	public void update(MapEvent mapEvent) {
 
-    public void removeMapMenuItem(MapMenuItem t)
-    {
-	JMenuItem mi = (JMenuItem) mapMenuTools.get(t);
+		Iterator tools= getTools().iterator();
+		while (tools.hasNext()) {
+			Object entry = tools.next();
+			if (entry instanceof Tool) {
+				((Tool) entry).update(mapEvent);
+			} else if(entry instanceof MapToolsMenu) {
+				((MapToolsMenu) entry).update(mapEvent);
+			}
+		}
+	}
 
-	if(mi == null)
-	    return;
-	
-	mapMenuTools.remove(t);
-	remove(mi);
-    }
+	public void popup(MapEvent mapEvent) {
+		update(mapEvent);
 
-    public void update(MapEvent mapEvent)
-    {
-	
-	Enumeration en = mapMenuTools.keys();
-	while (en.hasMoreElements())
-	    {
-		MapMenuItem tool = (MapMenuItem) en.nextElement();
-		tool.update(mapEvent);
-		
-		JMenuItem newME = tool.getJMenuItem();
-		JMenuItem oldME = (JMenuItem) mapMenuTools.get(tool);
+		SwingUtilities.updateComponentTreeUI(this);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension choiceSize = getPopupMenu().getSize();
 
-		if (newME != oldME)
-		    {
-			int prio = getPriority(oldME);
-			mapMenuTools.put(tool, newME);
-			int pos = getPopupMenu().getComponentIndex(oldME);
-			getPopupMenu().remove(oldME);
-			getPopupMenu().insert(newME, pos);
-			setPriority(newME, prio);
-		    }
-	    }
-    }
+		if (choiceSize.width == 0)
+			choiceSize = getPopupMenu().getPreferredSize();
 
-    public void popup(MapEvent mapEvent)
-    {
-	update(mapEvent);
-	
-	SwingUtilities.updateComponentTreeUI(this);
-      Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-      Dimension choiceSize = getPopupMenu().getSize();
+		Point p = new Point(mapEvent.mouseEvent.getX(), mapEvent.mouseEvent
+				.getY());
+		SwingUtilities.convertPointToScreen(p, controller.getView()
+				.getMapScrollPane().getDisplayer());
 
-      if (choiceSize.width == 0)
-	  choiceSize = getPopupMenu().getPreferredSize();
+		if (p.x + choiceSize.width >= screenSize.width)
+			p.x -= choiceSize.width;
 
-      Point p = new Point(mapEvent.mouseEvent.getX(), mapEvent.mouseEvent.getY());
-      SwingUtilities.convertPointToScreen(p, controller.getView().getMapScrollPane().getDisplayer());
-	
-      if (p.x + choiceSize.width >= screenSize.width)
-	  p.x -= choiceSize.width;
+		if (p.y + choiceSize.height >= screenSize.height)
+			p.y -= choiceSize.height;
 
-      if (p.y + choiceSize.height >= screenSize.height)
-	  p.y -= choiceSize.height;
-      
-      SwingUtilities.convertPointFromScreen(p, controller.getView().getMapScrollPane().getDisplayer());
-      
-      getPopupMenu().show(controller.getView().getMapScrollPane().getDisplayer(), p.x, p.y);      
-    }
-    
+		SwingUtilities.convertPointFromScreen(p, controller.getView()
+				.getMapScrollPane().getDisplayer());
+
+		getPopupMenu().show(
+				controller.getView().getMapScrollPane().getDisplayer(), p.x,
+				p.y);
+	}
 }
