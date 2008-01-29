@@ -8,6 +8,9 @@ package se.kth.cid.conzilla.map.graphics;
 
 import javax.swing.JComponent;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.concept.Concept;
 import se.kth.cid.layout.ConceptLayout;
 
@@ -15,6 +18,8 @@ import se.kth.cid.layout.ConceptLayout;
  * @author matthias
  */
 public class LiteralDrawer extends TitleDrawer {
+	
+	Log log = LogFactory.getLog(LiteralDrawer.class);
 
     /**
      * Constructor for LiteralDrawer.
@@ -31,10 +36,10 @@ public class LiteralDrawer extends TitleDrawer {
             && concept.getTriple() != null
             && concept.getTriple().isObjectLiteral()) {
         	String t = drawerMapObject.getConcept().getTriple().objectValue();
-        	System.out.println("Found Literal:" + t);
+        	log.debug("Found Literal: " + t);
         	return t;
         } else {
-            return "";
+            return new String();
         }
     }
 
@@ -53,8 +58,9 @@ public class LiteralDrawer extends TitleDrawer {
 
         String str = fetchString();
         String newstr = title.getText();
-        if (!str.equals(newstr))
+        if (!str.equals(newstr)) {
             concept.getTriple().setObjectValue(newstr);
+        }
         settingTitle = false;
         updateTitle();
     }
@@ -66,4 +72,5 @@ public class LiteralDrawer extends TitleDrawer {
     protected int getHorizontalAnchor() {
     	return ConceptLayout.CENTER;
     }
+
 }

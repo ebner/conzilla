@@ -78,9 +78,9 @@ public class SindiceClient {
 	    try {
 			client.executeMethod(method);
 		} catch (HttpException e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 		} catch (IOException e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 		} finally {
 			method.releaseConnection();
 		}
@@ -135,9 +135,9 @@ public class SindiceClient {
 			}
 			result = method.getResponseBody();
 		} catch (HttpException e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 		} catch (IOException e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 		} finally {
 			method.releaseConnection();
 		}

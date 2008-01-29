@@ -41,8 +41,7 @@ import com.hp.hpl.jena.vocabulary.RDF;
  * @author Matthias Palmer
  * @version $Revision$
  */
-public class RDFResourceLayout extends RDFTreeTagNode implements LayerLayout,
-		BookkeepingResourceLayout {
+public class RDFResourceLayout extends RDFTreeTagNode implements LayerLayout, BookkeepingResourceLayout {
 	
 	Log log = LogFactory.getLog(RDFResourceLayout.class);
 	
@@ -233,7 +232,7 @@ public class RDFResourceLayout extends RDFTreeTagNode implements LayerLayout,
     			double d = st.getDouble();
     			newmirror.setPriority(d);
     		} catch (Exception e) {
-    			System.out.println("hmm");
+    			log.error(e.getMessage(), e);
     		}
     	}
 

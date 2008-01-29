@@ -21,6 +21,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.collaboration.CollaborillaReader;
 import se.kth.cid.collaboration.CollaborillaSupport;
 import se.kth.cid.component.ComponentException;
@@ -43,6 +46,9 @@ import se.kth.cid.util.AttributeEntryUtil;
  * A presentation of an RDFModel as a label + checkbox.
  */
 public class ContainerEntry extends JPanel {
+	
+	Log log = LogFactory.getLog(ContainerEntry.class);
+	
 	boolean lock = false;
 
 	String containerURI;
@@ -79,14 +85,12 @@ public class ContainerEntry extends JPanel {
 		setOpaque(true);
 		
 		// Do something nice with titles...
-		CollaborillaSupport cs = new CollaborillaSupport(ConfigurationManager
-				.getConfiguration());
+		CollaborillaSupport cs = new CollaborillaSupport(ConfigurationManager.getConfiguration());
 		CollaborillaReader collaborillaReader = new CollaborillaReader(cs);
 		metadata = collaborillaReader.getMetaData(URI.create(containerURI));
 		String labelString = null;
 		if (metadata != null) {
-			labelString = AttributeEntryUtil.getTitleAsString(metadata,
-					containerURI);
+			labelString = AttributeEntryUtil.getTitleAsString(metadata,	containerURI);
 		} else if (fallbackLabel != null) {
 			labelString = fallbackLabel;
 		} else {
@@ -108,8 +112,7 @@ public class ContainerEntry extends JPanel {
 		add(Box.createHorizontalGlue());
 		addListeners();
 //		Border border1 = BorderFactory.createLineBorder(Color.black);
-		Border border2 = BorderFactory
-				.createMatteBorder(1, 1, 1, 1, background);
+		Border border2 = BorderFactory.createMatteBorder(1, 1, 1, 1, background);
 		setBorder(border2);//BorderFactory.createCompoundBorder(border2, border1));
 	}
 
@@ -129,25 +132,25 @@ public class ContainerEntry extends JPanel {
 			highlighted = b;
 			if (highlighted) {
 				setBackground(ColorTheme.getBrighterColor(Colors.CONCEPT_FOCUS));
-		        Mark overMark= new Mark(Colors.CONCEPT_FOCUS, null, null);
+				Mark overMark= new Mark(Colors.CONCEPT_FOCUS, null, null);
 
-		        Iterator mapObjects = controller.getView().getMapScrollPane().getDisplayer().getMapObjects().iterator();
-		        while (mapObjects.hasNext()) {
-		            MapObject mo = (MapObject) mapObjects.next();
-		            DrawerLayout dl = mo.getDrawerLayout();
-		            Concept c = mo.getConcept();
-		            if (c.getComponentManager().getLoadedRelevantContainers().contains(URI.create(containerURI)) 
-		            		|| dl.getLoadContainer().equals(containerURI)) {
+				Iterator mapObjects = controller.getView().getMapScrollPane().getDisplayer().getMapObjects().iterator();
+				while (mapObjects.hasNext()) {
+					MapObject mo = (MapObject) mapObjects.next();
+					DrawerLayout dl = mo.getDrawerLayout();
+					Concept c = mo.getConcept();
+					if (c.getComponentManager().getLoadedRelevantContainers().contains(URI.create(containerURI)) 
+							|| dl.getLoadContainer().equals(containerURI)) {
 						mo.pushMark(overMark, this);
-		            }
-		        }
+					}
+				}
 			} else {
 				setBackground(background);
-		        Iterator mapObjects = controller.getView().getMapScrollPane().getDisplayer().getMapObjects().iterator();
-		        while (mapObjects.hasNext()) {
-		            MapObject mo = (MapObject) mapObjects.next();
-		            mo.popMark(this);
-		        }
+				Iterator mapObjects = controller.getView().getMapScrollPane().getDisplayer().getMapObjects().iterator();
+				while (mapObjects.hasNext()) {
+					MapObject mo = (MapObject) mapObjects.next();
+					mo.popMark(this);
+				}
 			}
 			repaint();
 		}
@@ -165,8 +168,7 @@ public class ContainerEntry extends JPanel {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 					Container dependentContainer = loadContainerIfNeccessary(dependentContainerURI);
-					//Container container = 
-						loadContainerIfNeccessary(containerURI);
+					Container container = loadContainerIfNeccessary(containerURI);
 					
 					if (refreshNeeded) {
 						controller.getConceptMap().refresh();
@@ -179,21 +181,20 @@ public class ContainerEntry extends JPanel {
 
 					ContainerEntry.this.setVisible(containerURI, true);
 					if (dependentContainer != null) {
-				        //System.out.println("selecting "+dependentContainerURI);
+				        log.debug("Selecting "+dependentContainerURI);
 						ContainerEntry.this.setVisible(dependentContainerURI, true);						
 					}
 					
-			        //System.out.println("selecting " + container);
+			        log.debug("Selecting " + container);
 			        setCursor(Cursor.getDefaultCursor());
 					// ModelEntry.this.repaint();
 				} else if (e.getStateChange() == ItemEvent.DESELECTED) {
-					//Container container = 
-						loadContainerIfNeccessary(containerURI);
+					Container container = loadContainerIfNeccessary(containerURI);
 					Container dependentContainer = loadContainerIfNeccessary(dependentContainerURI);
-			        //System.out.println("deselecting "+container);
+			        log.debug("Deselecting " + container);
 			        setVisible(containerURI, false);
 					if (dependentContainer != null) {
-				        //System.out.println("deselecting "+dependentContainerURI);
+				        log.debug("Deselecting " + dependentContainerURI);
 				        setVisible(dependentContainerURI, false);
 					}
 					// .repaint();
@@ -205,8 +206,7 @@ public class ContainerEntry extends JPanel {
 	}
 	
 	private void setVisible(String uri, boolean visible) {
-		controller.getConceptMap().getComponentManager()
-			.setContainerVisible(URI.create(uri), visible);
+		controller.getConceptMap().getComponentManager().setContainerVisible(URI.create(uri), visible);
 	}
 
 	private Container loadContainerIfNeccessary(String uri) {

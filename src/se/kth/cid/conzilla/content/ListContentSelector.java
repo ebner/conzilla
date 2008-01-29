@@ -36,6 +36,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MouseInputAdapter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.Component;
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.ComponentManager;
@@ -52,8 +55,9 @@ import se.kth.cid.util.ContentInformationWithTitle;
 import se.kth.cid.util.TagManager;
 
 public class ListContentSelector extends JPanel implements ContentSelector, PropertyChangeListener {
-    private static final long serialVersionUID = 1L;
-
+    
+	Log log = LogFactory.getLog(ListContentSelector.class);
+	
 	Vector contentInformation;
 
     Vector selectionListeners;
@@ -77,11 +81,6 @@ public class ListContentSelector extends JPanel implements ContentSelector, Prop
 	private Set contentSet;
 
     private void updateColors() {
-//        list.setBackground(GlobalConfig.getGlobalConfig().getColor(ContentSelector.COLOR_BACKGROUND));
-//        list.setForeground(GlobalConfig.getGlobalConfig().getColor(ContentSelector.COLOR_TEXT));
-//        list.setSelectionBackground(GlobalConfig.getGlobalConfig().getColor(ContentSelector.COLOR_SELECTION_BACKGROUND));
-//        list.setSelectionForeground(GlobalConfig.getGlobalConfig().getColor(ContentSelector.COLOR_SELECTION_TEXT));
-        
         list.setBackground(ColorTheme.getBrighterColor(ColorTheme.Colors.CONTENT));
         list.setForeground(ColorTheme.getColor(ColorTheme.Colors.FOREGROUND));
         list.setSelectionBackground(ColorTheme.getColor(ColorTheme.Colors.FOREGROUND));
@@ -166,10 +165,8 @@ public class ListContentSelector extends JPanel implements ContentSelector, Prop
     void addAll() {
         add(titlePane, BorderLayout.NORTH);
         JScrollPane scroll = new JScrollPane();
-        scroll.setVerticalScrollBarPolicy(
-            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scroll.setHorizontalScrollBarPolicy(
-            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setViewportView(list);
         scroll.getHorizontalScrollBar().setUnitIncrement(15);
         scroll.getVerticalScrollBar().setUnitIncrement(15);
@@ -177,10 +174,7 @@ public class ListContentSelector extends JPanel implements ContentSelector, Prop
         add(scroll, BorderLayout.CENTER);
 
         JButton close = new JButton();
-        ConzillaResourceManager.getDefaultManager().customizeButton(
-            close,
-            ListContentSelector.class.getName(),
-            "CLOSE");
+        ConzillaResourceManager.getDefaultManager().customizeButton(close, ListContentSelector.class.getName(), "CLOSE");
         add(close, BorderLayout.SOUTH);
 
         close.addActionListener(new ActionListener() {
@@ -258,6 +252,7 @@ public class ListContentSelector extends JPanel implements ContentSelector, Prop
                 return;
             }
         } catch (ContentException e) {
+        	log.error(e.getMessage(), e);
         }
         ErrorMessage.showError(
             "Failed to show content.",
@@ -277,8 +272,7 @@ public class ListContentSelector extends JPanel implements ContentSelector, Prop
     }
 
     public Component getContent(int index) {        
-        ContentInformationWithTitle cit =
-            (ContentInformationWithTitle) contentInformation.elementAt(index);
+        ContentInformationWithTitle cit = (ContentInformationWithTitle) contentInformation.elementAt(index);
         return cit.getComponent();
     }
 
@@ -309,8 +303,7 @@ public class ListContentSelector extends JPanel implements ContentSelector, Prop
                 	try {
                 		ts.add(new ContentInformationWithTitle(ci));
                 	} catch (ComponentException e) {
-                		System.out.println("Cannot add ContentInformation since I cannot load the content Component.");
-                		e.printStackTrace();
+                		log.error("Cannot add ContentInformation since I cannot load the content Component", e);
                 	}
                 }
             }
@@ -388,4 +381,5 @@ public class ListContentSelector extends JPanel implements ContentSelector, Prop
         	selectContentFromSet(this.contentSet, this.componentManager);
         }
     }
+
 }
