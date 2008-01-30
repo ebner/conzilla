@@ -93,7 +93,9 @@ public abstract class LayerManager implements MapEventListener {
      */
     protected void deinstall(MapScrollPane pane, LayerComponent layer) {
         int ind = pane.getLayeredPane().getIndexOf(layer);
-        pane.getLayeredPane().remove(ind);
+        if (ind != -1) {
+        	pane.getLayeredPane().remove(ind);
+        }
         layer.deactivate(pane);
     }
 

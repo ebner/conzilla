@@ -19,11 +19,11 @@ import se.kth.cid.conzilla.tool.Tool;
  * @author Matthias Palmer
  * @version $Revision$
  */
-public class StoreMapTool extends Tool {
+public class CopyMapTool extends Tool {
 
     protected Clipboard clipboard;
 
-    public StoreMapTool(MapController cont, Clipboard clipboard) {
+    public CopyMapTool(MapController cont, Clipboard clipboard) {
         super(Clipboard.COPY, Clipboard.class.getName(), cont);
         this.clipboard = clipboard;
     }
@@ -34,8 +34,8 @@ public class StoreMapTool extends Tool {
 
     public void actionPerformed(ActionEvent e) {
         if (mapObject != null && mapObject.getConcept() != null)
-            clipboard.setMapObject(mapObject);
+            clipboard.setDrawerLayout(mapObject.getDrawerLayout());
         else if (mapEvent != null && mapEvent.hitType == MapEvent.HIT_NONE)
-            clipboard.setComponent(controller.getConceptMap());
+            clipboard.setResource(controller.getConceptMap());
     }
 }

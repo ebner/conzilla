@@ -248,7 +248,7 @@ public class ManageContentMapTool extends Tool implements ListSelectionListener 
                 ContentInformation ci = getSelectedContainerInformation();
                 if (ci != null) {
                     Clipboard c = editMapManager.getClipBoard();
-                    c.setComponent((Component) cI2Content.get(ci));
+                    c.setResource((Component) cI2Content.get(ci));
                 }
             }
         });
@@ -257,7 +257,7 @@ public class ManageContentMapTool extends Tool implements ListSelectionListener 
         paste = new JButton(new AbstractAction("Paste") {
             public void actionPerformed(ActionEvent e) {
                 Clipboard c = editMapManager.getClipBoard();
-                Resource contentComponent = c.getComponent();
+                Resource contentComponent = c.getResource();
                 createContentOnConcept(concept, (Component) contentComponent);
                 updateContent();
                 selectContent((Component) contentComponent);
@@ -268,7 +268,7 @@ public class ManageContentMapTool extends Tool implements ListSelectionListener 
         pasteContext = new JButton(new AbstractAction("Paste in Context") {
             public void actionPerformed(ActionEvent e) {
                 Clipboard c = editMapManager.getClipBoard();
-                Resource contentComponent = c.getComponent();
+                Resource contentComponent = c.getResource();
                 createContentOnConceptInContext(controller.getConceptMap(), concept, contentComponent.getURI());
                 updateContent();
                 selectContent((Component) contentComponent);
@@ -382,7 +382,7 @@ public class ManageContentMapTool extends Tool implements ListSelectionListener 
         down.setEnabled(isEditable && ccSelection);
         up.setEnabled(isEditable && cccSelection);
         remove.setEnabled(isEditable);
-        boolean clipboardEmpty = editMapManager.getClipBoard().getComponent() == null;
+        boolean clipboardEmpty = editMapManager.getClipBoard().getResource() == null;
         paste.setEnabled(!clipboardEmpty);
         pasteContext.setEnabled(!clipboardEmpty);
         copy.setEnabled(ccSelection || cccSelection);

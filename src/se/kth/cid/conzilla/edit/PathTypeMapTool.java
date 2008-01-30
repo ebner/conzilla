@@ -48,10 +48,7 @@ public class PathTypeMapTool extends Tool {
             else
                 currentName = STRAIGHTEN_LINE;
 
-            ConzillaResourceManager.getDefaultManager().customizeButton(
-                    getJMenuItem(), EditMapManagerFactory.class.getName(),
-                    currentName);
-
+            setTitleAndTooltip(currentName, EditMapManagerFactory.class.getName());
             return true;
         }
         return false;

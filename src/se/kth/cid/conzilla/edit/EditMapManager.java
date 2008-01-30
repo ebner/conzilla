@@ -22,12 +22,20 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import se.kth.cid.component.ContainerManager;
+import se.kth.cid.component.Resource;
 import se.kth.cid.component.UndoListener;
 import se.kth.cid.component.UndoManager;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.app.FullScreenTool;
+import se.kth.cid.conzilla.browse.BrowseMapManagerFactory;
 import se.kth.cid.conzilla.browse.Highlighter;
 import se.kth.cid.conzilla.clipboard.Clipboard;
+import se.kth.cid.conzilla.clipboard.CopyEditMapTool;
+import se.kth.cid.conzilla.clipboard.CopyMapTool;
+import se.kth.cid.conzilla.clipboard.CutMapTool;
+import se.kth.cid.conzilla.clipboard.PasteConceptMapTool;
+import se.kth.cid.conzilla.content.ContentMenu;
+import se.kth.cid.conzilla.content.ContentTool;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.controller.MapManager;
 import se.kth.cid.conzilla.controller.MapManagerFactory;
@@ -73,6 +81,9 @@ public class EditMapManager extends LayerManager implements MapManager, Property
 	public CreateTools create;
 	public Tool undo;
 	public Tool redo;
+	public CopyEditMapTool copy;
+	public CutMapTool cut;
+	public PasteConceptMapTool paste;
 
 	//Separators
 	private Separator separator1;
@@ -88,6 +99,7 @@ public class EditMapManager extends LayerManager implements MapManager, Property
     //Layers.
 	public MoveLayer moveLayer;
 	public GridLayer gridLayer;
+
 
     public EditMapManager(final MapController mapController, Clipboard clipboard) {
         this.controller = mapController;
@@ -137,6 +149,17 @@ public class EditMapManager extends LayerManager implements MapManager, Property
         editMenu.addTool(undo, 170);
         editMenu.addTool(redo, 180);
         mapController.getConceptMap().getComponentManager().getUndoManager().addUndoListener(this);
+        copy = new CopyEditMapTool(mapController, clipboard);
+        copy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK));
+        cut = new CutMapTool(mapController, clipboard);
+        cut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK));
+        paste = new PasteConceptMapTool(mapController, clipboard);
+        paste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK));
+        
+        editMenu.addSeparator(800);
+        editMenu.addTool(copy, 805);
+        editMenu.addTool(cut, 807);
+        editMenu.addTool(paste, 810);
         
         ConzillaKit.getDefaultKit().extendMenu(editMenu, mapController);
         ContainerManager cm = ConzillaKit.getDefaultKit().getResourceStore().getContainerManager();
@@ -151,6 +174,7 @@ public class EditMapManager extends LayerManager implements MapManager, Property
         create = new CreateTools(this, mapController, gridModel);
         gridLayer = new GridLayer(mapController, gridModel);
         moveLayer = new MoveLayer(mapController, this);
+        
     }
     
     public MoveLayer getMoveLayer() {

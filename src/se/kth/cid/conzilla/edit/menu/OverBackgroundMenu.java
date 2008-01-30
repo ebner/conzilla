@@ -36,6 +36,10 @@ public class OverBackgroundMenu extends MapToolsMenu {
 		addTool(new RemoveContextMapMapTool(controller), 110);
 		addTool(new InsertConceptMapTool(controller, mm.getGridModel()), 120);
 		addToolsMenu(new ResourceInsertionMenu(controller, mm.getGridModel()), 130);
+        addSeparator(800);
+        addTool(mm.copy, 805);
+        addTool(mm.paste, 810);
+        
 		ConzillaKit.getDefaultKit().extendMenu(this, controller);
 
 		// Not yet mature...

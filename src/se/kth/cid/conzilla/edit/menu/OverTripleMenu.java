@@ -57,6 +57,10 @@ public class OverTripleMenu extends MapToolsMenu
     addTool(new TripleMapTool(controller), 240);
     addTool(new BoxLineMapTool(controller), 250);
     
+    addSeparator(280);
+    addTool(mm.copy, 283);
+    addTool(mm.cut, 285);
+
     addSeparator(900);
     addTool(new ViewTool(controller), 910);
 

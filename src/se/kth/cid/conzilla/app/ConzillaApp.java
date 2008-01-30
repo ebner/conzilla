@@ -6,6 +6,7 @@
 
 package se.kth.cid.conzilla.app;
 
+import java.awt.Dimension;
 import java.awt.Window;
 
 import javax.swing.SwingUtilities;
@@ -69,6 +70,8 @@ public class ConzillaApp extends ConzillaAppEnv {
 		if ((window != null) && !window.isShowing()) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
+					window.setMinimumSize(new Dimension(100,100));
+					window.setMaximumSize(null);
 					window.setVisible(true);
 					vm.revalidate();
 				}

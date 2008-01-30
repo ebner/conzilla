@@ -288,16 +288,16 @@ public class LayoutUtils {
             gran = gm.getGranularity();
             halfgran = gran / 2;
         }
-        int xneg = press.x <= 0 ? -1 : 1;
-        int yneg = press.y <= 0 ? -1 : 1;
         
-
         ContextMap.Position pos = new ContextMap.Position(0, 0);
         if (press == null) {
             pos.x = bb.pos.x;
             pos.y = bb.pos.y;
             return pos;
         }
+        int xneg = press.x <= 0 ? -1 : 1;
+        int yneg = press.y <= 0 ? -1 : 1;
+
         if (press.x < bb.pos.x || press.x > bb.pos.x + bb.dim.width) {
             pos.x = bb.pos.x + (press.x < bb.pos.x ? 0 : bb.dim.width);
 

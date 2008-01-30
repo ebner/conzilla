@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 
 import se.kth.cid.component.InvalidURIException;
 import se.kth.cid.concept.Concept;
+import se.kth.cid.conzilla.clipboard.ClipboardDrawerLayout;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.edit.layers.GridModel;
 import se.kth.cid.conzilla.map.MapObject;
@@ -126,17 +127,17 @@ public abstract class InsertMapTool extends Tool {
     	return dl != null ? dl.getURI() : null;
     }
 
-    protected void setBoundingBox(GridModel gridModel, MapObject copiedMapObject, 
+    protected void setBoundingBox(GridModel gridModel, ClipboardDrawerLayout cdl, 
     		DrawerLayout dl, Point insertionPoint) {
         Dimension dim = null;
-        if (copiedMapObject == null) {
+/*        if (copiedMapObject == null) {
             dim = controller.getView().getMapScrollPane().getDisplayer()
                 .getMapObject(dl.getURI())
                 .getPreferredSize();
-        } else {
-            ContextMap.Dimension cdim = copiedMapObject.getDrawerLayout().getBoundingBox().dim;
+        } else {*/
+            ContextMap.Dimension cdim = cdl.getBoundingBox().dim;
             dim = new Dimension(cdim.width, cdim.height);
-        }
+        //}
         dl.setBoundingBox(
                 LayoutUtils.preferredBoxOnGrid(
                         gridModel,

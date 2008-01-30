@@ -18,10 +18,10 @@ import se.kth.cid.conzilla.tool.Tool;
  * @author Matthias Palmer
  * @version $Revision$
  */
-public class InsertClipboardContentMapTool extends Tool {
+public class PasteContentMapTool extends Tool {
 	Clipboard clipboard;
 
-	public InsertClipboardContentMapTool(MapController cont, Clipboard clipboard) {
+	public PasteContentMapTool(MapController cont, Clipboard clipboard) {
 		super("INSERT_CONTENT_FROM_CLIPBOARD", Clipboard.class.getName(), cont);
 		this.clipboard = clipboard;
 	}
@@ -29,7 +29,7 @@ public class InsertClipboardContentMapTool extends Tool {
 	protected boolean updateEnabled() {
 		if (mapEvent.hitType != MapEvent.HIT_NONE
 				&& mapObject.getConcept() != null
-				&& clipboard.getComponent() != null) {
+				&& clipboard.getResource() != null) {
 			return true;
 		}
 		return false;

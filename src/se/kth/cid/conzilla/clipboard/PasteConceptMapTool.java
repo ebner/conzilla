@@ -8,41 +8,38 @@ package se.kth.cid.conzilla.clipboard;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Point2D;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.hp.hpl.jena.sparql.algebra.Transform;
-
+import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.InvalidURIException;
 import se.kth.cid.component.ReadOnlyException;
 import se.kth.cid.concept.Concept;
+import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.edit.EditMapManager;
 import se.kth.cid.conzilla.edit.InsertMapTool;
 import se.kth.cid.conzilla.edit.layers.GridModel;
-import se.kth.cid.conzilla.map.MapObject;
-import se.kth.cid.conzilla.map.MapScrollPane;
 import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.layout.ConceptLayout;
 import se.kth.cid.layout.ContextMap;
 import se.kth.cid.layout.DrawerLayout;
 import se.kth.cid.layout.StatementLayout;
 
-class InsertClipboardConceptMapTool extends InsertMapTool {
+public class PasteConceptMapTool extends InsertMapTool {
 
-	Log log = LogFactory.getLog(InsertClipboardConceptMapTool.class);
+	Log log = LogFactory.getLog(PasteConceptMapTool.class);
     
     Clipboard clipboard;
 
-    public InsertClipboardConceptMapTool(
+    public PasteConceptMapTool(
         MapController cont,
         Clipboard clipboard) {
         super("INSERT_CONCEPT_FROM_CLIPBOARD", Clipboard.class.getName(), cont);
@@ -50,33 +47,51 @@ class InsertClipboardConceptMapTool extends InsertMapTool {
     }
 
     protected boolean updateEnabled() {
-    	return clipboard.getConcept() != null
-    		|| clipboard.getDrawerLayouts() != null;
+    	switch(clipboard.getClipType()) {
+    	case Clipboard.SINGLE_LAYOUT:
+    	case Clipboard.MULTIPLE_LAYOUTS:
+    		return true;
+    	}
+    	return false;
     }
     
     public void actionPerformed(ActionEvent e) {
-        if (clipboard.getConcept() != null) {
+    	switch(clipboard.getClipType()) {
+    	case Clipboard.SINGLE_LAYOUT:
             controller.getConceptMap().getComponentManager().getUndoManager().startChange();
         	pasteSingleConcept();
             controller.getConceptMap().getComponentManager().getUndoManager().endChange();
-        } else if (clipboard.getDrawerLayouts() != null) {
+            break;
+    	case Clipboard.MULTIPLE_LAYOUTS:
             controller.getConceptMap().getComponentManager().getUndoManager().startChange();
             pasteMultipleConcepts();
             controller.getConceptMap().getComponentManager().getUndoManager().endChange();
-        }
+            break;
+    	}
     }
     
     private void pasteMultipleConcepts() {
         Point ipoint = getInsertPosition();
-    	List drawerLayouts = clipboard.getDrawerLayouts();
-        ArrayList sls = new ArrayList();
-        ArrayList cls = new ArrayList();
+    	List<ClipboardDrawerLayout> drawerLayouts = clipboard.getDrawerLayouts();
+        ArrayList<ClipboardStatementLayout> sls = new ArrayList<ClipboardStatementLayout>();
+        ArrayList<ClipboardDrawerLayout> cls = new ArrayList<ClipboardDrawerLayout>();
         Rectangle rect = new Rectangle(ipoint.x, ipoint.y,1,1);
-        for (Iterator dls = drawerLayouts.iterator(); dls.hasNext();) {
-            DrawerLayout dl = (DrawerLayout) dls.next();
-            if (dl instanceof StatementLayout) {
-                ContextMap.Position [] pos = ((StatementLayout) dl).getLine();
-                sls.add(dl);
+
+        boolean checkExists = !clipboard.isClipCut();
+        HashSet allCurrentURIs = new HashSet();
+        if (checkExists && !drawerLayouts.isEmpty()) {
+        	allCurrentURIs = toURISet(clipboard.getConceptMap().getDrawerLayouts());
+        }
+        
+        
+        for (Iterator<ClipboardDrawerLayout> dls = drawerLayouts.iterator(); dls.hasNext();) {
+            ClipboardDrawerLayout dl = dls.next();
+            if (checkExists && !allCurrentURIs.contains(dl)) {
+            	continue;
+            }
+            if (dl instanceof ClipboardStatementLayout) {
+                ContextMap.Position [] pos = ((ClipboardStatementLayout) dl).getLine();
+                sls.add((ClipboardStatementLayout) dl);
                 for (int i = 0; i < pos.length; i++) {
                     rect.add(pos[i].x, pos[i].y);
                 }
@@ -93,22 +108,22 @@ class InsertClipboardConceptMapTool extends InsertMapTool {
         
         int xdiff = ipoint.x-rect.x;
         int ydiff = ipoint.y-rect.y;
-        HashMap dl2dl = new HashMap();
-        for (Iterator clsi = cls.iterator(); clsi.hasNext();) {
-            DrawerLayout ocl = (DrawerLayout) clsi.next();
+        HashMap<String, DrawerLayout> dlId2dl = new HashMap<String, DrawerLayout>();
+        for (Iterator<ClipboardDrawerLayout> clsi = cls.iterator(); clsi.hasNext();) {
+            ClipboardDrawerLayout ocl = clsi.next();
             try {
                 ConceptLayout cl = makeConceptLayout(ocl.getConceptURI());
-                dl2dl.put(ocl, cl);
+                dlId2dl.put(ocl.getId(), cl);
                 copyBoxLayout(xdiff, ydiff, ocl, cl);
             } catch (InvalidURIException e) {
                 continue;
             }
         }
         
-        for (Iterator slsi = sls.iterator(); slsi.hasNext();) {
-            StatementLayout osl = (StatementLayout) slsi.next();
-            DrawerLayout s = (DrawerLayout) dl2dl.get(osl.getSubjectLayout());
-            DrawerLayout o = (DrawerLayout) dl2dl.get(osl.getObjectLayout());
+        for (Iterator<ClipboardStatementLayout> slsi = sls.iterator(); slsi.hasNext();) {
+            ClipboardStatementLayout osl = slsi.next();
+            DrawerLayout s = dlId2dl.get(osl.getSubjectLayoutURI());
+            DrawerLayout o = dlId2dl.get(osl.getObjectLayoutURI());
             if (s==null || o==null) {
                 //FIXME: Do something on failure???
                 continue;
@@ -116,21 +131,29 @@ class InsertClipboardConceptMapTool extends InsertMapTool {
             try {
                 StatementLayout sl = makeStatementLayout(osl.isLiteralStatement(),
                         osl.getConceptURI(),
-                        ((DrawerLayout) dl2dl.get(osl.getSubjectLayout())).getURI(),
+                        dlId2dl.get(osl.getSubjectLayoutURI()).getURI(),
                         osl.isLiteralStatement() ? null 
-                                : ((DrawerLayout) dl2dl.get(osl.getObjectLayout())).getURI());
+                                : dlId2dl.get(osl.getObjectLayoutURI()).getURI());
                 if (sl == null) {
                 	continue;
                 }
-                dl2dl.put(osl, sl);
+                dlId2dl.put(osl.getId(), sl);
                 copyStatementLayout(xdiff, ydiff, osl, sl);
             } catch (InvalidURIException e) {
                 continue;
             }            
         }
     }
+
+    private HashSet<String> toURISet(DrawerLayout[] array) {
+    	HashSet<String> set = new HashSet<String>();
+    	for (int i = 0; i < array.length; i++) {
+			set.add(array[i].getURI());
+		}
+    	return set;
+    }
     
-    private void copyBoxLayout(int xdiff, int ydiff, DrawerLayout oldDL, DrawerLayout dl) {
+    private void copyBoxLayout(int xdiff, int ydiff, ClipboardDrawerLayout oldDL, DrawerLayout dl) {
         ContextMap.BoundingBox bb = oldDL.getBoundingBox();
         dl.setBoundingBox(new ContextMap.BoundingBox(
                 new ContextMap.Dimension(bb.dim.width, bb.dim.height), 
@@ -140,7 +163,7 @@ class InsertClipboardConceptMapTool extends InsertMapTool {
         dl.setVerticalTextAnchor(oldDL.getVerticalTextAnchor());
     }
 
-    private void copyStatementLayout(int xdiff, int ydiff, StatementLayout oldDL, StatementLayout sl) {
+    private void copyStatementLayout(int xdiff, int ydiff, ClipboardStatementLayout oldDL, StatementLayout sl) {
         if (oldDL.getBodyVisible()) {
             copyBoxLayout(xdiff, ydiff, oldDL, sl);
         }
@@ -173,27 +196,36 @@ class InsertClipboardConceptMapTool extends InsertMapTool {
 
     private void pasteSingleConcept() {
         Point ipoint = getInsertPosition();
-        Concept concept = clipboard.getConcept();
-        MapObject copiedMapObject = clipboard.getMapObject();
+        ClipboardDrawerLayout cdl = clipboard.getDrawerLayout();
+        
+
+        //If the copied DrawerLayout is no longer in ContextMap, abort paste.
+        if (!clipboard.isClipCut() 
+        		&& !toURISet(clipboard.getOriginContextMap().getDrawerLayouts()).contains(cdl.getId())) {
+    		return;
+        }
 
         try {
+
+        Concept concept = ConzillaKit.getDefaultKit().getResourceStore()
+        		.getAndReferenceConcept(URI.create(cdl.getConceptURI()));
+
+        
             GridModel gridModel = ((EditMapManager) controller.getManager()).gridModel;
         	
             if (concept.getTriple() == null 
-                    || (copiedMapObject != null 
-                            && copiedMapObject.getDrawerLayout() 
-                            instanceof ConceptLayout)) {
+                    || !(cdl instanceof ClipboardStatementLayout)) {
                 ConceptLayout cl = makeConceptLayout(concept.getURI());
-                setBoundingBox(gridModel, copiedMapObject, cl, ipoint);
+                setBoundingBox(gridModel, cdl, cl, ipoint);
             } else {
                 StatementLayout sl = makeStatementLayout(concept);
                 if (sl == null) {
                 	return;
                 }
                 showTriple(sl, gridModel);
-                if (copiedMapObject.getDrawerLayout().getBodyVisible()) {
-                    setBoundingBox(gridModel, copiedMapObject, sl, ipoint);
-                    if (((StatementLayout) copiedMapObject.getDrawerLayout()).getBoxLine() != null) {
+                if (cdl.getBodyVisible()) {
+                    setBoundingBox(gridModel, cdl, sl, ipoint);
+                    if (((ClipboardStatementLayout) cdl).getBoxLine() != null) {
                         setBoxLine(gridModel, sl, ipoint);
                     }
                 }
@@ -208,6 +240,8 @@ class InsertClipboardConceptMapTool extends InsertMapTool {
                     + "Can't create a graphical representation for it.",
                 iue,
                 controller.getView().getMapScrollPane().getDisplayer());
-        }
+        } catch (ComponentException e) {
+            log.error("Concept that is to be copied are missing.", e);
+		}
     }
 }

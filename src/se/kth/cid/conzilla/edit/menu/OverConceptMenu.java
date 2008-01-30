@@ -63,6 +63,10 @@ public class OverConceptMenu extends MapToolsMenu
     addTool(new BoxLineMapTool(controller), 250);
     addToolsMenu(new TextAnchorMapTool(controller), 260);
     
+    addSeparator(280);
+    addTool(mm.copy, 283);
+    addTool(mm.cut, 285);
+
     addSeparator(900);
     addTool(new ViewTool(controller), 910);
 

@@ -19,11 +19,16 @@ import org.apache.commons.logging.LogFactory;
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.Container;
 import se.kth.cid.component.ContainerManager;
+import se.kth.cid.component.Resource;
 import se.kth.cid.component.ResourceStore;
 import se.kth.cid.conzilla.app.ConzillaEnvironment;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.app.Extra;
+import se.kth.cid.conzilla.browse.BrowseMapManagerFactory;
 import se.kth.cid.conzilla.clipboard.Clipboard;
+import se.kth.cid.conzilla.clipboard.CopyMapTool;
+import se.kth.cid.conzilla.content.ContentMenu;
+import se.kth.cid.conzilla.content.ContentTool;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.controller.MapManager;
 import se.kth.cid.conzilla.controller.MapManagerFactory;
@@ -95,11 +100,15 @@ public class EditMapManagerFactory implements MapManagerFactory {
 //            }
 //        }
         
+        clipboard = new Clipboard();
+        
         return true;
     }
 
     public void extendMenu(ToolsMenu menu, final MapController mc) {
-        if (menu.getName().equals(MenuFactory.FILE_MENU)) {
+        String menuName = menu.getName();
+
+    	if (menu.getName().equals(MenuFactory.FILE_MENU)) {
             menu.addTool(new Tool("NEW_MAP", EditMapManagerFactory.class.getName()) {
                 {setIcon(Images.getImageIcon(Images.ICON_FILE_NEW));}
                 public void actionPerformed(ActionEvent ae) {
@@ -108,9 +117,21 @@ public class EditMapManagerFactory implements MapManagerFactory {
                 }
             }, 150);
             //menu.addTool(new SessionBrowsingTool(sessionManager, mc), 180);
-        }
-        if (menu.getName().equals(DefaultMenuFactory.TOOLS_MENU)) {
+        } else if (menuName.equals(DefaultMenuFactory.TOOLS_MENU)) {
             menu.addTool((Tool) mc.get("SessionTool"), 400);
+        } else if (menuName.equals(BrowseMapManagerFactory.BROWSE_MENU)) {
+            menu.addSeparator(800);
+            menu.addTool(new CopyMapTool(mc, clipboard), 810);
+        } else if (menu.getName().equals(ContentMenu.CONTENT_MENU)) {
+            final ContentMenu cm = (ContentMenu) menu;
+
+            cm.addTool(new ContentTool("COPY", Clipboard.class.getName()) {
+                public void actionPerformed(ActionEvent e) {
+                    Resource comp = mc.getContentSelector().getContent(
+                            contentIndex);
+                    clipboard.setResource(comp);
+                }
+            }, 400);
         }
     }
 
@@ -178,15 +199,6 @@ public class EditMapManagerFactory implements MapManagerFactory {
     }
 
     public MapManager createManager(MapController controller) {
-        if (clipboard == null) {
-            for (Enumeration en = kit.getExtras(); en.hasMoreElements();) {
-                Extra extra = (Extra) en.nextElement();
-                if (extra instanceof Clipboard) {
-                    this.clipboard = (Clipboard) extra;
-                }
-            }
-        }
-        
         return new EditMapManager(controller, clipboard);
     }
 
