@@ -22,20 +22,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import se.kth.cid.component.ContainerManager;
-import se.kth.cid.component.Resource;
 import se.kth.cid.component.UndoListener;
 import se.kth.cid.component.UndoManager;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.app.FullScreenTool;
-import se.kth.cid.conzilla.browse.BrowseMapManagerFactory;
 import se.kth.cid.conzilla.browse.Highlighter;
 import se.kth.cid.conzilla.clipboard.Clipboard;
 import se.kth.cid.conzilla.clipboard.CopyEditMapTool;
-import se.kth.cid.conzilla.clipboard.CopyMapTool;
 import se.kth.cid.conzilla.clipboard.CutMapTool;
 import se.kth.cid.conzilla.clipboard.PasteConceptMapTool;
-import se.kth.cid.conzilla.content.ContentMenu;
-import se.kth.cid.conzilla.content.ContentTool;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.controller.MapManager;
 import se.kth.cid.conzilla.controller.MapManagerFactory;
@@ -46,7 +41,6 @@ import se.kth.cid.conzilla.edit.layers.MoveLayer;
 import se.kth.cid.conzilla.edit.layers.handles.HandleStore;
 import se.kth.cid.conzilla.edit.toolbar.CreateTools;
 import se.kth.cid.conzilla.map.MapScrollPane;
-import se.kth.cid.conzilla.menu.DefaultMenuFactory;
 import se.kth.cid.conzilla.properties.Images;
 import se.kth.cid.conzilla.session.Session;
 import se.kth.cid.conzilla.session.SessionChooserMenu;
@@ -91,6 +85,7 @@ public class EditMapManager extends LayerManager implements MapManager, Property
 	private Separator separator3;
 	private Separator separator4;
 	private Separator separator5;
+	private Separator separator6;
 
 	//Menues
 	public SessionChooserMenu sessionMenu;
@@ -143,8 +138,12 @@ public class EditMapManager extends LayerManager implements MapManager, Property
             }
 			protected boolean updateEnabled() {
 				return mapController.getConceptMap().getComponentManager().getUndoManager().canRedo();
-			}            
+			}
         };
+
+        // we want to have both disabled at the beginning
+        undo.setEnabled(false);
+        redo.setEnabled(false);
 
         editMenu.addTool(undo, 170);
         editMenu.addTool(redo, 180);
@@ -221,24 +220,30 @@ public class EditMapManager extends LayerManager implements MapManager, Property
         separator2 = new JToolBar.Separator(null);
         bar.add(separator2);
         
+        bar.addTool(undo);
+        bar.addTool(redo);
+        
+        separator3 = new JToolBar.Separator(null);
+        bar.add(separator3);
+        
         grid.installYourself(bar);
         bar.addTool(line);
         bar.addTool(tie);
         
-        separator3 = new JToolBar.Separator(null);
-        bar.add(separator3);
+        separator4 = new JToolBar.Separator(null);
+        bar.add(separator4);
         
         bar.addTool(highlighter.sHigh);
         bar.addTool(highlighter.vHigh);
         bar.addTool(highlighter.iHigh);
         
-        separator4 = new JToolBar.Separator(null);
-        bar.add(separator4);
+        separator5 = new JToolBar.Separator(null);
+        bar.add(separator5);
         
         bar.addTool(fullScreen);
         
-        separator5 = new JToolBar.Separator(null);
-        bar.add(separator5);
+        separator6 = new JToolBar.Separator(null);
+        bar.add(separator6);
         
         bar.add(localeChooser);
         //bar.addTool(create);
@@ -296,6 +301,12 @@ public class EditMapManager extends LayerManager implements MapManager, Property
 
         bar.removeTool(tie);
         tie.detach();
+        
+        bar.removeTool(undo);
+        undo.detach();
+        
+        bar.removeTool(redo);
+        redo.detach();
 
         bar.removeTool(highlighter.sHigh);
         bar.removeTool(highlighter.vHigh);
@@ -317,7 +328,7 @@ public class EditMapManager extends LayerManager implements MapManager, Property
         bar.remove(separator3);
         bar.remove(separator4);
         bar.remove(separator5);
-        
+        bar.remove(separator6);
 //        bar.removeAll(); // to remove separators as well
     }
 
