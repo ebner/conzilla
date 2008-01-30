@@ -442,6 +442,11 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 			
 			// Upgrade path 2.1.x -> now (Conzilla 2.1 was released with version set to 1.1 by mistake)
 			if (installedVersion.startsWith("1.1") || installedVersion.startsWith("2.1")) {
+				// remove Clipboard extra
+				List extras = config.getStringList(Settings.CONZILLA_EXTRAS, new ArrayList());
+				extras.remove("se.kth.cid.conzilla.clipboard.Clipboard");
+				config.setProperties(Settings.CONZILLA_EXTRAS, extras);
+				
 				config.setProperty("conzilla.colortheme.theme-definitions.standard.concept-focus", "0xffa22b2b");
 				config.setProperty("conzilla.colortheme.theme-definitions.standard.context", "0xff0d418e");
 				config.setProperty(Settings.CONZILLA_EXTERNAL_SINDICE_PUBLISH, true);

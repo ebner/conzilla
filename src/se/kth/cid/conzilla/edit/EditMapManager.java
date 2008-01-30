@@ -173,7 +173,6 @@ public class EditMapManager extends LayerManager implements MapManager, Property
         create = new CreateTools(this, mapController, gridModel);
         gridLayer = new GridLayer(mapController, gridModel);
         moveLayer = new MoveLayer(mapController, this);
-        
     }
     
     public MoveLayer getMoveLayer() {
