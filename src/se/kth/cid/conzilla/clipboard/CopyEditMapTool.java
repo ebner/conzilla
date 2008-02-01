@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.concept.Concept;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.edit.EditMapManager;
@@ -20,6 +23,8 @@ import se.kth.cid.conzilla.map.MapObject;
  *  @author Matthias Palmer
  */
 public class CopyEditMapTool extends CopyMapTool {
+	
+	Log log = LogFactory.getLog(CopyEditMapTool.class);
         
     public CopyEditMapTool(MapController cont, Clipboard clipboard) {
         super(cont, clipboard);
@@ -40,7 +45,7 @@ public class CopyEditMapTool extends CopyMapTool {
     public void actionPerformed(ActionEvent e) {
     	HandleStore handleStore = ((EditMapManager) controller.getManager()).getHandleStore();
         Set dls = handleStore.getMarkedLayouts();
-        System.out.println("number of marked dls "+dls.size());
+        log.debug("Number of marked dls: " + dls.size());
         if (!dls.isEmpty()) {
             clipboard.setDrawerLayouts(new ArrayList(dls));
         } else {
