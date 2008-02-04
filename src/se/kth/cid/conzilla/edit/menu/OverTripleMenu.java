@@ -18,7 +18,9 @@ import se.kth.cid.conzilla.edit.LinkToContentMapTool;
 import se.kth.cid.conzilla.edit.ManageContentMapTool;
 import se.kth.cid.conzilla.edit.MoveToLayerMapTool;
 import se.kth.cid.conzilla.edit.PathTypeMapTool;
-import se.kth.cid.conzilla.edit.RemoveDrawerMapTool;
+import se.kth.cid.conzilla.edit.RemoveApperanceTool;
+import se.kth.cid.conzilla.edit.RemoveConditionalTool;
+import se.kth.cid.conzilla.edit.RemoveNonConditionalTool;
 import se.kth.cid.conzilla.edit.TripleEdit;
 import se.kth.cid.conzilla.edit.TripleMapTool;
 import se.kth.cid.conzilla.metadata.EditPanel;
@@ -39,7 +41,9 @@ public class OverTripleMenu extends MapToolsMenu
     super(EditMapManagerFactory.EDIT_RELATION_MENU, EditMapManagerFactory.class.getName(), controller);
 
     addTool(new EditPanel.EditMetadataTool(controller), 100);
-    addTool(new RemoveDrawerMapTool(controller, mm), 110);
+    addTool(mm.remove, 110);
+    addTool(mm.removeFromMap, 111);
+    addTool(mm.removeFromSession, 112);
     addTool(new ChangeTypeMapTool(controller), 120);
     addTool(new EditDetailedMapMapTool(controller), 130);
     MapToolsMenu contentMenu = new MapToolsMenu(EditMapManagerFactory.EDIT_CONTENT_MENU,

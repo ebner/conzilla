@@ -30,6 +30,7 @@ import se.kth.cid.conzilla.edit.layers.handles.HandledLine;
 import se.kth.cid.conzilla.edit.layers.handles.HandledLiteralBox;
 import se.kth.cid.conzilla.edit.layers.handles.HandledMap;
 import se.kth.cid.conzilla.edit.layers.handles.HandledMark;
+import se.kth.cid.conzilla.edit.layers.handles.HandledObject;
 import se.kth.cid.conzilla.edit.menu.OverBackgroundMenu;
 import se.kth.cid.conzilla.edit.menu.OverConceptMenu;
 import se.kth.cid.conzilla.edit.menu.OverTripleMenu;
@@ -59,7 +60,7 @@ public class MoveLayer extends Layer implements KeyListener {
     private boolean textIsInBox;
 	private MapTextArea title;
 	private boolean dirty = false;
-
+	
     public MoveLayer(
         MapController controller,
         EditMapManager mm) {
@@ -76,18 +77,39 @@ public class MoveLayer extends Layer implements KeyListener {
         menu2 = new OverTripleMenu(controller, tripleEdit, mm);
         menu3 = new OverBackgroundMenu(controller, mm);
 
-        /*    registerKeyboardAction(new AbstractAction() {
-            public void actionPerformed(ActionEvent ae)
-            {
-        	Tracer.debug("keyboardAction!!");
-        	mapevent.mapX-=5;
-        	handles.drag(mapevent);
-        	repaint();
-            }},"left",KeyStroke.getKeyStroke(KeyEvent.VK_LEFT,0),WHEN_IN_FOCUSED_WINDOW);
-        */
+        addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+				HandledObject ho = getHandledObject();
+				if (ho != null) {
+					int step = gridModel.granularity;
+					if (e.isAltDown()) {
+						step = 1;
+					} else if (e.isControlDown()) {
+						step *= 5;
+					}
+					if (e.getKeyCode() == KeyEvent.VK_UP) {
+						ho.move(0, -step);
+					} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+						ho.move(0, step);
+					} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+						ho.move(-step, 0);
+					}else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+						ho.move(step, 0);
+					} else {
+						return;
+					}
+			        lock = true;
+			        store.set();
+			        lock = false;
+			        e.consume();
+				}
+			}
+			public void keyReleased(KeyEvent e) {}
+			public void keyTyped(KeyEvent e) {}        	
+        });
     }
-    
-    public void editTextOnMapObject(MapObject mo) {
+
+	public void editTextOnMapObject(MapObject mo) {
         if (mo.getConcept().getTriple() == null) {
             enableTextMode(null, mo, true);
         } else if (mo.getConcept().getTriple().isObjectLiteral()){
@@ -96,6 +118,7 @@ public class MoveLayer extends Layer implements KeyListener {
     }
 
     protected boolean focus(MapEvent m) {
+    	requestFocusInWindow();
         if (m.mouseEvent.isShiftDown()) {
             if (handles instanceof HandledMark)
                 return false;
@@ -406,7 +429,7 @@ public class MoveLayer extends Layer implements KeyListener {
 	
 	private void updateTextArea() {
 		Rectangle titleBounds = title.getBounds();
-        titleBounds = controller.getView().getMapScrollPane().getDisplayer().getTransform().createTransformedShape(titleBounds).getBounds();
-        repaint(titleBounds);		
+		titleBounds = controller.getView().getMapScrollPane().getDisplayer().getTransform().createTransformedShape(titleBounds).getBounds();
+		repaint(titleBounds);
 	}
 }

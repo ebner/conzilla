@@ -7,6 +7,8 @@
 package se.kth.cid.conzilla.view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
@@ -149,8 +151,10 @@ public class ConzillaSplitPane extends JPanel {
 		int leftDividerLocation = 0;
 		
         if (view.getLeftPanel() != null && !view.getLeftPanel().isEmpty()) {
-        	if (leftSplitter.getLeftComponent() != null && leftSplitter.getLeftComponent().getPreferredSize().width > 0) {
-        		leftDividerLocation = leftSplitter.getLeftComponent().getPreferredSize().width + 5;
+        	Component leftComp = leftSplitter.getLeftComponent();
+        	Dimension dim = leftComp != null ? leftComp.getPreferredSize() : null;
+        	if (dim != null && dim.width > 0) {
+        		leftDividerLocation = dim.width + 5;
         		if (leftDividerLocation < 200) {
         			leftDividerLocation = 200;
         		}

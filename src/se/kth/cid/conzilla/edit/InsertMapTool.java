@@ -15,11 +15,10 @@ import java.awt.geom.Point2D;
 import javax.swing.JOptionPane;
 
 import se.kth.cid.component.InvalidURIException;
-import se.kth.cid.concept.Concept;
 import se.kth.cid.conzilla.clipboard.ClipboardDrawerLayout;
+import se.kth.cid.conzilla.clipboard.ClipboardStatementLayout;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.edit.layers.GridModel;
-import se.kth.cid.conzilla.map.MapObject;
 import se.kth.cid.conzilla.map.MapScrollPane;
 import se.kth.cid.conzilla.tool.Tool;
 import se.kth.cid.layout.ConceptLayout;
@@ -89,14 +88,14 @@ public abstract class InsertMapTool extends Tool {
         return sl;        
     }
     
-    protected StatementLayout makeStatementLayout(Concept concept)
+    protected StatementLayout makeStatementLayout(ClipboardStatementLayout layout)
     throws InvalidURIException {
-        boolean isObjectLiteral = concept.getTriple().isObjectLiteral();
+        boolean isLiteralStatement = layout.isLiteralStatement();
         
-        String objectLayoutURI = isObjectLiteral ? null : getFirstObjectLayout(concept);
-        return makeStatementLayout(isObjectLiteral,
-                concept.getURI(),
-                getFirstSubjectLayout(concept),
+        String objectLayoutURI = isLiteralStatement ? null : getFirstObjectLayout(layout);
+        return makeStatementLayout(isLiteralStatement,
+                layout.getConceptURI(),
+                getFirstSubjectLayout(layout),
                 objectLayoutURI);
     }
 
@@ -117,13 +116,13 @@ public abstract class InsertMapTool extends Tool {
         return null;
     }
     
-    protected String getFirstSubjectLayout(Concept concept) {
-    	DrawerLayout dl = getFirstLayout(concept.getTriple().subjectURI());
+    protected String getFirstSubjectLayout(ClipboardStatementLayout layout) {
+    	DrawerLayout dl = getFirstLayout(layout.getSubjectLayoutURI());
     	return dl != null ? dl.getURI() : null;
     }
 
-    protected String getFirstObjectLayout(Concept concept) {
-        DrawerLayout dl = getFirstLayout(concept.getTriple().objectValue()); 
+    protected String getFirstObjectLayout(ClipboardStatementLayout layout) {
+        DrawerLayout dl = getFirstLayout(layout.getObjectLayoutURI()); 
     	return dl != null ? dl.getURI() : null;
     }
 

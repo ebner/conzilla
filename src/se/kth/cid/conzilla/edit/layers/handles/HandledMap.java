@@ -93,7 +93,7 @@ public class HandledMap extends HandledObject {
      *  @return a Collection of rectangles where the map need to be redrawn,
      *          i.e. the areas where the handles have changed selected state.
      */
-    protected Collection dragImpl(MapEvent m, int x, int y) {
+    public Collection move(int x, int y) {
         //We are done if there isn't any change. 
         if (x == 0 && y == 0)
             return null;
@@ -120,7 +120,7 @@ public class HandledMap extends HandledObject {
         g.drawRect(trans.x,trans.y,trans.width,trans.height);
 
         //Calculate the new marking-rectangle.
-        mark.setSize(m.mapX - mark.x, m.mapY - mark.y);
+        mark.setSize(mark.width+x, mark.height+y);
         pr = positiveRectangle(mark);
 
         //Draw the new marking-rectangle (XOR).

@@ -78,6 +78,10 @@ public class EditMapManager extends LayerManager implements MapManager, Property
 	public CopyEditMapTool copy;
 	public CutMapTool cut;
 	public PasteConceptMapTool paste;
+	public RemoveConditionalTool remove;
+	public RemoveNonConditionalTool removeFromSession;
+	public RemoveApperanceTool removeFromMap;
+	
 
 	//Separators
 	private Separator separator1;
@@ -85,7 +89,6 @@ public class EditMapManager extends LayerManager implements MapManager, Property
 	private Separator separator3;
 	private Separator separator4;
 	private Separator separator5;
-	private Separator separator6;
 
 	//Menues
 	public SessionChooserMenu sessionMenu;
@@ -138,12 +141,8 @@ public class EditMapManager extends LayerManager implements MapManager, Property
             }
 			protected boolean updateEnabled() {
 				return mapController.getConceptMap().getComponentManager().getUndoManager().canRedo();
-			}
+			}            
         };
-
-        // we want to have both disabled at the beginning
-        undo.setEnabled(false);
-        redo.setEnabled(false);
 
         editMenu.addTool(undo, 170);
         editMenu.addTool(redo, 180);
@@ -154,11 +153,18 @@ public class EditMapManager extends LayerManager implements MapManager, Property
         cut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK));
         paste = new PasteConceptMapTool(mapController, clipboard);
         paste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK));
+        remove = new RemoveConditionalTool(mapController);
+        remove.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+        removeFromMap = new RemoveApperanceTool(mapController);
+        removeFromSession = new RemoveNonConditionalTool(mapController);
         
         editMenu.addSeparator(800);
         editMenu.addTool(copy, 805);
         editMenu.addTool(cut, 807);
         editMenu.addTool(paste, 810);
+        editMenu.addTool(remove, 820);
+        editMenu.addTool(removeFromMap, 821);
+        editMenu.addTool(removeFromSession, 822);
         
         ConzillaKit.getDefaultKit().extendMenu(editMenu, mapController);
         ContainerManager cm = ConzillaKit.getDefaultKit().getResourceStore().getContainerManager();
@@ -173,6 +179,7 @@ public class EditMapManager extends LayerManager implements MapManager, Property
         create = new CreateTools(this, mapController, gridModel);
         gridLayer = new GridLayer(mapController, gridModel);
         moveLayer = new MoveLayer(mapController, this);
+        
     }
     
     public MoveLayer getMoveLayer() {
@@ -219,30 +226,24 @@ public class EditMapManager extends LayerManager implements MapManager, Property
         separator2 = new JToolBar.Separator(null);
         bar.add(separator2);
         
-        bar.addTool(undo);
-        bar.addTool(redo);
-        
-        separator3 = new JToolBar.Separator(null);
-        bar.add(separator3);
-        
         grid.installYourself(bar);
         bar.addTool(line);
         bar.addTool(tie);
         
-        separator4 = new JToolBar.Separator(null);
-        bar.add(separator4);
+        separator3 = new JToolBar.Separator(null);
+        bar.add(separator3);
         
         bar.addTool(highlighter.sHigh);
         bar.addTool(highlighter.vHigh);
         bar.addTool(highlighter.iHigh);
         
-        separator5 = new JToolBar.Separator(null);
-        bar.add(separator5);
+        separator4 = new JToolBar.Separator(null);
+        bar.add(separator4);
         
         bar.addTool(fullScreen);
         
-        separator6 = new JToolBar.Separator(null);
-        bar.add(separator6);
+        separator5 = new JToolBar.Separator(null);
+        bar.add(separator5);
         
         bar.add(localeChooser);
         //bar.addTool(create);
@@ -300,12 +301,6 @@ public class EditMapManager extends LayerManager implements MapManager, Property
 
         bar.removeTool(tie);
         tie.detach();
-        
-        bar.removeTool(undo);
-        undo.detach();
-        
-        bar.removeTool(redo);
-        redo.detach();
 
         bar.removeTool(highlighter.sHigh);
         bar.removeTool(highlighter.vHigh);
@@ -327,7 +322,7 @@ public class EditMapManager extends LayerManager implements MapManager, Property
         bar.remove(separator3);
         bar.remove(separator4);
         bar.remove(separator5);
-        bar.remove(separator6);
+        
 //        bar.removeAll(); // to remove separators as well
     }
 

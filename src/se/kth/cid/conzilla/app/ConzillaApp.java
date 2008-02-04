@@ -71,7 +71,7 @@ public class ConzillaApp extends ConzillaAppEnv {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					window.setMinimumSize(new Dimension(100,100));
-					window.setMaximumSize(null);
+					window.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
 					window.setVisible(true);
 					vm.revalidate();
 				}

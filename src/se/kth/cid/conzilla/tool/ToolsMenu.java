@@ -97,16 +97,6 @@ public class ToolsMenu extends PriorityMenu implements PropertyChangeListener{
 		setPriority(menu, prio);
 		return null;
 	}
-
-	public void updateMenu() {
-		for (Iterator iter = jITTools.iterator(); iter.hasNext();) {
-			Tool tool = (Tool) iter.next();
-			JMenuItem menuItem = tool.getJMenuItem();
-			super.add(menuItem);
-			setPriority(menuItem, ((Integer) tools2Prio.get(tool)).intValue()); 
-			toolItems.put(tool, menuItem);
-		}		
-	}
 	
 	public void addToolImpl(final Tool tool, int prio) {
 		if (tool.getJMenuItem() == null) {
@@ -159,20 +149,39 @@ public class ToolsMenu extends PriorityMenu implements PropertyChangeListener{
 	}
 		
 	public void updateBeforePopup() {
+		//Update all Tools so that they are up to date.
 		for (Iterator iter = tools2Prio.keySet().iterator(); iter.hasNext();) {
 			Object entry = iter.next();
 			if (entry instanceof Tool) {
 				((Tool) entry).updateBeforePopup();
 			}
 		}
-		updateMenu();
+		
+		//Add all Just In Time tools.
+		for (Iterator iter = jITTools.iterator(); iter.hasNext();) {
+			Tool tool = (Tool) iter.next();
+			JMenuItem menuItem = tool.getJMenuItem();
+			super.add(menuItem);
+			setPriority(menuItem, ((Integer) tools2Prio.get(tool)).intValue()); 
+			toolItems.put(tool, menuItem);
+		}
+		
 		super.updateBeforePopup();
 	}
 
 	public void updateAfterPopup() {
 		super.updateAfterPopup();
 		
+		//Set all tools enabled so that potential key-shortcuts works.
+		for (Iterator iter = tools2Prio.keySet().iterator(); iter.hasNext();) {
+			Object entry = iter.next();
+			if (entry instanceof Tool) {
+				((Tool) entry).setEnabled(true);
+			}
+		}
 		
+		//Remove all Just In Time Tools from the menu so that they can 
+		//exist in other menues if needed.
 		for (Iterator iter = jITTools.iterator(); iter.hasNext();) {
 			Tool tool = (Tool) iter.next();
 			super.remove(getToolItem(tool));

@@ -35,7 +35,7 @@ public class HandledMark extends HandledObject {
         return null;
     }
 
-    protected Collection dragImpl(MapEvent m, int x, int y) {
+    public Collection move(int x, int y) {
         Collection cols = new Vector();
         Collection col = null;
 

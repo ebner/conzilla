@@ -8,7 +8,6 @@ package se.kth.cid.conzilla.clipboard;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,15 +17,13 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.InvalidURIException;
 import se.kth.cid.component.ReadOnlyException;
-import se.kth.cid.concept.Concept;
-import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.edit.EditMapManager;
 import se.kth.cid.conzilla.edit.InsertMapTool;
 import se.kth.cid.conzilla.edit.layers.GridModel;
+import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.layout.ConceptLayout;
 import se.kth.cid.layout.ContextMap;
@@ -47,6 +44,9 @@ public class PasteConceptMapTool extends InsertMapTool {
     }
 
     protected boolean updateEnabled() {
+    	if (mapEvent != null && mapEvent.hitType != MapEvent.HIT_NONE) {
+    		return false;
+    	}
     	switch(clipboard.getClipType()) {
     	case Clipboard.SINGLE_LAYOUT:
     	case Clipboard.MULTIPLE_LAYOUTS:
@@ -206,19 +206,10 @@ public class PasteConceptMapTool extends InsertMapTool {
         }
 
         try {
-
-        Concept concept = ConzillaKit.getDefaultKit().getResourceStore()
-        		.getAndReferenceConcept(URI.create(cdl.getConceptURI()));
-
-        
             GridModel gridModel = ((EditMapManager) controller.getManager()).gridModel;
         	
-            if (concept.getTriple() == null 
-                    || !(cdl instanceof ClipboardStatementLayout)) {
-                ConceptLayout cl = makeConceptLayout(concept.getURI());
-                setBoundingBox(gridModel, cdl, cl, ipoint);
-            } else {
-                StatementLayout sl = makeStatementLayout(concept);
+            if (cdl instanceof ClipboardStatementLayout) {
+                StatementLayout sl = makeStatementLayout((ClipboardStatementLayout) cdl);
                 if (sl == null) {
                 	return;
                 }
@@ -229,6 +220,9 @@ public class PasteConceptMapTool extends InsertMapTool {
                         setBoxLine(gridModel, sl, ipoint);
                     }
                 }
+            } else {
+                ConceptLayout cl = makeConceptLayout(cdl.getConceptURI());
+                setBoundingBox(gridModel, cdl, cl, ipoint);
             }
         } catch (ReadOnlyException re) {
             log.error("Map can't be edited but we are in edit mode", re);
@@ -240,8 +234,6 @@ public class PasteConceptMapTool extends InsertMapTool {
                     + "Can't create a graphical representation for it.",
                 iue,
                 controller.getView().getMapScrollPane().getDisplayer());
-        } catch (ComponentException e) {
-            log.error("Concept that is to be copied are missing.", e);
-		}
+        }
     }
 }
