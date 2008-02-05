@@ -36,11 +36,15 @@ public class PasteConceptMapTool extends InsertMapTool {
     
     Clipboard clipboard;
 
+    public PasteConceptMapTool(String name, MapController cont, Clipboard clipboard) {
+        super(name, Clipboard.class.getName(), cont);
+        this.clipboard = clipboard;
+    }
+    
     public PasteConceptMapTool(
         MapController cont,
         Clipboard clipboard) {
-        super("INSERT_CONCEPT_FROM_CLIPBOARD", Clipboard.class.getName(), cont);
-        this.clipboard = clipboard;
+        this("INSERT_CONCEPT_FROM_CLIPBOARD", cont, clipboard);
     }
 
     protected boolean updateEnabled() {
@@ -80,13 +84,13 @@ public class PasteConceptMapTool extends InsertMapTool {
         boolean checkExists = !clipboard.isClipCut();
         HashSet allCurrentURIs = new HashSet();
         if (checkExists && !drawerLayouts.isEmpty()) {
-        	allCurrentURIs = toURISet(clipboard.getConceptMap().getDrawerLayouts());
+        	allCurrentURIs = toURISet(clipboard.getOriginContextMap().getDrawerLayouts());
         }
         
         
         for (Iterator<ClipboardDrawerLayout> dls = drawerLayouts.iterator(); dls.hasNext();) {
             ClipboardDrawerLayout dl = dls.next();
-            if (checkExists && !allCurrentURIs.contains(dl)) {
+            if (checkExists && !allCurrentURIs.contains(dl.getId())) {
             	continue;
             }
             if (dl instanceof ClipboardStatementLayout) {

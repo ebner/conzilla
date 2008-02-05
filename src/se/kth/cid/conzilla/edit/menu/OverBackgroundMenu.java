@@ -39,6 +39,8 @@ public class OverBackgroundMenu extends MapToolsMenu {
         addSeparator(800);
         addTool(mm.copy, 805);
         addTool(mm.paste, 810);
+        addTool(mm.pasteCopy, 811);
+        
         
 		ConzillaKit.getDefaultKit().extendMenu(this, controller);
 

@@ -30,6 +30,7 @@ import se.kth.cid.conzilla.browse.Highlighter;
 import se.kth.cid.conzilla.clipboard.Clipboard;
 import se.kth.cid.conzilla.clipboard.CopyEditMapTool;
 import se.kth.cid.conzilla.clipboard.CutMapTool;
+import se.kth.cid.conzilla.clipboard.PasteConceptCopyMapTool;
 import se.kth.cid.conzilla.clipboard.PasteConceptMapTool;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.controller.MapManager;
@@ -78,6 +79,7 @@ public class EditMapManager extends LayerManager implements MapManager, Property
 	public CopyEditMapTool copy;
 	public CutMapTool cut;
 	public PasteConceptMapTool paste;
+	public PasteConceptCopyMapTool pasteCopy;
 	public RemoveConditionalTool remove;
 	public RemoveNonConditionalTool removeFromSession;
 	public RemoveApperanceTool removeFromMap;
@@ -153,6 +155,7 @@ public class EditMapManager extends LayerManager implements MapManager, Property
         cut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK));
         paste = new PasteConceptMapTool(mapController, clipboard);
         paste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK));
+        pasteCopy = new PasteConceptCopyMapTool(mapController, clipboard);
         remove = new RemoveConditionalTool(mapController);
         remove.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
         removeFromMap = new RemoveApperanceTool(mapController);
@@ -162,6 +165,7 @@ public class EditMapManager extends LayerManager implements MapManager, Property
         editMenu.addTool(copy, 805);
         editMenu.addTool(cut, 807);
         editMenu.addTool(paste, 810);
+        editMenu.addTool(pasteCopy, 810);
         editMenu.addTool(remove, 820);
         editMenu.addTool(removeFromMap, 821);
         editMenu.addTool(removeFromSession, 822);
