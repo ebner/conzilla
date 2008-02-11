@@ -20,6 +20,7 @@ import se.kth.cid.util.TagManager;
  * @version $Revision$
  */
 public class MemTreeTagManager implements TagManager {
+	
 	Hashtable tags;
 
 	Object defaultTag;

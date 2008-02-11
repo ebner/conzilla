@@ -237,6 +237,7 @@ public class ListContentSelector extends JPanel implements ContentSelector, Prop
 
         contentMenu = new ContentMenu(controller);
     }
+
     public MapController getController() {
         return controller;
     }

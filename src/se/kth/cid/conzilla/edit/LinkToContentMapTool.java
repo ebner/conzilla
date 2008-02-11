@@ -51,8 +51,7 @@ public class LinkToContentMapTool extends Tool {
 
     protected boolean updateEnabled() {
         Concept c;
-        if (mapEvent.hitType != MapEvent.HIT_NONE
-            && (c = mapObject.getConcept()) != null) {
+        if (mapEvent != null && mapEvent.hitType != MapEvent.HIT_NONE && (c = mapObject.getConcept()) != null) {
             this.concept = c;
             log.debug("Concept is " + concept.toString());
             return true;
