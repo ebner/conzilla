@@ -23,7 +23,7 @@ import se.kth.cid.conzilla.properties.ConzillaResourceManager;
  * @author Mikael Nilsson
  * @version $Revision$
  */
-public class PriorityMenu extends JMenu {
+public abstract class PriorityMenu extends JMenu {
 	boolean needSort = false;
 
 	static final String PRIORITY_PROP = "priority";
@@ -70,12 +70,9 @@ public class PriorityMenu extends JMenu {
 		});
 	}
 	
-	public void updateBeforePopup() {
-		sortMenu();
-	}
+	abstract public void updateBeforePopup();
 
-	public void updateAfterPopup() {
-	}
+	abstract public void updateAfterPopup();
 
 	public PriorityMenu(String formalname) {
 		this(formalname, null);

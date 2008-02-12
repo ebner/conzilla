@@ -157,6 +157,11 @@ public class ToolsMenu extends PriorityMenu implements PropertyChangeListener{
 			}
 		}
 		
+		addJITTools();
+		sortMenu();
+	}
+	
+	protected void addJITTools() {
 		//Add all Just In Time tools.
 		for (Iterator iter = jITTools.iterator(); iter.hasNext();) {
 			Tool tool = (Tool) iter.next();
@@ -164,14 +169,10 @@ public class ToolsMenu extends PriorityMenu implements PropertyChangeListener{
 			super.add(menuItem);
 			setPriority(menuItem, ((Integer) tools2Prio.get(tool)).intValue()); 
 			toolItems.put(tool, menuItem);
-		}
-		
-		super.updateBeforePopup();
+		}		
 	}
 
-	public void updateAfterPopup() {
-		super.updateAfterPopup();
-		
+	public void updateAfterPopup() {		
 		//Set all tools enabled so that potential key-shortcuts works.
 		for (Iterator iter = tools2Prio.keySet().iterator(); iter.hasNext();) {
 			Object entry = iter.next();
@@ -179,7 +180,10 @@ public class ToolsMenu extends PriorityMenu implements PropertyChangeListener{
 				((Tool) entry).setEnabled(true);
 			}
 		}
-		
+		removeJITTools();
+	}
+	
+	protected void removeJITTools() {
 		//Remove all Just In Time Tools from the menu so that they can 
 		//exist in other menues if needed.
 		for (Iterator iter = jITTools.iterator(); iter.hasNext();) {
