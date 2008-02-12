@@ -112,7 +112,6 @@ public class LayerControl extends JPanel implements PropertyChangeListener, Chan
 		private Tool create;
 
 		private Tool activate;
-
         
         public LayerEntries() {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
