@@ -58,7 +58,7 @@ public class EditDetailedMapMapTool extends Tool {
 
         public DMDialog() {
             super(
-                JOptionPane.getFrameForComponent(controller.getView().getMapScrollPane()),
+                JOptionPane.getFrameForComponent(mcontroller.getView().getMapScrollPane()),
                 "DetailedMap edit",
                 true);
 
@@ -168,7 +168,7 @@ public class EditDetailedMapMapTool extends Tool {
                             .getConzilla()
                             .openMapInNewView(
                             new URI(textField.getText()),
-                            controller);
+                            mcontroller);
                     } catch (URISyntaxException me) {
                         ErrorMessage.showError(
                             "Parse Error",
@@ -189,7 +189,7 @@ public class EditDetailedMapMapTool extends Tool {
         }
 
         public void showDialog() {
-            setLocationRelativeTo(controller.getView().getMapScrollPane());
+            setLocationRelativeTo(mcontroller.getView().getMapScrollPane());
             log.debug("Loc: " + getLocation());
             pack();
             super.setVisible(true);

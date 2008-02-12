@@ -34,7 +34,7 @@ public class RemoveApperanceTool extends DetectSelectionTool {
 	  	int nrOfOccurences = dls.size();
 		Object[] options = {"Cancel", "Remove"};
         if (JOptionPane.showOptionDialog(
-                controller.getView().getMapScrollPane().getDisplayer(),
+                mcontroller.getView().getMapScrollPane().getDisplayer(),
                 "You are trying to remove "+ nrOfOccurences+" concept from this map. \n" +
                 "Note that the concepts themselves will not be removed, only the selected\n" +
                 "apperances in this map. Hence, unless they appear elsewhere in this or\n" +
@@ -44,11 +44,11 @@ public class RemoveApperanceTool extends DetectSelectionTool {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
                 null, options, options[1]) == 1) {		
-        	controller.getConceptMap().getComponentManager().getUndoManager().startChange();
+        	mcontroller.getConceptMap().getComponentManager().getUndoManager().startChange();
         	for (Iterator dlsIt = dls.iterator(); dlsIt.hasNext();) {
         		((DrawerLayout) dlsIt.next()).remove();
         	}
-        	controller.getConceptMap().getComponentManager().getUndoManager().endChange();
+        	mcontroller.getConceptMap().getComponentManager().getUndoManager().endChange();
         }
 	}
 
@@ -57,7 +57,7 @@ public class RemoveApperanceTool extends DetectSelectionTool {
         String name = drawerLayout instanceof StatementLayout ? "concept-relation" : "concept";
 		Object[] options = {"Cancel", "Remove"};
         if (JOptionPane.showOptionDialog(
-                controller.getView().getMapScrollPane().getDisplayer(),
+                mcontroller.getView().getMapScrollPane().getDisplayer(),
                 "You are trying to remove a "+ name +" from this map. \n" +
                 "Note that the "+name+" itself will not be removed. Hence,\n" +
                 "unless it appears elsewhere in this or another map you cannot easily\n" +
@@ -67,9 +67,9 @@ public class RemoveApperanceTool extends DetectSelectionTool {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
                 null, options, options[1]) == 1) {		
-        	controller.getConceptMap().getComponentManager().getUndoManager().startChange();
+        	mcontroller.getConceptMap().getComponentManager().getUndoManager().startChange();
         	drawerLayout.remove();
-        	controller.getConceptMap().getComponentManager().getUndoManager().endChange();
+        	mcontroller.getConceptMap().getComponentManager().getUndoManager().endChange();
         }
 	}
 

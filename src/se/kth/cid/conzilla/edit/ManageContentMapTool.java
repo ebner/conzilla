@@ -140,14 +140,14 @@ public class ManageContentMapTool extends Tool implements ListSelectionListener 
 
     private boolean isCIExpressedInSession(ContentInformation ci) {
         String curi = ci.getContainer().getURI();
-        Session session = controller.getConceptMap().getComponentManager().getEditingSesssion();
+        Session session = mcontroller.getConceptMap().getComponentManager().getEditingSesssion();
         return curi.equals(session.getContainerURIForConcepts())
         || curi.equals(session.getContainerURIForLayouts());
     }
     
     private boolean isContentExpressedInSession(Component c) {
         String curi = c.getLoadContainer();
-        Session session = controller.getConceptMap().getComponentManager().getEditingSesssion();
+        Session session = mcontroller.getConceptMap().getComponentManager().getEditingSesssion();
         return curi.equals(session.getContainerURIForConcepts())
         || curi.equals(session.getContainerURIForLayouts());
     }
@@ -269,7 +269,7 @@ public class ManageContentMapTool extends Tool implements ListSelectionListener 
             public void actionPerformed(ActionEvent e) {
                 Clipboard c = editMapManager.getClipBoard();
                 Resource contentComponent = c.getResource();
-                createContentOnConceptInContext(controller.getConceptMap(), concept, contentComponent.getURI());
+                createContentOnConceptInContext(mcontroller.getConceptMap(), concept, contentComponent.getURI());
                 updateContent();
                 selectContent((Component) contentComponent);
             }   
@@ -288,7 +288,7 @@ public class ManageContentMapTool extends Tool implements ListSelectionListener 
         createContext = new JButton(new AbstractAction("Create in Context") {
             public void actionPerformed(ActionEvent e) {
                 Component contentComponent = createContentInContextDialog(
-                        controller.getConceptMap(), concept);
+                        mcontroller.getConceptMap(), concept);
                 updateContent();
                 selectContent(contentComponent);
             }   
@@ -348,7 +348,7 @@ public class ManageContentMapTool extends Tool implements ListSelectionListener 
     private java.awt.Component updateMessage() {
         message.removeAll();
         message.setLayout(new BoxLayout(message, BoxLayout.X_AXIS));
-        Session session = controller.getConceptMap().getComponentManager().getEditingSesssion();
+        Session session = mcontroller.getConceptMap().getComponentManager().getEditingSesssion();
         JLabel glabel = new JLabel("<html><body><center><i>Content</i> can be linked to <i>concepts</i>, " +
                 "either in a <i>context-free</i> way, which means that the <i>content</i> is available in all <i>context-maps</i>, " +
                 "<i>or in a <i>context-specific</i> way, which means that the <i>content</i> is available only in the " +
@@ -357,7 +357,7 @@ public class ManageContentMapTool extends Tool implements ListSelectionListener 
                 "links to <i>content</i> from the <i>concept</i> <b><font color=blue>"
                 +AttributeEntryUtil.getTitleAsString(concept)+
                 "</font></b> possibly specific to the <i>context-map</i> <b><font color=blue>"
-                +AttributeEntryUtil.getTitleAsString(controller.getConceptMap())+
+                +AttributeEntryUtil.getTitleAsString(mcontroller.getConceptMap())+
                 "</font></b> within the <i>session</i> <b><font color=blue>"
                 +session.getTitle()+
                 "</font></b>.</center></body></html>");
@@ -394,7 +394,7 @@ public class ManageContentMapTool extends Tool implements ListSelectionListener 
             return;
         }
         removeContent(ci);
-        createContentOnConceptInContext(controller.getConceptMap(), concept, ci.getContentURI());
+        createContentOnConceptInContext(mcontroller.getConceptMap(), concept, ci.getContentURI());
         updateContent();
         selectContent((Component) cI2Content.get(ci));
     }

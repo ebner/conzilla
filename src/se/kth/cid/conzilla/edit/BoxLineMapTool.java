@@ -65,7 +65,7 @@ public class BoxLineMapTool extends Tool {
                 LayoutUtils.boxLine(
                     sl,
                     LayoutUtils.getPosition(mapEvent),
-                    ((EditMapManager) controller.getManager()).getGridModel());
+                    ((EditMapManager) mcontroller.getManager()).getGridModel());
             sl.setBoxLine(pos);
         }
     }

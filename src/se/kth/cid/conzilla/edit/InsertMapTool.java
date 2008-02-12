@@ -36,7 +36,7 @@ public abstract class InsertMapTool extends Tool {
     		return new Point(mapEvent.mapX, mapEvent.mapY);
     	} else {
 			try {
-				MapScrollPane scroll = controller.getView().getMapScrollPane();
+				MapScrollPane scroll = mcontroller.getView().getMapScrollPane();
 				Rectangle visirect = scroll.getVisibleRect();
 				AffineTransform tr = scroll.getDisplayer().getTransform().createInverse();
 				Point middle = new Point(visirect.x+(visirect.width/2), visirect.y+(visirect.height/2));
@@ -50,7 +50,7 @@ public abstract class InsertMapTool extends Tool {
     
     protected ConceptLayout makeConceptLayout(String conceptURI)
         throws InvalidURIException {
-        ContextMap cmap = controller.getConceptMap();
+        ContextMap cmap = mcontroller.getConceptMap();
         ConceptLayout ns = cmap.addConceptLayout(conceptURI);
         return ns;
     }
@@ -60,7 +60,7 @@ public abstract class InsertMapTool extends Tool {
             String subjectLayoutURI, 
             String objectLayoutURI) 
     throws InvalidURIException{
-        ContextMap cmap = controller.getConceptMap();
+        ContextMap cmap = mcontroller.getConceptMap();
         StatementLayout sl = null;
         if (isObjectLiteral) {
         	if (subjectLayoutURI == null) {
@@ -107,7 +107,7 @@ public abstract class InsertMapTool extends Tool {
     }
     
     protected DrawerLayout getFirstLayout(String conceptURI) {
-        DrawerLayout [] dls = controller.getConceptMap().getDrawerLayouts();
+        DrawerLayout [] dls = mcontroller.getConceptMap().getDrawerLayouts();
         for (int i = 0; i < dls.length; i++) {
             if (dls[i].getConceptURI().equals(conceptURI)) {
                 return dls[i];

@@ -36,6 +36,6 @@ public class CopyMapTool extends Tool {
         if (mapObject != null && mapObject.getConcept() != null)
             clipboard.setDrawerLayout(mapObject.getDrawerLayout());
         else if (mapEvent != null && mapEvent.hitType == MapEvent.HIT_NONE)
-            clipboard.setResource(controller.getConceptMap());
+            clipboard.setResource(mcontroller.getConceptMap());
     }
 }

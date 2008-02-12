@@ -55,7 +55,7 @@ public class PathTypeMapTool extends Tool {
     }
 
     public void actionPerformed(ActionEvent e) {
-    	controller.getConceptMap().getComponentManager().getUndoManager().startChange();
+    	mcontroller.getConceptMap().getComponentManager().getUndoManager().startChange();
         if (mapEvent.hitType == MapEvent.HIT_BOXLINE) {
             StatementLayout ns = (StatementLayout) mapObject.getDrawerLayout();
             if (ns.getBoxLinePathType() == LineStyle.PATH_TYPE_STRAIGHT) {
@@ -75,7 +75,7 @@ public class PathTypeMapTool extends Tool {
                 as.setLine(makeStraightLine(as.getLine()));
             }
         }
-        controller.getConceptMap().getComponentManager().getUndoManager().endChange();
+        mcontroller.getConceptMap().getComponentManager().getUndoManager().endChange();
     }
 
     protected ContextMap.Position [] makeStraightLine(ContextMap.Position [] line) {
