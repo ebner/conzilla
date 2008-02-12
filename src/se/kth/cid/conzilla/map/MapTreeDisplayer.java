@@ -78,7 +78,7 @@ public class MapTreeDisplayer extends JSplitPane implements TreeSelectionListene
         }
 
         public void actionPerformed(ActionEvent e) {
-            MapTreeDisplayer.showMapTree(this.controller.getConceptMap());
+            MapTreeDisplayer.showMapTree(this.mcontroller.getConceptMap());
         }
     }
 
