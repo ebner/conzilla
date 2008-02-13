@@ -73,13 +73,13 @@ public class AboutMessage extends JDialog {
                 "contributions to Conzilla:<br>" +
                 "<table><tr><td width=\"115\">Ambj&ouml;rn&nbsp;Naeve</td><td>Inventor, Architect, Designer,<br>Tester, Documentation Writer</td></tr>"+
                 "<tr><td>Matthias&nbsp;Palm&eacute;r</td><td>Main developer,<br>Technical Coordinator</td></tr>"+
-                "<tr><td>Mikael&nbsp;Nilsson</td><td>Main Developer</td></tr>"+
                 "<tr><td>Hannes&nbsp;Ebner</td><td>Main Developer</td></tr>"+
-                "<tr><td>Richard&nbsp;Wessblad</td><td>Developer</td></tr>"+
+                "<tr><td>Mikael&nbsp;Nilsson</td><td>Developer</td></tr>"+
                 "<tr><td>Henrik&nbsp;Eriksson</td><td>Developer</td></tr>"+
                 "<tr><td>Fredrik&nbsp;Enoksson</td><td>Developer</td></tr>"+
-                "<tr><td>Noel&nbsp;Zargarian</td><td>Developer</td></tr>"+
-                "<tr><td>Ioana&nbsp;Predonescu</td><td>Developer</td></tr>"+
+                "<tr><td>Noel&nbsp;Zargarian</td><td>Contributor</td></tr>"+
+                "<tr><td>Richard&nbsp;Wessblad</td><td>Contributor</td></tr>"+
+                "<tr><td>Ioana&nbsp;Predonescu</td><td>Contributor</td></tr>"+
                 "<tr><td>Mark James</td><td>Icon set \"Silk\"</td></tr>"+
                 "</table></body></html>");
         creditsLabel.setBorder(BorderFactory.createEmptyBorder(5,10,5,10));
