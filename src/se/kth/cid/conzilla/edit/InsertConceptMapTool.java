@@ -56,14 +56,14 @@ public class InsertConceptMapTool extends InsertMapTool {
         if (newval != null) {
             try {
                 lastval = newval;
-                ContextMap cmap = controller.getConceptMap();
+                ContextMap cmap = mcontroller.getConceptMap();
                 URI nuri = new URI(newval);
 
                 // Concept concept = controller.getConzillaKit().getResourceStore().getAndReferenceConcept(nuri);
                 // ConceptLayout ns=makeConceptLayout(concept);
 
                 ConceptLayout ns = cmap.addConceptLayout(nuri.toString());
-                java.awt.Dimension dim = controller.getView().getMapScrollPane()
+                java.awt.Dimension dim = mcontroller.getView().getMapScrollPane()
                         .getDisplayer().getMapObject(ns.getURI())
                         .getPreferredSize();
 
@@ -77,12 +77,12 @@ public class InsertConceptMapTool extends InsertMapTool {
             } catch (URISyntaxException me) {
             	log.error("Invalid URI: " + newval, me);
                 ErrorMessage.showError("Not an URI.", "The identifier doesn't conform to the URI standard.",
-                        me, controller.getView().getMapScrollPane().getDisplayer());
+                        me, mcontroller.getView().getMapScrollPane().getDisplayer());
             } catch (ReadOnlyException re) {
                 log.error("You shouldn't be able to choose 'insert concept' from menu when map isn't editable", re);
             } catch (InvalidURIException iue) {
             	log.error("Couldn't find concept", iue);
-                ErrorMessage.showError("Not found.", "Couldn't find concept.", iue, controller.getView().getMapScrollPane().getDisplayer());
+                ErrorMessage.showError("Not found.", "Couldn't find concept.", iue, mcontroller.getView().getMapScrollPane().getDisplayer());
             }
         }
 

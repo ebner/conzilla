@@ -237,6 +237,7 @@ public class ListContentSelector extends JPanel implements ContentSelector, Prop
 
         contentMenu = new ContentMenu(controller);
     }
+
     public MapController getController() {
         return controller;
     }
@@ -296,10 +297,13 @@ public class ListContentSelector extends JPanel implements ContentSelector, Prop
             list.setListData(new Vector());
         } else {
             TreeSet ts = new TreeSet();
+            Set<URI> loadedContainers = this.componentManager.getLoadedRelevantContainers();
             for (Iterator contentIt = content.iterator(); contentIt.hasNext();) {
                 ContentInformation ci = (ContentInformation) contentIt.next();
-                if (this.componentManager == null ||
-                		this.componentManager.getContainerVisible(URI.create(ci.getContainer().getURI()))) {
+                URI ciCont = URI.create(ci.getContainer().getURI());
+                if (this.componentManager == null
+                		|| this.componentManager.getContainerVisible(ciCont)
+                		|| !loadedContainers.contains(ciCont)) {
                 	try {
                 		ts.add(new ContentInformationWithTitle(ci));
                 	} catch (ComponentException e) {

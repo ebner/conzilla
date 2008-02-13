@@ -49,8 +49,8 @@ public abstract class DetectSelectionTool extends Tool {
     			return mapEvent.hitType != MapEvent.HIT_NONE;
     		}
     	} else {
-        	HandleStore handleStore = ((EditMapManager) controller.getManager()).getHandleStore();
-        	MoveLayer moveLayer = ((EditMapManager) controller.getManager()).moveLayer;
+        	HandleStore handleStore = ((EditMapManager) mcontroller.getManager()).getHandleStore();
+        	MoveLayer moveLayer = ((EditMapManager) mcontroller.getManager()).moveLayer;
         	MapObject mo = moveLayer.getHandledObject() != null ? moveLayer.getHandledObject().getMapObject() : null;
             return (!handleStore.getMarkedLayouts().isEmpty()) || mo!= null;
     	}
@@ -60,7 +60,7 @@ public abstract class DetectSelectionTool extends Tool {
     	if (!updateEnabled()) {
     		return;
     	}
-		HandleStore handleStore = ((EditMapManager) controller.getManager()).getHandleStore();
+		HandleStore handleStore = ((EditMapManager) mcontroller.getManager()).getHandleStore();
 		Set markedLayouts = handleStore.getMarkedLayouts();
 		if (!markedLayouts.isEmpty()) {
 			if (markedLayouts.size() > 1) {
@@ -77,12 +77,12 @@ public abstract class DetectSelectionTool extends Tool {
 		} else {
 			if (mapEvent != null) {
 				if (enabledOnMap && mapEvent.hitType == MapEvent.HIT_NONE) {
-					handleMap(controller.getConceptMap());
+					handleMap(mcontroller.getConceptMap());
 				} else {
 					handleSingleSelection(this.mapObject.getDrawerLayout(), this.mapObject.getConcept());
 				}
     		} else {
-    			MoveLayer moveLayer = ((EditMapManager) controller.getManager()).moveLayer;
+    			MoveLayer moveLayer = ((EditMapManager) mcontroller.getManager()).moveLayer;
             	MapObject mo = moveLayer.getHandledObject().getMapObject();
     			handleSingleSelection(mo.getDrawerLayout(), mo.getConcept());
     		}

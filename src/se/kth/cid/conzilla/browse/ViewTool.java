@@ -40,13 +40,13 @@ public class ViewTool extends Tool implements PropertyChangeListener{
     public ViewTool(MapController cont) {
         super("VIEW", BrowseMapManagerFactory.class.getName(), cont);
         contentInformations = new HashSet();
-        controller.getContentSelector()
+        mcontroller.getContentSelector()
         .addSelectionListener(ContentSelector.SELECTOR, this);
     }
 
     public void detach() {
         super.detach();
-        controller.getContentSelector()
+        mcontroller.getContentSelector()
             .removeSelectionListener(ContentSelector.SELECTOR, this);
     }
     
@@ -77,7 +77,7 @@ public class ViewTool extends Tool implements PropertyChangeListener{
     public void actionPerformed(ActionEvent arg0) {
 //        ConzillaKit kit = ConzillaKit.getDefaultKit();
 //        ResourceStore store = kit.getResourceStore();
-        ContentSelector selector = controller.getContentSelector();
+        ContentSelector selector = mcontroller.getContentSelector();
 
         if (mapEvent == null || mapEvent.mapObject == null) {
             return;
@@ -88,7 +88,7 @@ public class ViewTool extends Tool implements PropertyChangeListener{
             removeMark();
         }
         
-        selector.selectContentFromSet(contentInformations, controller.getConceptMap().getComponentManager());
+        selector.selectContentFromSet(contentInformations, mcontroller.getConceptMap().getComponentManager());
         AttributeEntry title = AttributeEntryUtil.getTitle(mapEvent.mapObject.getConcept());
         if (title != null) {
             String [] titles = new String[1];
@@ -107,7 +107,7 @@ public class ViewTool extends Tool implements PropertyChangeListener{
         overMark.setLineWidth((float) 2.0);
         currentViewed.pushMark(overMark, this);
         
-        Iterator mapObjects = controller.getView().getMapScrollPane().getDisplayer().getMapObjects().iterator();
+        Iterator mapObjects = mcontroller.getView().getMapScrollPane().getDisplayer().getMapObjects().iterator();
         while (mapObjects.hasNext()) {
             MapObject mo = (MapObject) mapObjects.next();
             if (mo != currentViewed) {
@@ -121,7 +121,7 @@ public class ViewTool extends Tool implements PropertyChangeListener{
             return;
         }
         currentViewed = null;
-        Iterator mapObjects = controller.getView().getMapScrollPane().getDisplayer().getMapObjects().iterator();
+        Iterator mapObjects = mcontroller.getView().getMapScrollPane().getDisplayer().getMapObjects().iterator();
         while (mapObjects.hasNext()) {
             MapObject mo = (MapObject) mapObjects.next();
             mo.popMark(ViewTool.this);

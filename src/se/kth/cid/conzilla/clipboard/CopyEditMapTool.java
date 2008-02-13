@@ -38,6 +38,6 @@ public class CopyEditMapTool extends DetectSelectionTool {
 
 	@Override
 	protected void handleMap(ContextMap map) {
-		 clipboard.setResource(controller.getConceptMap());
+		 clipboard.setResource(mcontroller.getConceptMap());
 	}
 }

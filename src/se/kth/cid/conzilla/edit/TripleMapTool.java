@@ -66,7 +66,7 @@ public class TripleMapTool extends Tool
     		sl.setLine(new ContextMap.Position[0]);
 		else
 			sl.setLine(LayoutUtils.tripleLine(sl.getSubjectLayout(), sl.getObjectLayout(), 
-				((EditMapManager) controller.getManager()).getGridModel()));
+				((EditMapManager) mcontroller.getManager()).getGridModel()));
     }
 }
 

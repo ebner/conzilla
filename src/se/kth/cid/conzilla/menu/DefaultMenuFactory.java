@@ -225,7 +225,7 @@ public class DefaultMenuFactory implements MenuFactory {
 			public void actionPerformed(ActionEvent ae) {
 				// FIXME
 				if (/* view.tryCloseMap() */true) {
-					kit.getConzilla().close(conzilla.getViewManager().getView(controller));
+					kit.getConzilla().close(conzilla.getViewManager().getView(mcontroller));
 				}
 			}
 		};
@@ -280,7 +280,7 @@ public class DefaultMenuFactory implements MenuFactory {
 
 		viewm.addTool(new Tool("PACK", DefaultMenuFactory.class.getName()) {
 			public void actionPerformed(ActionEvent e) {
-				conzilla.getViewManager().getView(controller).pack();
+				conzilla.getViewManager().getView(mcontroller).pack();
 			}
 		}, 400);
 		
@@ -288,25 +288,25 @@ public class DefaultMenuFactory implements MenuFactory {
 		
 		sourceViews.addTool(new Tool("SOURCE_N3", DefaultMenuFactory.class.getName()) {
 			public void actionPerformed(ActionEvent e) {
-				showSourceInWindow(controller, "N3-PP");
+				showSourceInWindow(mcontroller, "N3-PP");
 			}
 		}, 10);
 		
 		sourceViews.addTool(new Tool("SOURCE_NTRIPLE", DefaultMenuFactory.class.getName()) {
 			public void actionPerformed(ActionEvent e) {
-				showSourceInWindow(controller, "N-TRIPLE");
+				showSourceInWindow(mcontroller, "N-TRIPLE");
 			}
 		}, 20);
 		
 		sourceViews.addTool(new Tool("SOURCE_RDFXML", DefaultMenuFactory.class.getName()) {
 			public void actionPerformed(ActionEvent e) {
-				showSourceInWindow(controller, "RDF/XML-ABBREV");
+				showSourceInWindow(mcontroller, "RDF/XML-ABBREV");
 			}
 		}, 30);
 		
 		sourceViews.addTool(new Tool("SOURCE_TURTLE", DefaultMenuFactory.class.getName()) {
 			public void actionPerformed(ActionEvent e) {
-				showSourceInWindow(controller, "TURTLE");
+				showSourceInWindow(mcontroller, "TURTLE");
 			}
 		}, 40);
 		
@@ -362,7 +362,7 @@ public class DefaultMenuFactory implements MenuFactory {
 			{setIcon(Images.getImageIcon(Images.ICON_HOME));}
 			public void actionPerformed(ActionEvent ae) {
 				log.debug("Set this map as startmap");
-				String uri = controller.getConceptMap().getURI();
+				String uri = mcontroller.getConceptMap().getURI();
 				ConfigurationManager.getConfiguration().setProperty(Settings.CONZILLA_STARTMAP, uri);
 			}
 		}, 100);
@@ -387,7 +387,7 @@ public class DefaultMenuFactory implements MenuFactory {
 		settings.addTool(new Tool("SETZOOM", DefaultMenuFactory.class.getName()) {
 			public void actionPerformed(ActionEvent ae) {
 				ConfigurationManager.getConfiguration().setProperty(Settings.CONZILLA_ZOOM,
-						"" + controller.getView().getMapScrollPane().getDisplayer().getScale() * 100);
+						"" + mcontroller.getView().getMapScrollPane().getDisplayer().getScale() * 100);
 			}
 		}, 600);
 

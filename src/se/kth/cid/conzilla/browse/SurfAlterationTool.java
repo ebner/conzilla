@@ -65,7 +65,7 @@ public class SurfAlterationTool extends Tool {
 		}
 
 		Resource component = mapEvent.mapObject.getConcept();
-		ContextMap cMap = controller.getConceptMap();
+		ContextMap cMap = mcontroller.getConceptMap();
 
 		Set neighbourHoodMaps = new HashSet();
 		ContainerManager containerManager = ConzillaKit.getDefaultKit().getResourceStore().getContainerManager();
@@ -139,32 +139,32 @@ public class SurfAlterationTool extends Tool {
 			return;
 		try {
 			DrawerLayout ns = mapEvent.mapObject.getDrawerLayout();
-			ContextMap cMap = controller.getConceptMap();
-			controller.showMap(URIClassifier.parseValidURI(mapEvent.mapObject.getDrawerLayout().getDetailedMap(), cMap
+			ContextMap cMap = mcontroller.getConceptMap();
+			mcontroller.showMap(URIClassifier.parseValidURI(mapEvent.mapObject.getDrawerLayout().getDetailedMap(), cMap
 					.getURI()));
-			controller.getHistoryManager().fireDetailedMapEvent(controller, ns);
-			browse.markLastConcept(controller.getView().getMapScrollPane(), URIClassifier.parseValidURI(
+			mcontroller.getHistoryManager().fireDetailedMapEvent(mcontroller, ns);
+			browse.markLastConcept(mcontroller.getView().getMapScrollPane(), URIClassifier.parseValidURI(
 					mapEvent.mapObject.getDrawerLayout().getConceptURI(),
 					mapEvent.mapObject.getDrawerLayout().getConceptMap().getURI()).toString());
 		} catch (ControllerException e) {
 			ErrorMessage.showError("Load Error", "Failed to load map\n\n"
-					+ mapEvent.mapObject.getDrawerLayout().getDetailedMap(), e, controller.getView().getMapScrollPane());
+					+ mapEvent.mapObject.getDrawerLayout().getDetailedMap(), e, mcontroller.getView().getMapScrollPane());
 		}
 	}
 
 	public void surfContextMap(Resource comp) {
-		ContextMap oldMap = controller.getConceptMap();
+		ContextMap oldMap = mcontroller.getConceptMap();
 		try {
-			controller.showMap(new URI(comp.getURI()));
-			controller.getHistoryManager().fireOpenNewMapEvent(controller, oldMap,
+			mcontroller.showMap(new URI(comp.getURI()));
+			mcontroller.getHistoryManager().fireOpenNewMapEvent(mcontroller, oldMap,
 					new URI(comp.getURI()));
-			browse.markLastConcept(controller.getView().getMapScrollPane(), URIClassifier.parseValidURI(
+			browse.markLastConcept(mcontroller.getView().getMapScrollPane(), URIClassifier.parseValidURI(
 					mapEvent.mapObject.getDrawerLayout().getConceptURI(),
 					mapEvent.mapObject.getDrawerLayout().getConceptMap().getURI()).toString());
 		} catch (URISyntaxException urise) {
 			urise.printStackTrace();
 		} catch (ControllerException e) {
-			ErrorMessage.showError("Load Error", "Failed to load map\n\n" + comp.getURI(), e, controller
+			ErrorMessage.showError("Load Error", "Failed to load map\n\n" + comp.getURI(), e, mcontroller
 					.getView().getMapScrollPane());
 		}
 	}

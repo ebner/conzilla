@@ -62,14 +62,14 @@ public class PasteConceptMapTool extends InsertMapTool {
     public void actionPerformed(ActionEvent e) {
     	switch(clipboard.getClipType()) {
     	case Clipboard.SINGLE_LAYOUT:
-            controller.getConceptMap().getComponentManager().getUndoManager().startChange();
+            mcontroller.getConceptMap().getComponentManager().getUndoManager().startChange();
         	pasteSingleConcept();
-            controller.getConceptMap().getComponentManager().getUndoManager().endChange();
+            mcontroller.getConceptMap().getComponentManager().getUndoManager().endChange();
             break;
     	case Clipboard.MULTIPLE_LAYOUTS:
-            controller.getConceptMap().getComponentManager().getUndoManager().startChange();
+            mcontroller.getConceptMap().getComponentManager().getUndoManager().startChange();
             pasteMultipleConcepts();
-            controller.getConceptMap().getComponentManager().getUndoManager().endChange();
+            mcontroller.getConceptMap().getComponentManager().getUndoManager().endChange();
             break;
     	}
     }
@@ -210,7 +210,7 @@ public class PasteConceptMapTool extends InsertMapTool {
         }
 
         try {
-            GridModel gridModel = ((EditMapManager) controller.getManager()).gridModel;
+            GridModel gridModel = ((EditMapManager) mcontroller.getManager()).gridModel;
         	
             if (cdl instanceof ClipboardStatementLayout) {
                 StatementLayout sl = makeStatementLayout((ClipboardStatementLayout) cdl);
@@ -237,7 +237,7 @@ public class PasteConceptMapTool extends InsertMapTool {
                 "Concept doesn't seem to have a valid URI."
                     + "Can't create a graphical representation for it.",
                 iue,
-                controller.getView().getMapScrollPane().getDisplayer());
+                mcontroller.getView().getMapScrollPane().getDisplayer());
         }
     }
 }

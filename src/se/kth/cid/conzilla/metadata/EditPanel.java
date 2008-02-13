@@ -66,7 +66,7 @@ public class EditPanel extends InfoPanel {
          */
         protected boolean updateEnabled() {
             if (mapEvent.hitType == MapEvent.HIT_NONE) {
-                comp = controller.getConceptMap();
+                comp = mcontroller.getConceptMap();
             } else if (mapObject != null 
                 && mapObject.getConcept() != null){
                 comp = mapObject.getConcept();
@@ -83,7 +83,7 @@ public class EditPanel extends InfoPanel {
         public void actionPerformed(ActionEvent e) {
             EditPanel.launchEditPanelInFrame(comp, new AbstractAction() {
 				public void actionPerformed(ActionEvent e) {
-					controller.getConceptMap().getComponentManager().getUndoManager().makeChange();
+					mcontroller.getConceptMap().getComponentManager().getUndoManager().makeChange();
 				}
             });
         }

@@ -105,9 +105,9 @@ public class ChangeTypeMapTool extends Tool implements TreeTagNodeMenuListener {
             Triple triple = c.getTriple();
             triple.setPredicateURI(treeTagNode.getValue());
         }
-        controller.getView().getMapScrollPane().getDisplayer().createMapObjects();
-        controller.getView().getMapScrollPane().getDisplayer().repaint();
-        controller.getConceptMap().getComponentManager().getUndoManager().makeChange();
+        mcontroller.getView().getMapScrollPane().getDisplayer().createMapObjects();
+        mcontroller.getView().getMapScrollPane().getDisplayer().repaint();
+        mcontroller.getConceptMap().getComponentManager().getUndoManager().makeChange();
     }
 
 	public void actionPerformed(ActionEvent e) {

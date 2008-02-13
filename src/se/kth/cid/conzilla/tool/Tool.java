@@ -66,11 +66,9 @@ public abstract class Tool extends AbstractAction {
 
 	protected MapObject mapObject;
 
-	protected MapController controller;
+	protected MapController mcontroller;
 
 	private JMenuItem menuItem = null;
-
-	private boolean nextPopupIsOverMap;
 
 	public Tool(String name) {
 		setTitleAndTooltip(name, getClass().getName());
@@ -82,7 +80,7 @@ public abstract class Tool extends AbstractAction {
 
 	public Tool(String name, String resbundle, MapController controller) {
 		setTitleAndTooltip(name, resbundle);
-		this.controller = controller;
+		this.mcontroller = controller;
 	}
 
 	protected void setTitleAndTooltip(String name, String resbundle) {
@@ -180,12 +178,12 @@ public abstract class Tool extends AbstractAction {
 	}
 	
 	public void updateBeforePopup() {
-		if (nextPopupIsOverMap) {
-			nextPopupIsOverMap = false;
-		} else {
-			mapEvent = null;
-			mapObject = null;
-		}
+		mapEvent = null;
+		mapObject = null;
+		doUpdateEnabled();
+	}
+	
+	protected void doUpdateEnabled() {
 		boolean enabled = updateEnabled();
 		setEnabled(enabled);
 		JMenuItem mi = getJMenuItem();
@@ -195,9 +193,9 @@ public abstract class Tool extends AbstractAction {
 	}
 		
 	public void update(MapEvent e) {
-		nextPopupIsOverMap = true;
 		mapEvent = e;
 		mapObject = mapEvent.mapObject;
+		doUpdateEnabled();
 	}
 	
 	protected boolean updateEnabled() {

@@ -100,6 +100,9 @@ public class MapStoreManager implements EditListener {
 			concepts.put(layout.getURI(), n);
 			n.addEditListener(this);
 
+			//Add Concepts Loadcontainer to the relevant containers of the contextmap.
+			conceptMap.getComponentManager().containerIsRelevant(URI.create(n.getLoadContainer()));
+
 			// Changed to StyleManager instead of neurontypes.
 			/*
 			 * uri = URIClassifier.parseValidURI(n.getType(), n.getURI());

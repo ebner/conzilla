@@ -34,20 +34,20 @@ public class CutMapTool extends DetectSelectionTool {
 	protected void handleMultipleSelection(Set dls) {
 		clipboard.setDrawerLayouts(new ArrayList(dls));
 		clipboard.setClipIsCut(true);
-		controller.getConceptMap().getComponentManager().getUndoManager().startChange();
+		mcontroller.getConceptMap().getComponentManager().getUndoManager().startChange();
 		for (Iterator dlsIt = dls.iterator(); dlsIt.hasNext();) {
 			((DrawerLayout) dlsIt.next()).remove();
 		}
-		controller.getConceptMap().getComponentManager().getUndoManager().endChange();
+		mcontroller.getConceptMap().getComponentManager().getUndoManager().endChange();
 	}
 
 	@Override
 	protected void handleSingleSelection(DrawerLayout drawerLayout, Concept concept) {
 		clipboard.setDrawerLayout(drawerLayout);
 		clipboard.setClipIsCut(true);
-		controller.getConceptMap().getComponentManager().getUndoManager().startChange();
+		mcontroller.getConceptMap().getComponentManager().getUndoManager().startChange();
 		drawerLayout.remove();
-		controller.getConceptMap().getComponentManager().getUndoManager().endChange();        			
+		mcontroller.getConceptMap().getComponentManager().getUndoManager().endChange();        			
 	}
 
 	@Override

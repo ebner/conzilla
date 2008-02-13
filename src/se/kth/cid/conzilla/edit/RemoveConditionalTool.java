@@ -39,14 +39,14 @@ public class RemoveConditionalTool extends DetectSelectionTool {
     }
 
     private boolean isManaged(Concept concept) {
-        Session session = controller.getConceptMap().getComponentManager().getEditingSesssion();
+        Session session = mcontroller.getConceptMap().getComponentManager().getEditingSesssion();
         String lc = concept.getLoadContainer();
         return session.getContainerURIForConcepts().equals(lc)
                 || session.getContainerURIForLayouts().equals(lc);
     }
 
     private boolean isCommented(Concept concept) {
-    	Session session = controller.getConceptMap().getComponentManager().getEditingSesssion();
+    	Session session = mcontroller.getConceptMap().getComponentManager().getEditingSesssion();
     	Set<URI> set = concept.getComponentManager().getLoadedRelevantContainers();
     	return set.contains(URI.create(session.getContainerURIForConcepts()));
     }
@@ -66,7 +66,7 @@ public class RemoveConditionalTool extends DetectSelectionTool {
 		Object[] options = {"Cancel", "Remove"};
 		int nrOfOccurences = drawerLayouts.size();
         int result = JOptionPane.showOptionDialog(
-                controller.getView().getMapScrollPane().getDisplayer(),
+                mcontroller.getView().getMapScrollPane().getDisplayer(),
                 "You are trying to remove "+ nrOfOccurences+" selected concepts together with their \n" +
                 "apperances in this map. Note that concepts that have known apperances in other maps\n" +
                 "will not be removed.\n\n" +
@@ -78,10 +78,10 @@ public class RemoveConditionalTool extends DetectSelectionTool {
          if (result == 0) {
              return;
          }
-         controller.getConceptMap().getComponentManager().getUndoManager().startChange();
+         mcontroller.getConceptMap().getComponentManager().getUndoManager().startChange();
          ResourceStore store = ConzillaKit.getDefaultKit().getResourceStore();
          ContainerManager cMan = store.getContainerManager();
-         Session session = controller.getConceptMap().getComponentManager().getEditingSesssion();
+         Session session = mcontroller.getConceptMap().getComponentManager().getEditingSesssion();
          Container container = cMan.getContainer(session.getContainerURIForConcepts());
  
          HashSet concepts = new HashSet();
@@ -101,14 +101,14 @@ public class RemoveConditionalTool extends DetectSelectionTool {
         		 concept.removeFromContainer(container);
         	 }
          }
-         controller.getConceptMap().getComponentManager().getUndoManager().endChange();
+         mcontroller.getConceptMap().getComponentManager().getUndoManager().endChange();
 	}
 
 	@Override
 	protected void handleSingleSelection(DrawerLayout drawerLayout, Concept concept) { 
 		ResourceStore store = ConzillaKit.getDefaultKit().getResourceStore();
 		ContainerManager cMan = store.getContainerManager();
-		Session session = controller.getConceptMap().getComponentManager().getEditingSesssion();
+		Session session = mcontroller.getConceptMap().getComponentManager().getEditingSesssion();
 		Container container = cMan.getContainer(session.getContainerURIForConcepts());
 		int referredTo = concept != null ? cMan.isComponentReferredTo(concept)-1 : 0;
 		boolean isManaged = isManaged(concept);
@@ -121,7 +121,7 @@ public class RemoveConditionalTool extends DetectSelectionTool {
 			//Not remove concept since authored elsewhere.
 			if (isCommented(concept) && referredTo == 0) {
 				result = JOptionPane.showOptionDialog(
-					controller.getView().getMapScrollPane().getDisplayer(),
+					mcontroller.getView().getMapScrollPane().getDisplayer(),
 					"You are about to remove a " + name + "s apperance from this map.\n" +
 					"The "+name+" cannot be removed in itself as it belongs to another session.\n" +
 					"However, the additional information provided on the "+ name+" in this session will be removed.\n\n" +
@@ -133,7 +133,7 @@ public class RemoveConditionalTool extends DetectSelectionTool {
 				removeConcept = true;
 			} else {
 				result = JOptionPane.showOptionDialog(
-						controller.getView().getMapScrollPane().getDisplayer(),
+						mcontroller.getView().getMapScrollPane().getDisplayer(),
 						"You are about to remove a " + name + "s apperance from this map.\n" +
 						"The "+name+" cannot be removed in itself as it belongs to another session.\n\n" +
 						"Do you want to proceed?",
@@ -145,7 +145,7 @@ public class RemoveConditionalTool extends DetectSelectionTool {
 		} else if (referredTo != 0) {
 			//Not remove since used elsewhere.
 			result = JOptionPane.showOptionDialog(
-					controller.getView().getMapScrollPane().getDisplayer(),
+					mcontroller.getView().getMapScrollPane().getDisplayer(),
 					"You are about to remove a " + name + "s apperance from this map.\n" +
 					"The "+name+" in itself will not be removed as it is used in other maps.\n\n" +
 					"Do you want to proceed?",
@@ -157,7 +157,7 @@ public class RemoveConditionalTool extends DetectSelectionTool {
 			//Remove
 			//TODO check text below
 			result = JOptionPane.showOptionDialog(
-					controller.getView().getMapScrollPane().getDisplayer(),
+					mcontroller.getView().getMapScrollPane().getDisplayer(),
 					"You are about to remove a " + name + " and its apperance from this map.\n" +
 					"The " + name + " itself is going to be removed as there is no indication of it being\n" +
 					"used in another map. However, only maps in currently loaded sessions are checked.\n\n" +
@@ -172,12 +172,12 @@ public class RemoveConditionalTool extends DetectSelectionTool {
 		if (result == 0) {
 			return;
 		}
-		controller.getConceptMap().getComponentManager().getUndoManager().startChange();
+		mcontroller.getConceptMap().getComponentManager().getUndoManager().startChange();
 		drawerLayout.remove();
 		if (removeConcept) {
 			concept.removeFromContainer(container);
 		}
-		controller.getConceptMap().getComponentManager().getUndoManager().endChange();
+		mcontroller.getConceptMap().getComponentManager().getUndoManager().endChange();
 	}
 	
 	@Override

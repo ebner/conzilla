@@ -365,7 +365,7 @@ public class MapController implements PropertyChangeListener, EditListener {
 	public void componentEdited(EditEvent e) {
 		if (e.getEditType() == se.kth.cid.component.Component.ATTRIBUTES_EDITED
 				|| e.getEditType() == ContextMap.CONTEXTMAP_REFRESHED) {
-			firePropertyChange(MAP_PROPERTY, null, null);
+			firePropertyChange(MAP_PROPERTY,view.getMapScrollPane(), view.getMapScrollPane());
 		}
 	}
 	

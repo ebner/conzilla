@@ -29,7 +29,16 @@ public class MapToolsMenu extends ToolsMenu {
 		super(title, resbundle);
 		controller = cont;
 	}
-
+	
+	public void updateBeforePopup() {
+		addJITTools();
+		sortMenu();
+	}
+	
+	public void updateAfterPopup() {		
+		removeJITTools();
+	}
+	
 	public void update(MapEvent mapEvent) {
 
 		Iterator tools= getTools().iterator();

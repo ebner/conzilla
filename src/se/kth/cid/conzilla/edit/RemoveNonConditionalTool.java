@@ -54,7 +54,7 @@ public class RemoveNonConditionalTool extends DetectSelectionTool {
 		int nrOfOccurences = dls.size();
     	Object[] options = {"Cancel", "Remove"};
         if (JOptionPane.showOptionDialog(
-                controller.getView().getMapScrollPane().getDisplayer(),
+                mcontroller.getView().getMapScrollPane().getDisplayer(),
                 "You are about to remove "+ nrOfOccurences+" selected concepts together with their \n" +
                 "apperances in this map. Note that concepts originating from other sessions\n" +
                 "cannot be removed. Warning, if the selected concepts appear in other maps they\n" +
@@ -64,10 +64,10 @@ public class RemoveNonConditionalTool extends DetectSelectionTool {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
                 null, options, options[1]) == 1) {		
-        	controller.getConceptMap().getComponentManager().getUndoManager().startChange();
+        	mcontroller.getConceptMap().getComponentManager().getUndoManager().startChange();
         	ResourceStore store = ConzillaKit.getDefaultKit().getResourceStore();
         	ContainerManager cMan = store.getContainerManager();
-            Session session = controller.getConceptMap().getComponentManager().getEditingSesssion();
+            Session session = mcontroller.getConceptMap().getComponentManager().getEditingSesssion();
             Container container = cMan.getContainer(session.getContainerURIForConcepts());
             for (Iterator dlsIt = dls.iterator(); dlsIt.hasNext();) {
         		DrawerLayout dl = (DrawerLayout) dlsIt.next();
@@ -79,12 +79,12 @@ public class RemoveNonConditionalTool extends DetectSelectionTool {
         			}
         		} catch (ComponentException ce) {}
         	}
-        	controller.getConceptMap().getComponentManager().getUndoManager().endChange();
+        	mcontroller.getConceptMap().getComponentManager().getUndoManager().endChange();
         }
 	}
 	
     private boolean isManaged(Concept concept) {
-        Session session = controller.getConceptMap().getComponentManager().getEditingSesssion();
+        Session session = mcontroller.getConceptMap().getComponentManager().getEditingSesssion();
         String lc = concept.getLoadContainer();
         return session.getContainerURIForConcepts().equals(lc)
                 || session.getContainerURIForLayouts().equals(lc);
@@ -95,14 +95,14 @@ public class RemoveNonConditionalTool extends DetectSelectionTool {
 	protected void handleSingleSelection(DrawerLayout drawerLayout, Concept concept) {
 		ContainerManager cMan = ConzillaKit.getDefaultKit().getResourceStore().getContainerManager();
     	ResourceStore store = ConzillaKit.getDefaultKit().getResourceStore();
-        Session session = controller.getConceptMap().getComponentManager().getEditingSesssion();
+        Session session = mcontroller.getConceptMap().getComponentManager().getEditingSesssion();
         Container container = cMan.getContainer(session.getContainerURIForConcepts());
         String name = concept.getTriple() != null ? "concept-relation" : "concept";
         Object[] options = {"Cancel", "Remove"};
         int result = 0;
         if (isManaged(concept)) {
         	result = JOptionPane.showOptionDialog(
-        			controller.getView().getMapScrollPane().getDisplayer(),
+        			mcontroller.getView().getMapScrollPane().getDisplayer(),
         			"You are about to remove a " + name + " and its apperance in this map.\n"+
         			"If the "+name+" is used in another map, its apperance there will remain\n" +
         			"but appear as a blank ellipse.\n\n" +
@@ -114,7 +114,7 @@ public class RemoveNonConditionalTool extends DetectSelectionTool {
         			null, options, options[1]);
         } else {
         	result = JOptionPane.showOptionDialog(
-        			controller.getView().getMapScrollPane().getDisplayer(),
+        			mcontroller.getView().getMapScrollPane().getDisplayer(),
         			"You are about to remove a "+name+"s apperance from this map.\n"+
         			"The concept itself cannot be removed as it belongs to another session.\n\n" +
         			"Proceed and remove this " + name + "s apperance from this map?",
@@ -124,10 +124,10 @@ public class RemoveNonConditionalTool extends DetectSelectionTool {
         			null, options, options[1]);
         }
         if ( result == 1) {
-        	controller.getConceptMap().getComponentManager().getUndoManager().startChange();		
+        	mcontroller.getConceptMap().getComponentManager().getUndoManager().startChange();		
         	drawerLayout.remove();
         	concept.removeFromContainer(container);
-        	controller.getConceptMap().getComponentManager().getUndoManager().endChange();
+        	mcontroller.getConceptMap().getComponentManager().getUndoManager().endChange();
         }
 	}
 

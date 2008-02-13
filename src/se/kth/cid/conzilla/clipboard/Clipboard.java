@@ -128,7 +128,10 @@ public class Clipboard implements ClipboardOwner {
     }
 
     public Resource getResource() {
-        return resources.get(0);
+    	if (resources != null && resources.size() > 0) {
+    		return resources.get(0);
+    	}
+    	return null;
     }
 
     public ContextMap getConceptMap() {

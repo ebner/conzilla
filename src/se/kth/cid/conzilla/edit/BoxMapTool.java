@@ -67,7 +67,7 @@ public class BoxMapTool extends Tool {
 					mapObject.getDrawerLayout().remove();
 			} else {
 				mapObject.getDrawerLayout().setBodyVisible(false);
-				controller.getView().getMapScrollPane().getDisplayer()
+				mcontroller.getView().getMapScrollPane().getDisplayer()
 						.repaint();
 			}
 		else {
@@ -78,7 +78,7 @@ public class BoxMapTool extends Tool {
 				ContextMap.BoundingBox bb = new ContextMap.BoundingBox(
 						mapEvent.mapX, mapEvent.mapY, 50, 20);
 				mapObject.getDrawerLayout().setBoundingBox(bb);
-				controller.getView().getMapScrollPane().getDisplayer()
+				mcontroller.getView().getMapScrollPane().getDisplayer()
 						.repaint();
 			}
 		}
