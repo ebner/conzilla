@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 
 import se.kth.cid.component.cache.ComponentCache;
+import se.kth.cid.component.cache.ContainerCache;
 
 /**
  * @author Matthias
@@ -117,4 +118,7 @@ public interface ContainerManager {
      * @return a number indicating the number of times it is referenced. 
      */
 	int isComponentReferredTo(Component comp);
+	
+	ContainerCache getContainerCache();
+	
 }

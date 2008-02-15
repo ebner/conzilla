@@ -15,7 +15,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -24,7 +26,6 @@ import org.apache.commons.logging.LogFactory;
 
 import se.kth.cid.conzilla.InfoMessageException;
 import se.kth.cid.util.DiskCache;
-import se.kth.cid.util.FileOperations;
 import se.kth.cid.util.Hashing;
 
 /**
@@ -139,8 +140,21 @@ public class DiskContainerCache extends DiskCache implements ContainerCache {
 	/**
 	 * @see se.kth.cid.component.cache.ContainerCache#clear()
 	 */
+	@SuppressWarnings("unchecked")
 	public synchronized void clear() {
-		FileOperations.deleteAllFilesInDir(new File(getContainerCacheDirectory()));
+		// FileOperations.deleteAllFilesInDir(new File(getContainerCacheDirectory()));
+		
+		Map<String, CachedContainerInformation> c = new HashMap<String, CachedContainerInformation>(cacheMap);
+		for (Map.Entry<String, CachedContainerInformation> cci : c.entrySet()) {
+			File file = new File(getCachedFilePath(cci.getValue().getFileName()));
+			boolean success = file.delete();
+			if (success) {
+				log.info("Deleted " + file);
+			} else {
+				log.warn("Unable to delete " + file);
+			}
+		}
+		
 		cacheMap.clear();
 		setModified(true);
 		log.info("Cache cleared");

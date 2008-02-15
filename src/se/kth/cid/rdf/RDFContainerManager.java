@@ -881,4 +881,8 @@ public class RDFContainerManager implements ContainerManager {
         }
         return container;
     }
+
+	public ContainerCache getContainerCache() {
+		return containerCache;
+	}
 }

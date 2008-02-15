@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -28,6 +29,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import se.kth.cid.collaboration.CollaborillaConfiguration;
+import se.kth.cid.component.cache.DiskContainerCache;
 import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.app.Conzilla;
 import se.kth.cid.conzilla.app.ConzillaKit;
@@ -280,7 +282,7 @@ public class DefaultMenuFactory implements MenuFactory {
 
 		viewm.addTool(new Tool("PACK", DefaultMenuFactory.class.getName()) {
 			public void actionPerformed(ActionEvent e) {
-				conzilla.getViewManager().getView(mcontroller).pack();
+				conzilla.getViewManager().getView(controller).pack();
 			}
 		}, 400);
 		
@@ -288,25 +290,25 @@ public class DefaultMenuFactory implements MenuFactory {
 		
 		sourceViews.addTool(new Tool("SOURCE_N3", DefaultMenuFactory.class.getName()) {
 			public void actionPerformed(ActionEvent e) {
-				showSourceInWindow(mcontroller, "N3-PP");
+				showSourceInWindow(controller, "N3-PP");
 			}
 		}, 10);
 		
 		sourceViews.addTool(new Tool("SOURCE_NTRIPLE", DefaultMenuFactory.class.getName()) {
 			public void actionPerformed(ActionEvent e) {
-				showSourceInWindow(mcontroller, "N-TRIPLE");
+				showSourceInWindow(controller, "N-TRIPLE");
 			}
 		}, 20);
 		
 		sourceViews.addTool(new Tool("SOURCE_RDFXML", DefaultMenuFactory.class.getName()) {
 			public void actionPerformed(ActionEvent e) {
-				showSourceInWindow(mcontroller, "RDF/XML-ABBREV");
+				showSourceInWindow(controller, "RDF/XML-ABBREV");
 			}
 		}, 30);
 		
 		sourceViews.addTool(new Tool("SOURCE_TURTLE", DefaultMenuFactory.class.getName()) {
 			public void actionPerformed(ActionEvent e) {
-				showSourceInWindow(mcontroller, "TURTLE");
+				showSourceInWindow(controller, "TURTLE");
 			}
 		}, 40);
 		
@@ -404,6 +406,16 @@ public class DefaultMenuFactory implements MenuFactory {
 				new CollaborillaConfiguration(ConfigurationManager.getConfiguration()).askForConfigurationFile();
 			}
 		}, 800);
+		
+		settings.addTool(new Tool("CLEAR_CACHES", DefaultMenuFactory.class.getName()) {
+			public void actionPerformed(ActionEvent e) {
+				int answer = JOptionPane.showConfirmDialog(ConzillaKit.getDefaultKit().getConzilla().getViewManager().getWindow(), "This will clear both your metadata and your context-map cache.\nDo you want to continue?", "Clear caches?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (answer == JOptionPane.YES_OPTION) {
+					ConzillaKit.getDefaultKit().getMetaDataCache().clear();
+					ConzillaKit.getDefaultKit().getResourceStore().getContainerManager().getContainerCache().clear();
+				}
+			}
+		}, 900);
 
 		return settings;
 	}

@@ -92,7 +92,8 @@ public class ConzillaKit {
 		localeManager = new ConzillaLocaleManager();
 		SoftCache cache = new SoftCache();
 		metaCache = new MetaDataDiskCache();
-		store = new ResourceStore(cache, metaCache, new RDFComponentFactory(cache, new RDFContainerManager()));
+		RDFContainerManager containerManager = new RDFContainerManager();
+		store = new ResourceStore(cache, metaCache, new RDFComponentFactory(cache, containerManager));
 		styleManager = new se.kth.cid.rdf.style.RDFStyleManager(store);
 	}
 	

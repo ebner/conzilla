@@ -16,9 +16,6 @@ import se.kth.cid.conzilla.map.MapEvent;
 import se.kth.cid.conzilla.map.MapObject;
 import se.kth.cid.conzilla.properties.ConzillaResourceManager;
 
-
-
-
 /**
  * There are two reasons for this class:
  * <nl><li>{@link MapMenuItem}s are supposed to be inside menues poped over a map, and hence 
