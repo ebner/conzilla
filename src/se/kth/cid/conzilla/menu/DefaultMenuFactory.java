@@ -29,7 +29,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import se.kth.cid.collaboration.CollaborillaConfiguration;
-import se.kth.cid.component.cache.DiskContainerCache;
 import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.app.Conzilla;
 import se.kth.cid.conzilla.app.ConzillaKit;
@@ -364,7 +363,7 @@ public class DefaultMenuFactory implements MenuFactory {
 			{setIcon(Images.getImageIcon(Images.ICON_HOME));}
 			public void actionPerformed(ActionEvent ae) {
 				log.debug("Set this map as startmap");
-				String uri = mcontroller.getConceptMap().getURI();
+				String uri = controller.getConceptMap().getURI();
 				ConfigurationManager.getConfiguration().setProperty(Settings.CONZILLA_STARTMAP, uri);
 			}
 		}, 100);
