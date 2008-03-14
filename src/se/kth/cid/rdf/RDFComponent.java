@@ -333,7 +333,7 @@ public class RDFComponent extends FiringResourceImpl implements se.kth.cid.compo
         if (model == null) {
             Container cont = rcm.getContainerManager().findLoadContainerForResource(this);
             if (! (cont instanceof RDFModel)) {
-            	log.fatal("LoadModel is not a RDFModel.");
+            	log.error("LoadModel is not an RDFModel");
             }
             if (cont == null) {
                 cont = rcm.getCurrentConceptContainer();
@@ -348,7 +348,10 @@ public class RDFComponent extends FiringResourceImpl implements se.kth.cid.compo
      * @see se.kth.cid.component.Component#getLoadContainer()
      */
     public String getLoadContainer() {
-        return getLoadModel().getURI();
+    	if (getLoadModel() != null) {
+    		return getLoadModel().getURI();
+    	}
+        return null;
     }
     
 	public String toString() {
