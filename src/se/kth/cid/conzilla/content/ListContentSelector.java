@@ -324,11 +324,11 @@ public class ListContentSelector extends JPanel implements ContentSelector, Prop
             Dimension dim = getPreferredSize();
             if (dim.width > 200)
                 setPreferredSize(new Dimension(200, dim.height));
-            else if (dim.width < 30)
+            else if (dim.width < 30) {
                 setPreferredSize(new Dimension(30, dim.height));
-            else
+            } else {
                 setPreferredSize(dim);
-
+            }
         }
         
         pSupport.firePropertyChange(SELECTOR, old, content);

@@ -94,7 +94,10 @@ public class ViewTool extends Tool implements PropertyChangeListener{
             String [] titles = new String[1];
             titles[0]  = title.getValue();
             selector.setContentPath(titles);
+        } else {
+        	selector.setContentPath(new String[] { "Content" });
         }
+        
         highlightConceptMapObject();
     }
 
