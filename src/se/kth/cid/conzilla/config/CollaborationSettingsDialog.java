@@ -75,9 +75,9 @@ public class CollaborationSettingsDialog extends JFrame {
 
 	private JButton editLocationButton;
 
-	private JTextField hostField;
+	private JTextField serviceField;
 
-	private JLabel hostLabel;
+	private JLabel serviceLabel;
 
 	private JList locationsList;
 
@@ -90,10 +90,6 @@ public class CollaborationSettingsDialog extends JFrame {
 	private JPasswordField passwordField;
 
 	private JLabel passwordLabel;
-
-	private JTextField portField;
-
-	private JLabel portLabel;
 
 	private JButton removeLocationButton;
 
@@ -114,6 +110,16 @@ public class CollaborationSettingsDialog extends JFrame {
     private JButton createAgentInfoButton;
     
     private JScrollPane infoScrollPane;
+    
+    private javax.swing.JPanel proxyPanel;
+
+	private javax.swing.JTextField proxyPortField;
+
+	private javax.swing.JLabel proxyPortLabel;
+
+	private javax.swing.JTextField proxyServerField;
+
+	private javax.swing.JLabel proxyServerLabel;
 
 	/**
 	 * Creates new form CollaborationSettings.
@@ -135,10 +141,8 @@ public class CollaborationSettingsDialog extends JFrame {
 		collaborationSettingsPane = new JTabbedPane();
 		serverSettingsPanel = new JPanel();
 		serverPanel = new JPanel();
-		hostLabel = new JLabel();
-		portLabel = new JLabel();
-		hostField = new JTextField();
-		portField = new JTextField();
+		serviceLabel = new JLabel();
+		serviceField = new JTextField();
 		authPanel = new JPanel();
 		userLabel = new JLabel();
 		passwordLabel = new JLabel();
@@ -156,6 +160,11 @@ public class CollaborationSettingsDialog extends JFrame {
         namespaceField = new JTextField();
         createAgentInfoButton = new JButton();
         infoScrollPane = new JScrollPane();
+        proxyPanel = new javax.swing.JPanel();
+        proxyServerLabel = new javax.swing.JLabel();
+        proxyServerField = new javax.swing.JTextField();
+        proxyPortLabel = new javax.swing.JLabel();
+        proxyPortField = new javax.swing.JTextField();
 
 		locationsList = new JList() {
 			public String getToolTipText(MouseEvent evt) {
@@ -180,38 +189,32 @@ public class CollaborationSettingsDialog extends JFrame {
         });
 
 		serverPanel.setBorder(BorderFactory.createTitledBorder("Collaborilla server"));
-		hostLabel.setText("Host:");
-		portLabel.setText("Port:");
+		serviceLabel.setText("Service");
 
-		GroupLayout serverPanelLayout = new GroupLayout(serverPanel);
-		serverPanel.setLayout(serverPanelLayout);
-		serverPanelLayout.setHorizontalGroup(serverPanelLayout.createParallelGroup(
-				org.jdesktop.layout.GroupLayout.LEADING).add(
-				serverPanelLayout.createSequentialGroup().addContainerGap().add(
-						serverPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(hostLabel)
-								.add(portLabel)).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(
-						serverPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(hostField,
-								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE).add(portField,
-								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48,
-								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addContainerGap()));
-		serverPanelLayout.setVerticalGroup(serverPanelLayout.createParallelGroup(
-				org.jdesktop.layout.GroupLayout.LEADING).add(
-				serverPanelLayout.createSequentialGroup().add(
-						serverPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(hostLabel)
-								.add(hostField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addPreferredGap(
-						org.jdesktop.layout.LayoutStyle.RELATED).add(
-						serverPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(portLabel)
-								.add(portField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addContainerGap(
-						org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+        org.jdesktop.layout.GroupLayout serverPanelLayout = new org.jdesktop.layout.GroupLayout(serverPanel);
+        serverPanel.setLayout(serverPanelLayout);
+        serverPanelLayout.setHorizontalGroup(
+            serverPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(serverPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(serviceLabel)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(serviceField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        serverPanelLayout.setVerticalGroup(
+            serverPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(serverPanelLayout.createSequentialGroup()
+                .add(serverPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(serviceLabel)
+                    .add(serviceField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-		userLabel.setText("Username:");
+		userLabel.setText("Username");
 		userLabel.setEnabled(false);
 
-		passwordLabel.setText("Password:");
+		passwordLabel.setText("Password");
 		passwordLabel.setEnabled(false);
 
 		userField.setEnabled(false);
@@ -220,55 +223,91 @@ public class CollaborationSettingsDialog extends JFrame {
 		TitledBorder authBorder = BorderFactory.createTitledBorder("Authentication");
 		authPanel.setBorder(authBorder);
 
-		GroupLayout authPanelLayout = new GroupLayout(authPanel);
-		authPanel.setLayout(authPanelLayout);
 		authPanel.setVisible(true);
 		authPanel.setEnabled(false);
-		authPanel.setLayout(authPanelLayout);
-		authPanelLayout.setHorizontalGroup(authPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-				.add(
-						authPanelLayout.createSequentialGroup().addContainerGap().add(
-								authPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-										userLabel).add(passwordLabel)).addPreferredGap(
-								org.jdesktop.layout.LayoutStyle.RELATED).add(
-								authPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-										passwordField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 224,
-										Short.MAX_VALUE).add(userField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										224, Short.MAX_VALUE)).addContainerGap()));
-		authPanelLayout.setVerticalGroup(authPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-				.add(
-						authPanelLayout.createSequentialGroup().add(
-								authPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(
-										userLabel).add(userField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addPreferredGap(
-								org.jdesktop.layout.LayoutStyle.RELATED).add(
-								authPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(
-										passwordLabel).add(passwordField,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addContainerGap(
-								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+        org.jdesktop.layout.GroupLayout authPanelLayout = new org.jdesktop.layout.GroupLayout(authPanel);
+        authPanel.setLayout(authPanelLayout);
+        authPanelLayout.setHorizontalGroup(
+            authPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(authPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(authPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(userLabel)
+                    .add(passwordLabel))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(authPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(passwordField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                    .add(userField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        authPanelLayout.setVerticalGroup(
+            authPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(authPanelLayout.createSequentialGroup()
+                .add(authPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(userLabel)
+                    .add(userField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(authPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(passwordLabel)
+                    .add(passwordField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        
+        proxyPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("HTTP Proxy"));
 
-		GroupLayout serverSettingsPanelLayout = new GroupLayout(serverSettingsPanel);
-		serverSettingsPanel.setLayout(serverSettingsPanelLayout);
-		serverSettingsPanelLayout.setHorizontalGroup(serverSettingsPanelLayout.createParallelGroup(
-				org.jdesktop.layout.GroupLayout.LEADING).add(
-				serverSettingsPanelLayout.createSequentialGroup().addContainerGap().add(
-						serverSettingsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-								serverPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).add(
-								org.jdesktop.layout.GroupLayout.TRAILING, authPanel,
-								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addContainerGap()));
-		serverSettingsPanelLayout.setVerticalGroup(serverSettingsPanelLayout.createParallelGroup(
-				org.jdesktop.layout.GroupLayout.LEADING).add(
-				serverSettingsPanelLayout.createSequentialGroup().addContainerGap().add(serverPanel,
-						org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-						org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(
-						org.jdesktop.layout.LayoutStyle.RELATED).add(authPanel,
-						org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-						Short.MAX_VALUE).add(21, 21, 21)));
+        proxyServerLabel.setText("Server");
+
+        proxyPortLabel.setText("Port");
+
+        org.jdesktop.layout.GroupLayout proxyPanelLayout = new org.jdesktop.layout.GroupLayout(proxyPanel);
+        proxyPanel.setLayout(proxyPanelLayout);
+        proxyPanelLayout.setHorizontalGroup(
+            proxyPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(proxyPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(proxyServerLabel)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(proxyServerField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 139, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(proxyPortLabel)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(proxyPortField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
+        proxyPanelLayout.setVerticalGroup(
+            proxyPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(proxyPanelLayout.createSequentialGroup()
+                .add(proxyPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(proxyServerLabel)
+                    .add(proxyPortLabel)
+                    .add(proxyPortField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(proxyServerField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        
+        org.jdesktop.layout.GroupLayout serverSettingsPanelLayout = new org.jdesktop.layout.GroupLayout(serverSettingsPanel);
+        serverSettingsPanel.setLayout(serverSettingsPanelLayout);
+        serverSettingsPanelLayout.setHorizontalGroup(
+            serverSettingsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(serverSettingsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(serverSettingsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(serverPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(authPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, proxyPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        serverSettingsPanelLayout.setVerticalGroup(
+            serverSettingsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(serverSettingsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(serverPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(authPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(proxyPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
 		collaborationSettingsPane.addTab("Server settings", serverSettingsPanel);
 
@@ -560,8 +599,9 @@ public class CollaborationSettingsDialog extends JFrame {
 	 */
 	private void loadSettings() {
 		CollaborillaConfiguration collabConfig = new CollaborillaConfiguration(ConfigurationManager.getConfiguration());
-		hostField.setText(collabConfig.getCollaborillaServer());
-		portField.setText(Integer.toString(collabConfig.getCollaborillaServerPort()));
+		serviceField.setText(collabConfig.getCollaborillaServiceRoot());
+		proxyServerField.setText(collabConfig.getProxyServer());
+		proxyPortField.setText(collabConfig.getProxyPort());
 		locationsModel = collabConfig.getLocationsListModel();
 		locationsList.setModel(locationsModel);
 		namespaceField.setText(collabConfig.getUserNamespace());
@@ -573,19 +613,17 @@ public class CollaborationSettingsDialog extends JFrame {
 	 */
 	private void storeSettings() {
 		CollaborillaConfiguration collabConfig = new CollaborillaConfiguration(ConfigurationManager.getConfiguration());
-		collabConfig.setCollaborillaServer(hostField.getText());
-		collabConfig.setCollaborillaServerPort(Integer.parseInt(portField.getText()));
+		collabConfig.setCollaborillaServiceRoot(serviceField.getText());
+		collabConfig.setProxyServer(proxyServerField.getText());
+		collabConfig.setProxyPort(proxyPortField.getText());
 		collabConfig.storeLocations(locationsModel);
 		collabConfig.setUserNamespace(namespaceField.getText());
 		saveAgentInformation();
 	}
 	
 	private String settingStatus() {
-		if (hostField.getText().trim().length() == 0) {
+		if (serviceField.getText().trim().length() == 0) {
 			return "Please enter the hostname or IP address of the collaboration service.";
-		}
-		if (portField.getText().trim().length() == 0) {
-			return "Please enter the port number of the collaboration service.";
 		}
 		if (!isNamespaceValid(namespaceField.getText().trim())) {
 			return "Please enter a correct namespace.\n\n" +

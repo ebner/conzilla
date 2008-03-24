@@ -140,6 +140,19 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 		}
 		setOnline(online);
 	}
+
+	private void initProxySettings() {
+		Config conf = ConfigurationManager.getConfiguration();
+		String proxyHost = conf.getString(Settings.CONZILLA_COLLAB_PROXY_SERVER);
+		String proxyPort = conf.getString(Settings.CONZILLA_COLLAB_PROXY_PORT);
+		if ((proxyHost != null) && (proxyPort != null)) {
+			System.setProperty("http.proxyHost", proxyHost); // setting host to null deactivates it
+			System.setProperty("http.proxyPort", proxyPort);
+			log.info("Using proxy " + proxyHost + ":" + proxyPort + " for HTTP connections");
+		} else {
+			log.info("No proxy configured");
+		}
+	}
 	
 	public boolean isOnline() {
 		return onlineState;
@@ -205,6 +218,7 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 		StartupProgressSplash splash = new StartupProgressSplash();
 		splash.showSplash();
 		
+		initProxySettings();
 		initOnlineState();
 		if (isOnline()) {
 			log.info("Conzilla starting in ONLINE mode");
@@ -459,8 +473,9 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 				LoggingConfiguration.loadConfiguration(log4jConfigFile);
 			}
 			
-			// Upgrade path 2.1.x -> 2.2.x
-			if (installedVersion.startsWith("2.1") && thisVersion.startsWith("2.2")) {
+			// Upgrade path 2.1.x, 2.2.0, 2.2.1 -> 2.2.2+
+			if (installedVersion.startsWith("2.1") || installedVersion.startsWith("2.2.0") || installedVersion.startsWith("2.2.1")) {
+				config.setProperty(Settings.CONZILLA_COLLAB_SERVICE, "http://collaborilla.conzilla.org/v1/");
 				// place holder
 			}
 			

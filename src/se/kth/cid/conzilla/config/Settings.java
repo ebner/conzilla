@@ -16,13 +16,15 @@ public class Settings {
 	
 	public static final String CONZILLA_COLLAB_ASKFORCONFIG = "conzilla.collaborilla.askforconfig";
 	
-	public static final String CONZILLA_COLLAB_HOST = "conzilla.collaborilla.host";
-	
-	public static final String CONZILLA_COLLAB_PORT = "conzilla.collaborilla.port";
+	public static final String CONZILLA_COLLAB_SERVICE = "conzilla.collaborilla.service";
 	
 	public static final String CONZILLA_COLLAB_LOCATIONS = "conzilla.collaborilla.locations";
 	
 	public static final String CONZILLA_COLLAB_PREV_LOCATION = "conzilla.collaborilla.prev-location";
+	
+	public static final String CONZILLA_COLLAB_PROXY_SERVER = "conzilla.collaborilla.proxy.server";
+	
+	public static final String CONZILLA_COLLAB_PROXY_PORT = "conzilla.collaborilla.proxy.port";
 	
 	public static final String CONZILLA_EXTERNAL_SINDICE_PUBLISH = "conzilla.external.sindice.publish";
 	

@@ -42,8 +42,7 @@ import se.kth.cid.rdf.RDFModel;
 import se.kth.nada.kmr.collaborilla.client.CollaborillaDataSet;
 import se.kth.nada.kmr.collaborilla.client.CollaborillaException;
 import se.kth.nada.kmr.collaborilla.client.CollaborillaServiceClient;
-import se.kth.nada.kmr.collaborilla.client.CollaborillaStatefulClient;
-import se.kth.nada.kmr.collaborilla.client.CollaborillaException.ErrorCode;
+import se.kth.nada.kmr.collaborilla.client.CollaborillaStatelessClient;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -76,7 +75,7 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 
 	private Session session;
 
-	private CollaborillaStatefulClient collabClient;
+	private CollaborillaStatelessClient collabClient;
 
 	private int percentage;
 
@@ -103,7 +102,7 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 		this.infoRDFInfo = infoRDFInfo;
 		this.collabSupport = new CollaborillaSupport(ConfigurationManager.getConfiguration());
 		this.collabConfig = new CollaborillaConfiguration(ConfigurationManager.getConfiguration());
-		this.collabClient = collabSupport.getStatefulClient();
+		this.collabClient = collabSupport.getStatelessClient();
 	}
 
 	/**
@@ -117,8 +116,7 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 			publishContainers();
 
 			// Publish to Collaborilla
-			printInformation("Connecting to Collaborilla: " + collabConfig.getCollaborillaServer());
-			collabClient.connect();
+			printInformation("Using Collaborilla Service at " + collabConfig.getCollaborillaServiceRoot());
 			setPercentage(50);
 
 			publishMapMetaData();
@@ -130,13 +128,11 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 			publishPresentationContainerMetaData();
 			setPercentage(95);
 			
-			printInformation("Disconnecting from Collaborilla");
-			collabClient.disconnect();
+			printInformation("Done");
 			setPercentage(100);
 
 			// remove entually existing contribution information from the store
-			ContributionInformationStore infoStore =
-				ContributionInformationDiskStore.getContributionInformationStore();
+			ContributionInformationStore infoStore = ContributionInformationDiskStore.getContributionInformationStore();
 			infoStore.removeMetaData(session.getContainerURIForConcepts());
 			
 			// We're done here
@@ -156,21 +152,23 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 	 * @throws CollaborillaException
 	 */
 	private void publishMapMetaData() throws CollaborillaException {
-		collabClient.setIdentifier(contextMap.getURI(), true);
-		collabClient.createRevision();
-		collabClient.setType(CollaborillaServiceClient.TYPE_CONTEXTMAP);
+		String uri = contextMap.getURI();
 		
-		printInformation("Publishing meta-data for context-map: " + contextMap.getURI());
-		collabClient.setMetaData(mapRDFInfo);
-
-//		printInformation("Cleaning up container dependencies");
-//		collabClient.clearRequiredContainers();
-//		collabClient.clearOptionalContainers();
-
-		printInformation("Adding container dependencies");
-		addDependencies();
-		CollaborillaDataSet dataSet = collabClient.getDataSet();
-		cacheDataSet(dataSet);
+		CollaborillaDataSet dataset = collabClient.get(URI.create(uri));
+		if (dataset == null) {
+			dataset = new CollaborillaDataSet();
+		}
+		
+		dataset.setIdentifier(uri);
+		dataset.setType(CollaborillaServiceClient.TYPE_CONTEXTMAP);
+		dataset.setMetaData(mapRDFInfo);
+		
+		addDependencies(dataset);
+		
+		collabClient.put(URI.create(uri), dataset);
+		
+		dataset = collabClient.get(URI.create(uri));
+		cacheDataSet(dataset);
 	}
 
 	/**
@@ -192,18 +190,18 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 	 * 
 	 * @throws CollaborillaException
 	 */
-	private void addDependencies() throws CollaborillaException {
+	private void addDependencies(CollaborillaDataSet dataset) throws CollaborillaException {
 		String presentationURI = session.getContainerURIForLayouts();
 		String informationURI = session.getContainerURIForConcepts();
 		if (presentationContainerIsRequired()) {
 			//Add the presentation container as required.
-			publishRequiredContainer(presentationURI);
+			addRequiredContainer(dataset, presentationURI);
 			
 			//Add the information container as dependant, if it is not the same as the presentation container and
 			//it is dependant upon by some of the concepts.
 			if (!informationURI.equals(presentationURI)
 					&& informationContainerIsDependantUpon()) {
-				publishRequiredContainer(informationURI);
+				addRequiredContainer(dataset, informationURI);
 			}
 			
 			//Find containers of concepts included in this map.
@@ -212,23 +210,23 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 			optional.removeAll(required);
 			//Add all containers that are load containers of included concepts as required.
 			for (Iterator iter = required.iterator(); iter.hasNext();) {
-				publishRequiredContainer(((URI) iter.next()).toString());
+				addRequiredContainer(dataset, ((URI) iter.next()).toString());
 			}
 
 			//Add all containers that are relevant containers (load containers excluded) of included concepts as optional.
 			for (Iterator iter = optional.iterator(); iter.hasNext();) {
-				publishOptionalContainer(((URI) iter.next()).toString());
+				addOptionalContainer(dataset, ((URI) iter.next()).toString());
 			}
 		} else {
 			//Adds the presentation container of the current session as optional
-			publishOptionalContainer(presentationURI);
+			addOptionalContainer(dataset, presentationURI);
 			
 			//Adds the information container of the current session as optional,
 			//if it is not the same as the presentation container and some concepts
 			//dependns upon it.
 			if (!informationURI.equals(presentationURI)
 					&& informationContainerIsDependantUpon()) {
-				publishOptionalContainer(informationURI);
+				addOptionalContainer(dataset, informationURI);
 			}
 			
 			//Find containers of concepts included in this map.
@@ -236,7 +234,7 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 
 			//Add all containers that are relevant containers of included concepts as optional.
 			for (Iterator iter = optional.iterator(); iter.hasNext();) {
-				publishOptionalContainer(((URI) iter.next()).toString());
+				addOptionalContainer(dataset, ((URI) iter.next()).toString());
 			}			
 		}
 	}
@@ -248,53 +246,35 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 	 * @param uri the URI of the container to publish
 	 * @throws CollaborillaException 
 	 */
-	private void publishRequiredContainer(String uri) throws CollaborillaException{
-		try {
-			Set optionalContainers = new HashSet();
-			try {
-				optionalContainers = collabClient.getOptionalContainers();
-			} catch (CollaborillaException ce) {
-				if (ce.getResultCode() != ErrorCode.SC_NO_SUCH_ATTRIBUTE) {
-					throw ce;
-				}
-			}
-			if (!optionalContainers.contains(uri)) {
-				collabClient.addRequiredContainer(uri);
-			} else {
-				collabClient.removeOptionalContainer(uri);
-				collabClient.addRequiredContainer(uri);
-			}
-		} catch (CollaborillaException e) {
-			if (e.getResultCode() != ErrorCode.SC_ATTRIBUTE_OR_VALUE_EXISTS) {
-				throw e;
-			}
+	private void addRequiredContainer(CollaborillaDataSet dataset, String uri) throws CollaborillaException {
+		initSets(dataset);
+		if (dataset.getOptionalContainers().contains(uri)) {
+			dataset.getOptionalContainers().remove(uri);
 		}
+		dataset.getRequiredContainers().add(uri);
 	}
 
 	/**
-	 * Publishes a container as optional, if it already in the list of required 
+	 * Publishes a container as optional, if it is already in the list of required 
 	 * containers it fails silently.
 	 * 
 	 * @param uri the URI of the container to publish.
 	 * @throws CollaborillaException
 	 */
-	private void publishOptionalContainer(String uri) throws CollaborillaException {
-		try {
-			Set requiredContainers = new HashSet();
-			try {
-				requiredContainers = collabClient.getRequiredContainers();
-			} catch (CollaborillaException ce) {
-				if (ce.getResultCode() != ErrorCode.SC_NO_SUCH_ATTRIBUTE) {
-					throw ce;
-				}
-			}
-			if (!requiredContainers.contains(uri)) {
-				collabClient.addOptionalContainer(uri);
-			}
-		} catch (CollaborillaException e) {
-			if (e.getResultCode() != ErrorCode.SC_ATTRIBUTE_OR_VALUE_EXISTS) {
-				throw e;
-			}
+	private void addOptionalContainer(CollaborillaDataSet dataset, String uri) throws CollaborillaException {
+		initSets(dataset);
+		if (!dataset.getRequiredContainers().contains(uri)) {
+			dataset.getOptionalContainers().add(uri);
+		}
+	}
+	
+	private void initSets(CollaborillaDataSet dataset) {
+		// To avoid nasty NPEs
+		if (dataset.getRequiredContainers() == null) {
+			dataset.setRequiredContainers(new HashSet<String>());
+		}
+		if (dataset.getOptionalContainers() == null) {
+			dataset.setOptionalContainers(new HashSet<String>());
 		}
 	}
 
@@ -305,27 +285,26 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 	 */
 	private void publishInformationContainerMetaData() throws CollaborillaException {
 		String infoContURI = session.getContainerURIForConcepts();
-		printInformation("Publishing meta-data for container: " + infoContURI);
-		collabClient.setIdentifier(infoContURI, true);
-		collabClient.createRevision();
-		collabClient.setType(CollaborillaServiceClient.TYPE_CONTAINER);
-		collabClient.setMetaData(infoRDFInfo);
-		try {
-			//collabClient.addLocation(buildRemoteURL(locationInfo.getPublicAccessLocation(), infoContURI));
-			Set<String> infoLocation = new HashSet<String>();
-			infoLocation.add(buildRemoteURL(locationInfo.getPublicAccessLocation(), infoContURI));
-			collabClient.setLocations(infoLocation);
-		} catch (CollaborillaException e) {
-			if (e.getResultCode() != ErrorCode.SC_ATTRIBUTE_OR_VALUE_EXISTS) {
-				throw e;
-			}
+		printInformation("Publishing metadata for container: " + infoContURI);
+		
+		CollaborillaDataSet dataset = collabClient.get(URI.create(infoContURI));
+		if (dataset == null) {
+			dataset = new CollaborillaDataSet();
 		}
+		dataset.setIdentifier(infoContURI);
+		dataset.setType(CollaborillaServiceClient.TYPE_CONTAINER);
+		dataset.setMetaData(infoRDFInfo);
+		Set<String> infoLocation = new HashSet<String>();
+		infoLocation.add(buildRemoteURL(locationInfo.getPublicAccessLocation(), infoContURI));
+		dataset.setLocations(infoLocation);
 		if (revisionInfo != null) {
-			collabClient.setContainerRevision(revisionInfo);
+			dataset.setContainerRevision(revisionInfo);
 		}
 		
-		CollaborillaDataSet dataSet = collabClient.getDataSet();
-		cacheDataSet(dataSet);
+		collabClient.put(URI.create(infoContURI), dataset);
+		
+		dataset = collabClient.get(URI.create(infoContURI));
+		cacheDataSet(dataset);
 	}
 
 	/**
@@ -340,10 +319,14 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 			// the containers are the same entity
 			return;
 		}
-		printInformation("Publishing meta-data for container: " + presContURI);
-		collabClient.setIdentifier(presContURI, true);
-		collabClient.createRevision();
-		collabClient.setType(CollaborillaServiceClient.TYPE_CONTAINER);
+		printInformation("Publishing metadata for container: " + presContURI);
+		
+		CollaborillaDataSet dataset = collabClient.get(URI.create(presContURI));
+		if (dataset == null) {
+			dataset = new CollaborillaDataSet();
+		}
+		dataset.setIdentifier(presContURI);
+		dataset.setType(CollaborillaServiceClient.TYPE_CONTAINER);
 		
 		// We copy the metadata from the information container to the
 		// presentation container. We do it this way because the URIs
@@ -352,7 +335,7 @@ public class ContextMapPublisher extends PropertyChangeSupport {
         StringReader sr = new StringReader(infoRDFInfo);
         pmodel.read(sr, null);
         StmtIterator stmts = pmodel.listStatements(pmodel.createResource(infoContURI), null, (RDFNode) null);
-        HashSet toAdd = new HashSet();
+        Set toAdd = new HashSet();
         while(stmts.hasNext()) {
         	toAdd.add(stmts.next());
         	stmts.remove();
@@ -364,27 +347,24 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 		StringWriter sw = new StringWriter();
 		pmodel.write(sw, "RDF/XML-ABBREV");
 
-		collabClient.setMetaData(sw.toString());
-		//If the presentationContainer is distinct from the informationContainer
-		//they should be dependent on each other, this allows better UI.
+		dataset.setMetaData(sw.toString());
+		// If the presentationContainer is distinct from the informationContainer
+		// they should be dependent on each other, this allows better UI.
 		if (!presContURI.equals(infoContURI)) {
-			publishRequiredContainer(infoContURI);
-		}
-		try {
-			//collabClient.addLocation(buildRemoteURL(locationInfo.getPublicAccessLocation(), presContURI));
-			Set<String> presLocation = new HashSet<String>();
-			presLocation.add(buildRemoteURL(locationInfo.getPublicAccessLocation(), presContURI));
-			collabClient.setLocations(presLocation);
-		} catch (CollaborillaException e) {
-			if (e.getResultCode() != ErrorCode.SC_ATTRIBUTE_OR_VALUE_EXISTS) {
-				throw e;
-			}
-		}
-		if (revisionPres != null) {
-			collabClient.setContainerRevision(revisionPres);
+			addRequiredContainer(dataset, infoContURI);
 		}
 		
-		cacheDataSet(collabClient.getDataSet());
+		Set<String> presLocation = new HashSet<String>();
+		presLocation.add(buildRemoteURL(locationInfo.getPublicAccessLocation(), presContURI));
+		dataset.setLocations(presLocation);
+		if (revisionPres != null) {
+			dataset.setContainerRevision(revisionPres);
+		}
+	
+		collabClient.put(URI.create(presContURI), dataset);
+		
+		dataset = collabClient.get(URI.create(presContURI));
+		cacheDataSet(dataset);
 	}
 
 	/**

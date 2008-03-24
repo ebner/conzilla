@@ -236,7 +236,8 @@ public class PublishMapDialog extends JFrame {
     		RDFUtil.getModel(agentContainer, contributionModel, agentResource, 0);
     	}
     	EditContainer infoContainer = new Container(contributionModel, URI.create(uri));
-        contributionMetaPanel.edit(infoContainer, informationResource);
+
+    	contributionMetaPanel.edit(infoContainer, informationResource);
     }
     
     /**

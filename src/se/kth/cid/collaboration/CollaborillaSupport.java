@@ -8,10 +8,8 @@ package se.kth.cid.collaboration;
 
 import se.kth.cid.config.Config;
 import se.kth.cid.conzilla.app.ConzillaKit;
-import se.kth.nada.kmr.collaborilla.client.CollaborillaServiceClient;
-import se.kth.nada.kmr.collaborilla.client.CollaborillaStatefulClient;
+import se.kth.nada.kmr.collaborilla.client.CollaborillaRestClient;
 import se.kth.nada.kmr.collaborilla.client.CollaborillaStatelessClient;
-import se.kth.nada.kmr.collaborilla.client.CollaborillaStatelessServiceClient;
 
 /**
  * CollaborillaSupport provides important methods for enabling Collaborilla
@@ -35,8 +33,8 @@ public class CollaborillaSupport {
 		if (config == null) {
 			throw new IllegalArgumentException("Constructor argument must not be null.");
 		}
-		this.collabConfig = new CollaborillaConfiguration(config);
-		this.metaCache = ConzillaKit.getDefaultKit().getResourceStore().getMetaDataCache();
+		collabConfig = new CollaborillaConfiguration(config);
+		metaCache = ConzillaKit.getDefaultKit().getResourceStore().getMetaDataCache();
 	}
 
 	public MetaDataCache getMetaDataCache() {
@@ -49,18 +47,13 @@ public class CollaborillaSupport {
 	 * 
 	 * @return An instance of CollaborillaStatefulClient
 	 */
-	public CollaborillaStatefulClient getStatefulClient() {
-		return new CollaborillaServiceClient(collabConfig.getCollaborillaServer(), collabConfig.getCollaborillaServerPort());
-	}
-
-	/**
-	 * Reads the Collaborilla host and port from the Conzilla settings and
-	 * returns an instance of a client.
-	 * 
-	 * @return An instance of CollaborillaStatefulClient
-	 */
 	public CollaborillaStatelessClient getStatelessClient() {
-		return new CollaborillaStatelessServiceClient(collabConfig.getCollaborillaServer(), collabConfig.getCollaborillaServerPort());
+		String serviceRoot = collabConfig.getCollaborillaServiceRoot();
+		if (serviceRoot != null) { 
+			return new CollaborillaRestClient(collabConfig.getCollaborillaServiceRoot());
+		} else {
+			throw new IllegalStateException("Collaborilla Service has not been specified");
+		}
 	}
 
 }

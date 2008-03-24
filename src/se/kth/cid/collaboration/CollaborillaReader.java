@@ -14,7 +14,6 @@ import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.nada.kmr.collaborilla.client.CollaborillaDataSet;
 import se.kth.nada.kmr.collaborilla.client.CollaborillaException;
-import se.kth.nada.kmr.collaborilla.client.CollaborillaStatefulClient;
 import se.kth.nada.kmr.collaborilla.client.CollaborillaStatelessClient;
 
 /**
@@ -88,7 +87,8 @@ public class CollaborillaReader {
 		
 		if (!useCache && isOnline()) {
 			csc = support.getStatelessClient();
-			dataSet = csc.get(uri, revision);
+			//dataSet = csc.get(uri, revision);
+			dataSet = csc.get(uri);
 			metaCache.putDataSet(uri.toString(), dataSet);
 		} else {
 			dataSet = metaCache.getDataSet(uri.toString(), null);
@@ -247,41 +247,6 @@ public class CollaborillaReader {
 		} else {
 			return null;
 		}
-	}
-	
-	/**
-	 * Returns the number of revisions of a component.
-	 * 
-	 * @param uri
-	 *            URI of the component.
-	 * @return Number of available revisions. If there is no metadata for this
-	 *         component or if the server cannot be accessed (e.g. because
-	 *         Conzilla is in offline mode, or the server is down), the value -1
-	 *         is returned.
-	 */
-	public int getRevisionCount(URI uri) {
-		CollaborillaStatefulClient csc = null;
-		int revisionCount = -1;
-		
-		if (isOnline()) {
-			try {
-				csc = support.getStatefulClient();
-				csc.connect();
-				csc.setIdentifier(uri.toString(), false);
-				revisionCount = csc.getRevisionCount();
-			} catch (CollaborillaException e) {
-				// we are silent here (we get e.g. "Object not found" etc.
-			} finally {
-				if (csc != null) {
-					try {
-						csc.disconnect();
-					} catch (CollaborillaException ce) {
-					}
-				}
-			}
-		}
-		
-		return revisionCount;
 	}
 	
 	/**

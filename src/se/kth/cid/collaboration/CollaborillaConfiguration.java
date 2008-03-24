@@ -214,28 +214,7 @@ public class CollaborillaConfiguration {
 		}
 		return locationInfo;
 	}
-
-	/**
-	 * Returns the port number of the Collaborilla service.
-	 * 
-	 * @return Port number of the Collaborilla service. If the configuration
-	 *         does not contain such a setting this method returns 2108 by
-	 *         default.
-	 */
-	public int getCollaborillaServerPort() {
-		return config.getInt(Settings.CONZILLA_COLLAB_PORT, 2108);
-	}
-
-	/**
-	 * Sets the port number of the Collaborilla service.
-	 * 
-	 * @param port
-	 *            Port number of the Collaborilla service.
-	 */
-	public void setCollaborillaServerPort(int port) {
-		config.setProperty(Settings.CONZILLA_COLLAB_PORT, new Integer(port));
-	}
-
+	
 	/**
 	 * Returns the hostname of the Collaborilla service.
 	 * 
@@ -243,8 +222,8 @@ public class CollaborillaConfiguration {
 	 *         not contain such a setting this method returns an empty String by
 	 *         default.
 	 */
-	public String getCollaborillaServer() {
-		return config.getString(Settings.CONZILLA_COLLAB_HOST, "collaborilla.conzilla.org");
+	public String getCollaborillaServiceRoot() {
+		return config.getString(Settings.CONZILLA_COLLAB_SERVICE, "http://collaborilla.conzilla.org/v1/");
 	}
 
 	/**
@@ -253,8 +232,8 @@ public class CollaborillaConfiguration {
 	 * @param hostName
 	 *            Hostname of the Collaborilla service.
 	 */
-	public void setCollaborillaServer(String hostName) {
-		config.setProperty(Settings.CONZILLA_COLLAB_HOST, hostName);
+	public void setCollaborillaServiceRoot(String hostName) {
+		config.setProperty(Settings.CONZILLA_COLLAB_SERVICE, hostName);
 	}
 	
 	/**
@@ -273,6 +252,38 @@ public class CollaborillaConfiguration {
 	 */
 	public void setUserNamespace(String namespace) {
 		config.setProperty(Settings.CONZILLA_USER_NAMESPACE, namespace);
+	}
+	
+	public String getProxyServer() {
+		return config.getString(Settings.CONZILLA_COLLAB_PROXY_SERVER, "");
+	}
+	
+	public void setProxyServer(String proxyServer) {
+		if (proxyServer != null) {
+			config.setProperty(Settings.CONZILLA_COLLAB_PROXY_SERVER, proxyServer.trim());
+			System.setProperty("http.proxyHost", proxyServer.trim());
+			if (proxyServer.trim().length() > 0) {
+				log.info("Using proxy server " + proxyServer);
+			} else {
+				log.info("Deactivated usage of proxy");
+			}
+		}
+	}
+	
+	public String getProxyPort() {
+		return config.getString(Settings.CONZILLA_COLLAB_PROXY_PORT, "");
+	}
+	
+	public void setProxyPort(String proxyPort) {
+		if (proxyPort != null) {
+			config.setProperty(Settings.CONZILLA_COLLAB_PROXY_PORT, proxyPort);
+			System.setProperty("http.proxyPort", proxyPort);
+			if (proxyPort.trim().length() > 0) {
+				log.info("Using proxy port " + proxyPort);	
+			} else {
+				log.info("No proxy port specified");
+			}
+		}
 	}
 	
 	/**
@@ -300,7 +311,7 @@ public class CollaborillaConfiguration {
 		if (getAgentURI(getUserNamespace()) == null) {
 			return false;
 		}
-		if (getCollaborillaServer().length() == 0) {
+		if (getCollaborillaServiceRoot().length() == 0) {
 			return false;
 		}
 		if (getLocations().size() == 0) {
@@ -324,18 +335,17 @@ public class CollaborillaConfiguration {
 			return false;
 		}
 		
-		String hostname = collabSettings.getString("host");
+		String service = collabSettings.getString("service");
 		int port = collabSettings.getInt("port", -1);
 		List location = collabSettings.getStringList("location");
 		String namespace = collabSettings.getString("namespace");
 		
-		if ((hostname == null) || (port == -1) || (location != null && location.size() == 0) || (namespace == null)) {
+		if ((service == null) || (port == -1) || (location != null && location.size() == 0) || (namespace == null)) {
 			log.warn("Configuration incomplete");
 			return false;
 		}
 		
-		setCollaborillaServer(hostname);
-		setCollaborillaServerPort(port);
+		setCollaborillaServiceRoot(service);
 		setUserNamespace(namespace);
 		
 		Config conzillaConfig = ConfigurationManager.getConfiguration();
