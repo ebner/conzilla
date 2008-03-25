@@ -11,11 +11,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.hp.hpl.jena.rdf.listeners.StatementListener;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelChangedListener;
-import com.hp.hpl.jena.rdf.model.Statement;
-
 import se.kth.cid.component.ComponentManager;
 import se.kth.cid.component.Container;
 import se.kth.cid.component.EditEvent;
@@ -29,21 +24,24 @@ import se.kth.cid.rdf.layout.RDFConceptMap;
 public class RDFUndoManager implements UndoManager, EditListener {
 
 	public class UndoEvent {
+		
 		private Object event;
+
 		private ModelHistory.Change infoChange;
+
 		private ModelHistory.Change presChange;
 		
-		public UndoEvent(Object event, 
-				ModelHistory mHI, 
-				ModelHistory mHP) {
+		public UndoEvent(Object event, ModelHistory mHI, ModelHistory mHP) {
 			this.event = event;
 			this.infoChange = mHI!= null ? mHI.getChange() : null;
 			this.presChange = mHP!= null ? mHP.getChange() : null;
 		}
 		
 		public boolean isEmpty() {
-			return infoChange.isEmpty() && presChange.isEmpty();
+			return ((infoChange == null || infoChange.isEmpty()) &&
+					(presChange == null || presChange.isEmpty()));
 		}
+
 	}
 	
 	private ArrayList changes = new ArrayList();
