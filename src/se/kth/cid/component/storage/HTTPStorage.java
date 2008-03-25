@@ -32,6 +32,10 @@ import org.apache.commons.httpclient.methods.OptionsMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 
+import se.kth.cid.config.Config;
+import se.kth.cid.config.ConfigurationManager;
+import se.kth.cid.conzilla.config.Settings;
+
 /**
  * HTTP implementation of the RemoteStorage interface. Supports PUT and DELETE
  * commands.
@@ -58,6 +62,17 @@ public class HTTPStorage implements RemoteStorage {
 	 */
 	public HTTPStorage() {
 		httpClient = new HttpClient();
+		
+		Config config = ConfigurationManager.getConfiguration();
+		String proxyServer = config.getString(Settings.CONZILLA_COLLAB_PROXY_SERVER);
+		int proxyPort = -1;
+		try {
+			proxyPort = config.getInt(Settings.CONZILLA_COLLAB_PROXY_PORT, -1);
+		} catch (NumberFormatException nfe) {}
+		if (proxyServer != null && proxyServer.trim().length() > 0 && proxyPort > -1) {
+			httpClient.getHostConfiguration().setProxy(proxyServer, proxyPort);
+			// TODO httpClient.getState().setProxyCredentials(); // this requires method.setDoAuthentication(true);
+		}
 	}
 
 	/* Helper methods */

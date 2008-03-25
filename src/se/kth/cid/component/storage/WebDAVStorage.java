@@ -25,6 +25,10 @@ import org.apache.webdav.lib.ResponseEntity;
 import org.apache.webdav.lib.WebdavResource;
 import org.apache.webdav.lib.methods.DepthSupport;
 
+import se.kth.cid.config.Config;
+import se.kth.cid.config.ConfigurationManager;
+import se.kth.cid.conzilla.config.Settings;
+
 /**
  * WebDAV implementation of the RemoteVersionedStorage interface.
  * 
@@ -66,6 +70,17 @@ public class WebDAVStorage implements RemoteStorage {
 			throw new RemoteStorageException(he);
 		} catch (IOException ioe) {
 			throw new RemoteStorageException(ioe);
+		}
+		
+		Config config = ConfigurationManager.getConfiguration();
+		String proxyServer = config.getString(Settings.CONZILLA_COLLAB_PROXY_SERVER);
+		int proxyPort = -1;
+		try {
+			proxyPort = config.getInt(Settings.CONZILLA_COLLAB_PROXY_PORT, -1);
+		} catch (NumberFormatException nfe) {}
+		if ((proxyServer != null) && (proxyServer.trim().length() > 0) && (proxyPort > -1)) {
+			webdavResource.setProxy(proxyServer, proxyPort);
+			// TODO webdavResource.setProxyCredentials();
 		}
 	}
 	
@@ -142,7 +157,7 @@ public class WebDAVStorage implements RemoteStorage {
 	 */
 	private String getProperty(String url, String property) throws RemoteStorageException {
 		try {
-			Vector prop = new Vector();
+			Vector<PropertyName> prop = new Vector<PropertyName>();
 			prop.add(new PropertyName("DAV:", property));
 			Enumeration enu = webdavResource.propfindMethod(RemoteStorageHelper.getFilePath(url), DepthSupport.DEPTH_1, prop);
 
