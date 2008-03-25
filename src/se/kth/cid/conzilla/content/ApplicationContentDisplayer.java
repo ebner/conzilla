@@ -21,10 +21,11 @@ public class ApplicationContentDisplayer extends BrowserContentDisplayer {
 		BrowserLauncher launcher;
 		try {
 			launcher = new BrowserLauncher();
+			log.info("Trying to open URL using BrowserLauner2");
 			launcher.openURLinBrowser(uri.toString());
-		} catch (Exception browsere) {
-			log.warn(browsere.getMessage());
-			
+		} catch (Exception be) {
+			log.warn(be.getMessage());
+			log.info("Trying to open URL using Runtime.exec() instead");
 			try {
 				String os = (String) System.getProperties().get("os.name");
 				String[] command = null;

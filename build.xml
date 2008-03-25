@@ -55,6 +55,7 @@
 	batik-svggen.jar,
   	batik-util.jar,
   	batik-xml.jar,
+	browserlauncher2.jar,
   	commons-codec.jar,
   	commons-httpclient.jar,
 	commons-httpclient-contrib.jar,
