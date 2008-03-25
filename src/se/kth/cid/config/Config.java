@@ -312,7 +312,7 @@ public interface Config {
 	 *            Property key.
 	 * @return Returns a property value as int.
 	 */
-	public int getInt(String key);
+	public int getInt(String key) throws NumberFormatException;
 
 	/**
 	 * @param key
@@ -321,7 +321,7 @@ public interface Config {
 	 *            Default value if the given property does not exist.
 	 * @return Returns a property value as int.
 	 */
-	public int getInt(String key, int defaultValue);
+	public int getInt(String key, int defaultValue) throws NumberFormatException;
 
 	/**
 	 * @param key
