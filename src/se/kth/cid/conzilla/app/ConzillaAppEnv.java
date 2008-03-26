@@ -141,12 +141,19 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 		setOnline(online);
 	}
 
+	/**
+	 * FIXME: this should not be done globally (the setting below is valid per VM). however,
+	 * there is no other possibilty right now, as the reslet client is not going to support
+	 * per-connection proxy settings before version 1.2, we are using 1.1 right now.
+	 * 
+	 * FIXME: this has to be fixed later when 1.2 is published, see above.
+	 */
 	private void initProxySettings() {
 		Config conf = ConfigurationManager.getConfiguration();
 		String proxyHost = conf.getString(Settings.CONZILLA_COLLAB_PROXY_SERVER);
 		String proxyPort = conf.getString(Settings.CONZILLA_COLLAB_PROXY_PORT);
-		if ((proxyHost != null) && (proxyPort != null)) {
-			System.setProperty("http.proxyHost", proxyHost); // setting host to null deactivates it
+		if ((proxyHost != null) && (proxyHost.trim().length() > 0) && (proxyPort != null)) {
+			System.setProperty("http.proxyHost", proxyHost);
 			System.setProperty("http.proxyPort", proxyPort);
 			log.info("Using proxy " + proxyHost + ":" + proxyPort + " for HTTP connections");
 		} else {
