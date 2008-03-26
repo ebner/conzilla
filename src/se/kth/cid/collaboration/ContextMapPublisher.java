@@ -165,6 +165,10 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 		
 		addDependencies(dataset);
 		
+		if (dataset.getRequiredContainers().isEmpty()) {
+			throw new CollaborillaException("Failed to create correct container dependencies. Publication of Context-map aborted.");
+		}
+		
 		collabClient.put(URI.create(uri), dataset);
 		
 		dataset = collabClient.get(URI.create(uri));
@@ -335,9 +339,9 @@ public class ContextMapPublisher extends PropertyChangeSupport {
         StringReader sr = new StringReader(infoRDFInfo);
         pmodel.read(sr, null);
         StmtIterator stmts = pmodel.listStatements(pmodel.createResource(infoContURI), null, (RDFNode) null);
-        Set toAdd = new HashSet();
+        Set<Statement> toAdd = new HashSet<Statement>();
         while(stmts.hasNext()) {
-        	toAdd.add(stmts.next());
+        	toAdd.add((Statement) stmts.next());
         	stmts.remove();
         }
         for (Iterator toAddIt = toAdd.iterator(); toAddIt.hasNext();) {
