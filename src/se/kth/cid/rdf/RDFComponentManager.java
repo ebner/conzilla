@@ -41,7 +41,6 @@ import se.kth.cid.component.UndoManager;
 import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.session.Session;
-import se.kth.cid.layout.ContextMap;
 import se.kth.cid.rdf.layout.RDFConceptMap;
 import se.kth.cid.tree.generic.MemTreeTagManager;
 import se.kth.cid.util.TagManager;
@@ -62,7 +61,7 @@ public class RDFComponentManager implements ComponentManager {
 	private CollaborillaDataSet collaborillaDataSet;
 	private Object lockedByObject;
 	private TagManager tagManager;
-	private HashSet relevantModels;
+	private Set relevantModels;
 
 	private boolean collaborillaCheckNeeded = true;
 
@@ -128,11 +127,11 @@ public class RDFComponentManager implements ComponentManager {
 	}
 
 	public void refresh() {
-		for (Iterator iter = relevantModels.iterator(); iter.hasNext();) {
-			URI curi = (URI) iter.next();
-			tagManager.removeTag(curi);
-		}
-		relevantModels = new HashSet();
+//		for (Iterator iter = relevantModels.iterator(); iter.hasNext();) {
+//			URI curi = (URI) iter.next();
+//			tagManager.removeTag(curi);
+//		}
+//		relevantModels = new HashSet();
 		
 		collaborillaDataSet = null;
 		collaborillaCheckNeeded = true;
