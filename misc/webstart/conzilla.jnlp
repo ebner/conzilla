@@ -42,6 +42,8 @@
 		<jar href="lib/batik-xml.jar"/>
 		<jar href="lib/browserlauncher2.jar"/>
 		<jar href="lib/collaborilla.jar"/>
+		<jar href="lib/com.noelios.restlet.ext.net.jar"/>
+		<jar href="lib/com.noelios.restlet.jar"/>
 		<jar href="lib/commons-codec.jar"/>
 		<jar href="lib/commons-httpclient.jar"/>
 		<jar href="lib/commons-httpclient-contrib.jar"/>
@@ -57,6 +59,7 @@
 		<jar href="lib/jnlp.jar"/>
 		<jar href="lib/log4j.jar"/>
 		<jar href="lib/org.json.jar"/>
+		<jar href="lib/org.restlet.jar"/>
 		<jar href="lib/SHAME.jar"/>
 		<jar href="lib/SHAME-formlets.jar"/>
 		<jar href="lib/swing-layout.jar"/>

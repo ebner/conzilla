@@ -482,7 +482,7 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 			
 			// Upgrade path 2.1.x, 2.2.0, 2.2.1 -> 2.2.2+
 			if (installedVersion.startsWith("2.1") || installedVersion.startsWith("2.2.0") || installedVersion.startsWith("2.2.1")) {
-				config.setProperty(Settings.CONZILLA_COLLAB_SERVICE, "http://collaborilla.conzilla.org/v1/");
+				config.setProperty(Settings.CONZILLA_COLLAB_SERVICE, "http://collaborilla.conzilla.org/rest/v1/");
 				// place holder
 			}
 			

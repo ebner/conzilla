@@ -49,13 +49,15 @@
     xercesImpl.jar,
     "/>
   <property name="dependency_jars_miscellaneous" value="
-	collaborilla.jar,
   	batik-awt-util.jar,
 	batik-dom.jar,
 	batik-svggen.jar,
   	batik-util.jar,
   	batik-xml.jar,
 	browserlauncher2.jar,
+	collaborilla.jar,
+  	com.noelios.restlet.ext.net.jar,
+  	com.noelios.restlet.jar,
   	commons-codec.jar,
   	commons-httpclient.jar,
 	commons-httpclient-contrib.jar,
@@ -67,6 +69,7 @@
   	jakarta-slide-webdavlib.jar,
 	jdom-1.0.jar,
 	log4j.jar,
+  	org.restlet.jar,
 	SHAME.jar,
 	SHAME-formlets.jar,
 	swing-layout.jar
