@@ -172,17 +172,20 @@ public class ContainerEntry extends JPanel {
 					
 					if (refreshNeeded) {
 						controller.getConceptMap().refresh();
-						try {
-							controller.refresh();
-						} catch (ControllerException e1) {
-						}
-						refreshNeeded = false;
 					}
 
 					ContainerEntry.this.setVisible(containerURI, true);
 					if (dependentContainer != null) {
 				        log.debug("Selecting "+dependentContainerURI);
 						ContainerEntry.this.setVisible(dependentContainerURI, true);						
+					}
+
+					if (refreshNeeded) {					
+						try {
+							controller.refresh();
+						} catch (ControllerException e1) {
+						}
+						refreshNeeded = false;
 					}
 					
 			        log.debug("Selecting " + container);
