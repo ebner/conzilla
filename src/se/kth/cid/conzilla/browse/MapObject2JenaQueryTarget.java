@@ -96,8 +96,7 @@ public class MapObject2JenaQueryTarget implements PopupTrigger2QueryTarget {
 			componentModel = (Model) rcm.getContainer(URI.create(component.getLoadContainer()));			
 		}
 		
-		Resource componentResource = componentModel
-				.createResource(((RDFComponent) component).getURI());
+		Resource componentResource = componentModel.createResource(((RDFComponent) component).getURI());
 
 		List ontologies = new ArrayList();
 		ontologies.addAll(getFormlet(popupTrigger).getOntologies());
