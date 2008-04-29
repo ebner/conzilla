@@ -349,7 +349,7 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 		
 		Config ccm = new PropertiesConfiguration("Context-Map");
 		try {
-			ccm.load(new File(metaFile).toURL());
+			ccm.load(new File(metaFile).toURI().toURL());
 		} catch (Exception e) {
 			log.error(e);
 		}

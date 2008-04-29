@@ -25,6 +25,9 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Wrapper around Java's Properties.
  * Some methods have been simplified, others just wrapped.<br>
@@ -48,6 +51,8 @@ import java.util.List;
  * @see Config
  */
 public class PropertiesConfiguration implements Config {
+	
+	Log log = LogFactory.getLog(PropertiesConfiguration.class);
 
 	/**
 	 * The main resource in this object. Contains the configuration.
@@ -210,8 +215,10 @@ public class PropertiesConfiguration implements Config {
 	 */
 	public void load(URL configURL) throws IOException {
 		try {
-			URI url = new URI(configURL.toString());
+			String escapedURL = configURL.toString().replaceAll(" ", "%20");
+			URI url = new URI(escapedURL);
 			File file = new File(url);
+			log.info("Loading properties file from " + file.toURI());
 			InputStream input = new BufferedInputStream(new FileInputStream(file));
 			config.load(input);
 			input.close();
@@ -225,8 +232,10 @@ public class PropertiesConfiguration implements Config {
 	 */
 	public void save(URL configURL) throws IOException {
 		try {
-			URI url = new URI(configURL.toString());
+			String escapedURL = configURL.toString().replaceAll(" ", "%20");
+			URI url = new URI(escapedURL.toString());
 			File file = new File(url);
+			log.info("Saving properties file to " + file.toURI());
 			OutputStream output = new BufferedOutputStream(new FileOutputStream(file));
 			config.store(output, configName);
 			output.close();

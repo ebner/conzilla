@@ -329,18 +329,17 @@ public class CollaborillaConfiguration {
 	private boolean importCollaborationSettingsFromFile(String settingsFile) {
 		Config collabSettings = new PropertiesConfiguration("Collaboration Settings");
 		try {
-			collabSettings.load(new File(settingsFile).toURL());
+			collabSettings.load(new File(settingsFile).toURI().toURL());
 		} catch (Exception e) {
 			log.error(e);
 			return false;
 		}
 		
 		String service = collabSettings.getString("service");
-		int port = collabSettings.getInt("port", -1);
 		List location = collabSettings.getStringList("location");
 		String namespace = collabSettings.getString("namespace");
 		
-		if ((service == null) || (port == -1) || (location != null && location.size() == 0) || (namespace == null)) {
+		if ((service == null) || (location != null && location.size() == 0) || (namespace == null)) {
 			log.warn("Configuration incomplete");
 			return false;
 		}

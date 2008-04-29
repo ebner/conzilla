@@ -36,6 +36,17 @@ public class LayersTool extends StateTool {
         layerControl = new LayerControl(controller);
         pane = new JScrollPane(layerControl);
         setIcon(Images.getImageIcon(Images.ICON_LAYERS));
+        
+    	boolean hasMultipleLayers = false;
+    	if (layerControl != null && layerControl.lMan != null) {
+    		if (layerControl.lMan.getLayers().size() > 1) {
+    			hasMultipleLayers = true;
+    		}
+    	}
+    	if (!hasMultipleLayers) {
+    		controller.getView().removeFromLeft(pane);
+    		layerControl.deactivate();
+    	}
     }
 
     /**
