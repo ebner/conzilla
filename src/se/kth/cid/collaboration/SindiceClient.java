@@ -15,6 +15,7 @@ import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.HttpMethodRetryHandler;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -52,7 +53,7 @@ public class SindiceClient {
 	
 	private static String SINDICE_QUERY_URL = "http://sindice.com/query/lookup";
 	
-	private static int SO_TIMEOUT = 10000; // ms 
+	private static int TIMEOUT = 5000; // ms 
 	
 	private HttpClient client;
 	
@@ -60,12 +61,15 @@ public class SindiceClient {
 	
 	public SindiceClient() {
 		client = new HttpClient();
+		client.getParams().setConnectionManagerTimeout(TIMEOUT);
+		client.getParams().setSoTimeout(TIMEOUT);
+		client.getParams().setParameter("http.connection.timeout", TIMEOUT); // there is no convenience method for this
 	}
 	
 	public void submitRDFLocations(List<URI> files) {
+		HttpMethodRetryHandler retryHandler = new DefaultHttpMethodRetryHandler(1, false);
 		PostMethod method = new PostMethod(SINDICE_POST_URL);
-		method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
-		method.getParams().setSoTimeout(SO_TIMEOUT);
+		method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, retryHandler);
 	    
 		String fileList = new String();
 	    for (URI uri : files) {
@@ -120,7 +124,7 @@ public class SindiceClient {
 		HttpMethod method = new GetMethod(SINDICE_QUERY_URL);
 	    method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
 	    method.setFollowRedirects(true);
-	    method.getParams().setSoTimeout(SO_TIMEOUT);
+	    method.getParams().setSoTimeout(TIMEOUT);
 	    method.setRequestHeader("Accept", mediaType);
 	    
 	    method.setQueryString(new NameValuePair[] { 
