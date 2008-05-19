@@ -154,6 +154,7 @@ public abstract class PopupWindowHandler extends PopupHandler {
     protected void showNewDescriptionImpl(DescriptionPanel desc) {
         JWindow window = new JWindow();
         window.setFocusableWindowState(false);
+        window.setAlwaysOnTop(true);
         JPanel pane = new JPanel(new GridLayout());
         /*
          * { public void paint(Graphics g) { Graphics2D gr = (Graphics2D) g;
