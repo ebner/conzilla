@@ -68,7 +68,7 @@ public class RemoveConditionalTool extends DetectSelectionTool {
         int result = JOptionPane.showOptionDialog(
                 mcontroller.getView().getMapScrollPane().getDisplayer(),
                 "You are trying to remove "+ nrOfOccurences+" selected concepts together with their \n" +
-                "apperances in this map. Note that concepts that have known apperances in other maps\n" +
+                "appearances in this map. Note that concepts that have known appearances in other maps\n" +
                 "will not be removed.\n\n" +
                 "Do you want to proceed and remove "+nrOfOccurences+" selected concepts where possible?",
                 "Remove " + nrOfOccurences + " concepts?",
@@ -122,7 +122,7 @@ public class RemoveConditionalTool extends DetectSelectionTool {
 			if (isCommented(concept) && referredTo == 0) {
 				result = JOptionPane.showOptionDialog(
 					mcontroller.getView().getMapScrollPane().getDisplayer(),
-					"You are about to remove a " + name + "s apperance from this map.\n" +
+					"You are about to remove a " + name + "'s appearance from this map.\n" +
 					"The "+name+" cannot be removed in itself as it belongs to another session.\n" +
 					"However, the additional information provided on the "+ name+" in this session will be removed.\n\n" +
 					"Do you want to proceed?",
@@ -134,7 +134,7 @@ public class RemoveConditionalTool extends DetectSelectionTool {
 			} else {
 				result = JOptionPane.showOptionDialog(
 						mcontroller.getView().getMapScrollPane().getDisplayer(),
-						"You are about to remove a " + name + "s apperance from this map.\n" +
+						"You are about to remove a " + name + "'s appearance from this map.\n" +
 						"The "+name+" cannot be removed in itself as it belongs to another session.\n\n" +
 						"Do you want to proceed?",
 						"Remove " + name + "s apperance?",
@@ -146,7 +146,7 @@ public class RemoveConditionalTool extends DetectSelectionTool {
 			//Not remove since used elsewhere.
 			result = JOptionPane.showOptionDialog(
 					mcontroller.getView().getMapScrollPane().getDisplayer(),
-					"You are about to remove a " + name + "s apperance from this map.\n" +
+					"You are about to remove a " + name + "'s appearance from this map.\n" +
 					"The "+name+" in itself will not be removed as it is used in other maps.\n\n" +
 					"Do you want to proceed?",
 					"Remove " + name + "s apperance?",
@@ -158,7 +158,7 @@ public class RemoveConditionalTool extends DetectSelectionTool {
 			//TODO check text below
 			result = JOptionPane.showOptionDialog(
 					mcontroller.getView().getMapScrollPane().getDisplayer(),
-					"You are about to remove a " + name + " and its apperance from this map.\n" +
+					"You are about to remove a " + name + " and its appearance from this map.\n" +
 					"The " + name + " itself is going to be removed as there is no indication of it being\n" +
 					"used in another map. However, only maps in currently loaded sessions are checked.\n\n" +
 					"Proceed and remove "+name+"?",

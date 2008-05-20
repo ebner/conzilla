@@ -55,11 +55,11 @@ public class RemoveNonConditionalTool extends DetectSelectionTool {
     	Object[] options = {"Cancel", "Remove"};
         if (JOptionPane.showOptionDialog(
                 mcontroller.getView().getMapScrollPane().getDisplayer(),
-                "You are about to remove "+ nrOfOccurences+" selected concepts together with their \n" +
-                "apperances in this map. Note that concepts originating from other sessions\n" +
-                "cannot be removed. Warning, if the selected concepts appear in other maps they\n" +
+                "You are about to remove " + nrOfOccurences + " selected concepts together with their \n" +
+                "appearances in this map. Note that concepts originating from other sessions\n" +
+                "cannot be removed. Warning: if the selected concepts appear in other maps they\n" +
                 "will appear as blank ellipses after removal.\n\n" +
-                "Do you want to proceed and remove "+nrOfOccurences+" selected concepts?",
+                "Do you want to proceed and remove " + nrOfOccurences + " selected concepts?",
                 "Remove " + nrOfOccurences + " concepts?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
@@ -103,8 +103,8 @@ public class RemoveNonConditionalTool extends DetectSelectionTool {
         if (isManaged(concept)) {
         	result = JOptionPane.showOptionDialog(
         			mcontroller.getView().getMapScrollPane().getDisplayer(),
-        			"You are about to remove a " + name + " and its apperance in this map.\n"+
-        			"If the "+name+" is used in another map, its apperance there will remain\n" +
+        			"You are about to remove a " + name + " and its appearance in this map.\n"+
+        			"If the " + name + " is used in another map, its appearance there will remain\n" +
         			"but appear as a blank ellipse.\n\n" +
         			"Do you want to proceed and remove this " + name + "?\n" +
         			"Remove " + name + "?",
@@ -115,10 +115,10 @@ public class RemoveNonConditionalTool extends DetectSelectionTool {
         } else {
         	result = JOptionPane.showOptionDialog(
         			mcontroller.getView().getMapScrollPane().getDisplayer(),
-        			"You are about to remove a "+name+"s apperance from this map.\n"+
+        			"You are about to remove a "+name+"'s appearance from this map.\n"+
         			"The concept itself cannot be removed as it belongs to another session.\n\n" +
-        			"Proceed and remove this " + name + "s apperance from this map?",
-        			"Remove " + name + "s apperance from this map?",
+        			"Proceed and remove this " + name + "'s appearance from this map?",
+        			"Remove " + name + "'s apperance from this map?",
         			JOptionPane.YES_NO_OPTION,
         			JOptionPane.QUESTION_MESSAGE,
         			null, options, options[1]);

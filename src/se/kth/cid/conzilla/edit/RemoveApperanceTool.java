@@ -35,11 +35,11 @@ public class RemoveApperanceTool extends DetectSelectionTool {
 		Object[] options = {"Cancel", "Remove"};
         if (JOptionPane.showOptionDialog(
                 mcontroller.getView().getMapScrollPane().getDisplayer(),
-                "You are trying to remove "+ nrOfOccurences+" concept from this map. \n" +
+                "You are trying to remove "+ nrOfOccurences+" concepts from this map. \n" +
                 "Note that the concepts themselves will not be removed, only the selected\n" +
-                "apperances in this map. Hence, unless they appear elsewhere in this or\n" +
+                "appearances in this map. Unless they appear elsewhere in this or\n" +
                 "another map you cannot easily get a hold of them again.\n\n" +
-                "Do you want to proceed and remove "+nrOfOccurences+" concept from this map?",
+                "Do you want to proceed and remove "+nrOfOccurences+" concepts from this map?",
                 "Remove " + nrOfOccurences + " concepts from this map?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
