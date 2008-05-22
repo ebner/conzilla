@@ -203,12 +203,12 @@ public abstract class DrawerMapObject extends MapObjectImpl {
 
     public boolean checkAndFillHit(MapEvent m) {
         if (drawLayout.getBodyVisible()) {
-            if (titleDrawer.didHit(m)) {
+            if (titleDrawer != null && titleDrawer.didHit(m)) {
                 m.mapObject = this;
                 m.hitType = MapEvent.HIT_BOXTITLE;
                 return true;
             }
-            if (boxDrawer.didHit(m)) {
+            if (boxDrawer != null && boxDrawer.didHit(m)) {
                 m.mapObject = this;
                 m.hitType = MapEvent.HIT_BOX;
                 return true;
