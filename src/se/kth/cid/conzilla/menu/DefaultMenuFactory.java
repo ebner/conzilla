@@ -226,7 +226,7 @@ public class DefaultMenuFactory implements MenuFactory {
 			public void actionPerformed(ActionEvent ae) {
 				// FIXME
 				if (/* view.tryCloseMap() */true) {
-					kit.getConzilla().close(conzilla.getViewManager().getView(mcontroller));
+					kit.getConzilla().close(conzilla.getViewManager().getView(controller));
 				}
 			}
 		};

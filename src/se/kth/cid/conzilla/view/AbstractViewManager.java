@@ -87,7 +87,7 @@ public abstract class AbstractViewManager implements ViewManager {
     }
 
     public void close(View view, boolean closeController) {
-    	if (view.getMapScrollPane() != null) {
+    	if (view.getMapScrollPane() != null && view.getMapScrollPane().getDisplayer() != null) {
     		view.getMapScrollPane().getDisplayer().reset();
     	}
     	
