@@ -303,8 +303,9 @@ public class Conzilla implements PropertyChangeListener {
 
 	void resetAll() {
 		Iterator en = viewManager.getViews();
-		while (en.hasNext())
+		while (en.hasNext()) {
 			((View) en.next()).getMapScrollPane().getDisplayer().reset();
+		}
 	}
 
 	public void reload() {
@@ -388,12 +389,15 @@ public class Conzilla implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent e) {
 		if (ViewManager.VIEWS_PROPERTY.equals(e.getPropertyName())) {
 			if (!viewManager.getViews().hasNext()) {
-				try {
-					openMapInNewView(URI.create(ConzillaEnvironment.DEFAULT_BLANKMAP), null);
-				} catch (ControllerException e1) {
-					e1.printStackTrace();
+				if (viewManager.getID().equals("FRAME_VIEW")) {
+					exit(0);
+				} else {
+					try {
+						openMapInNewView(URI.create(ConzillaEnvironment.DEFAULT_BLANKMAP), null);
+					} catch (ControllerException e1) {
+						e1.printStackTrace();
+					}
 				}
-//				exit(0);
 			}
 		} else if (MapController.MAP_PROPERTY.equals(e.getPropertyName())
 				|| View.ZOOM_PROPERTY.equals(e.getPropertyName())) {
