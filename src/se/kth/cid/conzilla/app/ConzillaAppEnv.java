@@ -486,6 +486,11 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 				// place holder
 			}
 			
+			// Generic settings
+			if (config.getString(Settings.CONZILLA_MAPS_THREADED) == null) {
+				config.setProperty(Settings.CONZILLA_MAPS_THREADED, new Boolean(false));
+			}
+			
 			upgradeSuccessful(installedVersion, thisVersion);
 		}
 	}

@@ -46,6 +46,8 @@ public class Settings {
 	
 	public static final String CONZILLA_MAPMANAGERFACTORY = "conzilla.mapmanagerfactory.default";
 	
+	public static final String CONZILLA_MAPS_THREADED = "conzilla.maps.threaded";
+	
 	public static final String CONZILLA_MENUFACTORY = "conzilla.menufactory";
 	
 	public static final String CONZILLA_ONLINESTATE = "conzilla.online";

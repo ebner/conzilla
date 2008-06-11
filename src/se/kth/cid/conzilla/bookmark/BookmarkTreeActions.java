@@ -23,7 +23,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.app.ConzillaKit;
+import se.kth.cid.conzilla.config.Settings;
 import se.kth.cid.conzilla.controller.MapController;
 
 /**
@@ -279,38 +281,60 @@ public class BookmarkTreeActions extends MouseAdapter implements KeyListener {
 		}
 	}
 	
-    protected static void openMap(final String uriString, final MapController controller) {
+	protected static void openMap(final String uriString, final MapController controller) {
+		if (uriString != null) {
+			boolean threaded = ConfigurationManager.getConfiguration().getBoolean(Settings.CONZILLA_MAPS_THREADED, false);
+			if (threaded) {
+				Thread thread = new Thread(new Runnable() {
+					public void run() {
+						openMapUnthreaded(uriString, controller);
+					}
+				});
+				thread.start();
+			} else {
+				openMapUnthreaded(uriString, controller);
+			}
+		}
+    }
+    
+    protected static void openMapUnthreaded(final String uriString, final MapController controller) {
     	if (uriString != null) {
-    		Thread thread = new Thread(new Runnable() {
-				public void run() {
-		    		try {
-		    			URI uri = new URI(uriString);
-		    			ConzillaKit.getDefaultKit().getConzilla().openMapInOldView(uri, controller.getView());
-		    		} catch (Exception e) {
-		    			e.printStackTrace();
-		    			JOptionPane.showMessageDialog(null, e.getMessage(), "Could not load context-map", JOptionPane.ERROR_MESSAGE);
-		    		}
-				}
-    		});
-    		thread.start();
+    		try {
+    			URI uri = new URI(uriString);
+    			ConzillaKit.getDefaultKit().getConzilla().openMapInOldView(uri, controller.getView());
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    			JOptionPane.showMessageDialog(null, e.getMessage(), "Could not load context-map", JOptionPane.ERROR_MESSAGE);
+    		}
     	}
     }
     
 	protected static void openMapInNewView(final String uriString, final MapController controller) {
 		if (uriString != null) {
-    		Thread thread = new Thread(new Runnable() {
-				public void run() {
-		    		try {
-		    			URI uri = new URI(uriString);
-		    			ConzillaKit.getDefaultKit().getConzilla().openMapInNewView(uri, controller);
-		    		} catch (Exception e) {
-		    			e.printStackTrace();
-		    			JOptionPane.showMessageDialog(null, e.getMessage(), "Could not load context-map", JOptionPane.ERROR_MESSAGE);
-		    		}
-				}
-    		});
-    		thread.start();
+			boolean threaded = ConfigurationManager.getConfiguration().getBoolean(Settings.CONZILLA_MAPS_THREADED, false);
+			if (threaded) {
+				Thread thread = new Thread(new Runnable() {
+					public void run() {
+						openMapInNewViewUnthreaded(uriString, controller);
+					}
+				});
+				thread.start();
+			} else {
+				openMapInNewViewUnthreaded(uriString, controller);
+			}
     	}
+	}
+	
+	protected static void openMapInNewViewUnthreaded(final String uriString, final MapController controller) {
+		if (uriString != null) {
+			try {
+				URI uri = new URI(uriString);
+				ConzillaKit.getDefaultKit().getConzilla().openMapInNewView(uri, controller);
+			} catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, e.getMessage(), "Could not load context-map", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
 	
 	private void openNodeInNewView(BookmarkNode node) {

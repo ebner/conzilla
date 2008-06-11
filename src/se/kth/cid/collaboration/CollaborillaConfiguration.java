@@ -223,7 +223,7 @@ public class CollaborillaConfiguration {
 	 *         default.
 	 */
 	public String getCollaborillaServiceRoot() {
-		return config.getString(Settings.CONZILLA_COLLAB_SERVICE, "http://collaborilla.conzilla.org/v1/");
+		return config.getString(Settings.CONZILLA_COLLAB_SERVICE, "http://collaborilla.conzilla.org/rest/v1/");
 	}
 
 	/**

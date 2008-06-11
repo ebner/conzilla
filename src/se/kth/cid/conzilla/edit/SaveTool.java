@@ -49,10 +49,10 @@ public class SaveTool extends Tool implements EditListener {
 		MapStoreManager storeManager = controller.getView().getMapScrollPane().getDisplayer().getStoreManager();
 		storeManager.addEditListener(this);
 
-		updateEnabled();
+		updateEdited();
 	}
 
-	void updateEdited() {
+	private void updateEdited() {
 		MapStoreManager storeManager = controller.getView().getMapScrollPane().getDisplayer().getStoreManager();
 
 		boolean enable = false;
@@ -70,12 +70,12 @@ public class SaveTool extends Tool implements EditListener {
 	}
 
 	public void componentEdited(EditEvent e) {
-		if (!saving)
-			updateEnabled();
+		if (!saving) {
+			updateEdited();
+		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
-
 		saving = true;
 
 		// save all concepts!!!
@@ -83,7 +83,7 @@ public class SaveTool extends Tool implements EditListener {
 		MapStoreManager storeManager = controller.getView().getMapScrollPane().getDisplayer().getStoreManager();
 		ContextMap cmap = storeManager.getConceptMap();
 		RDFContainerManager contMan = (RDFContainerManager) store.getContainerManager();
-
+		
 		try {
 			// ComponentHandler handler = store.getHandler();
 
@@ -159,7 +159,7 @@ public class SaveTool extends Tool implements EditListener {
 		}
 
 		saving = false;
-		updateEnabled();
+		updateEdited();
 
 		/*
 		 * DrawerLayout nss[] = cmap.getDrawerLayouts(); Concept concept;

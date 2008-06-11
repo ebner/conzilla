@@ -44,9 +44,11 @@ import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.ComponentManager;
 import se.kth.cid.component.Container;
 import se.kth.cid.component.ResourceStore;
+import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.app.Conzilla;
 import se.kth.cid.conzilla.app.ConzillaEnvironment;
 import se.kth.cid.conzilla.app.ConzillaKit;
+import se.kth.cid.conzilla.config.Settings;
 import se.kth.cid.conzilla.controller.ControllerException;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.history.LinearHistory;
@@ -440,21 +442,32 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 	 */
     private void openMap(final String uriString, final boolean newView) {
     	if (uriString != null) {
+    		boolean threaded = ConfigurationManager.getConfiguration().getBoolean(Settings.CONZILLA_MAPS_THREADED, false);
+    		if (threaded) {
+    			Thread thread = new Thread(new Runnable() {
+    				public void run() {
+    					openMapUnthreaded(uriString, newView);
+    				}
+    			});
+    			thread.start();
+    		} else {
+    			openMapUnthreaded(uriString, newView);
+    		}
+    	}
+    }
+    
+    private void openMapUnthreaded(final String uriString, final boolean newView) {
+    	if (uriString != null) {
     		final URI uri = URI.create(uriString);
-    		Thread thread = new Thread(new Runnable() {
-				public void run() {
-		    		try {
-		    			if (newView) {
-		    				ConzillaKit.getDefaultKit().getConzilla().openMapInNewView(uri, controller);
-		    			} else {
-		    				ConzillaKit.getDefaultKit().getConzilla().openMapInOldView(uri, controller.getView());
-		    			}
-		    		} catch (ControllerException e) {
-		    			ErrorMessage.showError("Unable to open map", "Conzilla was not able to open the context-map.", e, null);
-		    		}
-				}
-    		});
-    		thread.start();
+    		try {
+    			if (newView) {
+    				ConzillaKit.getDefaultKit().getConzilla().openMapInNewView(uri, controller);
+    			} else {
+    				ConzillaKit.getDefaultKit().getConzilla().openMapInOldView(uri, controller.getView());
+    			}
+    		} catch (ControllerException e) {
+    			ErrorMessage.showError("Unable to open map", "Conzilla was not able to open the context-map.", e, null);
+    		}
     	}
     }
     

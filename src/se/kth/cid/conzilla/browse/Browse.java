@@ -13,12 +13,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.JComponent;
-import javax.swing.JMenu;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import se.kth.cid.config.ConfigurationManager;
 import se.kth.cid.conzilla.app.ConzillaKit;
+import se.kth.cid.conzilla.config.Settings;
 import se.kth.cid.conzilla.controller.ControllerException;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.map.MapDisplayer;
@@ -115,19 +116,17 @@ public class Browse {
 						e.consume();
 						final DrawerLayout ns = e.mapObject.getDrawerLayout();
 
-						Thread thread = new Thread(new Runnable() {
-							public void run() {
-								try {
-									ContextMap cMap = controller.getConceptMap();
-									controller.showHyperlinkedMap(URIClassifier.parseValidURI(e.mapObject.getDrawerLayout().getDetailedMap(), cMap.getURI()));
-									controller.getHistoryManager().fireDetailedMapEvent(controller, ns);
-									markLastConcept(scroll, URIClassifier.parseValidURI(ns.getConceptURI(),	ns.getConceptMap().getURI()).toString());
-								} catch (ControllerException ce) {
-									ErrorMessage.showError("Load Error", "Failed to load map\n\n" + e.mapObject.getDrawerLayout().getDetailedMap(), ce,	scroll);
+						boolean threaded = ConfigurationManager.getConfiguration().getBoolean(Settings.CONZILLA_MAPS_THREADED, false);
+						if (threaded) {
+							Thread thread = new Thread(new Runnable() {
+								public void run() {
+									loadMap(e, ns, scroll);
 								}
-							}
-						});
-						thread.start();
+							});
+							thread.start();
+						} else {
+							loadMap(e, ns, scroll);
+						}
 					}
 				}
 			}
@@ -139,6 +138,17 @@ public class Browse {
 							((Double) evt.getOldValue()).doubleValue());
 			}
 		};
+	}
+	
+	private void loadMap(MapEvent e, DrawerLayout ns, MapScrollPane scroll) {
+		try {
+			ContextMap cMap = controller.getConceptMap();
+			controller.showHyperlinkedMap(URIClassifier.parseValidURI(e.mapObject.getDrawerLayout().getDetailedMap(), cMap.getURI()));
+			controller.getHistoryManager().fireDetailedMapEvent(controller, ns);
+			markLastConcept(scroll, URIClassifier.parseValidURI(ns.getConceptURI(),	ns.getConceptMap().getURI()).toString());
+		} catch (ControllerException ce) {
+			ErrorMessage.showError("Load Error", "Failed to load map\n\n" + e.mapObject.getDrawerLayout().getDetailedMap(), ce,	scroll);
+		}
 	}
 
 	void setShownCursor(int type) {

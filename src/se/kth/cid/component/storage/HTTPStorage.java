@@ -52,6 +52,8 @@ import se.kth.cid.conzilla.config.Settings;
  * @see RemoteStorage
  */
 public class HTTPStorage implements RemoteStorage {
+	
+	private static int TIMEOUT = 10000; // ms 
 
 	private HttpClient httpClient;
 
@@ -62,6 +64,9 @@ public class HTTPStorage implements RemoteStorage {
 	 */
 	public HTTPStorage() {
 		httpClient = new HttpClient();
+		httpClient.getParams().setConnectionManagerTimeout(TIMEOUT);
+		httpClient.getParams().setSoTimeout(TIMEOUT);
+		httpClient.getParams().setParameter("http.connection.timeout", TIMEOUT); // there is no convenience method for this
 		
 		Config config = ConfigurationManager.getConfiguration();
 		String proxyServer = config.getString(Settings.CONZILLA_COLLAB_PROXY_SERVER);
@@ -102,7 +107,7 @@ public class HTTPStorage implements RemoteStorage {
 	}
 
 	private void setRetryHandler(HttpMethod httpObject) {
-		DefaultHttpMethodRetryHandler retryHandler = new DefaultHttpMethodRetryHandler(3, false);
+		DefaultHttpMethodRetryHandler retryHandler = new DefaultHttpMethodRetryHandler(2, false);
 		httpObject.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, retryHandler);
 	}
 
