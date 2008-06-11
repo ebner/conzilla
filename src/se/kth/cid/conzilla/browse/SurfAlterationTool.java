@@ -50,7 +50,7 @@ public class SurfAlterationTool extends Tool {
 	public SurfAlterationTool(MapController cont, Browse browse) {
 		super("SURF", BrowseMapManagerFactory.class.getName(), cont);
 		choice = new JMenu();
-		setJMenuItem(choice);
+		setJMenuItem(choice);		
 		this.browse = browse;
 	}
 
@@ -78,7 +78,9 @@ public class SurfAlterationTool extends Tool {
 		// then return a menuItem (possible not enabled if no alternative)
 		// otherwise a menu is returned.
 		if (neighbourHoodMaps.size() == 1) {
-			setJMenuItem(new JMenuItem());
+			JMenuItem emptyItem = new JMenuItem();
+			emptyItem.setEnabled(false);
+			setJMenuItem(emptyItem);
 		} else {
 			/*
 			 * JLabel label = new JLabel( manager.getString(
@@ -121,6 +123,7 @@ public class SurfAlterationTool extends Tool {
 			}
 			setJMenuItem(choice);
 		}
+		choice.setEnabled(updateEnabled());
 	}
 	
 	protected boolean updateEnabled() {

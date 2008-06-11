@@ -122,7 +122,6 @@ public class DefaultMenuFactory implements MenuFactory {
 
 		alwaysPack = new StateTool("ALWAYS_PACK", DefaultMenuFactory.class.getName(), ConfigurationManager
 				.getConfiguration().getBoolean(Settings.CONZILLA_PACK, false)) {
-			private static final long serialVersionUID = 1L;
 			public void propertyChange(PropertyChangeEvent e) {
 				if (e.getPropertyName().equals(Settings.CONZILLA_PACK)) {
 					setActivated(ConfigurationManager.getConfiguration().getBoolean(Settings.CONZILLA_PACK, false));
