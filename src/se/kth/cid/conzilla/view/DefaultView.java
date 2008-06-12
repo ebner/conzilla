@@ -32,6 +32,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 import se.kth.cid.config.ConfigurationManager;
+import se.kth.cid.conzilla.config.Settings;
 import se.kth.cid.conzilla.content.ContentSelector;
 import se.kth.cid.conzilla.controller.ControllerException;
 import se.kth.cid.conzilla.controller.MapController;
@@ -96,24 +97,19 @@ public class DefaultView implements View, PropertyChangeListener {
 					} catch (URISyntaxException e1) {
 						JOptionPane.showMessageDialog(null, "URI is not valid.", "Could not load context-map", JOptionPane.ERROR_MESSAGE);
 					}
+					
 					final URI mapURI = uri;
-					Thread thread = new Thread(new Runnable() {
-						public void run() {
-							try {
-								if (mapURI.isAbsolute()) {
-									MapController controller = DefaultView.this.controller;
-									ContextMap oldMap = controller.getConceptMap();
-									DefaultView.this.controller.showMap(mapURI);
-									controller.getHistoryManager().fireOpenNewMapEvent(controller, oldMap, mapURI);
-								} else {
-									JOptionPane.showMessageDialog(null, "URI is not absolute, you need to specify a scheme e.g. \"http://\" or \"urn:path://\".", "Could not load context-map", JOptionPane.ERROR_MESSAGE);							
-								}
-							} catch (ControllerException e1) {
-								JOptionPane.showMessageDialog(null, e1.getMessage(), "Could not load context-map", JOptionPane.ERROR_MESSAGE);
+					boolean threaded = ConfigurationManager.getConfiguration().getBoolean(Settings.CONZILLA_MAPS_THREADED, false);
+					if (threaded) {
+						Thread thread = new Thread(new Runnable() {
+							public void run() {
+								loadMap(mapURI);
 							}
-						}
-					});
-					thread.start();
+						});
+						thread.start();
+					} else {
+						loadMap(mapURI);
+					}
 				}
 			}
 		});
@@ -124,6 +120,22 @@ public class DefaultView implements View, PropertyChangeListener {
 		ConfigurationManager.getConfiguration().addPropertyChangeListener(ColorTheme.COLORTHEME, repainter);
         LocaleManager.getLocaleManager().addPropertyChangeListener(this);
 	}
+	
+	private void loadMap(URI mapURI) {
+		try {
+			if (mapURI.isAbsolute()) {
+				MapController controller = DefaultView.this.controller;
+				ContextMap oldMap = controller.getConceptMap();
+				DefaultView.this.controller.showMap(mapURI);
+				controller.getHistoryManager().fireOpenNewMapEvent(controller, oldMap, mapURI);
+			} else {
+				JOptionPane.showMessageDialog(null, "URI is not absolute, you need to specify a scheme e.g. \"http://\" or \"urn:path://\".", "Could not load context-map", JOptionPane.ERROR_MESSAGE);							
+			}
+		} catch (ControllerException e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage(), "Could not load context-map", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
 
 	public MapController getController() {
 		return controller;
