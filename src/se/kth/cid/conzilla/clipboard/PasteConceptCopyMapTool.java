@@ -5,7 +5,9 @@
  */
 
 package se.kth.cid.conzilla.clipboard;
+import java.awt.event.ActionEvent;
 import java.net.URI;
+import java.util.HashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,16 +17,19 @@ import se.kth.cid.component.InvalidURIException;
 import se.kth.cid.component.ReadOnlyException;
 import se.kth.cid.component.ResourceStore;
 import se.kth.cid.concept.Concept;
+import se.kth.cid.concept.Triple;
 import se.kth.cid.conzilla.app.ConzillaKit;
 import se.kth.cid.conzilla.controller.MapController;
 import se.kth.cid.conzilla.util.ErrorMessage;
 import se.kth.cid.layout.ConceptLayout;
+import se.kth.cid.layout.StatementLayout;
 import se.kth.cid.util.AttributeEntryUtil;
 
 import com.hp.hpl.jena.vocabulary.RDF;
 
 public class PasteConceptCopyMapTool extends PasteConceptMapTool {
 	Log log = LogFactory.getLog(PasteConceptCopyMapTool.class);
+	HashMap<String, String> old2new;
  
     public PasteConceptCopyMapTool(
         MapController cont,
@@ -33,15 +38,22 @@ public class PasteConceptCopyMapTool extends PasteConceptMapTool {
     }
 
 	@Override
+	public void actionPerformed(ActionEvent e) {
+		old2new = new HashMap<String, String>();
+		super.actionPerformed(e);
+	}
+
+	@Override
 	protected ConceptLayout makeConceptLayout(String oldConceptURI) throws InvalidURIException {
 		try {
 			ResourceStore store = ConzillaKit.getDefaultKit().getResourceStore();
 			Concept oldConcept = store.getAndReferenceConcept(URI.create(oldConceptURI));
 			URI typeURI = URI.create(oldConcept.getType());
 			Concept concept = (Concept) store.getComponentManager().createConcept(null);
+			old2new.put(oldConceptURI, concept.getURI());
 			concept.addAttributeEntry(RDF.type.toString(), typeURI);
 			//Set titles to dummy value
-			adjustMetaData(concept, typeURI.toString());
+			adjustMetaData(oldConcept, concept);
 			concept.setEdited(true);
 			return super.makeConceptLayout(concept.getURI());
 		} catch (ComponentException e) {
@@ -50,17 +62,37 @@ public class PasteConceptCopyMapTool extends PasteConceptMapTool {
 		return null;		
 	}
 	
-	protected static void adjustMetaData(Concept concept, String typeURI) throws ReadOnlyException {
-		String title;
-		if (typeURI != null) {
-			int slashpos = typeURI.lastIndexOf('/');
-			title = "New " + typeURI.substring(slashpos + 1);
-		} else {
-			title = concept.getURI();
-			int slashpos = title.lastIndexOf('/');
-			title = title.substring(slashpos + 1);
-		}
+    protected StatementLayout makeStatementLayout(boolean isObjectLiteral, 
+            String oldConceptURI,
+            String subjectLayoutURI, 
+            String objectLayoutURI) 
+    throws InvalidURIException{        
+        try {
+			ResourceStore store = ConzillaKit.getDefaultKit().getResourceStore();
+			Concept oldConcept = store.getAndReferenceConcept(URI.create(oldConceptURI));
+			Concept concept = (Concept) store.getComponentManager().createConcept(null);
+			Triple oldTriple = oldConcept.getTriple();
+			if (oldTriple.isObjectLiteral()) {
+				concept.createTriple(old2new.get(oldTriple.subjectURI()), oldTriple.predicateURI(), oldTriple.objectValue(), oldTriple.isObjectLiteral());
+			} else {
+				concept.createTriple(old2new.get(oldTriple.subjectURI()), oldTriple.predicateURI(), old2new.get(oldTriple.objectValue()), oldTriple.isObjectLiteral());				
+			}
 
-		AttributeEntryUtil.newTitle(concept, title);
+			String type = oldConcept.getType();
+			if (type != null) {
+				URI typeURI = URI.create(oldConcept.getType());
+				concept.addAttributeEntry(RDF.type.toString(), typeURI);
+			}
+			adjustMetaData(oldConcept, concept);
+			concept.setEdited(true);
+			return super.makeStatementLayout(isObjectLiteral, concept.getURI(), subjectLayoutURI, objectLayoutURI);
+		        } catch (ComponentException e) {
+			ErrorMessage.showError("Create Error", "Failed to create component.", e, null);
+		}
+        return null;
+    }
+	
+	protected static void adjustMetaData(Concept oldConcept, Concept concept) throws ReadOnlyException {
+		AttributeEntryUtil.newTitle(concept, AttributeEntryUtil.getTitleAsString(oldConcept));
 	}
 }
