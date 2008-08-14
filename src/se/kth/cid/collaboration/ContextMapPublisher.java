@@ -21,6 +21,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.kth.cid.component.Component;
 import se.kth.cid.component.ComponentException;
 import se.kth.cid.component.ComponentManager;
@@ -47,6 +50,7 @@ import se.kth.nada.kmr.collaborilla.client.CollaborillaStatelessClient;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.RDFWriter;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
@@ -68,6 +72,8 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 	public static String PROP_PROGRESS_FINISHED = "publishing.progress.finished";
 
 	public static String PROP_PROGRESS_CANCELLED = "publishing.progress.cancelled";
+	
+	Log log = LogFactory.getLog(ContextMapPublisher.class);
 
 	private MapController controller;
 
@@ -456,7 +462,12 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 		// We could also use piped streams, but this requires
 		// threading and leads somehow to a broken pipe... to be done.
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		((RDFModel) container).write(out);
+		RDFModel m = (RDFModel) container;
+		
+		// We don't write with m.write() because sometimes it fails for some strange reason
+		RDFWriter w = m.getWriter("RDF/XML-ABBREV");
+		w.write(m, out, "RDF/XML-ABBREV");
+		
 		return new ByteArrayInputStream(out.toByteArray());
 	}
 
@@ -568,6 +579,7 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 	private void printError(String error) {
 		String oldValue = this.information;
 		this.information = error;
+		log.error(error);
 		firePropertyChange(PROP_PROGRESS_ERROR, oldValue, this.information);
 	}
 

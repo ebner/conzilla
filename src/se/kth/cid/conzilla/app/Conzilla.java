@@ -40,7 +40,7 @@ import se.kth.cid.layout.ContextMap;
 
 public class Conzilla implements PropertyChangeListener {
 	
-	public static final String CURRENT_VERSION = "2.2.4";
+	public static final String CURRENT_VERSION = "2.2.5";
 
 	Hashtable viewManagers;
 

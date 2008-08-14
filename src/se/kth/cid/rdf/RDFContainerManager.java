@@ -52,6 +52,7 @@ import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFErrorHandler;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.RDFWriter;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
@@ -66,17 +67,22 @@ import com.hp.hpl.jena.vocabulary.RDF;
  */
 public class RDFContainerManager implements ContainerManager {
 	
-	Log log = LogFactory.getLog(RDFContainerManager.class);
+	static Log log = LogFactory.getLog(RDFContainerManager.class);
 
 	public static class MyRDFErrorHandler implements RDFErrorHandler {
+		
 		public void error(Exception e) {
+			log.error(e.getMessage());
 		}
 
 		public void fatalError(Exception e) {
+			log.error(e.getMessage());
 		}
 
 		public void warning(Exception e) {
+			log.error(e.getMessage());
 		}
+		
 	}
 
 	private class ReadContainerAction implements InputStreamConsumer {
@@ -546,8 +552,13 @@ public class RDFContainerManager implements ContainerManager {
 				return false;
 			}
 
+			// we prefer writing directly via RDFWriter instead of Model.write() because
+			// something goes wrong with the short version of the serialization
+			RDFWriter writer = m.getWriter("RDF/XML-ABBREV");
+			
 			try {
-				m.write(os, "RDF/XML-ABBREV");
+				writer.write(m, os, "RDF/XML-ABBREV");
+				
 				os.close();
 				m.setEdited(false);
 				log.debug("Succeeded " + action + " in format RDF/XML-ABBREV");
@@ -563,7 +574,9 @@ public class RDFContainerManager implements ContainerManager {
 					if (os == null) {
 						return false;
 					}
-					m.write(os, "N-TRIPLE");
+					writer = m.getWriter("N-TRIPLE");
+					writer.write(m, os, "N-TRIPLE");
+					
 					os.close();
 					m.setEdited(false);
 					log.debug("Succeeded " + action + " in format N-TRIPLE");
@@ -577,6 +590,7 @@ public class RDFContainerManager implements ContainerManager {
 		} catch (IOException io) {
 			log.error("Failed saving model", io);
 		}
+		
 		return false;
 	}
 
