@@ -652,7 +652,13 @@ public class RDFContainerManager implements ContainerManager {
 	private void readResourceModel(RDFModel model, URI loadURI) {
 		String url = loadURI.getSchemeSpecificPart().substring(1);
 		URL internalURL = getClass().getClassLoader().getResource(url);
-		model.read(internalURL.toString());
+		try {
+			log.debug("Loading resource: " + internalURL);
+			model.read(internalURL.openStream(), null);
+		} catch (IOException e) {
+			log.error(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	private void fetchAndCacheRemoteModel(RDFModel model, String url, RemoteStorage remote, Date lastMod)
