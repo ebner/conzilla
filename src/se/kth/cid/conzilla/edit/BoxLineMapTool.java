@@ -46,11 +46,11 @@ public class BoxLineMapTool extends Tool {
         else
             boxLineVisible = true;
 
-        ConzillaResourceManager.getDefaultManager().customizeButton(
+       /* ConzillaResourceManager.getDefaultManager().customizeButton(
             getJMenuItem(),
             EditMapManagerFactory.class.getName(),
             boxLineVisible ? LINE_VISIBLE : LINE_INVISIBLE);
-
+*/
         if (mapEvent.hitType == MapEvent.HIT_NONE)
             return false;
         return true;

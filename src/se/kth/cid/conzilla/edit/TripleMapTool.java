@@ -47,11 +47,11 @@ public class TripleMapTool extends Tool
     else
     	return false;
 
-    ConzillaResourceManager.getDefaultManager().customizeButton(
+   /* ConzillaResourceManager.getDefaultManager().customizeButton(
       getJMenuItem(),
       EditMapManagerFactory.class.getName(),
       tripleVisible ? TRIPLE_VISIBLE : TRIPLE_INVISIBLE);
-
+*/
     return true;
   }
 
