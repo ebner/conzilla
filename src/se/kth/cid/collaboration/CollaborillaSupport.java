@@ -6,9 +6,11 @@
 
 package se.kth.cid.collaboration;
 
+import java.net.URI;
+
 import se.kth.cid.config.Config;
 import se.kth.cid.conzilla.app.ConzillaKit;
-import se.kth.nada.kmr.collaborilla.client.CollaborillaRestClient;
+import se.kth.nada.kmr.collaborilla.client.CollaborillaCouchDbClient;
 import se.kth.nada.kmr.collaborilla.client.CollaborillaStatelessClient;
 
 /**
@@ -50,7 +52,8 @@ public class CollaborillaSupport {
 	public CollaborillaStatelessClient getStatelessClient() {
 		String serviceRoot = collabConfig.getCollaborillaServiceRoot();
 		if (serviceRoot != null) { 
-			return new CollaborillaRestClient(collabConfig.getCollaborillaServiceRoot());
+			URI couchDbUrl = URI.create(collabConfig.getCollaborillaServiceRoot());
+			return new CollaborillaCouchDbClient(couchDbUrl.getHost(), couchDbUrl.getPort());
 		} else {
 			throw new IllegalStateException("Collaborilla Service has not been specified");
 		}

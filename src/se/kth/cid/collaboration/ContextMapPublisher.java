@@ -16,6 +16,7 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -96,6 +97,8 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 	private CollaborillaSupport collabSupport;
 	
 	private CollaborillaConfiguration collabConfig;
+	
+	String revision;
 
 	public ContextMapPublisher(MapController controller, ContextMap contextMap,
 			LocationInformation location, String mapRDFInfo, String infoRDFInfo) {
@@ -109,6 +112,7 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 		this.collabSupport = new CollaborillaSupport(ConfigurationManager.getConfiguration());
 		this.collabConfig = new CollaborillaConfiguration(ConfigurationManager.getConfiguration());
 		this.collabClient = collabSupport.getStatelessClient();
+		this.revision = Long.toString(new Date().getTime());
 	}
 
 	/**
@@ -168,6 +172,8 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 		dataset.setIdentifier(uri);
 		dataset.setType(CollaborillaServiceClient.TYPE_CONTEXTMAP);
 		dataset.setMetaData(mapRDFInfo);
+		dataset.setRevisionNumber(revision);
+		dataset.setTimestampModified(new Date());
 		
 		addDependencies(dataset);
 		
@@ -310,6 +316,8 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 		if (revisionInfo != null) {
 			dataset.setContainerRevision(revisionInfo);
 		}
+		dataset.setRevisionNumber(revision);
+		dataset.setTimestampModified(new Date());
 		
 		collabClient.put(URI.create(infoContURI), dataset);
 		
@@ -337,6 +345,8 @@ public class ContextMapPublisher extends PropertyChangeSupport {
 		}
 		dataset.setIdentifier(presContURI);
 		dataset.setType(CollaborillaServiceClient.TYPE_CONTAINER);
+		dataset.setRevisionNumber(revision);
+		dataset.setTimestampModified(new Date());
 		
 		// We copy the metadata from the information container to the
 		// presentation container. We do it this way because the URIs
