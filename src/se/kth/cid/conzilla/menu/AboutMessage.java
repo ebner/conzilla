@@ -85,7 +85,7 @@ public class AboutMessage extends JDialog {
         creditsLabel.setBorder(BorderFactory.createEmptyBorder(5,10,5,10));
         
         aboutLabel = new JLabel("<html><body><h2>Conzilla " + Conzilla.CURRENT_VERSION + "</h2>" +
-                "&copy; 1999-2008 All rights reserved.<br>" +
+                "&copy; 1999-2010 All rights reserved.<br>" +
                 "<br>" +
                 "Conzilla is licensed under the GNU General Public License (GPL). " +
                 "See <a href=\"http://www.conzilla.org\">http://www.conzilla.org</a> for details.<br>" +
