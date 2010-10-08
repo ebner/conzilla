@@ -131,14 +131,14 @@ public class ContextMapInfoPanel extends JPanel {
     	
     	if (mapIsPublished) {
     		CollaborillaDataSet dataSet = reader.getDataSet(URI.create(contextMap.getURI()), 1);
-    		if (dataSet != null) {
+    		if (dataSet != null && dataSet.getTimestampCreated() != null) {
     			mapPublishedField.setText(formatDate(dataSet.getTimestampCreated()));
     		} else {
     			mapPublishedField.setText("Unknown");
     		}
     		MetaDataCache cache = ConzillaKit.getDefaultKit().getMetaDataCache();
     		CollaborillaDataSet ds = cache.getDataSet(contextMap.getURI(), null);
-    		if (ds != null) {
+    		if (ds != null && ds.getTimestampModified() != null) {
     			mapModifiedField.setText(formatDate(ds.getTimestampModified()));    		
     		} else {
     			mapModifiedField.setText("Unknown");
