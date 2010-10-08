@@ -346,7 +346,7 @@ public class SessionBrowser extends JDialog {
 	 *            Session to look for context-maps.
 	 * @return Returns a sorted list of context-maps within a session.
 	 */
-    private List getMapsOfSession(Session session) {
+    private List<ContextMapWrapper> getMapsOfSession(Session session) {
     	List<ContextMapWrapper> result = new ArrayList<ContextMapWrapper>();
 		String uri = session.getContainerURIForLayouts();
 		Container container = null;
@@ -357,8 +357,8 @@ public class SessionBrowser extends JDialog {
 			ErrorMessage.showError("Container could not be loaded", "One of this session's containers could not be loaded.", ce, null);
 			return result;
 		}
-		List maps = container.getDefinedContextMaps();
-		for (Iterator it = maps.iterator(); it.hasNext(); ) {
+		List<String> maps = container.getDefinedContextMaps();
+		for (Iterator<String> it = maps.iterator(); it.hasNext(); ) {
 			URI mapURI = URI.create((String) it.next());
 			ContextMap map = null;
 			try {

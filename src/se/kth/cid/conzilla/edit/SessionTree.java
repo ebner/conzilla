@@ -391,6 +391,7 @@ public class SessionTree extends JTree implements TreeSelectionListener, TreeWil
 			try {
 				map = store.getAndReferenceLocalContextMap(mapURI, session);
 			} catch (ComponentException e1) {
+				e1.printStackTrace();
 				continue;
 			}
 			result.add(map);
