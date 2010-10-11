@@ -209,7 +209,7 @@ public class CollaborillaReader {
 		CollaborillaDataSet dataSet = getDataSet(uri, revision);
 		Set locations = null;
 		if (dataSet != null) {
-			locations = dataSet.getAlignedLocations();
+			locations = dataSet.getLocations();
 		}
 		return locations;
 	}
