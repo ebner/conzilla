@@ -16,9 +16,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import javax.jnlp.BasicService;
-import javax.jnlp.ServiceManager;
-import javax.jnlp.UnavailableServiceException;
+//import javax.jnlp.BasicService;
+//import javax.jnlp.ServiceManager;
+//import javax.jnlp.UnavailableServiceException;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -131,14 +131,15 @@ public abstract class ConzillaAppEnv implements ConzillaEnvironment {
 	
 	private void initOnlineState() {
 		boolean online;
-		BasicService basicService;
-		try {
-			basicService = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
-			online = !basicService.isOffline();
-		} catch (UnavailableServiceException ue) {
-			online = ConfigurationManager.getConfiguration().getBoolean(Settings.CONZILLA_ONLINESTATE, true);
-		}
-		setOnline(online);
+//		BasicService basicService;
+//		try {
+//			basicService = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
+//			online = !basicService.isOffline();
+//		} catch (UnavailableServiceException ue) {
+//			online = ConfigurationManager.getConfiguration().getBoolean(Settings.CONZILLA_ONLINESTATE, true);
+//		}
+//		setOnline(online);
+		setOnline(true);
 	}
 
 	/**

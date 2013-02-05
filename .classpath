@@ -6,11 +6,24 @@
 	<classpathentry kind="lib" path="lib/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/iri.jar"/>
 	<classpathentry kind="lib" path="lib/org.json.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-1.5.0-sun"/>
+	<classpathentry kind="lib" path="lib/SHAME-formlets.jar"/>
+	<classpathentry kind="lib" path="lib/SHAME.jar"/>
+	<classpathentry kind="lib" path="lib/ektorp/apache-mime4j-0.6.jar"/>
+	<classpathentry kind="lib" path="lib/ektorp/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/ektorp/commons-io-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/ektorp/httpclient-4.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/ektorp/httpcore-4.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/ektorp/httpmime-4.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/ektorp/jackson-core-asl-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/ektorp/jackson-mapper-asl-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/ektorp/org.ektorp-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/ektorp/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/ektorp/slf4j-jdk14-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/collaborilla.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/icu4j.jar"/>
 	<classpathentry kind="lib" path="lib/jena.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
-	<classpathentry kind="lib" path="lib/SHAME-formlets.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/batik-awt-util.jar"/>
 	<classpathentry kind="lib" path="lib/batik-dom.jar"/>
@@ -27,8 +40,11 @@
 	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry kind="lib" path="lib/swing-layout.jar"/>
 	<classpathentry kind="lib" path="lib/jdom-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/SHAME.jar"/>
-	<classpathentry kind="lib" path="lib/collaborilla.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-api.jar"/>
+	<classpathentry kind="lib" path="/shame/dist/SHAME-formlets.jar"/>
+	<classpathentry kind="lib" path="lib/browserlauncher2.jar"/>
+	<classpathentry kind="lib" path="lib/com.noelios.restlet.ext.net.jar"/>
+	<classpathentry kind="lib" path="lib/com.noelios.restlet.jar"/>
+	<classpathentry kind="lib" path="lib/org.restlet.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

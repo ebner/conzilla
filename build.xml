@@ -69,6 +69,7 @@
   	jakarta-slide-webdavlib.jar,
 	jdom-1.0.jar,
 	log4j.jar,
+	org.json.jar,
   	org.restlet.jar,
 	SHAME.jar,
 	SHAME-formlets.jar,
@@ -192,6 +193,7 @@
       <fileset dir="${build_directory}"/>
       <manifest>
         <attribute name="Built-By" value="${user.name}"/>
+	<attribute name="Main-Class" value="se.kth.cid.conzilla.app.ConzillaApp"/>
       </manifest>
     </jar>
   </target>
@@ -210,6 +212,7 @@
       <fileset dir="${tempdir}"/>
       <manifest>
         <attribute name="Built-By" value="${user.name}"/>
+	<attribute name="Main-Class" value="se.kth.cid.conzilla.app.ConzillaApp"/>
       </manifest>
     </jar>
     <delete dir="${tempdir}"/>
