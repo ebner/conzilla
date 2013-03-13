@@ -10,7 +10,8 @@ import se.kth.cid.conzilla.content.ContentDisplayer;
 
 public interface ConzillaEnvironment {
 	
-	public static final String DEFAULT_STARTMAP = "urn:path:/org/conzilla/builtin/maps/default";
+	//public static final String DEFAULT_STARTMAP = "urn:path:/org/conzilla/builtin/maps/default";
+	public static final String DEFAULT_STARTMAP = "http://www.conzilla.org/people/amb/TEL-map/presentation/contextmap#-4d07c32c13d5ad307a2d6b";
 	public static final String DEFAULT_BLANKMAP = "urn:path:/org/conzilla/builtin/maps/blank";
 
 	ContentDisplayer getDefaultContentDisplayer();
