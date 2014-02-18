@@ -1,4 +1,4 @@
-<!-- $Id$ -->
+<!-- $Id: build.xml 1274 2013-02-05 14:18:58Z ebnerh $ -->
 <project name="Conzilla" default="typical" basedir=".">
 
   <description>
@@ -6,12 +6,12 @@
     Author: Henrik Eriksson
     Author: Matthias Palmer
     Author: Hannes Ebner
-    Version: $Revision$, $Date$
+    Version: $Revision: 1274 $, $Date: 2013-02-05 15:18:58 +0100 (Tue, 05 Feb 2013) $
     NOTE: You need Ant version 1.6 or later to run this build file.
   </description>
   
   <!-- <property name="build.compiler"     value="jikes"/> -->
-  <property name="build.compiler"          value="javac1.5"/>
+  <property name="build.compiler"          value="javac1.6"/>
   <property name="debug_value"         	   value="true"/>
 	
   <property name="signature_keystore"	   value="misc/conzilla2009.keystore"/>
